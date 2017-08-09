@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AgmCoreModule } from '@agm/core';
 
 
 import { TablesComponent } from './tables.component';
@@ -13,6 +14,9 @@ import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
+import { GeomapComponent } from '../geomap/geomap.component';
+
+
 @NgModule({
     imports: [
         CommonModule,
@@ -21,12 +25,16 @@ import { SousZonesFilterPipe }   from './souszones-filter.pipe';
         PageHeaderModule,
         DataTableModule,
         NgbModule.forRoot(),
+        AgmCoreModule.forRoot({
+	      apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
+	    }),
     ],
     declarations: [
     	TablesComponent, 
     	DataFilterPipe,
     	ZonesFilterPipe,
-    	SousZonesFilterPipe
+    	SousZonesFilterPipe,
+    	GeomapComponent
     ]
 })
 export class TablesModule { }
