@@ -3,10 +3,6 @@
     
     <div class="row" style="padding-bottom: 2rem">
         <div class="col-sm-3">
-            <label class="label-control">Recherche:</label>
-            <input class="form-control" [(ngModel)]="filterQuery"/>
-        </div>
-        <div class="col-sm-3">
             <label class="label-control">Nombre d'Affichage</label>
             <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
                 <option [ngValue]="5">5</option>
@@ -17,14 +13,14 @@
         </div>
         <div class="col-sm-3">
             <label>Zone</label>
-            <select class="form-control input-sm" >
-                <option >zones</option>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="onChangeZone($event.target.value)">
+                <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
-            <select class="form-control input-sm" >
-                <option >sous zones</option>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
+                <option  *ngFor="let souszone of souszones">{{souszone}}</option>
             </select>
         </div>
     </div>
@@ -33,7 +29,7 @@
         <div class="col-xs-12 col-sm-12">
             
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                <table class="table table-hover" [mfData]="data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="dateajout">Date creation</mfDefaultSorter></th>
@@ -45,6 +41,12 @@
                         <th>Action</th>
                         <th>Option</th>
                     </tr>
+                    <tr>
+                    <th colspan="5">
+                        Recherche:
+                        <input class="form-control" [(ngModel)]="filterQuery"/>
+                    </th>
+                </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let item of mf.data">
@@ -53,14 +55,16 @@
                         <td>{{item.prenom}}</td>
                         <td>{{item.nom}}</td>
                         <td>{{item.tel}}</td>
-                        <td>{{item.adresse}}</td>
-                        <td ><button>Visualiser sur Map</button></td>
-                        <td><button>Prospecter</button></td>
+                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
+                        <td >
+                            <button type="button" class="btn btn-primary"  (click)="open(content)">Voir Map</button>
+                        </td>
+                        <td><button type="button" class="btn btn-primary">Prospecter</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
-                    <tr>
-                        <td colspan="4">
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
                             <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
                         </td>
                     </tr>
@@ -70,3 +74,18 @@
         </div>
     </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Modal title</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>

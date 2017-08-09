@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { TablesComponent } from './tables.component';
@@ -9,6 +10,8 @@ import { PageHeaderModule } from './../../shared';
 
 import {DataTableModule} from "angular2-datatable";
 import { DataFilterPipe }   from './data-filter.pipe';
+import { ZonesFilterPipe }   from './zones-filter.pipe';
+import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
 @NgModule({
     imports: [
@@ -16,8 +19,14 @@ import { DataFilterPipe }   from './data-filter.pipe';
         FormsModule,
         TablesRoutingModule,
         PageHeaderModule,
-        DataTableModule
+        DataTableModule,
+        NgbModule.forRoot(),
     ],
-    declarations: [TablesComponent, DataFilterPipe]
+    declarations: [
+    	TablesComponent, 
+    	DataFilterPipe,
+    	ZonesFilterPipe,
+    	SousZonesFilterPipe
+    ]
 })
 export class TablesModule { }
