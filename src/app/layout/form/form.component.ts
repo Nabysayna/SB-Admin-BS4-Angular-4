@@ -8,6 +8,9 @@ import { routerTransition } from '../../router.animations';
     animations: [routerTransition()]
 })
 export class FormComponent implements OnInit {
+	fakevalues = true ;
     constructor() { }
     ngOnInit() {}
+
+    enregistrerProspect(){}
 }
