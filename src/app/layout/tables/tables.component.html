@@ -13,14 +13,16 @@
         </div>
         <div class="col-sm-3">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="onChangeZone($event.target.value)">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+                <option></option>
                 <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
-                <option  *ngFor="let souszone of souszones">{{souszone}}</option>
+                <option></option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
             </select>
         </div>
     </div>
@@ -57,9 +59,9 @@
                         <td>{{item.tel}}</td>
                         <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
                         <td >
-                            <button type="button" class="btn btn-primary"  (click)="open(content, item)">Voir Map</button>
+                            <button type="button" class="btn btn-primary" (click)="open(content, item)">Voir Map</button>
                         </td>
-                        <td><button type="button" class="btn btn-primary">Prospecter</button></td>
+                        <td><button type="button" class="btn btn-primary" (click)="open(contentProspect, item)">Prospecter</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -86,6 +88,18 @@
         <app-geomap [macarte]="client"></app-geomap>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+    </div>
+</ng-template>
+
+<ng-template #contentProspect let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <app-prospect-pdv [infoprospect]="client"></app-prospect-pdv>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
     </div>
 </ng-template>

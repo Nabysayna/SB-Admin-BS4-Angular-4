@@ -13,8 +13,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class TablesComponent implements OnInit {
 
     public filterQuery = "";
-    public filterZone = "";
-    public filterSousZone = "";
+    public filtreZone = "";
+    public filtreSousZone = "";
     public rowsOnPage = 5;
     public sortBy = "libellepoint";
     public sortOrder = "asc";
@@ -32,7 +32,7 @@ export class TablesComponent implements OnInit {
 
   	open(content, client) {
   		this.client = client;
-    	this.modalService.open(content).result.then((result) => {
+    	this.modalService.open(content, {size: 'lg'}).result.then((result) => {
       		this.closeResult = `Closed with: ${result}`;
     	}, (reason) => {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -53,9 +53,10 @@ export class TablesComponent implements OnInit {
         return +num;
     }
 
-    public onChangeZone(event: any){
+/*    public onChangeZone(event: any){
     	this.getSousZones(event);
     }
+*/
 
     public sortByWordLength = (a: any) => {
         return a.adresse.length;
@@ -67,12 +68,25 @@ export class TablesComponent implements OnInit {
   		} 
   	}
 
-    public getSousZones(event: string): void {
-    	let sousZones = this.data.filter(function(item){ return item.zone === event});
-  		for (let i=0; i<sousZones.length; i++) {
-		  	if( !this.souszones.includes(sousZones[i].sous_zone) ) this.souszones.push(sousZones[i].sous_zone);
+  	sousZonesOfCurrentZone(){
+  		let souszones : any[] =  [] ;  		
+    	for (let i = 0; i < this.data.length; i++) {
+  			if( this.data[i].zone==this.filtreZone ){ 
+  				if( !souszones.includes(this.data[i].sous_zone) )
+	  				souszones.push(this.data[i].sous_zone);
+  			}
   		} 
+  		return souszones ;
   	}
+
+/*    public getSousZones(event: string): void {
+    	console.log(event);
+    	for (let i = 0; i < this.data.length; i++) {
+  			if( this.data[i].zone.match(event) && !this.souszones.includes(this.data[i].sous_zone)) this.souszones.push(this.data[i].sous_zone);
+  		} 
+  		console.log(this.souszones);
+  	} 
+*/
 
     public data = [
 		  {
@@ -109,7 +123,7 @@ export class TablesComponent implements OnInit {
 		    "email": "mauris@Craslorem.ca",
 		    "dateajout": "2015-11-19T19:11:33-08:00",
 		    "adresse": "Bruderheim",
-		    "zone": "Dakar center",
+		    "zone": "Dakar centre",
 		    "sous_zone": "colobane",
 		    "latitude": 14.462589983648722,
 		    "longitude": -17.44974915234375,
@@ -135,7 +149,7 @@ export class TablesComponent implements OnInit {
 		    "email": "ligula@acorciUt.edu",
 		    "dateajout": "2017-02-25T15:42:17-08:00",
 		    "adresse": "HomprŽ",
-		    "zone": "Dakar center",
+		    "zone": "Dakar centre",
 		    "sous_zone": "ville",
 		    "latitude": 14.462589983648722,
 		    "longitude": -17.44974915234375,

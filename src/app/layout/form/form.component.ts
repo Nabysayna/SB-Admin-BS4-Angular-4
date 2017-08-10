@@ -13,6 +13,9 @@ export class FormComponent implements OnInit {
 	public isAdressepoint=true;
 	public isUploadfile=true;
 
+	public isSelect=true;
+
+    constructor() { }
     ngOnInit() {}
 
     coordonneesgeospatiales(){
