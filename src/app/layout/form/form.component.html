@@ -149,23 +149,9 @@
                            </div>
 
                            <div>
-                               <label>--Notez--</label>
-                               <div style="margin-top: 1/2rem;">
-                               <a href='#' style='cursor: pointer;' onclick=''>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                </a>
-                                <a href='#' style='cursor: pointer;' onclick=''>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                </a>
-                                <a href='#' style='cursor: pointer;' onclick=''>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                </a>
-                                <a href='#' style='cursor: pointer;' onclick=''>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                </a>
-                                <a href='#' style='cursor: pointer;' onclick=''>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                </a>
+                               <label>Avis sur point</label>
+                                <div>
+                                  <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
                                 </div>
                           </div>
                     </div>

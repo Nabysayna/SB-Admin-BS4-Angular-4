@@ -14,17 +14,43 @@ export class FormComponent implements OnInit {
 	public isUploadfile=true;
 	public isSelect=true;
 
-	public rating: any[];
+    rating = [
+        {indice:0, checked:false},
+        {indice:1, checked:false},
+        {indice:2, checked:false},
+        {indice:3, checked:false},
+        {indice:4, checked:false},
+    ];
+    
+
     constructor() { }
-    ngOnInit() {
-    	this.rating.push(
-            {indice:0, checked:false},
-            {indice:1, checked:false},
-            {indice:2, checked:false},
-            {indice:3, checked:false}
-        );
+    ngOnInit() {}
+
+    private avoter(index:number): void{
+        if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
+            this.rating[index].checked = false;
+        }
+        else {
+            for (var i = 0; i<this.rating.length; i++) {
+                if(i < index) {
+                    this.rating[i].checked = true;
+                }
+                else if(i == index) {
+                    if(this.rating[i].checked == true){ 
+                        this.rating[i].checked = false;
+                    }
+                    else {
+                        this.rating[i].checked = true;
+                    }
+                }
+                else {
+                    this.rating[i].checked = false;
+                }
+            }
+        }
     }
 
+    
 
     enregistrerProspect(){}
 }
