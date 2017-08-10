@@ -57,7 +57,7 @@
                         <td>{{item.tel}}</td>
                         <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
                         <td >
-                            <button type="button" class="btn btn-primary"  (click)="open(content)">Voir Map</button>
+                            <button type="button" class="btn btn-primary"  (click)="open(content, item)">Voir Map</button>
                         </td>
                         <td><button type="button" class="btn btn-primary">Prospecter</button></td>
                     </tr>
@@ -75,15 +75,15 @@
     </div>
 </div>
 
-<ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <h4 class="modal-title">Modal title</h4>
+<ng-template #content let-c="close" let-d="dismiss" >
+    <div class="modal-header" *ngIf="client">
+        <h4 class="modal-title">Coordonnée de {{client.prenom}} {{client.nom}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p>One fine body&hellip;</p>
+        <app-geomap [macarte]="client"></app-geomap>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>

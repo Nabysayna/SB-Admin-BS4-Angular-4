@@ -21,6 +21,8 @@ export class TablesComponent implements OnInit {
     private zones:any[] = [];
     private souszones:any[] = [];
 
+    private client:any;
+
     closeResult: string;
 	constructor(private http: Http, private modalService: NgbModal) {}
 
@@ -28,14 +30,15 @@ export class TablesComponent implements OnInit {
         this.getZones()
     }
 
-  	open(content) {
+  	open(content, client) {
+  		this.client = client;
     	this.modalService.open(content).result.then((result) => {
       		this.closeResult = `Closed with: ${result}`;
     	}, (reason) => {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     	});
   	}
-
+  	
   	private getDismissReason(reason: any): string {
     	if (reason === ModalDismissReasons.ESC) {
       		return 'by pressing ESC';
@@ -82,6 +85,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Paglieta",
 		    "zone": "Dakar centre",
 		    "sous_zone": "colobane",
+		    "latitude": 14.702589983648722,
+		    "longitude": -17.04974915234375,
 		  },
 		  {
 		    "libellepoint": "bg",
@@ -93,6 +98,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Bear",
 		    "zone": "Dakar plateau",
 		    "sous_zone": "plateau",
+		    "latitude": 14.762589983648722,
+		    "longitude": -17.14974915234375,
 		  },
 		  {
 		    "libellepoint": "ak",
@@ -104,6 +111,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Bruderheim",
 		    "zone": "Dakar center",
 		    "sous_zone": "colobane",
+		    "latitude": 14.462589983648722,
+		    "longitude": -17.44974915234375,
 		  },
 		  {
 		    "libellepoint": "Wing",
@@ -115,6 +124,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Andenne",
 		    "zone": "Dakar centre",
 		    "sous_zone": "ville",
+		    "latitude": 14.662589983648722,
+		    "longitude": -17.34974915234375,
 		  },
 		  {
 		    "libellepoint": "abdb",
@@ -126,6 +137,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "HomprŽ",
 		    "zone": "Dakar center",
 		    "sous_zone": "ville",
+		    "latitude": 14.462589983648722,
+		    "longitude": -17.44974915234375,
 		  },
 		  {
 		    "libellepoint": "ob",
@@ -137,6 +150,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Ried im Innkreis",
 		    "zone": "Dakar banlieue",
 		    "sous_zone": "Pikine rue 10",
+		    "latitude": 14.562589983648722,
+		    "longitude": -17.44974915234375,
 		  },
 		  {
 		    "libellepoint": "ad",
@@ -148,6 +163,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Cwmbran",
 		    "zone": "Rufisque",
 		    "sous_zone": "Mbour",
+		    "latitude": 14.762589983648722,
+		    "longitude": -17.14974915234375,
 		  },
 		  {
 		    "libellepoint": "abl",
@@ -159,6 +176,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Maranguape",
 		    "zone": "Rufisque",
 		    "sous_zone": "Saly",
+		    "latitude": 14.762589983648722,
+		    "longitude": -17.04974915234375,
 		  },
 		  {
 		    "libellepoint": "bd",
@@ -170,6 +189,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Gibbons",
 		    "zone": "Rufisque",
 		    "sous_zone": "Rufisque ville",
+		    "latitude": 14.662589983648722,
+		    "longitude": -17.04974915234375,
 		  },
 		  {
 		    "libellepoint": "ss",
@@ -181,6 +202,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Bellevue",
 		    "zone": "Rufisque",
 		    "sous_zone": "Saly",
+		    "latitude": 14.562589983648722,
+		    "longitude": -17.04974915234375,
 		  },
 		  {
 		    "libellepoint": "td",
@@ -192,6 +215,8 @@ export class TablesComponent implements OnInit {
 		    "adresse": "Kobbegem",
 		    "zone": "Dakar banlieue",
 		    "sous_zone": "Pikine rue 10",
+		    "latitude": 14.462589983648722,
+		    "longitude": -16.94974915234375,
 		  }
 		];
 
