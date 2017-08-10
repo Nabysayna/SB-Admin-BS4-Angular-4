@@ -11,23 +11,50 @@ export class ProspectPdvComponent implements OnInit {
 	
     @Input() infoprospect: any;
 
-	private isinfo:any = {isinfopoint:Boolean, isinfoproprietaire:Boolean, isinfocomplement:Boolean};
     constructor() { }
 
-    ngOnInit() {
-        this.isinfo.isinfopoint=true;
-        this.isinfo.isinfoproprietaire=false;
-        this.isinfo.isinfocomplement=false;
-    }
+    ngOnInit() {}
 
 
     enregistrerProspect(){}
 
+    isinfo = {isinfopoint:true, isinfoproprietaire:false, isinfocomplement:false};
+    rating = [
+        {indice:0, checked:false},
+        {indice:1, checked:false},
+        {indice:2, checked:false},
+        {indice:3, checked:false},
+        {indice:4, checked:false},
+    ];
     options = [
         {name:"Transfert d'argent", value:'1', checked:false},
         {name:"Vente cosmetique", value:'2', checked:false},
         {name:"Maintenance", value:'3', checked:false}
     ];
+
+    private avoter(index:number): void{
+        if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
+            this.rating[index].checked = false;
+        }
+        else {
+            for (var i = 0; i<this.rating.length; i++) {
+                if(i < index) {
+                    this.rating[i].checked = true;
+                }
+                else if(i == index) {
+                    if(this.rating[i].checked == true){ 
+                        this.rating[i].checked = false;
+                    }
+                    else {
+                        this.rating[i].checked = true;
+                    }
+                }
+                else {
+                    this.rating[i].checked = false;
+                }
+            }
+        }
+    }
 
     get selectedOptions() {
         return this.options
