@@ -13,8 +13,16 @@ export class FormComponent implements OnInit {
 	public isAdressepoint=true;
 	public isUploadfile=true;
 	public isSelect=true;
+
+	public rating: any[];
     constructor() { }
-    ngOnInit() {}
+    ngOnInit() {
+    	this.rating.push({indice:0, checked:false});
+    	this.rating.push({indice:1, checked:false});
+    	this.rating.push({indice:2, checked:false});
+    	this.rating.push({indice:3, checked:false});
+    	this.rating.push({indice:4, checked:false});
+    }
 
 
     enregistrerProspect(){}
