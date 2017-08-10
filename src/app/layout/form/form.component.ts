@@ -12,6 +12,7 @@ export class FormComponent implements OnInit {
 	public isAdresseproprio=true;
 	public isAdressepoint=true;
 	public isUploadfile=true;
+	public isSelect=true;
     constructor() { }
     ngOnInit() {}
 
