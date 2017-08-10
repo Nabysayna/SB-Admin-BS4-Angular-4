@@ -130,11 +130,11 @@
                                 </div>
                             </div>  
 
-                            <button style="margin-top:6rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
-                                [attr.aria-expanded]="!isSelect" aria-controls="collapseExamplese">
+                            <button style="margin-top:6rem; margin-bottom: 1rem; margin-left: 2rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+                                [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
                                 Questions
                             </button>
-                            <div id="collapseExamplese" [ngbCollapse]="isSelect">
+                            <div id="collapseExampl" [ngbCollapse]="isSelect">
                                 <div class="card">
                                     <div class="card-block">
                                         <label>Etes-vous intéressé par .........? </label><select class="form-control input-sm" [(ngModel)]="questions">
