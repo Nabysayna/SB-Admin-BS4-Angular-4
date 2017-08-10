@@ -6,6 +6,7 @@ import { AgmCoreModule } from '@agm/core';
 
 
 import { TablesComponent } from './tables.component';
+import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
 import { TablesRoutingModule } from './tables-routing.module';
 import { PageHeaderModule } from './../../shared';
 
@@ -15,6 +16,7 @@ import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
 import { GeomapComponent } from '../geomap/geomap.component';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @NgModule({
@@ -28,13 +30,15 @@ import { GeomapComponent } from '../geomap/geomap.component';
         AgmCoreModule.forRoot({
 	      apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
 	    }),
+        RatingModule.forRoot(),
     ],
     declarations: [
     	TablesComponent, 
     	DataFilterPipe,
     	ZonesFilterPipe,
     	SousZonesFilterPipe,
-    	GeomapComponent
+    	GeomapComponent,
+        ProspectPdvComponent
     ]
 })
 export class TablesModule { }
