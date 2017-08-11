@@ -1,9 +1,11 @@
  <div id="page-wrapper">
     <div class="row" >
-            <h3 class="page-header">Point Diamalaye 2</h3>
+            <h3 class="page-header">Nouveau Client</h3>
                     <div class="col-sm-12" style="margin-top: 2rem;">
 
-                          <div class="col-sm-6 col-xs-12"><input type="text" [(ngModel)]="prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder="prénom gérant" required>
+                          <div class="col-sm-12 col-xs-12">
+                          <input type="text" [(ngModel)]="nompoint"   name="nompoint" id="nompoint" class="form-control"  placeholder="Nom Point" required>
+                          <input type="text" [(ngModel)]="prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder="prénom gérant" required>
                           <input type="text" [(ngModel)]="nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder="nom gérant" required>
                           <input type="text" [(ngModel)]="telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder="téléphone gérant" required>
                           <input type="email" [(ngModel)]="emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder="email gérant" required>           
@@ -55,89 +57,70 @@
                                     </div>
                                 </div>
                             </div>
-                            <div style="margin-top: 1rem;">
-                            <h5>Types d'activités</h5></div>
-                            <div style="margin-right: 20rem;">
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox" >services personnels
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">services d'assistance
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin de cosmétiques, parfumerie
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Quincaillerie
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin d’optique, opticien
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Pharmacies
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Restaurant
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Agence de voyages
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin de détail, boutique de cadeaux ou magasin spécialisé
-                            </div>
-                            </div> 
-                            <div style="margin-left: 20rem; margin-top: -28rem;">
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin de fruits et de légumes
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin de vêtements
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Supermarché/épicerie
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Magasin d’appareil photo et de fournitures photographiques
-                            </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Grand magasin ou magasin discount
-                            </div>
-                            <div style="margin-top:1rem;">
-                             <input type="checkbox">Prestataire de services Internet, cyber café
-                             </div>
-                            <div style="margin-top:1rem;">
-                            <input type="checkbox">Autres...
-                            </div>
-                            </div>
-                            <button style="margin-top:6rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isUploadfile = !isUploadfile"
-                                [attr.aria-expanded]="!isUploadfile" aria-controls="collapseExamplees">
-                                Uploader Fichier
-                            </button>
-                            <div id="collapseExamplees" [ngbCollapse]="isUploadfile">
-                                <div class="card">
-                                    <div class="card-block">
-                                   <fieldset class="form-group" _ngcontent-c25="" style="margin-top: 1rem;">
-                                        <label>Libellé</label><select class="form-control input-sm">
-                                                <option>--Choisir le type de pièce--</option>
-                                                <option>CIN</option>
-                                                <option>Passport</option>
-                                                <option>Extrait de naissance</option>
-                                                </select>
-                                        <label class="ng-tns-c25-10" for="exampleInputFile" _ngcontent-c25="">Choisir un fichier</label>
-                                        <input class="form-control-file" id="exampleInputFile" type="file" _ngcontent-c25="">
-                                    </fieldset>
-                                    </div>
+                            <h5>Types d'activités</h5>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12">
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox" >services personnels
                                 </div>
-                            </div>  
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">services d'assistance
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin de cosmétiques, parfumerie
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Quincaillerie
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin d’optique, opticien
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Pharmacies
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Restaurant
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Agence de voyages
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin de détail, boutique de cadeaux ou magasin spécialisé
+                                </div>
+                                </div> 
+                                <div class="col-sm-6 col-xs-12">
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin de fruits et de légumes
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin de vêtements
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Supermarché/épicerie
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Magasin d’appareil photo et de fournitures photographiques
+                                </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Grand magasin ou magasin discount
+                                </div>
+                                <div style="margin-top:1rem;">
+                                 <input type="checkbox">Prestataire de services Internet, cyber café
+                                 </div>
+                                <div style="margin-top:1rem;">
+                                <input type="checkbox">Autres...
+                                </div>
+                                </div>
+                            </div>
 
-                            <button style="margin-top:6rem; margin-bottom: 1rem; margin-left: 2rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+                            <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
                                 [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
-                                Questions
+                                Prospection
                             </button>
                             <div id="collapseExampl" [ngbCollapse]="isSelect">
                                 <div class="card">
                                     <div class="card-block">
-                                        <label>Etes-vous intéressé par .........? </label><select class="form-control input-sm" [(ngModel)]="questions">
+                                        <label>Etes-vous intéressé par le service ...? </label><select class="form-control input-sm" [(ngModel)]="questions">
                                         <option>Souscrire maintenant</option>
                                         <option>Intéressé</option>
                                         <option>Pas pour le moment</option>
@@ -147,6 +130,28 @@
                                     </div>
                                 </div>
                            </div>
+
+                            <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isUploadfile = !isUploadfile"
+                                [attr.aria-expanded]="!isUploadfile" aria-controls="collapseExamplees">
+                                Recueille de documents
+                            </button>
+                            <div id="collapseExamplees" [ngbCollapse]="isUploadfile">
+                                <div class="card">
+                                    <div class="card-block">
+                                   <fieldset class="form-group" _ngcontent-c25="" style="margin-top: 1rem;">
+                                        <label>Libellé</label><select class="form-control input-sm">
+                                                <option>--Choisir le type de pièce--</option>
+                                                <option>CIN</option>
+                                                <option>Passport</option>
+                                                <option>Carte consulaire</option>
+                                                <option> Autres Pièce... </option>
+                                                </select>
+                                        <label class="ng-tns-c25-10" for="exampleInputFile" _ngcontent-c25="">Choisir un fichier</label>
+                                        <input class="form-control-file" id="exampleInputFile" type="file" _ngcontent-c25="">
+                                    </fieldset>
+                                    </div>
+                                </div>
+                            </div>  
 
                            <div>
                                <label>Avis sur point</label>

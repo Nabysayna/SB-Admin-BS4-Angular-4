@@ -138,10 +138,8 @@
       </div>
       <div class="form-group col-md-6">
         <label>Avis sur point</label>
-        <div style="background-color: red">
-        <rating [(ngModel)]="rate" [max]="max" [readonly]="isReadonly"></rating>
-        <rating [(ngModel)]="x" max="15" stateOn="glyphicon-ok-sign" stateOff="glyphicon-ok-circle" style="color: #0275d8;"></rating>
-        <b>(<i>Rate:</i> {{x}})</b>
+        <div>
+          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
         </div>
       </div>
     </div>          
