@@ -130,11 +130,11 @@
                                 </div>
                             </div>  
 
-                            <button style="margin-top:6rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
-                                [attr.aria-expanded]="!isSelect" aria-controls="collapseExamplese">
+                            <button style="margin-top:6rem; margin-bottom: 1rem; margin-left: 2rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+                                [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
                                 Questions
                             </button>
-                            <div id="collapseExamplese" [ngbCollapse]="isSelect">
+                            <div id="collapseExampl" [ngbCollapse]="isSelect">
                                 <div class="card">
                                     <div class="card-block">
                                         <label>Etes-vous intéressé par .........? </label><select class="form-control input-sm" [(ngModel)]="questions">
@@ -147,6 +147,13 @@
                                     </div>
                                 </div>
                            </div>
+
+                           <div>
+                               <label>Avis sur point</label>
+                                <div>
+                                  <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+                                </div>
+                          </div>
                     </div>
 
 
@@ -155,7 +162,8 @@
     </div>  
                       
 </div>
-<!-- class="form-control form-control-success" -->
+
+
 
 
 
