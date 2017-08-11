@@ -26,6 +26,65 @@
                 <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
         </div>
+    </div>
+
+    <table class="table table-hover table-responsive" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+        <thead>
+            <tr>
+                <th><mfDefaultSorter by="prenom">Date assignation</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="zone">Zone</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="note">Performance</mfDefaultSorter></th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <th colspan="5">
+                    Recherche:
+                    <input class="form-control" [(ngModel)]="filterQuery"/>
+                </th>
+        	</tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of mf.data">
+                <td>{{item.prenom}}</td>
+                <td>{{item.prenom}}</td>
+                <td>{{item.nom}}</td>
+                <td>{{item.tel}}</td>
+                <td>{{item.zone}}</td>
+                <td>{{item.note}}</td>
+                <td>Réassigner</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="text-center center-block">
+                <td colspan="8" class="text-center center-block">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
+	<div class="row col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label class="label-control">Nombre d'Affichage</label>
+            <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+                <option></option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
@@ -35,54 +94,39 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-                    <thead>
-                    <tr>
-                        <th><mfDefaultSorter by="dateajout">Date creation</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                    </tr>
-                    <tr>
-                    <th colspan="5">
-                        Recherche:
-                        <input class="form-control" [(ngModel)]="filterQuery"/>
-                    </th>
-                </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of mf.data">
-                        <td>{{item.dateajout | date}}</td>
-                        <td>{{item.libellepoint}}</td>
-                        <td>{{item.prenom}}</td>
-                        <td>{{item.nom}}</td>
-                        <td>{{item.tel}}</td>
-                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr class="text-center center-block">
-                        <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
-	<div class="text-center center-block">
-		<h2>Nouvelle Assignation</h2>
-	</div>
+    <table class="table table-hover table-responsive" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+    	<thead>
+	        <tr>
+	            <th><mfDefaultSorter by="dateajout">Date</mfDefaultSorter></th>
+	            <th><mfDefaultSorter by="libellepoint">Superviseur</mfDefaultSorter></th>
+	            <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+	            <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+	            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+	            <th><mfDefaultSorter by="adresse">Performance</mfDefaultSorter></th>
+	        </tr>
+	        <tr><th colspan="5">
+		            Recherche:
+		            <input class="form-control" [(ngModel)]="filterQuery"/>
+		    </th></tr>
+        </thead>
+        <tbody>
+	        <tr *ngFor="let item of mf.data">
+	            <td>12</td>
+	            <td>{{item.libellepoint}}</td>
+	            <td>{{item.prenom}}</td>
+	            <td>{{item.nom}}</td>
+	            <td>{{item.tel}}</td>
+	            <td>{{item.note}}</td>
+	        </tr>
+        </tbody>
+        <tfoot>
+	        <tr class="text-center center-block">
+	            <td colspan="8" class="text-center center-block">
+	                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+	            </td>
+	        </tr>
+        </tfoot>
+    </table>
 </div>
 
 <div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead3">

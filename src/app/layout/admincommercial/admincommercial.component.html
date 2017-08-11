@@ -22,7 +22,7 @@
 	        </div>
 	        <div class="col-sm-3">
 	            <label>Sous zone</label>
-	            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
+	            <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="updateOnChangeSouszone()">
 	                <option>--Choix sous zone--</option>
 	                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
 	            </select>
@@ -69,7 +69,7 @@
 	                        <td>{{item.nom}}</td>
 	                        <td>{{item.tel}}</td>
 	                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
-	                        <td>{{item.note}}</td>
+	                        <td><span *ngFor="let option of ratings[i]"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true"></i></span></td>
 	                        <td><textarea>{{item.commentaire}}</textarea></td>
 	                    </tr>
 	                </tbody>

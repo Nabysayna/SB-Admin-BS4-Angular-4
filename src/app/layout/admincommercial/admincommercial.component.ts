@@ -21,9 +21,18 @@ export class AdmincommercialComponent implements OnInit {
     private zones:any[] = [];
     private souszones:any[] = [];
     private optionsChoix:any[] = [];
+
     menuHead = {menuHead1:true, menuHead2:false};
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
-	
+	rating = [
+        {indice:0, checked:false},
+        {indice:1, checked:false},
+        {indice:2, checked:false},
+        {indice:3, checked:false},
+        {indice:4, checked:false},
+    ];
+    ratings:any[] = [];
+
 	constructor() { }
 
   	ngOnInit() { this.getZones(); }
@@ -78,6 +87,80 @@ export class AdmincommercialComponent implements OnInit {
   		} 
   		return souszones ;
   	}
+
+  	updateOnChangeSouszone(){
+  		for (let i = 0; i < this.data.length; i++) {
+  			if(this.data[i].note == 0) this.ratings.push([
+			        {indice:0, checked:false},
+			        {indice:1, checked:false},
+			        {indice:2, checked:false},
+			        {indice:3, checked:false},
+			        {indice:4, checked:false},
+			    ])
+  			else if(this.data[i].note == 1) this.ratings.push([
+			        {indice:0, checked:true},
+			        {indice:1, checked:false},
+			        {indice:2, checked:false},
+			        {indice:3, checked:false},
+			        {indice:4, checked:false},
+			    ])
+  			else if(this.data[i].note == 2) this.ratings.push([
+			        {indice:0, checked:true},
+			        {indice:1, checked:true},
+			        {indice:2, checked:false},
+			        {indice:3, checked:false},
+			        {indice:4, checked:false},
+			    ])
+  			else if(this.data[i].note == 3) this.ratings.push([
+			        {indice:0, checked:true},
+			        {indice:1, checked:true},
+			        {indice:2, checked:true},
+			        {indice:3, checked:false},
+			        {indice:4, checked:false},
+			    ])
+  			else if(this.data[i].note == 4) this.ratings.push([
+			        {indice:0, checked:true},
+			        {indice:1, checked:true},
+			        {indice:2, checked:true},
+			        {indice:3, checked:true},
+			        {indice:4, checked:false},
+			    ])
+  			else if(this.data[i].note == 5) this.ratings.push([
+			        {indice:0, checked:true},
+			        {indice:1, checked:true},
+			        {indice:2, checked:true},
+			        {indice:3, checked:true},
+			        {indice:4, checked:true},
+			    ]);
+  			
+  		}
+  	}
+
+  	private avoter(index:number): void{
+        if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
+            this.rating[index].checked = false;
+        }
+        else {
+            for (var i = 0; i<this.rating.length; i++) {
+                if(i < index) {
+                    this.rating[i].checked = true;
+                }
+                else if(i == index) {
+                    if(this.rating[i].checked == true){ 
+                        this.rating[i].checked = false;
+                    }
+                    else {
+                        this.rating[i].checked = true;
+                    }
+                }
+                else {
+                    this.rating[i].checked = false;
+                }
+            }
+        }
+    }
+
+    
 
 
 
