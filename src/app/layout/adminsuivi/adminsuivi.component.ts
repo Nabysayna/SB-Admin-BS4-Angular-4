@@ -1,27 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-admincommercial',
-  templateUrl: './admincommercial.component.html',
-  styleUrls: ['./admincommercial.component.scss']
+  selector: 'app-adminsuivi',
+  templateUrl: './adminsuivi.component.html',
+  styleUrls: ['./adminsuivi.component.scss']
 })
 
-export class AdmincommercialComponent implements OnInit {
+export class AdminsuiviComponent implements OnInit {
 
-  	public filtreZone = "--Choix zone--";
-    public filtreSousZone = "--Choix sous zone--";
-
-    public suivifilterQuery = "";
-  	public suisfiltreZone = "";
-    public fsuisiltreSousZone = "";
+  	public filtreZone = "";
+    public filtreSousZone = "";
+    public filterQuery = "";
     
     public rowsOnPage = 5;
     public sortBy = "note";
     public sortOrder = "desc";
     private zones:any[] = [];
     private souszones:any[] = [];
-    private optionsChoix:any[] = [];
-    menuHead = {menuHead1:true, menuHead2:false};
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 	
 	constructor() { }
@@ -43,17 +38,6 @@ export class AdmincommercialComponent implements OnInit {
   			this.sousmenuHead.menuHead1 = false;
   			this.sousmenuHead.menuHead2 = false;
   			this.sousmenuHead.menuHead3 = true;
-  		}
-  	}
-
-    menuHeadClick(option: number){
-  		if(option == 1){
-  			this.menuHead.menuHead1 = true; 
-  			this.menuHead.menuHead2 = false;
-  		}
-  		else{
-  			this.menuHead.menuHead1 = false; 
-  			this.menuHead.menuHead2 = true;
   		}
   	}
 

@@ -1,0 +1,97 @@
+<div class="container-fluid">
+
+<div class="row" style="padding-bottom: 1rem">
+  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead1, 'btn-success': sousmenuHead.menuHead1}" (click)="sousmenuHeadClick(1)">Suivi superviseurs</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead2, 'btn-success': sousmenuHead.menuHead2}" (click)="sousmenuHeadClick(2)">Suivi commerçiaux</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead3, 'btn-success': sousmenuHead.menuHead3}" (click)="sousmenuHeadClick(3)">Suivi global</button>
+    <hr>
+</div>
+
+<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead1">
+	<div class="row col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label class="label-control">Nombre d'Affichage</label>
+            <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+                <option></option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
+                <option></option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="dateajout">Date creation</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                    <th colspan="5">
+                        Recherche:
+                        <input class="form-control" [(ngModel)]="filterQuery"/>
+                    </th>
+                </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data">
+                        <td>{{item.dateajout | date}}</td>
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.prenom}}</td>
+                        <td>{{item.nom}}</td>
+                        <td>{{item.tel}}</td>
+                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
+	<div class="text-center center-block">
+		<h2>Nouvelle Assignation</h2>
+	</div>
+</div>
+
+<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead3">
+	<div class="text-center center-block">
+		<h2>Nouvelle Assignation</h2>
+	</div>
+</div>
+
+
+
+	
+</div>

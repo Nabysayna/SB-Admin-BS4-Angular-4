@@ -31,7 +31,7 @@ export class TablesComponent implements OnInit {
 
     ngOnInit(): void {
         this.getZones();
-        this._backendService.getListUsers().subscribe(
+        this._backendService.getObservableUsers().subscribe(
             data => console.log(data),
             error => alert(error),
             () => console.log("Finished")
