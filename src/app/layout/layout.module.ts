@@ -7,8 +7,6 @@ import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent, SidebarComponent } from '../shared';
 
-import { AdmincommercialComponent } from './admincommercial/admincommercial.component';
-
 
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
@@ -27,7 +25,6 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
         HeaderComponent,
         SidebarComponent,
 
-        AdmincommercialComponent,
     ]
 })
 export class LayoutModule { }
