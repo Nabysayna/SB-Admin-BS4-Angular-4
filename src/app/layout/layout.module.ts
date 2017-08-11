@@ -8,6 +8,8 @@ import { LayoutComponent } from './layout.component';
 import { HeaderComponent, SidebarComponent } from '../shared';
 import { SuperviseurComponent } from './superviseur/superviseur.component';
 
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+
 
 @NgModule({
     imports: [
@@ -15,6 +17,7 @@ import { SuperviseurComponent } from './superviseur/superviseur.component';
         NgbDropdownModule.forRoot(),
         LayoutRoutingModule,
         TranslateModule,
+        ProgressbarModule.forRoot(),
     ],
     declarations: [
         LayoutComponent,

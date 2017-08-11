@@ -1,9 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ProgressbarConfig } from 'ngx-bootstrap/progressbar';
+ 
+// such override allows to keep some initial values
+ 
+export function getProgressbarConfig(): ProgressbarConfig {
+  return Object.assign(new ProgressbarConfig(), {animate: false, max: 150});
+}
+
+
 @Component({
   selector: 'app-adminsuivi',
   templateUrl: './adminsuivi.component.html',
-  styleUrls: ['./adminsuivi.component.scss']
+  styleUrls: ['./adminsuivi.component.scss'],
+  providers: [{provide: ProgressbarConfig, useFactory: getProgressbarConfig}]
 })
 
 export class AdminsuiviComponent implements OnInit {
