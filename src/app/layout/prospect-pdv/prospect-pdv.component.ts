@@ -11,6 +11,8 @@ import { BackendService } from '../../backend.service';
     providers:[BackendService]
 })
 export class ProspectPdvComponent implements OnInit {
+
+    isSelect = true ;
 	
     @Input() infoprospect: any;
 
