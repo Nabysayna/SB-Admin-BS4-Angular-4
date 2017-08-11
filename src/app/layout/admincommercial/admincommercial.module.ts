@@ -8,24 +8,25 @@ import {DataTableModule} from "angular2-datatable";
 import { RatingModule } from 'ngx-bootstrap/rating';
 
 
-import { TablesComponent } from './tables.component';
-import { TablesRoutingModule } from './tables-routing.module';
+import { AdmincommercialComponent } from './admincommercial.component';
+import { AdmincommercialRoutingModule } from './admincommercial-routing.module';
 import { PageHeaderModule } from './../../shared';
 
-import { DataFilterPipe }   from './data-filter.pipe';
-import { ZonesFilterPipe }   from './zones-filter.pipe';
-import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
-import { GeomapComponent } from '../geomap/geomap.component';
+import { DataAdminFilterPipe }   from '../../pipe/data-admin-filter.pipe';
+import { ZonesAdminFilterPipe }   from '../../pipe/zones-admin-filter.pipe';
+import { SousZonesAdminFilterPipe }   from '../../pipe/souszones-admin-filter.pipe';
 
-import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
+import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
+
+
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        TablesRoutingModule,
+        AdmincommercialRoutingModule,
         PageHeaderModule,
         DataTableModule,
         NgbModule.forRoot(),
@@ -35,12 +36,11 @@ import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
         RatingModule.forRoot(),
     ],
     declarations: [
-    	TablesComponent, 
-    	DataFilterPipe,
-    	ZonesFilterPipe,
-    	SousZonesFilterPipe,
-    	GeomapComponent,
-        ProspectPdvComponent
+    	AdmincommercialComponent, 
+    	DataAdminFilterPipe,
+    	ZonesAdminFilterPipe,
+        SousZonesAdminFilterPipe,
+    	AdminsuiviComponent,
     ]
 })
-export class TablesModule { }
+export class AdmincommercialModule { }

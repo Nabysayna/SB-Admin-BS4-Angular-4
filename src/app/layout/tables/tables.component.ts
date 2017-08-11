@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Http} from "@angular/http";
 import { routerTransition } from '../../router.animations';
+import { BackendService } from '../../backend.service';
+
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,7 +10,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-tables',
     templateUrl: './tables.component.html',
     styleUrls: ['./tables.component.scss'],
-    animations: [routerTransition()]
+    animations: [routerTransition()],
+    providers:[BackendService]
 })
 export class TablesComponent implements OnInit {
 
@@ -24,10 +27,15 @@ export class TablesComponent implements OnInit {
     private client:any;
 
     closeResult: string;
-	constructor(private http: Http, private modalService: NgbModal) {}
+	constructor(private http: Http, private modalService: NgbModal, private _backendService: BackendService) {}
 
     ngOnInit(): void {
-        this.getZones()
+        this.getZones();
+        this._backendService.getObservableUsers().subscribe(
+            data => console.log(data),
+            error => alert(error),
+            () => console.log("Finished")
+        );
     }
 
   	open(content, client) {

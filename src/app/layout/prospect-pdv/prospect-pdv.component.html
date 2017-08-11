@@ -10,34 +10,34 @@
     <div class="row">
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Prénom gerant</label>
-        <input type="text" [(ngModel)]="prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder="prénom gérant" required>
+        <input type="text" [(ngModel)]="prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder={{infoprospect.prenom}} required>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Nom gerant</label>
-        <input type="text" [(ngModel)]="nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder="nom gérant" required>
+        <input type="text" [(ngModel)]="nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder={{infoprospect.nom}} required>
       </div>
     </div>          
     <div class="row">
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Téléphone gerant</label>
-        <input type="text" [(ngModel)]="telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder="téléphone gérant" required>
+        <input type="text" [(ngModel)]="telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder={{infoprospect.tel}} required>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Email gerant</label>
-        <input type="email" [(ngModel)]="emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder="email gérant" required>
+        <input type="email" [(ngModel)]="emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder={{infoprospect.email}} required>
       </div>
     </div>          
     <div class="row">
       <div class="form-group col-md-4">
         <label>Zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="zonepoint">
+        <select class="form-control input-sm" [(ngModel)]="infoprospect.zone">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="souszonepoint">
+        <select class="form-control input-sm" [(ngModel)]="infoprospect.sous_zone">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
@@ -50,12 +50,12 @@
     <div class="row">
       <fieldset class="form-group  col-md-6">
         <label>Adresse du point</label>
-        <textarea class="form-control" rows="4" [(ngModel)]="adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
+        <textarea class="form-control" rows="4" [(ngModel)]="infoprospect.adresse"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
       </fieldset>
       <fieldset class="form-group  col-md-6">
         <label>Cordonnées geospatiales</label>
-        <input type="number" [(ngModel)]="latitudepoint"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder="latitude du point">
-        <input type="number" [(ngModel)]="longitudepoint"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder="longitude point">
+        <input type="number" [(ngModel)]="latitudepoint"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
+        <input type="number" [(ngModel)]="longitudepoint"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>
       </fieldset>
     </div>                  
   </div>
@@ -122,9 +122,9 @@
   <div *ngIf="isinfo.isinfocomplement">
     <hr>
     <div class="row">
-      <div class="form-group col-md-6">
-        <label for="options"><span>Types d'activités du point</span></label>
-        <div *ngFor="let option of options">
+      <div class="form-group col-sm-12 col-xs-12 ">
+        <h4>Types d'activités du point</h4>
+<!--         <div *ngFor="let option of options">
             <label>
                 <input type="checkbox"
                        name="options"
@@ -135,14 +135,96 @@
                 {{option.name}}
             </label>
         </div>
-      </div>
+ -->
+          <div class="row">
+              <div class="col-sm-6 col-xs-12">
+              <div style="margin-top:1rem;">
+              <input type="checkbox" >services personnels
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">services d'assistance
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin de cosmétiques, parfumerie
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Quincaillerie
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin d’optique, opticien
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Pharmacies
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Restaurant
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Agence de voyages
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin de détail, boutique de cadeaux ou magasin spécialisé
+              </div>
+              </div> 
+              <div class="col-sm-6 col-xs-12">
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin de fruits et de légumes
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin de vêtements
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Supermarché/épicerie
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Magasin d’appareil photo et de fournitures photographiques
+              </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Grand magasin ou magasin discount
+              </div>
+              <div style="margin-top:1rem;">
+               <input type="checkbox">Prestataire de services Internet, cyber café
+               </div>
+              <div style="margin-top:1rem;">
+              <input type="checkbox">Autres...
+              </div>
+              </div>
+          </div>
+
+     </div>
+    </div>          
+
+    <div class="row">
       <div class="form-group col-md-6">
-        <label>Avis sur point</label>
+        <h4>Noter le point</h4>
         <div>
           <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
         </div>
       </div>
     </div>          
+
+    <div class="row">
+        <button style="margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+            [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
+            Prospection
+        </button>
+    </div>
+    <div class="row">
+        <div id="collapseExampl" [ngbCollapse]="isSelect" style="margin-bottom: 1rem; margin-left: 0.3rem;">
+            <div class="card">
+                <div class="card-block">
+                    <label>Etes-vous intéressé par le service ...? </label><select class="form-control input-sm" [(ngModel)]="questions">
+                    <option>Souscrire maintenant</option>
+                    <option>Intéressé</option>
+                    <option>Pas pour le moment</option>
+                    <option>Impossible</option>
+                    <option></option>
+                    </select>
+                </div>
+            </div>
+       </div>
+     </div>
+
     <div class="row">
       <div class="form-group col-sm-4">
         <label>Documents joints</label>
