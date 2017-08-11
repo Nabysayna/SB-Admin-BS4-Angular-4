@@ -12,6 +12,7 @@ export class FormComponent implements OnInit {
 	public isAdresseproprio=true;
 	public isAdressepoint=true;
 	public isUploadfile=true;
+
 	public isSelect=true;
 
     rating = [
@@ -50,7 +51,17 @@ export class FormComponent implements OnInit {
         }
     }
 
-    
+    coordonneesgeospatiales(){
+        if(navigator.geolocation){
+            console.log("YES!") ;
+            navigator.geolocation.getCurrentPosition(function(position){
+                console.log("Latitude "+position.coords.latitude);
+                console.log("Longitude "+position.coords.longitude);
+                sessionStorage.setItem('position',JSON.stringify(position)) ;
+            }) ;
+        }
+    }
+
 
     enregistrerProspect(){}
 }

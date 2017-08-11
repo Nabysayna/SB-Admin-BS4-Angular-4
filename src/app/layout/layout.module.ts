@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
 import { HeaderComponent, SidebarComponent } from '../shared';
+import { SuperviseurComponent } from './superviseur/superviseur.component';
+import { AdmincommercialComponent } from './admincommercial/admincommercial.component';
 
 
 @NgModule({
@@ -19,6 +21,8 @@ import { HeaderComponent, SidebarComponent } from '../shared';
         LayoutComponent,
         HeaderComponent,
         SidebarComponent,
+        SuperviseurComponent,
+        AdmincommercialComponent,
     ]
 })
 export class LayoutModule { }

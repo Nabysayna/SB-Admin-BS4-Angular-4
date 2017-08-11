@@ -16,8 +16,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class TablesComponent implements OnInit {
 
     public filterQuery = "";
-    public filterZone = "";
-    public filterSousZone = "";
+    public filtreZone = "";
+    public filtreSousZone = "";
     public rowsOnPage = 5;
     public sortBy = "libellepoint";
     public sortOrder = "asc";
@@ -61,9 +61,10 @@ export class TablesComponent implements OnInit {
         return +num;
     }
 
-    public onChangeZone(event: any){
+/*    public onChangeZone(event: any){
     	this.getSousZones(event);
     }
+*/
 
     public sortByWordLength = (a: any) => {
         return a.adresse.length;
@@ -75,13 +76,25 @@ export class TablesComponent implements OnInit {
   		} 
   	}
 
-    public getSousZones(event: string): void {
+  	sousZonesOfCurrentZone(){
+  		let souszones : any[] =  [] ;  		
+    	for (let i = 0; i < this.data.length; i++) {
+  			if( this.data[i].zone==this.filtreZone ){ 
+  				if( !souszones.includes(this.data[i].sous_zone) )
+	  				souszones.push(this.data[i].sous_zone);
+  			}
+  		} 
+  		return souszones ;
+  	}
+
+/*    public getSousZones(event: string): void {
     	console.log(event);
     	for (let i = 0; i < this.data.length; i++) {
   			if( this.data[i].zone.match(event) && !this.souszones.includes(this.data[i].sous_zone)) this.souszones.push(this.data[i].sous_zone);
   		} 
   		console.log(this.souszones);
-  	}
+  	} 
+*/
 
     public data = [
 		  {
