@@ -1,22 +1,30 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { BackendService } from '../../backend.service';
+
 
 @Component({
     selector: 'app-prospect-pdv',
     templateUrl: './prospect-pdv.component.html',
     styleUrls: ['./prospect-pdv.component.scss'],
-    animations: [routerTransition()]
+    animations: [routerTransition()],
+    providers:[BackendService]
 })
 export class ProspectPdvComponent implements OnInit {
 	
     @Input() infoprospect: any;
 
-    constructor() { }
+    constructor(private _backendService: BackendService) { }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this._backendService.getListUsers()
+            .subscribe(
+                data => console.log(data),
+                error => alert(error),
+                () => console.log("Finished")
+            );
+    }
 
-
-    enregistrerProspect(){}
 
     isinfo = {isinfopoint:true, isinfoproprietaire:false, isinfocomplement:false};
     rating = [
