@@ -8,6 +8,8 @@ import { routerTransition } from '../../router.animations';
     animations: [routerTransition()]
 })
 export class ProspectPdvComponent implements OnInit {
+
+    isSelect = true ;
 	
     @Input() infoprospect: any;
 
