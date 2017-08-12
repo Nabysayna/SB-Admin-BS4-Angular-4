@@ -2,30 +2,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { AgmCoreModule } from '@agm/core';
-import {DataTableModule} from "angular2-datatable";
-import { RatingModule } from 'ngx-bootstrap/rating';
 
 
-import { TablesComponent } from './tables.component';
-import { TablesRoutingModule } from './tables-routing.module';
+import { SuperviseurComponent } from './superviseur.component';
+import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
+import { SuperviseurRoutingModule } from './superviseur-routing.module';
 import { PageHeaderModule } from './../../shared';
 
+import {DataTableModule} from "angular2-datatable";
 import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
 import { GeomapComponent } from '../geomap/geomap.component';
-
-import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        TablesRoutingModule,
+        SuperviseurRoutingModule,
         PageHeaderModule,
         DataTableModule,
         NgbModule.forRoot(),
@@ -35,12 +33,12 @@ import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
         RatingModule.forRoot(),
     ],
     declarations: [
-    	TablesComponent, 
-    	DataFilterPipe,
-    	ZonesFilterPipe,
-    	SousZonesFilterPipe,
+    	SuperviseurComponent, 
+    	DataFilterPipe, 
+        ZonesFilterPipe,
+        SousZonesFilterPipe,
     	GeomapComponent,
         ProspectPdvComponent
     ]
 })
-export class TablesModule { }
+export class SuperviseurModule { }

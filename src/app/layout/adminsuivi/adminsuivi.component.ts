@@ -1,45 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 
+
+
 @Component({
-  selector: 'app-admincommercial',
-  templateUrl: './admincommercial.component.html',
-  styleUrls: ['./admincommercial.component.scss']
+  selector: 'app-adminsuivi',
+  templateUrl: './adminsuivi.component.html',
+  styleUrls: ['./adminsuivi.component.scss']
 })
 
-export class AdmincommercialComponent implements OnInit {
+export class AdminsuiviComponent implements OnInit {
 
-  	public filtreZone = "--Choix zone--";
-    public filtreSousZone = "--Choix sous zone--";
+  	public filtreZone = "";
+    public filtreSousZone = "";
+    public filterQuery = "";
+    
     public rowsOnPage = 5;
     public sortBy = "note";
     public sortOrder = "desc";
-    
-    private choixsuperviseur = "--Choix superviseur--"
     private zones:any[] = [];
     private souszones:any[] = [];
-    private optionsChoix:any[] = [];
-
-    menuHead = {menuHead1:true, menuHead2:false};
-	rating = [
-        {indice:0, checked:false},
-        {indice:1, checked:false},
-        {indice:2, checked:false},
-        {indice:3, checked:false},
-        {indice:4, checked:false},
-    ];
-
+  	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
+	
 	constructor() { }
 
   	ngOnInit() { this.getZones(); }
 
-  	menuHeadClick(option: number){
+  	sousmenuHeadClick(option: number){
   		if(option == 1){
-  			this.menuHead.menuHead1 = true; 
-  			this.menuHead.menuHead2 = false;
+  			this.sousmenuHead.menuHead1 = true;
+  			this.sousmenuHead.menuHead2 = false;
+  			this.sousmenuHead.menuHead3 = false;
   		}
-  		else{
-  			this.menuHead.menuHead1 = false; 
-  			this.menuHead.menuHead2 = true;
+  		else if(option == 2){
+  			this.sousmenuHead.menuHead1 = false;
+  			this.sousmenuHead.menuHead2 = true;
+  			this.sousmenuHead.menuHead3 = false;
+  		}
+  		else {
+  			this.sousmenuHead.menuHead1 = false;
+  			this.sousmenuHead.menuHead2 = false;
+  			this.sousmenuHead.menuHead3 = true;
   		}
   	}
 
@@ -64,6 +64,37 @@ export class AdmincommercialComponent implements OnInit {
   		} 
   		return souszones ;
   	}
+
+
+  	// bar chart
+    public barChartOptions: any = {
+        scaleShowVerticalLines: false,
+        responsive: true
+    };
+    public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    public barChartType: string = 'bar';
+    public barChartLegend: boolean = true;
+
+    public barChartData: any[] = [
+        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Objectifs fixés' },
+        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Objectifs atteints' }
+    ];
+    // Doughnut
+    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetcy=tifs non atteint'];
+    public doughnutChartData: number[] = [50, 45];
+    public doughnutChartType: string = 'doughnut';
+    
+    // events
+    public chartClicked(e: any): void {
+        console.log(e);
+    }
+
+    public chartHovered(e: any): void {
+        console.log(e);
+    }
+
+    
+
 
 
     public datasuperviseur = [

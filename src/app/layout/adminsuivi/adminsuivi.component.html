@@ -1,0 +1,175 @@
+<div class="container-fluid">
+
+<div class="row" style="padding-bottom: 1rem">
+  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead1, 'btn-success': sousmenuHead.menuHead1}" (click)="sousmenuHeadClick(1)">Suivi superviseurs</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead2, 'btn-success': sousmenuHead.menuHead2}" (click)="sousmenuHeadClick(2)">Suivi commerçiaux</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead3, 'btn-success': sousmenuHead.menuHead3}" (click)="sousmenuHeadClick(3)">Suivi global</button>
+    <hr>
+</div>
+
+<div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead1">
+	<div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label class="label-control">Nombre d'Affichage</label>
+            <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+                <option></option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+            	<table class="table table-hover" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+			        <thead>
+			            <tr>
+			                <th><mfDefaultSorter by="prenom">Date assignation</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="zone">Zone</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="note">Performance</mfDefaultSorter></th>
+			                <th>Action</th>
+			            </tr>
+			            <tr>
+			                <th colspan="5">
+			                    Recherche:
+			                    <input class="form-control" [(ngModel)]="filterQuery"/>
+			                </th>
+			        	</tr>
+			        </thead>
+			        <tbody>
+			            <tr *ngFor="let item of mf.data">
+			                <td>{{item.prenom}}</td>
+			                <td>{{item.prenom}}</td>
+			                <td>{{item.nom}}</td>
+			                <td>{{item.tel}}</td>
+			                <td>{{item.zone}}</td>
+			                <td>
+							    <app-progressionby [max]="'100'" [dynamic]="item.note" [type]="'danger'"></app-progressionby>
+							</td>
+			                <td><button type="button" class="btn btn-sm btn-info">Réassigner</button></td>
+			            </tr>
+			        </tbody>
+			        <tfoot>
+			            <tr class="text-center center-block">
+			                <td colspan="8" class="text-center center-block">
+			                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+			                </td>
+			            </tr>
+			        </tfoot>
+    			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+            
+<div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
+	<div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label class="label-control">Nombre d'Affichage</label>
+            <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+                <option></option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
+                <option></option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+		    	<table class="table table-hover" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+			    	<thead>
+				        <tr>
+				            <th><mfDefaultSorter by="dateajout">Date</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="libellepoint">Superviseur</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="adresse">Performance</mfDefaultSorter></th>
+				        </tr>
+				        <tr><th colspan="5">
+					            Recherche:
+					            <input class="form-control" [(ngModel)]="filterQuery"/>
+					    </th></tr>
+			        </thead>
+			        <tbody>
+				        <tr *ngFor="let item of mf.data">
+				            <td>12</td>
+				            <td>{{item.libellepoint}}</td>
+				            <td>{{item.prenom}}</td>
+				            <td>{{item.nom}}</td>
+				            <td>{{item.tel}}</td>
+				            <td><app-progressionby [max]="100" [dynamic]="item.note*10" [type]="'danger'"></app-progressionby></td>
+				        </tr>
+			        </tbody>
+			        <tfoot>
+				        <tr class="text-center center-block">
+				            <td colspan="8" class="text-center center-block">
+				                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+				            </td>
+				        </tr>
+			        </tfoot>
+			    </table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead3">
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+        <div class="card mb-12">
+            <div class="card-header">
+                Performance des superviseurs
+            </div>
+            <div class="card-block">
+                <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+        <div class="card">
+            <div class="card-header">
+                Performance des clients
+            </div>
+            <div class="card-block">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	
+</div>
