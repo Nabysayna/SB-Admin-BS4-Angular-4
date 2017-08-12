@@ -8,16 +8,12 @@ import { LayoutComponent } from './layout.component';
 import { HeaderComponent, SidebarComponent } from '../shared';
 
 
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-
-
 @NgModule({
     imports: [
         CommonModule,
         NgbDropdownModule.forRoot(),
         LayoutRoutingModule,
         TranslateModule,
-        ProgressbarModule.forRoot(),
         NgbModule,
     ],
     declarations: [

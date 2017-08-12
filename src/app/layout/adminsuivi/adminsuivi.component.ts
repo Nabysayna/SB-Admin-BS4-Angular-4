@@ -1,19 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProgressbarConfig } from 'ngx-bootstrap/progressbar';
- 
-// such override allows to keep some initial values
- 
-export function getProgressbarConfig(): ProgressbarConfig {
-  return Object.assign(new ProgressbarConfig(), {animate: false, max: 150});
-}
 
 
 @Component({
   selector: 'app-adminsuivi',
   templateUrl: './adminsuivi.component.html',
-  styleUrls: ['./adminsuivi.component.scss'],
-  providers: [{provide: ProgressbarConfig, useFactory: getProgressbarConfig}]
+  styleUrls: ['./adminsuivi.component.scss']
 })
 
 export class AdminsuiviComponent implements OnInit {
@@ -74,6 +66,34 @@ export class AdminsuiviComponent implements OnInit {
   	}
 
 
+  	// bar chart
+    public barChartOptions: any = {
+        scaleShowVerticalLines: false,
+        responsive: true
+    };
+    public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    public barChartType: string = 'bar';
+    public barChartLegend: boolean = true;
+
+    public barChartData: any[] = [
+        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Objectifs fixés' },
+        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Objectifs atteints' }
+    ];
+    // Doughnut
+    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetcy=tifs non atteint'];
+    public doughnutChartData: number[] = [50, 45];
+    public doughnutChartType: string = 'doughnut';
+    
+    // events
+    public chartClicked(e: any): void {
+        console.log(e);
+    }
+
+    public chartHovered(e: any): void {
+        console.log(e);
+    }
+
+    
 
 
 

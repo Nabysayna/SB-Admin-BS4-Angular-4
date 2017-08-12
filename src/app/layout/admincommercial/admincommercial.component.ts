@@ -10,20 +10,16 @@ export class AdmincommercialComponent implements OnInit {
 
   	public filtreZone = "--Choix zone--";
     public filtreSousZone = "--Choix sous zone--";
-
-    public suivifilterQuery = "";
-  	public suisfiltreZone = "";
-    public fsuisiltreSousZone = "";
-    
     public rowsOnPage = 5;
     public sortBy = "note";
     public sortOrder = "desc";
+    
+    private choixsuperviseur = "--Choix superviseur--"
     private zones:any[] = [];
     private souszones:any[] = [];
     private optionsChoix:any[] = [];
 
     menuHead = {menuHead1:true, menuHead2:false};
-  	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 	rating = [
         {indice:0, checked:false},
         {indice:1, checked:false},
@@ -31,31 +27,12 @@ export class AdmincommercialComponent implements OnInit {
         {indice:3, checked:false},
         {indice:4, checked:false},
     ];
-    ratings:any[] = [];
 
 	constructor() { }
 
   	ngOnInit() { this.getZones(); }
 
-  	sousmenuHeadClick(option: number){
-  		if(option == 1){
-  			this.sousmenuHead.menuHead1 = true;
-  			this.sousmenuHead.menuHead2 = false;
-  			this.sousmenuHead.menuHead3 = false;
-  		}
-  		else if(option == 2){
-  			this.sousmenuHead.menuHead1 = false;
-  			this.sousmenuHead.menuHead2 = true;
-  			this.sousmenuHead.menuHead3 = false;
-  		}
-  		else {
-  			this.sousmenuHead.menuHead1 = false;
-  			this.sousmenuHead.menuHead2 = false;
-  			this.sousmenuHead.menuHead3 = true;
-  		}
-  	}
-
-    menuHeadClick(option: number){
+  	menuHeadClick(option: number){
   		if(option == 1){
   			this.menuHead.menuHead1 = true; 
   			this.menuHead.menuHead2 = false;
@@ -88,85 +65,56 @@ export class AdmincommercialComponent implements OnInit {
   		return souszones ;
   	}
 
-  	updateOnChangeSouszone(){
-  		for (let i = 0; i < this.data.length; i++) {
-  			if(this.data[i].note == 0) this.ratings.push([
-			        {indice:0, checked:false},
-			        {indice:1, checked:false},
-			        {indice:2, checked:false},
-			        {indice:3, checked:false},
-			        {indice:4, checked:false},
-			    ])
-  			else if(this.data[i].note == 1) this.ratings.push([
-			        {indice:0, checked:true},
-			        {indice:1, checked:false},
-			        {indice:2, checked:false},
-			        {indice:3, checked:false},
-			        {indice:4, checked:false},
-			    ])
-  			else if(this.data[i].note == 2) this.ratings.push([
-			        {indice:0, checked:true},
-			        {indice:1, checked:true},
-			        {indice:2, checked:false},
-			        {indice:3, checked:false},
-			        {indice:4, checked:false},
-			    ])
-  			else if(this.data[i].note == 3) this.ratings.push([
-			        {indice:0, checked:true},
-			        {indice:1, checked:true},
-			        {indice:2, checked:true},
-			        {indice:3, checked:false},
-			        {indice:4, checked:false},
-			    ])
-  			else if(this.data[i].note == 4) this.ratings.push([
-			        {indice:0, checked:true},
-			        {indice:1, checked:true},
-			        {indice:2, checked:true},
-			        {indice:3, checked:true},
-			        {indice:4, checked:false},
-			    ])
-  			else if(this.data[i].note == 5) this.ratings.push([
-			        {indice:0, checked:true},
-			        {indice:1, checked:true},
-			        {indice:2, checked:true},
-			        {indice:3, checked:true},
-			        {indice:4, checked:true},
-			    ]);
-  			
-  		}
-  	}
 
-  	private avoter(index:number): void{
-        if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
-            this.rating[index].checked = false;
-        }
-        else {
-            for (var i = 0; i<this.rating.length; i++) {
-                if(i < index) {
-                    this.rating[i].checked = true;
-                }
-                else if(i == index) {
-                    if(this.rating[i].checked == true){ 
-                        this.rating[i].checked = false;
-                    }
-                    else {
-                        this.rating[i].checked = true;
-                    }
-                }
-                else {
-                    this.rating[i].checked = false;
-                }
-            }
-        }
-    }
+    public datasuperviseur = [
+	  {
+	    "dateassignation": "Naby",
+	    "prenom": "Naby",
+	    "nom": "NDIAYE",
+	    "tel": "11",
+	    "zone": "Dakar centre",
+	    "objectif": 3,
+	    "note": 3,
+	  },
+	  {
+	    "dateassignation": "bg",
+	    "prenom": "Bamba",
+	    "nom": "GNING",
+	    "tel": "12",
+	    "zone": "Dakar plateau",
+	    "objectif": 5,
+	    "note": 3,
+	  },
+	  {
+	    "dateassignation": "ak",
+	    "prenom": "Assane",
+	    "nom": "KA",
+	    "tel": "123",
+	    "zone": "Dakar centre",
+	    "objectif": 2,
+	    "note": 1,
+	  },
+	  {
+	    "dateassignation": "Wing",
+	    "prenom": "Khady",
+	    "nom": "Ndiaye",
+	    "tel": "134",
+	    "zone": "Dakar centre",
+	    "objectif": 8,
+	    "note": 7,
+	  },
+	  {
+	    "dateassignation": "abdb",
+	    "prenom": "Abda",
+	    "nom": "Barry",
+	    "tel": "145",
+	    "zone": "Dakar centre",
+	    "objectif": 3,
+	    "note": 2,
+	  }
+	];
 
-    
-
-
-
-
-
-    public data = [
+	public data = [
 	  {
 	    "libellepoint": "nn",
 	    "prenom": "Naby",
