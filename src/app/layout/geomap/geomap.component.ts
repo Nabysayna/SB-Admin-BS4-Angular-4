@@ -20,7 +20,7 @@ export class GeomapComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.macarte)
+    // console.log(this.macarte)
     this.title = this.macarte.libellepoint;
     this.lat = this.macarte.latitude;
     this.lng = this.macarte.longitude;
