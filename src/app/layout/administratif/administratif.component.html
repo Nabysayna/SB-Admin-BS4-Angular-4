@@ -1,0 +1,42 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Administratif'" [icon]="'fa-table'"></app-page-header>
+
+	<div class="row" style="padding-bottom: 1rem">
+		<div class="row">
+	        <div class="col-xs-12 col-sm-12">
+	            <div class="row table-responsive">
+			        <table class="table table-hover" [mfData]="datasuperviseur" #mf="mfDataTable">
+		                <thead>
+		                    <tr>
+		                        <th>#</th>
+		                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+		                        <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
+		                        <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+		                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+		                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                    <tr *ngFor="let item of mf.data; let i = index ">
+		                        <td><input type="checkbox" name="optionsChoix-{{i}}" />
+		                       </td>
+		                        <td>{{item.libellepoint}}</td>
+		                        <td>{{item.prenom}}</td>
+		                        <td>{{item.nom}}</td>
+		                        <td>{{item.tel}}</td>
+		                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
+		                    </tr>
+		                </tbody>
+		                <tfoot>
+		                    <tr class="text-center center-block">
+		                        <td colspan="8" class="text-center center-block">
+		                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+		                        </td>
+		                    </tr>
+		                </tfoot>
+	                </table>
+	            </div>
+	        </div>
+		</div>
+	</div>
+</div>

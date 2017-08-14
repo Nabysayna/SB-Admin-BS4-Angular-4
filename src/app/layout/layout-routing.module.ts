@@ -15,6 +15,7 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },
+            { path: 'administratif', loadChildren: './administratif/administratif.module#AdministratifModule' },
 
 
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
