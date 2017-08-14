@@ -4,19 +4,19 @@
                     <div class="col-sm-12" style="margin-top: 1rem;">
 
                           <div class="col-sm-12 col-xs-12">
-                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-left: 20rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="isSuivi = !isSuivi"
+                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-left: 20rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="selection = 'isSuivi'"
                                 [attr.aria-expanded]="!isSuivi" aria-controls="collapseExample">
                                 Suivi
                             </button>
-                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="isAssignation = !isAssignation"
+                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="selection = 'isAssignation'"
                                 [attr.aria-expanded]="!isAssignation" aria-controls="collapseExamples">
                                 Assignation
                             </button>
-                            <button style="margin-top:1rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isExtraction = !isExtraction"
+                            <button style="margin-top:1rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="selection = 'isExtraction'"
                                 [attr.aria-expanded]="!isExtraction" aria-controls="collapseExampl">
                                 Extraction
                             </button>
-                            <div id="collapseExample" [ngbCollapse]="isSuivi">
+                            <div id="collapseExample" [ngbCollapse]="selection!='isSuivi'">
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #sv="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 					                
@@ -68,7 +68,7 @@
 					            </div>
                             </div> 
 
-                            <div id="collapseExamples" [ngbCollapse]="isAssignation">
+                            <div id="collapseExamples" [ngbCollapse]="selection!='isAssignation'">
                             <div class="row" style="padding-bottom: 2rem">
 							        
 							        <div class="col-sm-3">
@@ -130,7 +130,7 @@
 					             </div> 
                            </div> 
 
-                           <div id="collapseExampl" [ngbCollapse]="isExtraction">
+                           <div id="collapseExampl" [ngbCollapse]="selection!='isExtraction'">
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #ext="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 					                

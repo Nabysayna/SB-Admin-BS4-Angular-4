@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SuperviseurComponent implements OnInit {
 	fakevalues = true ;
-    
+    selection = "" ;
     public isSuivi=true;
     public isAssignation=true;
     public filterQuery = "";
