@@ -55,7 +55,7 @@
 			                <td>{{item.tel}}</td>
 			                <td>{{item.zone}}</td>
 			                <td>
-							    <app-progressionby [max]="'100'" [dynamic]="item.note" [type]="'danger'"></app-progressionby>
+							    <app-progressionby [max]="'10'" [dynamic]="item.note"></app-progressionby>
 							</td>
 			                <td><button type="button" class="btn btn-sm btn-info">Réassigner</button></td>
 			            </tr>
@@ -125,7 +125,7 @@
 				            <td>{{item.prenom}}</td>
 				            <td>{{item.nom}}</td>
 				            <td>{{item.tel}}</td>
-				            <td><app-progressionby [max]="100" [dynamic]="item.note*10" [type]="'danger'"></app-progressionby></td>
+				            <td><app-progressionby [max]="10" [dynamic]="item.note"></app-progressionby></td>
 				        </tr>
 			        </tbody>
 			        <tfoot>

@@ -1,1 +1,144 @@
-<progressbar [animate]="true"  class="progress-striped" [max]="max" [value]="dynamic" type="success" style="width: {{dynamic*10}}%"><b>{{dynamic}}%</b></progressbar>
+<div class="progress" *ngIf="this.notes<=2">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 2%" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>2 && this.notes<=4">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 4%" aria-valuenow="4" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>4 && this.notes<=6">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 6%" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>6 && this.notes<=8">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 8%" aria-valuenow="8" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>8 && this.notes<=10">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+<div class="progress" *ngIf="this.notes>10 && this.notes<=12">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 12%" aria-valuenow="12" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>12 && this.notes<=14">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 14%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>14 && this.notes<=16">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>16 && this.notes<=18">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 18%" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>18 && this.notes<=20">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>20 && this.notes<=22">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 22%" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>22 && this.notes<=24">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 24%" aria-valuenow="24" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>24 && this.notes<=26">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 26%" aria-valuenow="26" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>26 && this.notes<=28">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 28%" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>28 && this.notes<=30">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+<div class="progress" *ngIf="this.notes>30 && this.notes<=32">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 32%" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>32 && this.notes<=30">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 30%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>34 && this.notes<=36">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 36%" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>36 && this.notes<=38">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 38%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+<div class="progress" *ngIf="this.notes>38 && this.notes<=40">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>40 && this.notes<=42">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 42%" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>42 && this.notes<=44">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 44%" aria-valuenow="44" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>44 && this.notes<=46">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 46%" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>46 && this.notes<=48">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 48%" aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>48 && this.notes<=50">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>50 && this.notes<=52">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 52%" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>52 && this.notes<=54">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>54 && this.notes<=56">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 56%" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>56 && this.notes<=58">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 58%" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>58 && this.notes<=60">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>60 && this.notes<=65">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>65 && this.notes<=70">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>70 && this.notes<=75">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>75 && this.notes<=80">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>80 && this.notes<=85">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>85 && this.notes<=90">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+
+
+
+<div class="progress" *ngIf="this.notes>90 && this.notes<=92">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>92 && this.notes<=94">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 94%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>94 && this.notes<=96">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 96%" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>96 && this.notes<=98">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 98%" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
+<div class="progress" *ngIf="this.notes>98 && this.notes<=100">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><i>{{ notes | number:'1.0-2' }}%</i></div>
+</div>
