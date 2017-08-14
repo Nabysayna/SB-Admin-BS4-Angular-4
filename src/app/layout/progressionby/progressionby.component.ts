@@ -12,7 +12,8 @@ export class ProgressionbyComponent implements OnInit  {
 
   	@Input() max: number;
   	@Input() dynamic: number;
-  	@Input() notes: number;
+  	
+    private notes: number;
  
   	public constructor() {}
 

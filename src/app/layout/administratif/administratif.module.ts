@@ -3,23 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AgmCoreModule } from '@agm/core';
-import { DataTableModule } from "angular2-datatable";
-import { ChartsModule as Ng2Charts } from 'ng2-charts';
-
 
 import { AdministratifComponent } from './administratif.component';
 import { AdministratifRoutingModule } from './administratif-routing.module';
+
+import {DataTableModule} from "angular2-datatable";
+
+import { DataAdministratifFilterPipe }   from '../../pipe/data-administratif-filter.pipe';
+
 import { PageHeaderModule } from './../../shared';
 
-import { DataAdminFilterPipe }   from '../../pipe/data-admin-filter.pipe';
-
-import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
-import { ProgressionbyComponent } from '../progressionby/progressionby.component';
-import { RatingbyComponent } from '../ratingby/ratingby.component';
-
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 
@@ -28,23 +21,16 @@ import { RatingModule } from 'ngx-bootstrap/rating';
         CommonModule,
         FormsModule,
         AdministratifRoutingModule,
+        NgbModule.forRoot(),
+
         PageHeaderModule,
         DataTableModule,
-        NgbModule.forRoot(),
-        AgmCoreModule.forRoot({
-	      apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
-	    }),
-        ProgressbarModule.forRoot(),
-        RatingModule.forRoot(),
-        Ng2Charts,
     ],
     declarations: [
-    	AdministratifComponent, 
-    	DataAdminFilterPipe,
-    	AdminsuiviComponent,
-        ProgressionbyComponent,
-        RatingbyComponent,
+        AdministratifComponent, 
+        DataAdministratifFilterPipe
     ]
 })
+
 
 export class AdministratifModule { }
