@@ -10,15 +10,15 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class ProgressionbyComponent implements OnInit  {
 
-    @Input() max: number;
-    @Input() dynamic: number;
-    
+  	@Input() max: number;
+  	@Input() dynamic: number;
+  	
     private notes: number;
  
-    public constructor() {}
+  	public constructor() {}
 
-    ngOnInit() {
-      this.notes = (this.dynamic * 100) / this.max;
-    }
+  	ngOnInit() {
+  		this.notes = (this.dynamic * 100) / this.max;
+  	}
 
 }

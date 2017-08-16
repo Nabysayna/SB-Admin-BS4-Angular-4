@@ -31,11 +31,11 @@ export class TablesComponent implements OnInit {
 
     ngOnInit(): void {
         this.getZones();
-        // this._backendService.getObservableUsers().subscribe(
-        //     data => console.log(data),
-        //     error => alert(error),
-        //     () => console.log("Finished")
-        // );
+        this._backendService.getListUsers().subscribe(
+            data => console.log(data),
+            error => alert(error),
+            () => console.log("Finished")
+        );
     }
 
   	open(content, client) {
