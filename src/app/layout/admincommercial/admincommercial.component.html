@@ -11,16 +11,16 @@
 	<div class="row" style="padding-bottom: 2rem">
         <div class="col-sm-3">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
                 <option>--Choix zone--</option>
-                <option  *ngFor="let zone of zones">{{zone}}</option>
+                <option  *ngFor="let zone of zones">{{zone.nom}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
                 <option>--Choix sous zone--</option>
-                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+                <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
             </select>
         </div>
         <div class="col-sm-4">
@@ -31,8 +31,8 @@
             </select>
         </div>
         <div class="col-sm-2">
-            <label for="objectifcommercial">Objectif</label>
-            <input type="number" class="form-control input-sm" name="objectifcommercial" value="1" />
+            <label >Objectif</label>
+            <input type="number" class="form-control input-sm" name="commercial" value="1" />
         </div>
 	</div>
     <div class="row text-center center-block" style="padding-bottom: 1rem">

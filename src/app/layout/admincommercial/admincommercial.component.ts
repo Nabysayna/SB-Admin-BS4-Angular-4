@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import {UtilService} from "../../services/util.service";
 
 @Component({
   selector: 'app-admincommercial',
   templateUrl: './admincommercial.component.html',
-  styleUrls: ['./admincommercial.component.scss']
+  styleUrls: ['./admincommercial.component.scss'],
+  providers:[UtilService ],
+
 })
 
 export class AdmincommercialComponent implements OnInit {
@@ -13,11 +16,11 @@ export class AdmincommercialComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "note";
     public sortOrder = "desc";
-    
     private choixsuperviseur = "--Choix superviseur--"
     private zones:any[] = [];
     private souszones:any[] = [];
     private optionsChoix:any[] = [];
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
 
     menuHead = {menuHead1:true, menuHead2:false};
 	rating = [
@@ -28,42 +31,40 @@ export class AdmincommercialComponent implements OnInit {
         {indice:4, checked:false},
     ];
 
-	constructor() { }
+	constructor(private _utilService:UtilService) { }
 
   	ngOnInit() { this.getZones(); }
 
-  	menuHeadClick(option: number){
+  	public menuHeadClick(option: number){
   		if(option == 1){
-  			this.menuHead.menuHead1 = true; 
+  			this.menuHead.menuHead1 = true;
   			this.menuHead.menuHead2 = false;
   		}
   		else{
-  			this.menuHead.menuHead1 = false; 
+  			this.menuHead.menuHead1 = false;
   			this.menuHead.menuHead2 = true;
   		}
   	}
 
     public toInt(num: string) { return +num; }
 
-    public sortByWordLength = (a: any) => { return a.adresse.length; }
-  
-  	public getZones(): void {
-  		for (let i = 0; i < this.data.length; i++) {
-  			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
-  		} 
-  	}
+    public getZones(): void {
+        this._utilService.getZones()
+            .subscribe(
+                data => this.zones = data,
+                error => alert(error),
+                () => console.log("Finish")
+            );
+    }
 
-  	sousZonesOfCurrentZone(){
-  		let souszones : any[] =  [] ;  		
-    	for (let i = 0; i < this.data.length; i++) {
-  			if( this.data[i].zone==this.filtreZone ){ 
-  				if( !souszones.includes(this.data[i].sous_zone) ){
-	  				souszones.push(this.data[i].sous_zone);
-  				}
-  			}
-  		} 
-  		return souszones ;
-  	}
+    public selectZone(){
+        this._utilService.getSouszoneByZone(this.filtreZone.toString())
+            .subscribe(
+                data => this.souszones = data,
+                error => alert(error),
+                () => console.log(this.souszones)
+            );
+    }
 
 
     public datasuperviseur = [
@@ -72,7 +73,8 @@ export class AdmincommercialComponent implements OnInit {
 	    "prenom": "Naby",
 	    "nom": "NDIAYE",
 	    "tel": "11",
-	    "zone": "Dakar centre",
+	    "zone": "Dakar Ville",
+         "sous_zone": "colobane",
 	    "objectif": 3,
 	    "note": 3,
 	  },
@@ -81,7 +83,8 @@ export class AdmincommercialComponent implements OnInit {
 	    "prenom": "Bamba",
 	    "nom": "GNING",
 	    "tel": "12",
-	    "zone": "Dakar plateau",
+	    "zone": "Grand Dakar",
+        "sous_zone": "colobane",
 	    "objectif": 5,
 	    "note": 3,
 	  },
@@ -90,7 +93,8 @@ export class AdmincommercialComponent implements OnInit {
 	    "prenom": "Assane",
 	    "nom": "KA",
 	    "tel": "123",
-	    "zone": "Dakar centre",
+	    "zone": "Dakar Ville",
+        "sous_zone": "colobane",
 	    "objectif": 2,
 	    "note": 1,
 	  },
@@ -99,7 +103,8 @@ export class AdmincommercialComponent implements OnInit {
 	    "prenom": "Khady",
 	    "nom": "Ndiaye",
 	    "tel": "134",
-	    "zone": "Dakar centre",
+	    "zone": "Grand Dakar",
+        "sous_zone": "colobane",
 	    "objectif": 8,
 	    "note": 7,
 	  },
@@ -108,7 +113,8 @@ export class AdmincommercialComponent implements OnInit {
 	    "prenom": "Abda",
 	    "nom": "Barry",
 	    "tel": "145",
-	    "zone": "Dakar centre",
+	    "zone": "Grand Dakar",
+        "sous_zone": "colobane",
 	    "objectif": 3,
 	    "note": 2,
 	  }
