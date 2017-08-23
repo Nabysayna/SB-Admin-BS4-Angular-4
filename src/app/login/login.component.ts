@@ -13,10 +13,9 @@ import {AuthenticatService} from "../services/authenticat.service";
 
 export class LoginComponent implements OnInit {
 
-    userName = ''  ;
-    userPwd  = '' ;
-    fakevalues : boolean ;
-
+    private userName = ''  ;
+    private userPwd  = '' ;
+    private fakevalues : boolean ;
     private data:any;
 
     constructor(public router: Router, private _authenticatService: AuthenticatService) {
@@ -24,9 +23,10 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.fakevalues = true;
+        this._authenticatService.logout();
     }
 
-    wantLogin(){
+    private wantLogin(){
         this._authenticatService.postLogin(this.userName, this.userPwd)
         .subscribe(
             data => this.data = data,
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
     }
 
-    accesslevel(access: any){
+    private accesslevel(access: any){
         localStorage.setItem('isLoggedin', 'true');
         if ( !access){
             this.fakevalues = false;

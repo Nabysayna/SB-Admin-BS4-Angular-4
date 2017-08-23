@@ -19,6 +19,8 @@ export class AdmincommercialComponent implements OnInit {
     private choixsuperviseur = "--Choix superviseur--"
     private zones:any[] = [];
     private souszones:any[] = [];
+    private superviseurs:any[] = [];
+    private pdvs:any[] = [];
     private optionsChoix:any[] = [];
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
@@ -33,7 +35,10 @@ export class AdmincommercialComponent implements OnInit {
 
 	constructor(private _utilService:UtilService) { }
 
-  	ngOnInit() { this.getZones(); }
+  	ngOnInit() {
+	    this.getZones();
+        this.getSuperviseurs();
+    }
 
   	public menuHeadClick(option: number){
   		if(option == 1){
@@ -57,6 +62,15 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
+    public getSuperviseurs(): void {
+        this._utilService.getSuperviseurs()
+            .subscribe(
+                data => this.superviseurs = data,
+                error => alert(error),
+                () => console.log(this.superviseurs)
+            );
+    }
+
     public selectZone(){
         this._utilService.getSouszoneByZone(this.filtreZone.toString())
             .subscribe(
@@ -66,59 +80,6 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-
-    public datasuperviseur = [
-	  {
-	    "dateassignation": "Naby",
-	    "prenom": "Naby",
-	    "nom": "NDIAYE",
-	    "tel": "11",
-	    "zone": "Dakar Ville",
-         "sous_zone": "colobane",
-	    "objectif": 3,
-	    "note": 3,
-	  },
-	  {
-	    "dateassignation": "bg",
-	    "prenom": "Bamba",
-	    "nom": "GNING",
-	    "tel": "12",
-	    "zone": "Grand Dakar",
-        "sous_zone": "colobane",
-	    "objectif": 5,
-	    "note": 3,
-	  },
-	  {
-	    "dateassignation": "ak",
-	    "prenom": "Assane",
-	    "nom": "KA",
-	    "tel": "123",
-	    "zone": "Dakar Ville",
-        "sous_zone": "colobane",
-	    "objectif": 2,
-	    "note": 1,
-	  },
-	  {
-	    "dateassignation": "Wing",
-	    "prenom": "Khady",
-	    "nom": "Ndiaye",
-	    "tel": "134",
-	    "zone": "Grand Dakar",
-        "sous_zone": "colobane",
-	    "objectif": 8,
-	    "note": 7,
-	  },
-	  {
-	    "dateassignation": "abdb",
-	    "prenom": "Abda",
-	    "nom": "Barry",
-	    "tel": "145",
-	    "zone": "Grand Dakar",
-        "sous_zone": "colobane",
-	    "objectif": 3,
-	    "note": 2,
-	  }
-	];
 
 	public data = [
 	  {

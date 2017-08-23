@@ -25,9 +25,9 @@
         </div>
         <div class="col-sm-4">
             <label>Superviseur</label>
-            <select class="form-control input-sm" [(ngModel)]="choixsuperviseur">
-                <option>--Choix superviseur--</option>
-                <option  *ngFor="let superviseur of datasuperviseur">{{superviseur.prenom}} {{superviseur.nom}}</option>
+            <select name="singleSelectsuperviseur"  id="singleSelectsuperviseur" class="form-control input-sm" [(ngModel)]="choixsuperviseur">
+                <option [attr.value]="'-1'">--Choix superviseur--</option>
+                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id_user">{{superviseur.prenom}} {{superviseur.nom}}</option>
             </select>
         </div>
         <div class="col-sm-2">
@@ -63,8 +63,8 @@
 	                        <td>{{item.nom}}</td>
 	                        <td>{{item.tel}}</td>
 	                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
-	                        <td><app-ratingby [rate]="item.note"></app-ratingby></td>
-	                        <td><textarea>{{item.commentaire}}</textarea></td>
+	                        <td><app-ratingbyoption [rate]="item.note" [ratingstatic]="true"></app-ratingbyoption></td>
+	                        <td><textarea  class="form-control" placeholder="Notification">{{item.commentaire}}</textarea></td>
 	                    </tr>
 	                </tbody>
 	                <tfoot>

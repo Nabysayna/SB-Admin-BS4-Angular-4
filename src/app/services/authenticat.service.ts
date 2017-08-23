@@ -27,4 +27,8 @@ export class AuthenticatService {
             .map(res => res.json());
     }
 
+    logout(): void {
+        sessionStorage.removeItem('isLoggedin');
+    }
+
 }
