@@ -16,19 +16,19 @@
                       <div class="card">
                             <div class="card-block">
                                 <label>Zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.zonepoint" (change)="selectZonePoint()">
+                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.zonepoint" (change)="selectZonePoint()">
                                    <option>--Choix zone--</option>
                                    <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
                                 </select>
                                 <label>Sous-zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.souszonepoint">
+                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.souszonepoint">
                                     <option>--Choix sous zone--</option>
                                     <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
                                 </select>
                                 <label>Adresse exacte</label>
-                                <input type="text" [(ngModel)]="client.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
+                                <input type="text" [(ngModel)]="client.adressecompletpoint.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
                                 <label>Code postal</label>
-                                <input type="number" [(ngModel)]="client.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
+                                <input type="number" [(ngModel)]="client.adressecompletpoint.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
                                 <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-default btn-circle">
                                     <i class="fa fa-search"></i>Recherche Coordonnées Géospatiales du point
                                 </button>
@@ -48,19 +48,19 @@
                       <div class="card">
                             <div class="card-block">
                                 <label>Zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.zoneproprietaire" (change)="selectZoneProprietaire()">
+                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.zoneproprietaire" (change)="selectZoneProprietaire()">
                                     <option>--Choix zone--</option>
                                     <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
                                 </select>
                                 <label>Sous-zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.souszoneproprietaire">
+                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.souszoneproprietaire">
                                     <option>--Choix sous zone--</option>
                                     <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
                                 </select>
                                 <label>Adresse exacte</label>
-                                <input type="text" [(ngModel)]="client.adresseproprietaire" name="adresseproprietaire" id="adresseproprietaire" class="form-control"  placeholder="adresse exacte" required>
+                                <input type="text" [(ngModel)]="client.adressecompletproprietaire.adresseproprietaire" name="adresseproprietaire" id="adresseproprietaire" class="form-control"  placeholder="adresse exacte" required>
                                 <label>Code postal</label>
-                                <input type="number" [(ngModel)]="client.codepostalproprietaire" name="codepostalproprietaire" id="codepostalproprietaire" class="form-control"  placeholder="code postal propriétaire">
+                                <input type="number" [(ngModel)]="client.adressecompletproprietaire.codepostalproprietaire" name="codepostalproprietaire" id="codepostalproprietaire" class="form-control"  placeholder="code postal propriétaire">
                                 <button (click)="coordonneesgeospatialesproprietaire()" type="button" class="btn btn-default btn-circle">
                                     <i class="fa fa-search"></i>Recherche Coordonnées Géospatiales du proprietaire
                                 </button>

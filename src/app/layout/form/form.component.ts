@@ -24,30 +24,35 @@ export class FormComponent implements OnInit {
 
     private client: any = {
         nompoint:'',
-        zonepoint:'--Choix zone--',
-        souszonepoint:'--Choix sous zone--',
-        adressepoint:'',
-        codepostalpoint:0,
-        geospatialpoint:{latitude:0, longitude:0},
+        adressecompletpoint:{
+            zonepoint:'--Choix zone--',
+            souszonepoint:'--Choix sous zone--',
+            adressepoint:'',
+            codepostalpoint:0,
+            geospatialpoint:{latitude:0, longitude:0},
+        },
+        typeactivite:[],
+        avissurpoint:0,
+
 
         nomgerant:'',
         prenomgerant:'',
         telephonegerant:'',
         emailgerant:'',
 
+
         nomproprietaire:'',
         prenomproprietaire:'',
         telephoneproprietaire:'',
         emailproprietaire:'',
-        zoneproprietaire:'--Choix zone--',
-        souszoneproprietaire:'--Choix sous zone--',
-        adresseproprietaire:'',
-        codepostalproprietaire:0,
-        geospatialproprietaire:{latitude:0,longitude:0},
+        adressecompletproprietaire:{
+            zoneproprietaire:'--Choix zone--',
+            souszoneproprietaire:'--Choix sous zone--',
+            adresseproprietaire:'',
+            codepostalproprietaire:0,
+            geospatialproprietaire:{latitude:0,longitude:0},
+        },
 
-        typeactivite:[],
-
-        avissurpoint:0,
     };
 
     private rating = [
@@ -67,7 +72,7 @@ export class FormComponent implements OnInit {
     }
 
     private selectZonePoint(){
-        this._utilService.getSouszoneByZone(this.client.zonepoint)
+        this._utilService.getSouszoneByZone(this.client.adressecompletpoint.zonepoint)
             .subscribe(
                 data => this.souszonespoints = data,
                 error => alert(error),
@@ -76,7 +81,7 @@ export class FormComponent implements OnInit {
     }
 
     private selectZoneProprietaire(){
-        this._utilService.getSouszoneByZone(this.client.zoneproprietaire)
+        this._utilService.getSouszoneByZone(this.client.adressecompletproprietaire.zoneproprietaire)
             .subscribe(
                 data => this.souszonespropietaires = data,
                 error => alert(error),
@@ -127,11 +132,11 @@ export class FormComponent implements OnInit {
     private coordonneesgeospatialespoint(){
         if(navigator.geolocation){
             console.log("YES!") ;
-            let client = this.client;
+            let geospatialpoint = {latitude:0,longitude:0};
             navigator.geolocation.getCurrentPosition(function(position){
-                client.geospatialpoint.longitude = position.coords.longitude;
-                client.geospatialpoint.latitude = position.coords.latitude;
-                sessionStorage.setItem('positionpoint',JSON.stringify(client.geospatialpoint)) ;
+                geospatialpoint.longitude = position.coords.longitude;
+                geospatialpoint.latitude = position.coords.latitude;
+                sessionStorage.setItem('positionpoint',JSON.stringify(geospatialpoint)) ;
             }) ;
         }
     }
@@ -139,23 +144,21 @@ export class FormComponent implements OnInit {
     private coordonneesgeospatialesproprietaire(){
         if(navigator.geolocation){
             console.log("YES!") ;
-            let client = this.client;
+            let geospatialproprietaire = {latitude:0,longitude:0};
             navigator.geolocation.getCurrentPosition(function(position){
-                client.geospatialproprietaire.longitude = position.coords.longitude;
-                client.geospatialproprietaire.latitude = position.coords.latitude;
-                sessionStorage.setItem('positionproprietaire',JSON.stringify(client.geospatialproprietaire)) ;
+                geospatialproprietaire.longitude = position.coords.longitude;
+                geospatialproprietaire.latitude = position.coords.latitude;
+                sessionStorage.setItem('positionproprietaire',JSON.stringify(geospatialproprietaire)) ;
             }) ;
         }
     }
 
     private enregistercoordonneesgeospatialespoint(){
-        this.client.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
-        console.log(this.client.geospatialpoint);
+        this.client.adressecompletpoint.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
     }
 
     private enregistercoordonneesgeospatialesproprietaire(){
-        this.client.geospatialpoint = JSON.parse(sessionStorage.getItem('positionproprietaire'));
-        console.log(this.client.geospatialpoint);
+        this.client.adressecompletproprietaire.geospatialproprietaire = JSON.parse(sessionStorage.getItem('positionproprietaire'));
     }
 
     get selectedOptions() {
@@ -174,7 +177,13 @@ export class FormComponent implements OnInit {
     enregistrerProspect(){}
 
     validernewclient(){
-        console.log(this.client);
+        this._newclientservice.insertPoint(this.client)
+            .subscribe(
+                data => console.log(data),
+                error => alert(error),
+                () => console.log('insertPoint')
+            );
+        //console.log(this.client);
     }
 
 }
