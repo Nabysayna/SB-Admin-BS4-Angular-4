@@ -18,11 +18,11 @@ import { SousZonesAdminFilterPipe }   from '../../pipe/souszones-admin-filter.pi
 
 import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
 import { ProgressionbyComponent } from '../progressionby/progressionby.component';
-import { RatingbyComponent } from '../ratingby/ratingby.component';
 
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { RatingModule } from 'ngx-bootstrap/rating';
 
+import {RatingbyoptionComponent} from '../ratingbyoption/ratingbyoption.component';
 
 
 @NgModule({
@@ -41,13 +41,13 @@ import { RatingModule } from 'ngx-bootstrap/rating';
         Ng2Charts,
     ],
     declarations: [
-    	AdmincommercialComponent, 
+    	AdmincommercialComponent,
     	DataAdminFilterPipe,
     	ZonesAdminFilterPipe,
         SousZonesAdminFilterPipe,
     	AdminsuiviComponent,
         ProgressionbyComponent,
-        RatingbyComponent,
+        RatingbyoptionComponent,
     ]
 })
 

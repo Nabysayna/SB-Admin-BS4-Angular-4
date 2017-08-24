@@ -19,12 +19,12 @@ export class ProspectPdvComponent implements OnInit {
     constructor(private _backendService: BackendService) { }
 
     ngOnInit() {
-        this._backendService.getListUsers()
-            .subscribe(
-                data => console.log(data),
-                error => alert(error),
-                () => console.log("Finished")
-            );
+        // this._backendService.getListUsers()
+        //     .subscribe(
+        //         data => console.log(data),
+        //         error => alert(error),
+        //         () => console.log("Finished")
+        //     );
     }
 
 
@@ -64,6 +64,10 @@ export class ProspectPdvComponent implements OnInit {
                 }
             }
         }
+    }
+
+    public asurvoler(index: number){
+        console.log(index);
     }
 
     get selectedOptions() {

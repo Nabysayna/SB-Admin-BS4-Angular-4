@@ -10,13 +10,13 @@ export class BackendService {
   constructor(private _http: Http){}
 
   getListUsers(){
-    return this._http.get("http://localhost/backoffice/controlleur.php")
+    return this._http.get("http://localhost/backend-SB-Admin-BS4-Angular-4/")
       .map(res => res.json());
   }
   
   getObservableUsers(): Observable<any>{
     return this._http
-      .get("http://localhost/backoffice/controlleur.php")
+      .get("http://localhost/backend-SB-Admin-BS4-Angular-4/")
       .map((response: Response) => <any> response.json())
       .do(data => console.log(data));
   }

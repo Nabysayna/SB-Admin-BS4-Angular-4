@@ -31,11 +31,11 @@ export class TablesComponent implements OnInit {
 
     ngOnInit(): void {
         this.getZones();
-        this._backendService.getObservableUsers().subscribe(
+        /*this._backendService.getListUsers().subscribe(
             data => console.log(data),
             error => alert(error),
             () => console.log("Finished")
-        );
+        );*/
     }
 
   	open(content, client) {
@@ -46,7 +46,7 @@ export class TablesComponent implements OnInit {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     	});
   	}
-  	
+
   	private getDismissReason(reason: any): string {
     	if (reason === ModalDismissReasons.ESC) {
       		return 'by pressing ESC';
@@ -56,7 +56,7 @@ export class TablesComponent implements OnInit {
       		return  `with: ${reason}`;
     	}
   	}
-    
+
     public toInt(num: string) {
         return +num;
     }
@@ -69,21 +69,21 @@ export class TablesComponent implements OnInit {
     public sortByWordLength = (a: any) => {
         return a.adresse.length;
     }
-  
+
   	public getZones(): void {
   		for (let i = 0; i < this.data.length; i++) {
   			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
-  		} 
+  		}
   	}
 
   	sousZonesOfCurrentZone(){
-  		let souszones : any[] =  [] ;  		
+  		let souszones : any[] =  [] ;
     	for (let i = 0; i < this.data.length; i++) {
-  			if( this.data[i].zone==this.filtreZone ){ 
+  			if( this.data[i].zone==this.filtreZone ){
   				if( !souszones.includes(this.data[i].sous_zone) )
 	  				souszones.push(this.data[i].sous_zone);
   			}
-  		} 
+  		}
   		return souszones ;
   	}
 
@@ -91,9 +91,9 @@ export class TablesComponent implements OnInit {
     	console.log(event);
     	for (let i = 0; i < this.data.length; i++) {
   			if( this.data[i].zone.match(event) && !this.souszones.includes(this.data[i].sous_zone)) this.souszones.push(this.data[i].sous_zone);
-  		} 
+  		}
   		console.log(this.souszones);
-  	} 
+  	}
 */
 
     public data = [

@@ -1,0 +1,143 @@
+<app-page-header [heading]="'Admin administratif'" [icon]="'fa-table'"></app-page-header>
+
+<div class="row" style="padding-bottom: 3rem">
+  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
+	</div>
+    <hr>
+</div>
+
+<div class="container" *ngIf="menuHead.menuHead1">
+	<div class="row" style="padding-bottom: 2rem">
+        <div class="col-xs-4 col-sm-4">
+            <label>Administratif</label>
+            <select class="form-control input-sm" [(ngModel)]="choixadministratif">
+                <option>--Choix administratif--</option>
+                <option  *ngFor="let administratif of dataadministratif">{{administratif.administratif}}</option>
+            </select>
+        </div>
+        <div class="col-xs-4 col-sm-3">
+            <label for="objectifcommercial">Objectif</label>
+            <input type="number" class="form-control input-sm" name="objectifcommercial" value="1" />
+        </div>
+        <div class="col-xs-4 col-sm-5">
+        	<br/>
+            <button type="button" class="btn btn-warning  input-sm">Assigner</button>
+        </div>
+	</div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+		        <table class="table table-hover" [mfData]="data | dataAdminAdministratifAssignationFilter: filterQueryassignation" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBysuperviseur" [(mfSortOrder)]="sortOrder">
+	                <thead>
+	                    <tr>
+	                        <th>#</th>
+	                        <th><mfDefaultSorter by="superviseur">Administratif</mfDefaultSorter></th>
+	                        <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+	                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+	                        <th><mfDefaultSorter by="service">Service</mfDefaultSorter></th>
+	                    </tr>
+	                    <tr>
+			                <th colspan="2">
+			                    Recherche:
+			                    <input class="form-control" [(ngModel)]="filterQueryassignation"/>
+			                </th>
+			        	</tr>
+	                </thead>
+	                <tbody>
+	                    <tr *ngFor="let item of mf.data; let i = index ">
+	                        <td><input type="checkbox" name="optionsChoix-{{i}}" /></td>
+	                        <td>{{item.superviseur}}</td>
+	                        <td>{{item.tel}}</td>
+	                        <td>{{item.adresse}}</td>
+	                        <td>{{item.service}}</td>
+	                    </tr>
+	                </tbody>
+	                <tfoot>
+	                    <tr class="text-center center-block">
+	                        <td colspan="8" class="text-center center-block">
+	                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+	                        </td>
+	                    </tr>
+	                </tfoot>
+                </table>
+            </div>
+        </div>
+	</div>
+</div>
+
+
+<div  class="container" *ngIf="menuHead.menuHead2" >
+	<div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label class="label-control">Nombre d'Affichage</label>
+            <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+            	<table class="table table-hover" [mfData]="dataadministratif | dataAdminAdministratifSuiviFilter: filterQuerysuivi" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByadministratif" [(mfSortOrder)]="sortOrder">
+			        <thead>
+			            <tr>
+			                <th><mfDefaultSorter by="dateassignation">Date assignation</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="administratif">Administratif</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="realisation">Performance</mfDefaultSorter></th>
+			                <th>Option</th>
+			            </tr>
+			            <tr>
+			                <th colspan="2">
+			                    Recherche:
+			                    <input class="form-control" [(ngModel)]="filterQuerysuivi"/>
+			                </th>
+			        	</tr>
+			        </thead>
+			        <tbody>
+			            <tr *ngFor="let item of mf.data">
+			                <td>{{item.dateassignation}}</td>
+			                <td>{{item.administratif}}</td>
+			                <td>{{item.tel}}</td>
+			                <td>
+			                	<app-progressionby [max]="item.objectif" [dynamic]="item.realisation"></app-progressionby>
+			                </td>
+			                <td>
+			                	<button type="button" class="btn btn-sm btn-primary" (click)="open(contentDetail, item)">Detail</button>
+			                </td>
+			            </tr>
+			        </tbody>
+			        <tfoot>
+			            <tr class="text-center center-block">
+			                <td colspan="8" class="text-center center-block">
+			                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+			                </td>
+			            </tr>
+			        </tfoot>
+    			</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #contentDetail let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div>
+        	<h1>Detail</h1>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+    </div>
+</ng-template>
+
+
+

@@ -1,57 +1,66 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
+import {AuthenticatService} from "../services/authenticat.service";
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
+    providers:[AuthenticatService],
     animations: [routerTransition()]
 })
+
 export class LoginComponent implements OnInit {
-    name="";
-    password="";
-    infos = true;
-    constructor(public router: Router) {
+
+    private userName = ''  ;
+    private userPwd  = '' ;
+    private fakevalues : boolean ;
+    private data:any;
+
+    constructor(public router: Router, private _authenticatService: AuthenticatService) {
     }
 
     ngOnInit() {
+        this.fakevalues = true;
+        this._authenticatService.logout();
     }
 
-    onLoggedin() {
+    private wantLogin(){
+        this._authenticatService.postLogin(this.userName, this.userPwd)
+        .subscribe(
+            data => this.data = data,
+            error => alert(error),
+            () => this.accesslevel(this.data.message.accesslevel)
+        );
 
-        console.log("name : "+this.name) ;
+    }
 
-        if(this.name=="directeur" && this.password=="directeur"){
-            localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('titre', 'Directeur');
+    private accesslevel(access: any){
+        localStorage.setItem('isLoggedin', 'true');
+        if ( !access){
+            this.fakevalues = false;
+        }
+        else if ( access.match(5) ){
             this.router.navigate(['/dashboard']);
-        }else
+        }
+        else if ( access.match(4) ){
+            this.router.navigate(['/superviseur']);
+        }
+        else if ( access.match(6) ){
+            this.router.navigate(['/administratif']);
+        }
+        else if ( access.match(2) ){
+            this.router.navigate(['/adminadministratif']);
+        }
+        else if ( access.match(3) ){
+            this.router.navigate(['/admincom']);
+        }
+        else {
+            this.fakevalues = false;
+            console.log(typeof access);
+        }
 
-        if(this.name=="diretu" && this.password=="diretu"){
-            localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('titre', 'Directeur des études');
-            this.router.navigate(['/dashboard']);
-        }else
-
-        if(this.name=="daf" && this.password=="daf"){
-            localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('titre', 'Directeur Adm. et Fin.');
-            this.router.navigate(['/dashboard']);
-        }else
-
-        if(this.name=="csi" && this.password=="csi"){
-            localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('titre', 'Chargée de la Sco. et des Ins.');
-            this.router.navigate(['/dashboard']);
-        }else
-
-        if(this.name=="compta" && this.password=="compta"){
-            localStorage.setItem('isLoggedin', 'true');
-            localStorage.setItem('titre', 'Comptable');
-            this.router.navigate(['/dashboard']);
-        }else
-            this.infos = false ;
     }
 
 }

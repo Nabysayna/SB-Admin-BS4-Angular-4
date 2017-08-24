@@ -1,12 +1,10 @@
-<div class="container-fluid">
-
-<div class="row" style="padding-bottom: 1rem">
-  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead1, 'btn-success': sousmenuHead.menuHead1}" (click)="sousmenuHeadClick(1)">Suivi superviseurs</button>
-		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead2, 'btn-success': sousmenuHead.menuHead2}" (click)="sousmenuHeadClick(2)">Suivi commerçiaux</button>
-		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !sousmenuHead.menuHead3, 'btn-success': sousmenuHead.menuHead3}" (click)="sousmenuHeadClick(3)">Suivi global</button>
-    <hr>
+	<div class="text-center center-block">
+	<button style="margin-bottom: 1rem;" type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !sousmenuHead.menuHead1, 'btn-success': sousmenuHead.menuHead1}" (click)="sousmenuHeadClick(1)">Suivi superviseurs</button>
+	<button style="margin-bottom: 1rem;" type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !sousmenuHead.menuHead2, 'btn-success': sousmenuHead.menuHead2}" (click)="sousmenuHeadClick(2)">Suivi commerçiaux</button>
+	<button style="margin-bottom: 1rem;" type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !sousmenuHead.menuHead3, 'btn-success': sousmenuHead.menuHead3}" (click)="sousmenuHeadClick(3)">Suivi global</button>
 </div>
+<hr>
+
 
 <div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead1">
 	<div class="row" style="padding-bottom: 2rem">
@@ -57,7 +55,7 @@
 			                <td>{{item.tel}}</td>
 			                <td>{{item.zone}}</td>
 			                <td>
-							    <app-progressionby [max]="'100'" [dynamic]="item.note" [type]="'danger'"></app-progressionby>
+							    <app-progressionby [max]="'10'" [dynamic]="item.note"></app-progressionby>
 							</td>
 			                <td><button type="button" class="btn btn-sm btn-info">Réassigner</button></td>
 			            </tr>
@@ -75,7 +73,6 @@
 	</div>
 </div>
 
-            
 <div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
 	<div class="row" style="padding-bottom: 2rem">
         <div class="col-sm-3">
@@ -103,7 +100,7 @@
         </div>
     </div>
 
-    <div class="row">
+	<div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
 		    	<table class="table table-hover" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -128,7 +125,7 @@
 				            <td>{{item.prenom}}</td>
 				            <td>{{item.nom}}</td>
 				            <td>{{item.tel}}</td>
-				            <td><app-progressionby [max]="100" [dynamic]="item.note*10" [type]="'danger'"></app-progressionby></td>
+				            <td><app-progressionby [max]="10" [dynamic]="item.note"></app-progressionby></td>
 				        </tr>
 			        </tbody>
 			        <tfoot>
@@ -151,7 +148,7 @@
                 Performance des superviseurs
             </div>
             <div class="card-block">
-                <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
                 </canvas>
             </div>
         </div>
@@ -167,9 +164,4 @@
             </div>
         </div>
     </div>
-</div>
-
-
-
-	
 </div>

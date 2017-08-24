@@ -10,28 +10,15 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class ProgressionbyComponent implements OnInit  {
 
-  	@Input() max: number;
-  	@Input() dynamic: number;
-  	@Input() type: string;
- 	
- 	dynamicLength : string ;
+    @Input() max: number;
+    @Input() dynamic: number;
+    
+    private notes: number;
+ 
+    public constructor() {}
 
-  	public constructor() {}
-
-  	ngOnInit() {
-  	 	let type;
-	    if (this.dynamic > 75) {
-	      type = 'success';
-	    } else if (this.dynamic > 50) {
-	      type = 'info';
-	    } else if (this.dynamic > 25) {
-	      type = 'warning';
-	    } else {
-	      type = 'danger';
-	    }
-	    this.type = type;
-
-	    this.dynamicLength = (this.dynamic*100).toString()+'%' ;
-  	}
+    ngOnInit() {
+      this.notes = (this.dynamic * 100) / this.max;
+    }
 
 }

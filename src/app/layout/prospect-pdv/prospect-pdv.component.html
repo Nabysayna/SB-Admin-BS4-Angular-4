@@ -198,7 +198,7 @@
       <div class="form-group col-md-6">
         <h4>Noter le point</h4>
         <div>
-          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)" (mouseover)="asurvoler(option.indice)"></i></span>
         </div>
       </div>
     </div>          

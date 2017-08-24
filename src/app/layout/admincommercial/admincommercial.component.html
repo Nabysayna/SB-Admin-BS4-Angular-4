@@ -3,6 +3,7 @@
   	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
 		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
 		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
+	</div>
     <hr>
 </div>
 
@@ -10,28 +11,28 @@
 	<div class="row" style="padding-bottom: 2rem">
         <div class="col-sm-3">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
                 <option>--Choix zone--</option>
-                <option  *ngFor="let zone of zones">{{zone}}</option>
+                <option  *ngFor="let zone of zones">{{zone.nom}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
                 <option>--Choix sous zone--</option>
-                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+                <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
             </select>
         </div>
         <div class="col-sm-4">
             <label>Superviseur</label>
-            <select class="form-control input-sm" [(ngModel)]="choixsuperviseur">
-                <option>--Choix superviseur--</option>
-                <option  *ngFor="let superviseur of datasuperviseur">{{superviseur.prenom}} {{superviseur.nom}}</option>
+            <select name="singleSelectsuperviseur"  id="singleSelectsuperviseur" class="form-control input-sm" [(ngModel)]="choixsuperviseur">
+                <option [attr.value]="'-1'">--Choix superviseur--</option>
+                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id_user">{{superviseur.prenom}} {{superviseur.nom}}</option>
             </select>
         </div>
         <div class="col-sm-2">
-            <label for="objectifcommercial">Objectif</label>
-            <input type="number" class="form-control input-sm" name="objectifcommercial" value="1" />
+            <label >Objectif</label>
+            <input type="number" class="form-control input-sm" name="commercial" value="1" />
         </div>
 	</div>
     <div class="row text-center center-block" style="padding-bottom: 1rem">
@@ -62,8 +63,8 @@
 	                        <td>{{item.nom}}</td>
 	                        <td>{{item.tel}}</td>
 	                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
-	                        <td><app-ratingby [rate]="item.note"></app-ratingby></td>
-	                        <td><textarea>{{item.commentaire}}</textarea></td>
+	                        <td><app-ratingbyoption [rate]="item.note" [ratingstatic]="true"></app-ratingbyoption></td>
+	                        <td><textarea  class="form-control" placeholder="Notification">{{item.commentaire}}</textarea></td>
 	                    </tr>
 	                </tbody>
 	                <tfoot>
@@ -80,11 +81,6 @@
 </div>
 
 
-<div *ngIf="menuHead.menuHead2">
+<div  class="container" *ngIf="menuHead.menuHead2" >
 	<app-adminsuivi></app-adminsuivi>
-</div>
-
-
-
-	
 </div>

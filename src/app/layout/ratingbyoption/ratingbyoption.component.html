@@ -1,0 +1,6 @@
+<p *ngIf="!ratingstatic">
+	<span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+</p>
+<p *ngIf="ratingstatic">
+	<span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true"></i></span>
+</p>

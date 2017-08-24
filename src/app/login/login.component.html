@@ -1,46 +1,21 @@
-<!-- <div class="login-page" [@routerTransition]>
-    <div class="row">
-        <div class="col-md-4 push-md-4">
-            <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>SB Admin BS4 Angular4</h1>
-            <form role="form">
-                <div class="form-content">
-                    <div class="form-group">
-                        <input type="text" ([ngModel])="login" class="form-control input-underline input-lg"  placeholder="Email">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="password" ([ngModel])="pwd" class="form-control input-underline input-lg"  placeholder="Password">
-                    </div>
-                </div>
-                <a class="btn rounded-btn" (click)="onLoggedin()"> Log in </a>
-                &nbsp;
-                <a class="btn rounded-btn" >Register</a>
-            </form>
-        </div>
-    </div>
-</div>
- -->
 <div class="login-page" [@routerTransition]>
     <div class="row">
         <div class="col-md-4 push-md-4">
             <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>CRM  Login</h1>
-            <form role="form">
+            <h1>Plateforme BBS</h1>
+            <form role="form"  (ngSubmit)="wantLogin()" #heroForm="ngForm">
                 <div class="form-content">
-                    <div *ngIf="!infos">Login ou mot de pass incorrect.</div>
+                    <div [hidden]="this.fakevalues" class="alert alert-danger">Login ou Mot de pass invalide !</div>
                     <div class="form-group">
-                        <input type="text" [(ngModel)]="name" class="form-control input-underline input-lg" name="name" placeholder="Login">
+                        <input type="email" name="userName" [(ngModel)]="this.userName" class="form-control input-underline input-lg" id="userName" placeholder="Email"  required autofocus>
                     </div>
-
                     <div class="form-group">
-                        <input type="password" [(ngModel)]="password" class="form-control input-underline input-lg" name="pass" placeholder="Password">
+                        <input type="password" name="userPwd" [(ngModel)]="this.userPwd" class="form-control input-underline input-lg" id="userPwd" placeholder="Password"  required>
                     </div>
                 </div>
-                <a class="btn rounded-btn" (click)="onLoggedin()"> Se Connecter </a>
-<!--                 &nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
- -->            </form>
+                <button class="btn btn-lg btn-primary btn-block rounded-btn" type="submit" [disabled]="!heroForm.form.valid" >
+                    Connecter</button>
+            </form>
         </div>
     </div>
 </div>
