@@ -19,15 +19,15 @@
                             <div id="collapseExample" [ngbCollapse]="selection!='isSuivi'">
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #sv="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-					                
+
 					                    <thead>
 					                    <th colspan="2">
 					                        Recherche:
 					                        <input class="form-control"  [(ngModel)]="filterQuery"/>
-					                       
+
 					                    </th>
 					                    <tr>
-					                    
+
 					                        <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
 					                        <th><mfDefaultSorter by="prenom">Prénom</mfDefaultSorter></th>
 					                        <th><mfDefaultSorter by="reponse">Réponse</mfDefaultSorter></th>
@@ -39,7 +39,7 @@
 					                    </thead>
 					                    <tbody>
 					                    <tr *ngFor="let item of sv.data">
-					                    
+
 					                        <td>{{item.nom}}</td>
 					                        <td>{{item.prenom}}</td>
 					                        <td>{{item.telephone}}</td>
@@ -54,7 +54,7 @@
 					                            	<option>Abandonner</option>
 					                            </select>
 					                        </td>
-					                        
+
 					                    </tr>
 					                    </tbody>
 					                    <tfoot>
@@ -66,11 +66,11 @@
 					                    </tfoot>
 					                </table>
 					            </div>
-                            </div> 
+                            </div>
 
                             <div id="collapseExamples" [ngbCollapse]="selection!='isAssignation'">
                             <div class="row" style="padding-bottom: 2rem">
-							        
+
 							        <div class="col-sm-3">
 							            <label>Zone</label>
 							            <select class="form-control input-sm" [(ngModel)]="filtreZone">
@@ -91,7 +91,7 @@
 							</div>
 	                	    <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #assign="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-					                
+
 					                    <thead>
 					                    <th colspan="2">
 					                        Recherche:
@@ -105,7 +105,7 @@
 					                        <th><mfDefaultSorter by="notept">Note du point</mfDefaultSorter></th>
 					                    </tr>
 					                    <tr>
-					                    
+
 					                </tr>
 					                    </thead>
 					                    <tbody>
@@ -127,21 +127,21 @@
 					                    </tr>
 					                    </tfoot>
 					                </table>
-					             </div> 
-                           </div> 
+					             </div>
+                           </div>
 
                            <div id="collapseExampl" [ngbCollapse]="selection!='isExtraction'">
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #ext="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-					                
+
 					                    <thead>
 					                    <th colspan="2">
 					                        Recherche:
 					                        <input class="form-control"  [(ngModel)]="filterQuery"/>
-					                       
+
 					                    </th>
 					                    <tr>
-					                    
+
 					                        <th><mfDefaultSorter by="nomcl">Nom</mfDefaultSorter></th>
 					                        <th><mfDefaultSorter by="prenomcl">Prénom</mfDefaultSorter></th>
 					                        <th><mfDefaultSorter by="telephonecl">Téléphone</mfDefaultSorter></th>
@@ -155,13 +155,13 @@
 					                    </thead>
 					                    <tbody>
 					                    <tr *ngFor="let item of ext.data">
-					                    
+
 					                        <td>{{item.nomcl}}</td>
 					                        <td>{{item.prenomcl}}</td>
 					                        <td>{{item.telephonecl}}</td>
 					                        <td>{{item.adressecl}}</td>
 					                        <td>{{item.service}}</td>
-											<td><button class="btn btn-primary" (click)="extraire">Extraire document</button></td>					                        
+											<td><button class="btn btn-primary" (click)="extraire">Extraire document</button></td>
 					                    </tr>
 					                    </tbody>
 					                    <tfoot>
@@ -173,16 +173,10 @@
 					                    </tfoot>
 					                </table>
 					            </div>
-                            </div>    
+                            </div>
                     </div>
-    </div>  
-                      
-</div>
+            </div>
+    </div>
 
 
-
-
-
-
-
-
+ </div>

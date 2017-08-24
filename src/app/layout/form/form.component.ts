@@ -183,7 +183,6 @@ export class FormComponent implements OnInit {
                 error => alert(error),
                 () => console.log('insertPoint')
             );
-        //console.log(this.client);
     }
 
 }
