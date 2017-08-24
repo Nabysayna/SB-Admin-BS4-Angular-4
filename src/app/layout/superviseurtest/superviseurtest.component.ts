@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
 
 @Component({
-  selector: 'app-admincommercial',
-  templateUrl: './admincommercial.component.html',
-  styleUrls: ['./admincommercial.component.scss'],
-  providers:[UtilService ],
-
+    selector: 'app-superviseurtest',
+    templateUrl: './superviseurtest.component.html',
+    styleUrls: ['./superviseurtest.component.scss'],
+    providers:[UtilService ],
 })
 
-export class AdmincommercialComponent implements OnInit {
+export class SuperviseurtestComponent implements OnInit {
+
 
     private filtreZone:string = "--Choix zone--";
     private filtreSousZone:string = "--Choix sous zone--";
-    private choixsuperviseur:string = "--Choix superviseur--"
-    private objetifsuperviseur:number = 0;
+    private choixcommercial:string = "--Choix commercial--"
+    private objetifcommercial:number = 0;
 
     private readyforassination:boolean=true;
     private isclickforassination:boolean=false;
@@ -26,44 +27,45 @@ export class AdmincommercialComponent implements OnInit {
 
     private zones:any[] = [];
     private souszones:any[] = [];
-    private superviseurs:any[] = [];
+    private commercials:any[] = [];
     private optionassignations:any[] = [];
 
-    private menuHead = {menuHead1:true, menuHead2:false};
-    private rating = [
-        {indice:0, checked:false},
-        {indice:1, checked:false},
-        {indice:2, checked:false},
-        {indice:3, checked:false},
-        {indice:4, checked:false},
-    ];
+    private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
-	constructor(private _utilService:UtilService) { }
+    constructor(private modalService: NgbModal, private _utilService:UtilService) { }
 
-  	ngOnInit() {
-	    this.getZones();
-        this.getSuperviseurs();
+    ngOnInit() {
+        this.getZones();
+        this.getCommerciaux();
     }
 
     private menuHeadClick(option: number){
-  		if(option == 1){
-  			this.menuHead.menuHead1 = true;
-  			this.menuHead.menuHead2 = false;
-  		}
-  		else{
-  			this.menuHead.menuHead1 = false;
-  			this.menuHead.menuHead2 = true;
-  		}
-  	}
+        if(option == 1){
+            this.menuHead.menuHead1 = true;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+        }
+        if(option == 2){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = true;
+            this.menuHead.menuHead3 = false;
+        }
+        if(option == 3){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = true;
+        }
+    }
 
     private toInt(num: string) { return +num; }
 
-    private getSuperviseurs(): void {
-        this._utilService.getSuperviseurs()
+    private getCommerciaux(): void {
+        let data = {token:"1234567889"};
+        this._utilService.getCommerciauxBySuperviseur(data)
             .subscribe(
-                data => this.superviseurs = data,
+                data => this.commercials = data,
                 error => alert(error),
-                () => console.log(this.superviseurs)
+                () => console.log(this.commercials)
             );
     }
 
@@ -88,21 +90,23 @@ export class AdmincommercialComponent implements OnInit {
 
 
     private selectSouszone(){
-        this._utilService.getPointBySouszone(this.filtreSousZone)
+        let data = {token:"1234567889"};
+        this._utilService.getAssignationsBySuperviseur(data)
             .subscribe(
                 data => {
                     console.log(data);
                     this.optionassignations = data.map(function(type) {
                         return {
                             id:type.id,
-                            libellepoint:type.libellepoint,
-                            prenom:type.prenom,
-                            nom:type.nom,
-                            fullname:type.fullname,
-                            telephone:type.telephone,
-                            adresse:type.adresse,
-                            note:type.note,
+                            libellepoint:JSON.parse(type.client).libellepoint,
+                            prenom:JSON.parse(type.client).prenom,
+                            nom:JSON.parse(type.client).nom,
+                            fullname:JSON.parse(type.client).fullname,
+                            telephone:JSON.parse(type.client).telephone,
+                            adresse:JSON.parse(type.client).adresse,
+                            note:JSON.parse(type.client).note,
                             commentaire:'',
+                            infosup:JSON.parse(type.infosup),
                             value:type.id,
                             checked:false
                         };
@@ -111,6 +115,7 @@ export class AdmincommercialComponent implements OnInit {
                 error => alert(error),
                 () => console.log(this.optionassignations)
             );
+
     }
 
     get selectedOptions():any {
@@ -120,21 +125,17 @@ export class AdmincommercialComponent implements OnInit {
     };
 
     private updateCheckedOptions(): void{
-        //let activites = this.zonesactivites.activites;
-        //this.client.typeactivite = this.selectedOptions.map(function(option) {
-          //  return activites[Number(option)-1].activite;
-        //});
         console.log(this.selectedOptions);
     }
 
-    private assignersuperviseur(){
-        //let assignations =
+    private assignercommercial(){
+
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
             this.filtreSousZone == "--Choix sous zone--" ||
-            this.choixsuperviseur == "--Choix superviseur--" ||
-            this.objetifsuperviseur == 0 ){
-            console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixsuperviseur+'-'+this.objetifsuperviseur);
+            this.choixcommercial == "--Choix commercial--" ||
+            this.objetifcommercial == 0 ){
+            console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixcommercial+'-'+this.objetifcommercial);
             this.readyforassination = false;
         }
         else {
@@ -143,26 +144,23 @@ export class AdmincommercialComponent implements OnInit {
                 return optionassignations.find( (assigne) => assigne.id == Number(option));
             });
             let assignations:any = {
-                zone:this.filtreZone,
-                souszone:this.filtreSousZone,
-                superviseur:this.superviseurs.find( (superviseur) => superviseur.id ==this.choixsuperviseur),
-                objectifsuperviseur:this.objetifsuperviseur,
+                commercial:this.commercials.find( (commercial) => commercial.id ==this.choixcommercial),
                 assignes:assignes,
                 infosup:{
                     date_assignationsuperviser:'',
-                    objectifsuperviseur:this.objetifsuperviseur,
+                    objectifsuperviseur:'',
                     commentaireforsuperviseur:'',
                     date_assignationcommercial:'',
-                    objectifcommercial:'',
+                    objectifcommercial:this.objetifcommercial,
                     commentaireforcommercial:''
                 }
             };
             console.log(assignations);
-            this._utilService.assignationsuperviseur(assignations)
+            this._utilService.assignationcommercial(assignations)
                 .subscribe(
                     data => console.log(data),
                     error => alert(error),
-                    () => console.log('assignationsuperviseur')
+                    () => console.log('assignationcommercial')
                 );
         }
     }
