@@ -18,7 +18,7 @@ export class AuthenticatService {
     constructor(private _http: Http){}
 
     postLogin(login, pwd){
-        let url = "http://localhost/backend-SB-Admin-BS4-Angular-4/authenticat/login";
+        let url = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php/authenticat/login";
         let datas = JSON.stringify({login:login, pwd:pwd});
         let params = 'params='+datas;
         let headers = new Headers();

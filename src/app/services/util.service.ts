@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class UtilService {
 
-    private link = "http://localhost/backend-SB-Admin-BS4-Angular-4";
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php/";
     constructor(private _http: Http){}
 
     getAdmincommerciaux(){
@@ -77,6 +77,26 @@ export class UtilService {
     }
 
 
+    getPointBySouszone(souszone:string){
+        let url = this.link+"/client/pointbysouszone";
+        let datas = JSON.stringify({souszone:souszone});
+        let params = 'params='+datas;
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        return this._http.post(url, params, {headers:headers})
+            .map(res => res.json());
+    }
+
+
+    assignationsuperviseur(data:any){
+        let url = this.link+"/assignation/superviseur";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        return this._http.post(url, params, {headers:headers})
+            .map(res => res.json());
+    }
 
 
 
