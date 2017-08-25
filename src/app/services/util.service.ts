@@ -9,8 +9,13 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class UtilService {
 
-    private link = "http://localhost:8888/backend-SB-Admin-BS4-Angular-4";
-    constructor(private _http: Http){}
+
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private headers = new Headers();
+
+    constructor(private _http: Http){
+        this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    }
 
     getAdmincommerciaux(){
         let url = this.link+"/user/admincommercial";
@@ -54,16 +59,6 @@ export class UtilService {
             .map(res => res.json());
     }
 
-    getSouszoneByZone(zone:string){
-        let url = this.link+"/util/souszone";
-        let datas = JSON.stringify({zone:zone});
-        let params = 'params='+datas;
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this._http.post(url, params, {headers:headers})
-            .map(res => res.json());
-    }
-
     getServices(){
         let url = this.link+"/util/service";
         return this._http.get(url)
@@ -77,6 +72,53 @@ export class UtilService {
     }
 
 
+    getSouszoneByZone(zone:string){
+        let url = this.link+"/util/souszone";
+        let datas = JSON.stringify({zone:zone});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getPointBySouszone(souszone:string){
+        let url = this.link+"/client/pointbysouszone";
+        let datas = JSON.stringify({souszone:souszone});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    assignationsuperviseur(data:any){
+        let url = this.link+"/assignation/superviseur";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    assignationcommercial(data:any){
+        let url = this.link+"/assignation/commercial";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getCommerciauxBySuperviseur(data:any){
+        let url = this.link+"/user/commercial";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getAssignationsBySuperviseur(data:any){
+        let url = this.link+"/assignation/getassignersuperviseur";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
 
 
 

@@ -1,0 +1,102 @@
+<h3 class="page-header"><u>Superviseur</u></h3>
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>
+    </div>
+    <hr>
+</div>
+
+<div class="container-fluid" *ngIf="menuHead.menuHead1">
+    <div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone"  (change)="selectZone()">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="selectSouszone()">
+                <option>--Choix sous zone--</option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label>Commercial</label>
+            <select name="singleSelectcommercial"  id="singleSelectcommercial" class="form-control input-sm" [(ngModel)]="choixcommercial">
+                <option [attr.value]="'-1'">--Choix commercial--</option>
+                <option  *ngFor="let commercial of commercials" [attr.value]="commercial.id">{{commercial.prenom}} {{commercial.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label >Objectif</label>
+            <input type="number" class="form-control input-sm"  [(ngModel)]="objetifcommercial" name="objetifcommercial" />
+        </div>
+    </div>
+    <div class="row col-sm-12 text-center center-block" style="padding-bottom: 1rem">
+        <button type="button"
+                class="btn btn-warning  input-sm"
+                (click)="assignercommercial()"
+                style="margin-left: auto; margin-right: auto;"
+                [disabled]="
+                    filtreZone == '--Choix zone--' ||
+                    filtreSousZone == '--Choix sous zone--' ||
+                    choixcommercial == '--Choix commercial--' ||
+                    objetifcommercial <= 0 ||
+                    selectedOptions.length <= 0
+                ">Assigner</button>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>
+                            <input type="checkbox" name="items" value="{{item.value}}"
+                                   [(ngModel)]="item.checked" (change)="updateCheckedOptions()"
+                            />
+                        </td>
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                        <td><textarea  class="form-control" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div  class="container" *ngIf="menuHead.menuHead2" >
+    Suivi
+</div>
+
+<div  class="container" *ngIf="menuHead.menuHead2" >
+    Extraction
+</div>

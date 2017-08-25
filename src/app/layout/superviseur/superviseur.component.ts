@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Http} from "@angular/http";
 import { routerTransition } from '../../router.animations';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-superviseur',
@@ -18,7 +18,8 @@ export class SuperviseurComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "nom";
     public sortOrder = "asc";
-
+    commercial : string ;
+    commerciaux = ["Modou Seye", "Matar Fall", "Rokhaya Diaw", "Ramatoulaye Fall"] ;
     public filtreZone = "";
     public filtreSousZone = "";
 
@@ -49,7 +50,7 @@ export class SuperviseurComponent implements OnInit {
                     this.rating[i].checked = true;
                 }
                 else if(i == index) {
-                    if(this.rating[i].checked == true){ 
+                    if(this.rating[i].checked == true){
                         this.rating[i].checked = false;
                     }
                     else {
@@ -66,17 +67,17 @@ export class SuperviseurComponent implements OnInit {
     public getZones(): void {
   		for (let i = 0; i < this.data.length; i++) {
   			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
-  		} 
+  		}
   	}
 
   	sousZonesOfCurrentZone(){
-  		let souszones : any[] =  [] ;  		
+  		let souszones : any[] =  [] ;
     	for (let i = 0; i < this.data.length; i++) {
-  			if( this.data[i].zone==this.filtreZone ){ 
+  			if( this.data[i].zone==this.filtreZone ){
   				if( !souszones.includes(this.data[i].sous_zone) )
 	  				souszones.push(this.data[i].sous_zone);
   			}
-  		} 
+  		}
   		return souszones ;
   	}
 
@@ -128,5 +129,11 @@ export class SuperviseurComponent implements OnInit {
 		extraire(){}
 
 		assigner(){}
+
+    showModal(content) {
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
 
 }
