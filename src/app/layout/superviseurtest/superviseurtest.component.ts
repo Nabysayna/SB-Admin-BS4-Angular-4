@@ -12,6 +12,7 @@ import {UtilService} from "../../services/util.service";
 export class SuperviseurtestComponent implements OnInit {
 
 
+    private filterQuery:string = "";
     private filtreZone:string = "--Choix zone--";
     private filtreSousZone:string = "--Choix sous zone--";
     private choixcommercial:string = "--Choix commercial--"
@@ -164,6 +165,12 @@ export class SuperviseurtestComponent implements OnInit {
                 );
         }
     }
+
+    showModal(content) {
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
 
 
 }

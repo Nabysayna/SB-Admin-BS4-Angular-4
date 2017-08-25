@@ -1,5 +1,5 @@
 <h3 class="page-header"><u>Superviseur</u></h3>
-<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+<div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
@@ -93,60 +93,117 @@
 </div>
 
 
-<div  class="container" *ngIf="menuHead.menuHead2" >
-    <div class="row table-responsive">
-        <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #sv="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="data | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Reponse</mfDefaultSorter></th>
+                        <th>Qualification</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            Recherche:
+                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
 
-            <thead>
-            <th colspan="2">
-                Recherche:
-                <input class="form-control"  [(ngModel)]="filterQuery"/>
-
-            </th>
-            <tr>
-                <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="nom">Reponse</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="prenom">Qualification</mfDefaultSorter></th>
-            </tr>
-
-            <tr>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of sv.data">
-
-                <td>{{item.nom}}</td>
-                <td>{{item.prenom}}</td>
-                <td>{{item.telephone}}</td>
-                <td>{{item.reponse}}</td>
-                <td> <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
-                </td>
-                <td>
-                    <select>
-                        <option>--Choisir une action--</option>
-                        <option>Valider</option>
-                        <option>A relancer</option>
-                        <option>Abandonner</option>
-                    </select>
-                </td>
-
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr class="text-center center-block">
-                <td colspan="8" class="text-center center-block">
-                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-                </td>
-            </tr>
-            </tfoot>
-        </table>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                        <td>reponse</td>
+                        <td>
+                            <select>
+                                <option>--Choisir une action--</option>
+                                <option>Valider</option>
+                                <option>A relancer</option>
+                                <option>Abandonner</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<div  class="container" *ngIf="menuHead.menuHead3" >
-    Extraction
+<div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="data | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Service</mfDefaultSorter></th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            Recherche:
+                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td>service</td>
+                        <td><button class="btn btn-primary btn-sm" (click)="showModal(content)">Extraire document</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title"> Extraction</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
