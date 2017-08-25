@@ -3,20 +3,37 @@
             <h3 class="page-header">Superviseur</h3>
                     <div class="col-sm-12" style="margin-top: 1rem;">
 
+                          <div class="row">
+
+	                         	 <div class="col-sm-3 col-xs-4">
+		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isSuivi'"
+		                                [attr.aria-expanded]="!isSuivi" aria-controls="collapseExample">
+		                                Suivi
+		                            </button>
+		                         </div>
+
+		                          <div class="col-sm-3 col-xs-4">
+		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isAssignation'"
+		                                [attr.aria-expanded]="!isAssignation" aria-controls="collapseExamples">
+		                                Assignation
+		                            </button>
+		                          </div>
+
+		                          <div class="col-sm-3 col-xs-2">
+		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isExtraction'"
+		                                [attr.aria-expanded]="!isExtraction" aria-controls="collapseExampl">
+		                                Extraction
+		                            </button>
+		                          </div>
+	                       </div>
+
+
                           <div class="col-sm-12 col-xs-12">
-                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-left: 20rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="selection = 'isSuivi'"
-                                [attr.aria-expanded]="!isSuivi" aria-controls="collapseExample">
-                                Suivi
-                            </button>
-                            <button style="margin-top:1rem; margin-bottom: 1rem; margin-right: 4rem;" class="btn btn-outline-primary" (click)="selection = 'isAssignation'"
-                                [attr.aria-expanded]="!isAssignation" aria-controls="collapseExamples">
-                                Assignation
-                            </button>
-                            <button style="margin-top:1rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="selection = 'isExtraction'"
-                                [attr.aria-expanded]="!isExtraction" aria-controls="collapseExampl">
-                                Extraction
-                            </button>
+
                             <div id="collapseExample" [ngbCollapse]="selection!='isSuivi'">
+
+					            <br><h4 class="page-header">Suivi</h4><br>
+
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #sv="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 
@@ -69,25 +86,34 @@
                             </div>
 
                             <div id="collapseExamples" [ngbCollapse]="selection!='isAssignation'">
-                            <div class="row" style="padding-bottom: 2rem">
+					            <br><h4 class="page-header">Assignation</h4><br>
+	                            <div class="row" style="padding-bottom: 2rem">
 
-							        <div class="col-sm-3">
-							            <label>Zone</label>
-							            <select class="form-control input-sm" [(ngModel)]="filtreZone">
-							                <option></option>
-							                <option  *ngFor="let zone of zones">{{zone}}</option>
-							            </select>
-							        </div>
-							        <div class="col-sm-3">
-							            <label>Sous zone</label>
-							            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
-							                <option></option>
-							                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
-							            </select>
-							        </div>
-							        <div class="col-sm-3" style="margin-top: 2rem;">
-							        	<button type="button" class="btn btn-primary" (click)="assigner()">Assigner</button>
-							        </div>
+						        <div class="col-sm-3">
+						            <label>Zone</label>
+						            <select class="form-control input-sm" [(ngModel)]="filtreZone">
+						                <option></option>
+						                <option  *ngFor="let zone of zones">{{zone}}</option>
+						            </select>
+						        </div>
+						        <div class="col-sm-3">
+						            <label>Sous zone</label>
+						            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
+						                <option></option>
+						                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+						            </select>
+						        </div>
+						        <div class="col-sm-3">
+						            <label>Commercial</label>
+						            <select class="form-control input-sm" [(ngModel)]="commercial">
+						                <option></option>
+						                <option *ngFor="let commercial of commerciaux">{{commercial}}</option>
+						            </select>
+						        </div>
+						        <div class="col-sm-3" style="margin-top: 2rem;">
+						        	<button type="button" class="btn btn-primary" (click)="assigner()">Assigner</button>
+						        </div>
+
 							</div>
 	                	    <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #assign="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -131,6 +157,7 @@
                            </div>
 
                            <div id="collapseExampl" [ngbCollapse]="selection!='isExtraction'">
+					            <br><h4 class="page-header">Extraction</h4><br>
                                 <div class="row table-responsive">
 					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #ext="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 
@@ -161,7 +188,11 @@
 					                        <td>{{item.telephonecl}}</td>
 					                        <td>{{item.adressecl}}</td>
 					                        <td>{{item.service}}</td>
+<<<<<<< HEAD
+											<td><button class="btn btn-primary" (click)="showModal(content)">Extraire document</button></td>					                        
+=======
 											<td><button class="btn btn-primary" (click)="extraire">Extraire document</button></td>
+>>>>>>> fb4424989dc291384f41aae227ab3465d86cb5a1
 					                    </tr>
 					                    </tbody>
 					                    <tfoot>
@@ -175,8 +206,36 @@
 					            </div>
                             </div>
                     </div>
+<<<<<<< HEAD
+    </div>  
+                      
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title"> Extraction</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
+		
+
+
+
+
+
+=======
             </div>
     </div>
+>>>>>>> fb4424989dc291384f41aae227ab3465d86cb5a1
 
 
  </div>

@@ -15,10 +15,17 @@ export class AuthenticatService {
     public authorizedApis: string;
 
 
-    constructor(private _http: Http){}
+    private link:string = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private headers:Headers;
+
+    constructor(private _http: Http){
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    }
+
 
     postLogin(login, pwd){
-        let url = "http://localhost/backend-SB-Admin-BS4-Angular-4/authenticat/login";
+        let url = this.link+"/authenticat/login";
         let datas = JSON.stringify({login:login, pwd:pwd});
         let params = 'params='+datas;
         let headers = new Headers();
