@@ -1,4 +1,6 @@
- <div id="page-wrapper">
+<app-page-header [heading]="'Admin administratif'" [icon]="'fa-table'"></app-page-header>
+
+<div id="page-wrapper">
     <div class="row" >
             <h3 class="page-header">Superviseur</h3>
                     <div class="col-sm-12" style="margin-top: 1rem;">
@@ -189,7 +191,7 @@
 					                        <td>{{item.adressecl}}</td>
 					                        <td>{{item.service}}</td>
 <<<<<<< HEAD
-											<td><button class="btn btn-primary" (click)="showModal(content)">Extraire document</button></td>					                        
+											<td><button class="btn btn-primary" (click)="showModal(content)">Extraire document</button></td>
 =======
 											<td><button class="btn btn-primary" (click)="extraire">Extraire document</button></td>
 >>>>>>> fb4424989dc291384f41aae227ab3465d86cb5a1
@@ -207,8 +209,8 @@
                             </div>
                     </div>
 <<<<<<< HEAD
-    </div>  
-                      
+    </div>
+
 </div>
 
 <ng-template #content let-c="close" let-d="dismiss">
@@ -226,7 +228,7 @@
     </div>
 </ng-template>
 
-		
+
 
 
 

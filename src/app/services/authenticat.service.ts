@@ -2,8 +2,7 @@
  * Created by PC on 21/08/2017.
  */
 import { Injectable }    from '@angular/core';
-import {Http, Response, Headers} from "@angular/http";
-import {Observable} from 'rxjs/Observable';
+import {Http, Headers} from "@angular/http";
 
 
 @Injectable()

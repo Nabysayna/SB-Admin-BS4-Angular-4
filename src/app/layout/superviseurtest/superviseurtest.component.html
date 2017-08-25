@@ -12,16 +12,16 @@
     <div class="row" style="padding-bottom: 2rem">
         <div class="col-sm-3">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone"  (change)="selectZone()">
                 <option>--Choix zone--</option>
-                <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreSousZone"  (change)="selectSouszone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="selectSouszone()">
                 <option>--Choix sous zone--</option>
-                <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
             </select>
         </div>
         <div class="col-sm-4">

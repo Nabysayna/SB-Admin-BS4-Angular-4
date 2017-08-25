@@ -28,6 +28,7 @@ export class SuperviseurtestComponent implements OnInit {
     private zones:any[] = [];
     private souszones:any[] = [];
     private commercials:any[] = [];
+    private data:any[] = [];
     private optionassignations:any[] = [];
 
     private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
@@ -35,8 +36,35 @@ export class SuperviseurtestComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService) { }
 
     ngOnInit() {
-        this.getZones();
-        this.getCommerciaux();
+        let datatoken = {token:"1234567889"};
+        this._utilService.getAssignationsBySuperviseur(datatoken)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.data = data.map(function(type) {
+                        return {
+                            id:type.id,
+                            libellepoint:JSON.parse(type.client).libellepoint,
+                            prenom:JSON.parse(type.client).prenom,
+                            nom:JSON.parse(type.client).nom,
+                            fullname:JSON.parse(type.client).fullname,
+                            telephone:JSON.parse(type.client).telephone,
+                            adresse:JSON.parse(type.client).adresse,
+                            note:JSON.parse(type.client).note,
+                            zone:type.zone, sous_zone:type.sous_zone,
+                            commentaire:'',
+                            infosup:JSON.parse(type.infosup),
+                            value:type.id, checked:false
+                        };
+                    });
+                    for (let i = 0; i < this.data.length; i++) {
+                        if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
+                    }
+                    console.log(this.zones);
+                },
+                error => alert(error),
+                () => console.log(this.data)
+            );
     }
 
     private menuHeadClick(option: number){
@@ -69,53 +97,25 @@ export class SuperviseurtestComponent implements OnInit {
             );
     }
 
-    private getZones(): void {
-        this._utilService.getZones()
-            .subscribe(
-                data => this.zones = data,
-                error => alert(error),
-                () => console.log("Finish")
-            );
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
     }
 
-    private selectZone(){
+    private selectZone() {
         this.optionassignations = [];
-        this._utilService.getSouszoneByZone(this.filtreZone.toString())
-            .subscribe(
-                data => this.souszones = data,
-                error => alert(error),
-                () => console.log(this.souszones)
-            );
     }
-
 
     private selectSouszone(){
-        let data = {token:"1234567889"};
-        this._utilService.getAssignationsBySuperviseur(data)
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.optionassignations = data.map(function(type) {
-                        return {
-                            id:type.id,
-                            libellepoint:JSON.parse(type.client).libellepoint,
-                            prenom:JSON.parse(type.client).prenom,
-                            nom:JSON.parse(type.client).nom,
-                            fullname:JSON.parse(type.client).fullname,
-                            telephone:JSON.parse(type.client).telephone,
-                            adresse:JSON.parse(type.client).adresse,
-                            note:JSON.parse(type.client).note,
-                            commentaire:'',
-                            infosup:JSON.parse(type.infosup),
-                            value:type.id,
-                            checked:false
-                        };
-                    });
-                },
-                error => alert(error),
-                () => console.log(this.optionassignations)
-            );
-
+        this.getCommerciaux();
+        this.optionassignations = this.data
+            .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
     }
 
     get selectedOptions():any {
