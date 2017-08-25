@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class UtilService {
 
-    private link = "http://localhost/backend-SB-Admin-BS4-Angular-4";
+    private link = "http://localhost:8888/backend-SB-Admin-BS4-Angular-4";
     constructor(private _http: Http){}
 
     getAdmincommerciaux(){
