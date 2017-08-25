@@ -4,11 +4,10 @@ import { FormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
-import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
-import { SuperviseurtestComponent } from './superviseurtest.component';
+import { Superviseurtest1Component } from './superviseurtest1.component';
 import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
-import { SuperviseurtestRoutingModule } from './superviseurtest-routing.module';
+import { Superviseurtest1RoutingModule } from './superviseurtest1-routing.module';
 import { PageHeaderModule } from './../../shared';
 
 import {DataTableModule} from "angular2-datatable";
@@ -17,33 +16,29 @@ import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
 import { GeomapComponent } from '../geomap/geomap.component';
-import {ProgressionbyComponent} from "../progressionby/progressionby.component";
-import {RatingbyoptionComponent} from "../ratingbyoption/ratingbyoption.component";
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        SuperviseurtestRoutingModule,
+        Superviseurtest1RoutingModule,
         PageHeaderModule,
         DataTableModule,
         NgbModule.forRoot(),
         AgmCoreModule.forRoot({
 	      apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
 	    }),
-        Ng2Charts,
+        RatingModule.forRoot(),
     ],
     declarations: [
-    	SuperviseurtestComponent,
+    	Superviseurtest1Component,
     	DataFilterPipe,
         ZonesFilterPipe,
         SousZonesFilterPipe,
     	GeomapComponent,
-        ProspectPdvComponent,
-
-        ProgressionbyComponent,
-        RatingbyoptionComponent,
+        ProspectPdvComponent
     ]
 })
-export class SuperviseurtestModule { }
+export class Superviseurtest1Module { }

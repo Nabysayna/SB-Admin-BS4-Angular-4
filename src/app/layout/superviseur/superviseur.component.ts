@@ -1,139 +1,176 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {Http} from "@angular/http";
-import { routerTransition } from '../../router.animations';
-
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {UtilService} from "../../services/util.service";
 
 @Component({
-  selector: 'app-superviseur',
-  templateUrl: './superviseur.component.html',
-  styleUrls: ['./superviseur.component.scss']
+    selector: 'app-superviseur',
+    templateUrl: './superviseur.component.html',
+    styleUrls: ['./superviseur.component.scss'],
+    providers:[UtilService ],
 })
+
 export class SuperviseurComponent implements OnInit {
-	fakevalues = true ;
-    selection = "" ;
-    public isSuivi=true;
-    public isAssignation=true;
-    public filterQuery = "";
-    public rowsOnPage = 5;
-    public sortBy = "nom";
-    public sortOrder = "asc";
-    commercial : string ;
-    commerciaux = ["Modou Seye", "Matar Fall", "Rokhaya Diaw", "Ramatoulaye Fall"] ;
-    public filtreZone = "";
-    public filtreSousZone = "";
+
+
+    private filterQuery:string = "";
+    private filtreZone:string = "--Choix zone--";
+    private filtreSousZone:string = "--Choix sous zone--";
+    private choixcommercial:string = "--Choix commercial--"
+    private objetifcommercial:number = 0;
+
+    private readyforassination:boolean=true;
+    private isclickforassination:boolean=false;
+
+    private rowsOnPage = 5;
+    private sortBy = "note";
+    private sortOrder = "desc";
+    private sortByWordLength = (a: any) => { return a.adresse.length; }
 
     private zones:any[] = [];
     private souszones:any[] = [];
+    private commercials:any[] = [];
+    private data:any[] = [];
+    private optionassignations:any[] = [];
 
-  rating = [
-        {indice:0, checked:false},
-        {indice:1, checked:false},
-        {indice:2, checked:false},
-        {indice:3, checked:false},
-        {indice:4, checked:false},
-    ];
+    private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
-  constructor(private http: Http, private modalService: NgbModal) { }
+    constructor(private modalService: NgbModal, private _utilService:UtilService) { }
 
-  ngOnInit() {
-  	this.getZones();
-  }
+    ngOnInit() {
+        let datatoken = {token:"1234567889"};
+        this._utilService.getAssignationsBySuperviseur(datatoken)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.data = data.map(function(type) {
+                        return {
+                            id:type.id,
+                            libellepoint:JSON.parse(type.client).libellepoint,
+                            prenom:JSON.parse(type.client).prenom,
+                            nom:JSON.parse(type.client).nom,
+                            fullname:JSON.parse(type.client).fullname,
+                            telephone:JSON.parse(type.client).telephone,
+                            adresse:JSON.parse(type.client).adresse,
+                            note:JSON.parse(type.client).note,
+                            zone:type.zone, sous_zone:type.sous_zone,
+                            commentaire:'',
+                            infosup:JSON.parse(type.infosup),
+                            value:type.id, checked:false
+                        };
+                    });
+                    for (let i = 0; i < this.data.length; i++) {
+                        if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
+                    }
+                    console.log(this.zones);
+                },
+                error => alert(error),
+                () => console.log(this.data)
+            );
+    }
 
-   private avoter(index:number): void{
-        if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
-            this.rating[index].checked = false;
+    private menuHeadClick(option: number){
+        if(option == 1){
+            this.menuHead.menuHead1 = true;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
         }
-        else {
-            for (var i = 0; i<this.rating.length; i++) {
-                if(i < index) {
-                    this.rating[i].checked = true;
-                }
-                else if(i == index) {
-                    if(this.rating[i].checked == true){
-                        this.rating[i].checked = false;
-                    }
-                    else {
-                        this.rating[i].checked = true;
-                    }
-                }
-                else {
-                    this.rating[i].checked = false;
-                }
-            }
+        if(option == 2){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = true;
+            this.menuHead.menuHead3 = false;
+        }
+        if(option == 3){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = true;
         }
     }
 
-    public getZones(): void {
-  		for (let i = 0; i < this.data.length; i++) {
-  			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
-  		}
-  	}
+    private toInt(num: string) { return +num; }
 
-  	sousZonesOfCurrentZone(){
-  		let souszones : any[] =  [] ;
-    	for (let i = 0; i < this.data.length; i++) {
-  			if( this.data[i].zone==this.filtreZone ){
-  				if( !souszones.includes(this.data[i].sous_zone) )
-	  				souszones.push(this.data[i].sous_zone);
-  			}
-  		}
-  		return souszones ;
-  	}
+    private getCommerciaux(): void {
+        let data = {token:"1234567889"};
+        this._utilService.getCommerciauxBySuperviseur(data)
+            .subscribe(
+                data => this.commercials = data,
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+    }
 
-    public data = [
-		  {
-		    "nom": "NDIAYE",
-		    "prenom": "naby",
-		    "nomcl": "FALL",
-		    "prenomcl": "Fallou",
-		    "telephone": "778888888",
-		    "telephonecl": "771111111",
-		    "reponse": "intéressé",
-		    "zone": "Parcelles",
-		    "sous_zone": "unité 24",
-		    "notept":"**",
-		    "adressecl":"cité fadia",
-		    "service":"wafacash",
-		  },
-		  {
-		    "nom": "KA",
-		    "prenom": "assane",
-		    "nomcl": "NDOUR",
-		    "prenomcl": "Moussa",
-		    "telephonecl": "771111111",
-		    "telephone": "772222222",
-		    "reponse": "pas maintenant",
-		    "zone": "Rufisque",
-		    "notept":"*",
-		    "sous_zone": "Keur Mbaye fall",
-		    "adressecl":"hlm grand medine",
-		    "service":"tigocash",
-		  },
-		  {
-		    "nom": "NDIAYE",
-		    "prenom": "khady",
-		    "nomcl": "NDIAYE",
-		    "prenomcl": "khady",
-		    "telephonecl": "771111111",
-		    "telephone": "773333333",
-		    "reponse": "impossible",
-		    "zone": "Parcelles",
-		    "notept":"*****",
-		    "sous_zone": "unité 19",
-		    "adressecl":"diamalaye 2 villa 188E",
-		    "service":"postcash",
-		  }
-		];
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
+    }
 
-		extraire(){}
+    private selectZone() {
+        this.optionassignations = [];
+    }
 
-		assigner(){}
+    private selectSouszone(){
+        this.getCommerciaux();
+        this.optionassignations = this.data
+            .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
+    }
+
+    get selectedOptions():any {
+        return this.optionassignations
+            .filter(opt => opt.checked)
+            .map(opt => opt.value);
+    };
+
+    private updateCheckedOptions(): void{
+        console.log(this.selectedOptions);
+    }
+
+    private assignercommercial(){
+
+        this.isclickforassination = true;
+        if( this.filtreZone == "--Choix zone--" ||
+            this.filtreSousZone == "--Choix sous zone--" ||
+            this.choixcommercial == "--Choix commercial--" ||
+            this.objetifcommercial == 0 ){
+            console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixcommercial+'-'+this.objetifcommercial);
+            this.readyforassination = false;
+        }
+        else {
+            let optionassignations = this.optionassignations;
+            let assignes:any = this.selectedOptions.map(function(option) {
+                return optionassignations.find( (assigne) => assigne.id == Number(option));
+            });
+            let assignations:any = {
+                commercial:this.commercials.find( (commercial) => commercial.id ==this.choixcommercial),
+                assignes:assignes,
+                infosup:{
+                    date_assignationsuperviser:'',
+                    objectifsuperviseur:'',
+                    commentaireforsuperviseur:'',
+                    date_assignationcommercial:'',
+                    objectifcommercial:this.objetifcommercial,
+                    commentaireforcommercial:''
+                }
+            };
+            console.log(assignations);
+            this._utilService.assignationcommercial(assignations)
+                .subscribe(
+                    data => console.log(data),
+                    error => alert(error),
+                    () => console.log('assignationcommercial')
+                );
+        }
+    }
 
     showModal(content) {
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }
+
 
 
 }

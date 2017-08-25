@@ -14,7 +14,6 @@ const routes: Routes = [
             { path: 'grid', loadChildren: './grid/grid.module#GridModule' },
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
-            { path: 'superviseurtest', loadChildren: './superviseurtest/superviseurtest.module#SuperviseurtestModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },
             { path: 'administratif', loadChildren: './administratif/administratif.module#AdministratifModule' },
             { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
