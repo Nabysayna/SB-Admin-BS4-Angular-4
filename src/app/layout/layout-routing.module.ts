@@ -13,7 +13,8 @@ const routes: Routes = [
             { path: 'bs-element', loadChildren: './bs-element/bs-element.module#BsElementModule' },
             { path: 'grid', loadChildren: './grid/grid.module#GridModule' },
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
-            { path: 'superviseur', loadChildren: './superviseurtest/superviseurtest.module#SuperviseurtestModule' },
+            { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
+            { path: 'superviseurtest', loadChildren: './superviseurtest/superviseurtest.module#SuperviseurtestModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },
             { path: 'administratif', loadChildren: './administratif/administratif.module#AdministratifModule' },
             { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
@@ -23,8 +24,6 @@ const routes: Routes = [
         ]
     }
 ];
-
-//{ path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
