@@ -21,6 +21,7 @@ export class GeomapComponent implements OnInit {
   constructor(private _utilService: UtilService) { }
 
   ngOnInit() {
+      console.log(this.macarte);
       this._utilService.getAdresseByPoint(this.macarte.id_point)
           .subscribe(
               data => {

@@ -32,8 +32,7 @@ export class TablesComponent implements OnInit {
 
     ngOnInit(): void {
         this.getZones();
-        let datatoken = {token:"1234567889"};
-        this._utilService.getAssignationsBySuperviseur(datatoken)
+        this._utilService.getAssignationsByCommercial()
             .subscribe(
                 data => {
                     console.log(data);

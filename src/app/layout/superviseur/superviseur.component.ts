@@ -37,8 +37,7 @@ export class SuperviseurComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService) { }
 
     ngOnInit() {
-        let datatoken = {token:"1234567889"};
-        this._utilService.getAssignationsBySuperviseur(datatoken)
+        this._utilService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
                     console.log(data);
