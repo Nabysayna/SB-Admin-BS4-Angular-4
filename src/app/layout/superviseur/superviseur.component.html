@@ -1,209 +1,194 @@
-<div id="page-wrapper">
-    <div class="row" >
-            <h3 class="page-header">Superviseur</h3>
-                    <div class="col-sm-12" style="margin-top: 1rem;">
+<h3 class="page-header"><u>Superviseur</u></h3>
+<div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>
+    </div>
+    <hr>
+</div>
 
-                          <div class="row">
-
-	                         	 <div class="col-sm-3 col-xs-4">
-		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isSuivi'"
-		                                [attr.aria-expanded]="!isSuivi" aria-controls="collapseExample">
-		                                Suivi
-		                            </button>
-		                         </div>
-
-		                          <div class="col-sm-3 col-xs-4">
-		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isAssignation'"
-		                                [attr.aria-expanded]="!isAssignation" aria-controls="collapseExamples">
-		                                Assignation
-		                            </button>
-		                          </div>
-
-		                          <div class="col-sm-3 col-xs-2">
-		                            <button style="" class="btn btn-outline-primary" (click)="selection = 'isExtraction'"
-		                                [attr.aria-expanded]="!isExtraction" aria-controls="collapseExampl">
-		                                Extraction
-		                            </button>
-		                          </div>
-	                       </div>
-
-
-                          <div class="col-sm-12 col-xs-12">
-
-                            <div id="collapseExample" [ngbCollapse]="selection!='isSuivi'">
-
-					            <br><h4 class="page-header">Suivi</h4><br>
-
-                                <div class="row table-responsive">
-					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #sv="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-
-					                    <thead>
-					                    <th colspan="2">
-					                        Recherche:
-					                        <input class="form-control"  [(ngModel)]="filterQuery"/>
-
-					                    </th>
-					                    <tr>
-
-					                        <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="prenom">Prénom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="reponse">Réponse</mfDefaultSorter></th>
-					                        <th>Action</th>
-					                    </tr>
-
-					                    <tr>
-					                </tr>
-					                    </thead>
-					                    <tbody>
-					                    <tr *ngFor="let item of sv.data">
-
-					                        <td>{{item.nom}}</td>
-					                        <td>{{item.prenom}}</td>
-					                        <td>{{item.telephone}}</td>
-					                        <td>{{item.reponse}}</td>
-					                        <td> <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
-					                        </td>
-					                        <td>
-					                            <select>
-					                            	<option>--Choisir une action--</option>
-					                            	<option>Valider</option>
-					                            	<option>A relancer</option>
-					                            	<option>Abandonner</option>
-					                            </select>
-					                        </td>
-
-					                    </tr>
-					                    </tbody>
-					                    <tfoot>
-					                    <tr class="text-center center-block">
-					                        <td colspan="8" class="text-center center-block">
-					                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-					                        </td>
-					                    </tr>
-					                    </tfoot>
-					                </table>
-					            </div>
-                            </div>
-
-                            <div id="collapseExamples" [ngbCollapse]="selection!='isAssignation'">
-					            <br><h4 class="page-header">Assignation</h4><br>
-	                            <div class="row" style="padding-bottom: 2rem">
-
-						        <div class="col-sm-3">
-						            <label>Zone</label>
-						            <select class="form-control input-sm" [(ngModel)]="filtreZone">
-						                <option></option>
-						                <option  *ngFor="let zone of zones">{{zone}}</option>
-						            </select>
-						        </div>
-						        <div class="col-sm-3">
-						            <label>Sous zone</label>
-						            <select class="form-control input-sm" [(ngModel)]="filtreSousZone">
-						                <option></option>
-						                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
-						            </select>
-						        </div>
-						        <div class="col-sm-3">
-						            <label>Commercial</label>
-						            <select class="form-control input-sm" [(ngModel)]="commercial">
-						                <option></option>
-						                <option *ngFor="let commercial of commerciaux">{{commercial}}</option>
-						            </select>
-						        </div>
-						        <div class="col-sm-3" style="margin-top: 2rem;">
-						        	<button type="button" class="btn btn-primary" (click)="assigner()">Assigner</button>
-						        </div>
-
-							</div>
-	                	    <div class="row table-responsive">
-					                <table class="table table-hover" [mfData]="data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #assign="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-
-					                    <thead>
-					                    <th colspan="2">
-					                        Recherche:
-					                        <input class="form-control" [(ngModel)]="filterQuery"/>
-					                    </th>
-					                    <tr>
-					                        <th><mfDefaultSorter>Choisir</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="nomcl">Nom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="prenomcl">Prénom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="telephonecl">Téléphone</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="notept">Note du point</mfDefaultSorter></th>
-					                    </tr>
-					                    <tr>
-
-					                </tr>
-					                    </thead>
-					                    <tbody>
-					                    <tr *ngFor="let item of assign.data">
-					                        <td><input type="checkbox" name=""></td>
-					                        <td>{{item.nomcl}}</td>
-					                        <td>{{item.prenomcl}}</td>
-					                        <td>{{item.telephonecl}}</td>
-					                        <td>
-					                        {{item.notept}}
-					                        </td>
-					                    </tr>
-					                    </tbody>
-					                    <tfoot>
-					                    <tr class="text-center center-block">
-					                        <td colspan="8" class="text-center center-block">
-					                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-					                        </td>
-					                    </tr>
-					                    </tfoot>
-					                </table>
-					             </div>
-                           </div>
-
-                           <div id="collapseExampl" [ngbCollapse]="selection!='isExtraction'">
-					            <br><h4 class="page-header">Extraction</h4><br>
-                                <div class="row table-responsive">
-					                <table class="table table-hover" [mfData]="data | dataFilter: filterQuery" #ext="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-
-					                    <thead>
-					                    <th colspan="2">
-					                        Recherche:
-					                        <input class="form-control"  [(ngModel)]="filterQuery"/>
-
-					                    </th>
-					                    <tr>
-
-					                        <th><mfDefaultSorter by="nomcl">Nom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="prenomcl">Prénom</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="telephonecl">Téléphone</mfDefaultSorter></th>
-					                         <th><mfDefaultSorter by="adressecl">Adresse</mfDefaultSorter></th>
-					                        <th><mfDefaultSorter by="service">Service</mfDefaultSorter></th>
-					                        <th>Action</th>
-					                    </tr>
-
-					                    <tr>
-					                </tr>
-					                    </thead>
-					                    <tbody>
-					                    <tr *ngFor="let item of ext.data">
-
-					                        <td>{{item.nomcl}}</td>
-					                        <td>{{item.prenomcl}}</td>
-					                        <td>{{item.telephonecl}}</td>
-					                        <td>{{item.adressecl}}</td>
-					                        <td>{{item.service}}</td>
-											<td><button class="btn btn-primary" (click)="showModal(content)">Extraire document</button></td>
-					                    </tr>
-					                    </tbody>
-					                    <tfoot>
-					                    <tr class="text-center center-block">
-					                        <td colspan="8" class="text-center center-block">
-					                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-					                        </td>
-					                    </tr>
-					                    </tfoot>
-					                </table>
-					            </div>
-                            </div>
-                    </div>
+<div class="container-fluid" *ngIf="menuHead.menuHead1">
+    <div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-3">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone"  (change)="selectZone()">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="selectSouszone()">
+                <option>--Choix sous zone--</option>
+                <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label>Commercial</label>
+            <select name="singleSelectcommercial"  id="singleSelectcommercial" class="form-control input-sm" [(ngModel)]="choixcommercial">
+                <option [attr.value]="'-1'">--Choix commercial--</option>
+                <option  *ngFor="let commercial of commercials" [attr.value]="commercial.id">{{commercial.prenom}} {{commercial.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label >Objectif</label>
+            <input type="number" class="form-control input-sm"  [(ngModel)]="objetifcommercial" name="objetifcommercial" />
+        </div>
+    </div>
+    <div class="row col-sm-12 text-center center-block" style="padding-bottom: 1rem">
+        <button type="button"
+                class="btn btn-warning  input-sm"
+                (click)="assignercommercial()"
+                style="margin-left: auto; margin-right: auto;"
+                [disabled]="
+                    filtreZone == '--Choix zone--' ||
+                    filtreSousZone == '--Choix sous zone--' ||
+                    choixcommercial == '--Choix commercial--' ||
+                    objetifcommercial <= 0 ||
+                    selectedOptions.length <= 0
+                ">Assigner</button>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>
+                            <input type="checkbox" name="items" value="{{item.value}}"
+                                   [(ngModel)]="item.checked" (change)="updateCheckedOptions()"
+                            />
+                        </td>
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                        <td><textarea  class="form-control" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
             </div>
+        </div>
+    </div>
+</div>
 
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="data | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Reponse</mfDefaultSorter></th>
+                        <th>Qualification</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            Recherche:
+                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                        <td>reponse</td>
+                        <td>
+                            <select>
+                                <option>--Choisir une action--</option>
+                                <option>Valider</option>
+                                <option>A relancer</option>
+                                <option>Abandonner</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="data | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Service</mfDefaultSorter></th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            Recherche:
+                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td>service</td>
+                        <td><button class="btn btn-primary btn-sm" (click)="showModal(content)">Extraire document</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -221,3 +206,4 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
+

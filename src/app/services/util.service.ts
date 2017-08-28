@@ -120,6 +120,22 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getAssignationsByCommercial(data:any){
+        let url = this.link+"/assignation/getassignercommercial";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getAdresseByPoint(data:any){
+        let url = this.link+"/client/adressepdv";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 
 }
