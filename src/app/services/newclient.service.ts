@@ -10,8 +10,8 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class NewclientService {
 
-    private link = "http://localhost:8888/SB-Admin-BS4-Angular-4";
 
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     constructor(private _http: Http){}
 

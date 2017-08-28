@@ -125,7 +125,7 @@
                         <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
                         <td>reponse</td>
                         <td>
-                            <select>
+                            <select (click)="choisir()">
                                 <option>--Choisir une action--</option>
                                 <option>Valider</option>
                                 <option>A relancer</option>

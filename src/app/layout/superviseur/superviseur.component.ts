@@ -171,6 +171,10 @@ export class SuperviseurComponent implements OnInit {
         }, (reason) => {} );
     }
 
+    choisir(){
+        console.log(JSON.stringify(this.data));
+    }
+
 
 
 }
