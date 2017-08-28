@@ -114,17 +114,17 @@ export class UtilService {
             .map(res => res.json());
     }
 
-    getAssignationsBySuperviseur(data:any){
+    getAssignationsBySuperviseur(){
         let url = this.link+"/assignation/getassignersuperviseur";
-        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 
-    getAssignationsByCommercial(data:any){
+    getAssignationsByCommercial(){
         let url = this.link+"/assignation/getassignercommercial";
-        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -132,7 +132,7 @@ export class UtilService {
 
     getAdresseByPoint(data:any){
         let url = this.link+"/client/adressepdv";
-        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let datas = JSON.stringify(data);
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());

@@ -6,7 +6,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
 import { SuperviseurComponent } from './superviseur.component';
-import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
 import { SuperviseurRoutingModule } from './superviseur-routing.module';
 import { PageHeaderModule } from './../../shared';
 
@@ -34,7 +33,6 @@ import {RatingbyoptionComponent} from "../ratingbyoption/ratingbyoption.componen
     	DataFilterPipe,
         ZonesFilterPipe,
         SousZonesFilterPipe,
-        ProspectPdvComponent,
 
         ProgressionbyComponent,
         RatingbyoptionComponent,
