@@ -12,8 +12,13 @@ export class NewclientService {
 
 
     private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private headers = new Headers();
+    private basetoken:any;
 
-    constructor(private _http: Http){}
+    constructor(private _http: Http){
+        this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
+    }
 
     getZoneActivite(){
         let url = this.link+"/util/zone-activite";
@@ -23,11 +28,9 @@ export class NewclientService {
 
     insertPoint(data:any){
         let url = this.link+"/client/insertpoint";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this._http.post(url, params, {headers:headers})
+        return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 

@@ -92,7 +92,10 @@ export class SuperviseurComponent implements OnInit {
         let data = {token:"1234567889"};
         this._utilService.getCommerciauxBySuperviseur(data)
             .subscribe(
-                data => this.commercials = data,
+                data => {
+                    this.commercials = data
+                    if(data.errorCode) this.commercials = data.message;
+                },
                 error => alert(error),
                 () => console.log(this.commercials)
             );
