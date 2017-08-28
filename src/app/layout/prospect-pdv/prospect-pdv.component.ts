@@ -95,4 +95,9 @@ export class ProspectPdvComponent implements OnInit {
   public isReadonly: boolean = true;
 
 
+  validDonnees(){
+      
+  }
+
+
 }
