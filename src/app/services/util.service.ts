@@ -11,9 +11,11 @@ export class UtilService {
 
     private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
+    private basetoken:any;
 
     constructor(private _http: Http){
         this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
     }
 
     getAdmincommerciaux(){
@@ -89,7 +91,7 @@ export class UtilService {
 
     assignationsuperviseur(data:any){
         let url = this.link+"/assignation/superviseur";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -97,7 +99,7 @@ export class UtilService {
 
     assignationcommercial(data:any){
         let url = this.link+"/assignation/commercial";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -105,7 +107,7 @@ export class UtilService {
 
     getCommerciauxBySuperviseur(data:any){
         let url = this.link+"/user/commercial";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -113,7 +115,7 @@ export class UtilService {
 
     getAssignationsBySuperviseur(data:any){
         let url = this.link+"/assignation/getassignersuperviseur";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -121,7 +123,7 @@ export class UtilService {
 
     getAssignationsByCommercial(data:any){
         let url = this.link+"/assignation/getassignercommercial";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
@@ -129,12 +131,11 @@ export class UtilService {
 
     getAdresseByPoint(data:any){
         let url = this.link+"/client/adressepdv";
-        let datas = JSON.stringify(data);
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
-
 
 
 }

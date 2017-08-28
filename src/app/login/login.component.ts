@@ -29,15 +29,22 @@ export class LoginComponent implements OnInit {
     private wantLogin(){
         this._authenticatService.postLogin(this.userName, this.userPwd)
         .subscribe(
-            data => this.data = data,
+            data => {
+                if(data.codeerror) {
+                    sessionStorage.setItem('currentUser', JSON.stringify({ username: this.userName, basetoken: data.message.basetoken, accesslevel:data.message.accesslevel}));
+                    this.accesslevel(data.message.accesslevel);
+                }
+                else {
+                    this.fakevalues = false
+                }
+            },
             error => alert(error),
-            () => this.accesslevel(this.data.message.accesslevel)
+            () => console.log(this.data)
         );
 
     }
 
     private accesslevel(access: any){
-        localStorage.setItem('isLoggedin', 'true');
         if ( !access){
             this.fakevalues = false;
         }
@@ -60,7 +67,6 @@ export class LoginComponent implements OnInit {
             this.fakevalues = false;
             console.log(typeof access);
         }
-
     }
 
 }
