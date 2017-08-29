@@ -4,60 +4,60 @@
     <hr>
   </div>
 </div>
-<div class="row" style="padding-bottom: 2rem">
+<div class="row" style="padding-bottom: 2rem" *ngIf="alldatapoint">
   <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=!isinfo.isinfopoint; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfopoint"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfopoint"></i> Info gerant</span></h3>
   <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1" *ngIf="isinfo.isinfopoint">
     <div class="row">
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Prénom gerant</label>
-        <input type="text" [(ngModel)]="prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder={{infoprospect.prenom}} required>
+        <input type="text" [(ngModel)]="alldatapoint.prenom_gerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder={{infoprospect.prenom}} required>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Nom gerant</label>
-        <input type="text" [(ngModel)]="nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder={{infoprospect.nom}} required>
+        <input type="text" [(ngModel)]="alldatapoint.nom_gerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder={{infoprospect.nom}} required>
       </div>
-    </div>          
+    </div>
     <div class="row">
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Téléphone gerant</label>
-        <input type="text" [(ngModel)]="telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder={{infoprospect.tel}} required>
+        <input type="text" [(ngModel)]="alldatapoint.telephone_gerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder={{infoprospect.tel}} required>
       </div>
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Email gerant</label>
-        <input type="email" [(ngModel)]="emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder={{infoprospect.email}} required>
+        <input type="email" [(ngModel)]="alldatapoint.email_gerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder={{infoprospect.email}} required>
       </div>
-    </div>          
+    </div>
     <div class="row">
       <div class="form-group col-md-4">
         <label>Zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="infoprospect.zone">
+        <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="infoprospect.sous_zone">
+        <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Code postale</label>
-        <input type="number" [(ngModel)]="codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
+        <input type="number" [(ngModel)]="adresse_point.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
       </div>
-    </div>          
+    </div>
     <div class="row">
       <fieldset class="form-group  col-md-6">
         <label>Adresse du point</label>
-        <textarea class="form-control" rows="4" [(ngModel)]="infoprospect.adresse"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
+        <textarea class="form-control" rows="4" [(ngModel)]="adresse_point.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
       </fieldset>
       <fieldset class="form-group  col-md-6">
         <label>Cordonnées geospatiales</label>
-        <input type="number" [(ngModel)]="latitudepoint"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
-        <input type="number" [(ngModel)]="longitudepoint"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>
+        <input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
+        <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>
       </fieldset>
-    </div>                  
+    </div>
   </div>
 </div>
 <div class="row" style="padding-bottom: 2rem">
@@ -67,54 +67,54 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label>Prénom proprietaire</label>
-        <input type="text" [(ngModel)]="prenomproprietaire"   name="prenomproprietaire" id="prenomproprietaire" class="form-control"  placeholder="prénom proprietaire" required>
+        <input type="text" [(ngModel)]="alldatapoint.prenom_proprietaire"   name="prenomproprietaire" id="prenomproprietaire" class="form-control"  placeholder="prénom proprietaire" required>
       </div>
       <div class="form-group col-md-6">
         <label>Nom proprietaire</label>
-        <input type="text" [(ngModel)]="nomproprietaire"   name="nomproprietaire" id="nomproprietaire" class="form-control" placeholder="nom proprietaire" required>
+        <input type="text" [(ngModel)]="alldatapoint.nom_proprietaire"   name="nomproprietaire" id="nomproprietaire" class="form-control" placeholder="nom proprietaire" required>
       </div>
-    </div>          
+    </div>
     <div class="row">
       <div class="form-group col-md-6">
         <label>Téléphone proprietaire</label>
-        <input type="text" [(ngModel)]="telephoneproprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone proprietaire" required>
+        <input type="text" [(ngModel)]="alldatapoint.telephone_proprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone proprietaire" required>
       </div>
       <div class="form-group col-md-6">
         <label>Email proprietaire</label>
-        <input type="email" [(ngModel)]="emailproprietaire"   name="emailproprietaire" id="emailproprietaire" class="form-control" placeholder="email proprietaire" required>
+        <input type="email" [(ngModel)]="alldatapoint.email_proprietaire"   name="emailproprietaire" id="emailproprietaire" class="form-control" placeholder="email proprietaire" required>
       </div>
-    </div>          
+    </div>
     <div class="row">
       <div class="form-group col-md-4">
         <label>Zone proprietaire</label>
-        <select class="form-control input-sm" [(ngModel)]="zoneproprietaire">
+        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.zoneproprietaire">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone proprietaire</label>
-        <select class="form-control input-sm" [(ngModel)]="souszoneproprietaire">
+        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.souszoneproprietaire">
           <option>Dakar</option>
           <option>Parcelles</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Code postale</label>
-        <input type="number" [(ngModel)]="codepostalpointproprietaire"   name="codepostalpointproprietaire" id="codepostalpointproprietaire" class="form-control"  placeholder="code postal point">
+        <input type="number" [(ngModel)]="adresse_proprietaire.codepostalproprietaire"   name="codepostalpointproprietaire" id="codepostalpointproprietaire" class="form-control"  placeholder="code postal point">
       </div>
-    </div>          
+    </div>
     <div class="row">
       <fieldset class="form-group  col-md-6">
         <label>Adresse proprietaire</label>
-        <textarea class="form-control" rows="4" [(ngModel)]="adressepointproprietaire"   name="adressepointproprietaire" id="adressepointproprietaire" class="form-control"  placeholder="adresse exacte proprietaire" required></textarea>
+        <textarea class="form-control" rows="4" [(ngModel)]="adresse_proprietaire.adresseproprietaire"   name="adressepointproprietaire" id="adressepointproprietaire" class="form-control"  placeholder="adresse exacte proprietaire" required></textarea>
       </fieldset>
       <fieldset class="form-group  col-md-6">
         <label>Cordonnées geospatiales proprietaire</label>
-        <input type="number" [(ngModel)]="latitudeproprietaire"   name="latitudeproprietaire" id="latitudeproprietaire" class="form-control"  placeholder="latitude proprietaire">
-        <input type="number" [(ngModel)]="longitudeproprietaire"   name="longitudeproprietaire" id="longitudeproprietaire" class="form-control"  placeholder="longitude proprietaire">
+        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.latitude"   name="latitudeproprietaire" id="latitudeproprietaire" class="form-control"  placeholder="latitude proprietaire">
+        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.longitude"   name="longitudeproprietaire" id="longitudeproprietaire" class="form-control"  placeholder="longitude proprietaire">
       </fieldset>
-    </div>          
+    </div>
   </div>
 </div>
 <div class="row" style="padding-bottom: 2rem">
@@ -123,76 +123,21 @@
     <hr>
     <div class="row">
       <div class="form-group col-sm-12 col-xs-12 ">
-        <h4>Types d'activités du point</h4>
-<!--         <div *ngFor="let option of options">
-            <label>
-                <input type="checkbox"
-                       name="options"
-                       value="{{option.value}}"
-                       [(ngModel)]="option.checked"
-                       (change)="updateCheckedOptions()"
-                />
-                {{option.name}}
-            </label>
-        </div>
- -->
+          <h4>Types d'activités du point</h4>
           <div class="row">
+              <div  *ngFor="let option of options"  class="col-sm-6 col-xs-12">
+                  <input type="checkbox" name="options" value="{{option.value}}"
+                         [(ngModel)]="option.checked" (change)="updateCheckedOptions()"
+                  />
+                  {{option.name}}
+              </div>
               <div class="col-sm-6 col-xs-12">
-              <div style="margin-top:1rem;">
-              <input type="checkbox" >services personnels
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">services d'assistance
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin de cosmétiques, parfumerie
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Quincaillerie
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin d’optique, opticien
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Pharmacies
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Restaurant
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Agence de voyages
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin de détail, boutique de cadeaux ou magasin spécialisé
-              </div>
-              </div> 
-              <div class="col-sm-6 col-xs-12">
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin de fruits et de légumes
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin de vêtements
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Supermarché/épicerie
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Magasin d’appareil photo et de fournitures photographiques
-              </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Grand magasin ou magasin discount
-              </div>
-              <div style="margin-top:1rem;">
-               <input type="checkbox">Prestataire de services Internet, cyber café
-               </div>
-              <div style="margin-top:1rem;">
-              <input type="checkbox">Autres...
-              </div>
+                  <label>Autre ...</label>
               </div>
           </div>
 
-     </div>
-    </div>          
+      </div>
+    </div>
 
     <div class="row">
       <div class="form-group col-md-6">
@@ -201,7 +146,7 @@
           <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)" (mouseover)="asurvoler(option.indice)"></i></span>
         </div>
       </div>
-    </div>          
+    </div>
 
     <div class="row">
         <button style="margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
@@ -244,13 +189,13 @@
       </div>
       <div class="form-group col-sm-2">
         <button>Charger</button>
-      </div>                    
-    </div>                    
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem">
   <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-    <button type="button" class="btn btn-warning">Valider les nouvelles données</button>
+    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()">Valider les nouvelles données</button>
   </div>
 </div>

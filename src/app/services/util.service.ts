@@ -137,5 +137,13 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getAllDataPoint(data:any){
+        let url = this.link+"/client/alldata";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 }
