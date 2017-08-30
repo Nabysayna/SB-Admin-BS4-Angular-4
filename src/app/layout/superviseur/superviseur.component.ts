@@ -194,6 +194,7 @@ export class SuperviseurComponent implements OnInit {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
                         this.filtreZone = "--Choix zone--";
+                        this.selectZone();
                     },
                     error => alert(error),
                     () => console.log('assignationcommercial')

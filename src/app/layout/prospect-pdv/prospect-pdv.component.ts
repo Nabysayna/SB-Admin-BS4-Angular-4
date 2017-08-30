@@ -172,6 +172,7 @@ export class ProspectPdvComponent implements OnInit {
         this.prospection.id_assignation_origin = this.infoprospect.id;
         this.prospection.id_client = this.infoprospect.id_point;
         this.prospection.client = this.alldatapoint;
+        this.prospection.infosup = this.infoprospect.infosup;
 
 
         console.log("----------------------------------------------------------");
