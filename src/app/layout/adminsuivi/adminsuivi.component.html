@@ -33,7 +33,7 @@
             	<table class="table table-hover" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 			        <thead>
 			            <tr>
-			                <th><mfDefaultSorter by="prenom">Date assignation</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="assignation">Date assignation</mfDefaultSorter></th>
 			                <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
 			                <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
 			                <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
@@ -50,7 +50,7 @@
 			        </thead>
 			        <tbody>
 			            <tr *ngFor="let item of mf.data">
-			                <td>{{item.prenom}}</td>
+			                <td>{{item.assignation}}</td>
 			                <td>{{item.prenom}}</td>
 			                <td>{{item.nom}}</td>
 			                <td>{{item.tel}}</td>

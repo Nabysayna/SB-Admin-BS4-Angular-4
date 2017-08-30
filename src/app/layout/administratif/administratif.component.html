@@ -44,7 +44,7 @@
                         </td>
                         <td><button type="button" class="btn btn-sm btn-primary" (click)="open(contentExtraction, item)">Extraction</button></td>
                     	<td colspan="2" class="text-center">
-                    		<select class="form-control select-sm" [(ngModel)]="actionQuery" (change)="actionadministratifforpdv(item)">
+                    		<select class="form-control select-sm" (click)="choice()" [(ngModel)]="actionQuery" (change)="actionadministratifforpdv(item)">
 					          <option>--Choix action--</option>
 					          <option>En cours</option>
 					          <option>En attente</option>

@@ -59,6 +59,10 @@ export class AdministratifComponent implements OnInit {
     actionadministratifforpdv(item: any){
     	console.log(item);
     }
+
+    choice (){
+    	console.log(this.data);
+    }
     
     public data = [
 		  {

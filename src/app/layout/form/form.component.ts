@@ -16,6 +16,11 @@ export class FormComponent implements OnInit {
 	public isAdressepoint=true;
 	public isUploadfile=true;
 
+    public rowsOnPage = 5;
+    public sortBy = "service";
+    public sortOrder = "asc";
+
+
     private zonesactivites:{activites:any[],zones:any[]};
 	public isSelect=true;
 
@@ -182,5 +187,21 @@ export class FormComponent implements OnInit {
                 () => console.log('insertPoint')
             );
     }
+
+    public data = [
+      {
+        "reponse": "Intéressé"
+      },
+      {
+        "reponse": "Pas Pour le Moment"
+      },
+      {
+        "reponse": "Souscrire Maintenant"
+      },
+      {
+        "reponse": "Impossible"
+      },
+      
+    ];
 
 }
