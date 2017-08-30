@@ -4,7 +4,7 @@
     <hr>
   </div>
 </div>
-<div class="row" style="padding-bottom: 2rem" *ngIf="alldatapoint">
+<div class="row" style="padding-bottom: 2rem" *ngIf="alldatapoint && zonesactivites">
   <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=!isinfo.isinfopoint; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfopoint"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfopoint"></i> Info gerant</span></h3>
   <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1" *ngIf="isinfo.isinfopoint">
     <div class="row">
@@ -31,15 +31,15 @@
       <div class="form-group col-md-4">
         <label>Zone point</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
-          <option>Dakar</option>
-          <option>Parcelles</option>
+            <option>--Choix zone--</option>
+            <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone point</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
-          <option>Dakar</option>
-          <option>Parcelles</option>
+            <option>--Choix sous zone--</option>
+            <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
         </select>
       </div>
       <div class="form-group col-md-4">
@@ -88,15 +88,15 @@
       <div class="form-group col-md-4">
         <label>Zone proprietaire</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.zoneproprietaire">
-          <option>Dakar</option>
-          <option>Parcelles</option>
+            <option>--Choix zone--</option>
+            <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone proprietaire</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.souszoneproprietaire">
-          <option>Dakar</option>
-          <option>Parcelles</option>
+          <option>--Choix sous zone--</option>
+          <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
         </select>
       </div>
       <div class="form-group col-md-4">
@@ -125,9 +125,9 @@
       <div class="form-group col-sm-12 col-xs-12 ">
           <h4>Types d'activités du point</h4>
           <div class="row">
-              <div  *ngFor="let option of options"  class="col-sm-6 col-xs-12">
-                  <input type="checkbox" name="options" value="{{option.value}}"
-                         [(ngModel)]="option.checked" (change)="updateCheckedOptions()"
+              <div  *ngFor="let option of optionsActivite"  class="col-sm-6 col-xs-12">
+                  <input type="checkbox" name="optionsActivite" value="{{option.value}}"
+                         [(ngModel)]="option.checked" (change)="updateCheckedoptionsActivite()"
                   />
                   {{option.name}}
               </div>
@@ -143,7 +143,7 @@
       <div class="form-group col-md-6">
         <h4>Noter le point</h4>
         <div>
-          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)" (mouseover)="asurvoler(option.indice)"></i></span>
+          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
         </div>
       </div>
     </div>
