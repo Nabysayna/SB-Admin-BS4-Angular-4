@@ -52,7 +52,7 @@
                                     <option>--Choix zone--</option>
                                     <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
                                 </select>
-                                <label>Sous-zones</label>
+                                <label>Sous zones</label>
                                 <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.souszoneproprietaire">
                                     <option>--Choix sous zone--</option>
                                     <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>

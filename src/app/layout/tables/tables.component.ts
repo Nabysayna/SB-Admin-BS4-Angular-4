@@ -51,7 +51,12 @@ export class TablesComponent implements OnInit {
                             zone:type.zone, sous_zone:type.sous_zone,
                             commentaire:'',
                             infosup:JSON.parse(type.infosup),
-                            value:type.id, checked:false
+                            value:type.id,
+                            checked:false,
+                            id_superviseur:type.id_superviseur,
+                            superviseur:JSON.parse(type.superviseur),
+                            id_commercial:type.id_commercial,
+                            commercial:JSON.parse(type.commercial)
                         };
                     });
                     for (let i = 0; i < this.data.length; i++) {

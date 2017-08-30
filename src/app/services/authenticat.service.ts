@@ -8,12 +8,6 @@ import {Http, Headers} from "@angular/http";
 @Injectable()
 export class AuthenticatService {
 
-    public baseToken: string;
-    public email: string;
-    public accessLevel: number;
-    public authorizedApis: string;
-
-
     private link:string = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers:Headers;
 

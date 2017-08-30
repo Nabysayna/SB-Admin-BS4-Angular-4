@@ -111,7 +111,6 @@ export class FormComponent implements OnInit {
     private avoter(index:number): void{
         if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
             this.rating[index].checked = false;
-            this.client.avissurpoint = index;
         }
         else {
             for (var i = 0; i<this.rating.length; i++) {
@@ -119,7 +118,7 @@ export class FormComponent implements OnInit {
                     this.rating[i].checked = true;
                 }
                 else if(i == index) {
-                    if(this.rating[i].checked == true){
+                    if( (this.rating[i].checked == true) && (this.rating[i+1].checked == false) ){
                         this.rating[i].checked = false;
                     }
                     else {
@@ -130,8 +129,9 @@ export class FormComponent implements OnInit {
                     this.rating[i].checked = false;
                 }
             }
-            this.client.avissurpoint = index + 1;
         }
+        let arrayRating = this.rating.filter(opt => opt.checked);
+        this.client.avissurpoint = arrayRating.length;
     }
 
     private coordonneesgeospatialespoint(){
@@ -178,8 +178,6 @@ export class FormComponent implements OnInit {
             return activites[Number(option)-1].activite;
         });
     }
-
-    enregistrerProspect(){}
 
     validernewclient(){
         this._newclientservice.insertPoint(this.client)

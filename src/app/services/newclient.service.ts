@@ -34,6 +34,14 @@ export class NewclientService {
             .map(res => res.json());
     }
 
+    modifPoint(data:any){
+        let url = this.link+"/suivi/modifpointandajoutsuivi";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 
 }
