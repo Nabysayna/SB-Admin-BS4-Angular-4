@@ -33,6 +33,8 @@ export class ProspectPdvComponent implements OnInit {
     private optionsActivite:any[] = [];
 
     private prospection: any = {
+        id_assignation_origin:0,
+
         id_client:'',
         client:'',
 
@@ -163,12 +165,12 @@ export class ProspectPdvComponent implements OnInit {
         this.alldatapoint.adresse_point = this.adresse_point;
         this.alldatapoint.adresse_proprietaire = this.adresse_proprietaire
 
+        this.prospection.id_assignation_origin = this.infoprospect.id;
         this.prospection.id_client = this.infoprospect.id_point;
         this.prospection.client = this.alldatapoint;
 
 
         console.log("----------------------------------------------------------");
-
         this._newclientservice.modifPoint(this.prospection)
             .subscribe(
                 data => console.log(data),
