@@ -16,6 +16,11 @@ export class FormComponent implements OnInit {
 	public isAdressepoint=true;
 	public isUploadfile=true;
 
+    public rowsOnPage = 5;
+    public sortBy = "service";
+    public sortOrder = "asc";
+
+
     private zonesactivites:{activites:any[],zones:any[]};
 	public isSelect=true;
 
@@ -184,5 +189,43 @@ export class FormComponent implements OnInit {
                 () => console.log('insertPoint')
             );
     }
+
+    public dataprospect = [
+      {
+        "dateassignation": "Naby",
+        "prenom": "Naby",
+        "nom": "NDIAYE",
+        "tel": "11",
+        "zone": "Dakar centre",
+        "objectif": 3,
+        "note": 3,
+      },
+      {
+        "dateassignation": "bg",
+        "prenom": "Bamba",
+        "nom": "GNING",
+        "tel": "12",
+        "zone": "Dakar plateau",
+        "objectif": 5,
+        "note": 3,
+      }
+   
+    ];
+
+    public data = [
+      {
+        "reponse": "Intéressé"
+      },
+      {
+        "reponse": "Pas Pour le Moment"
+      },
+      {
+        "reponse": "Souscrire Maintenant"
+      },
+      {
+        "reponse": "Impossible"
+      },
+      
+    ];
 
 }

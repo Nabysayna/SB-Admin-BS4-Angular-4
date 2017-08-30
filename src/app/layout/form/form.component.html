@@ -85,15 +85,41 @@
                   </button>
                   <div id="collapseExampl" [ngbCollapse]="isSelect">
                         <div class="card">
-                            <div class="card-block">
-                                <label>Etes-vous intéressé par le service ...? </label><select class="form-control input-sm" [(ngModel)]="questions">
-                                <option>Souscrire maintenant</option>
-                                <option>Intéressé</option>
-                                <option>Pas pour le moment</option>
-                                <option>Impossible</option>
-                                <option></option>
-                                </select>
+                         <div class="col-xs-12 col-sm-12">
+
+                            <div class="row table-responsive">
+                                <table class="table table-hover" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                                    <thead>
+                                    <tr>
+                                        <th><mfDefaultSorter by="reponse">Réponse</mfDefaultSorter></th>
+                                        <th><mfDefaultSorter by="postcash">PostCash</mfDefaultSorter></th>
+                                        <th><mfDefaultSorter by="tigocash">TigoCash</mfDefaultSorter></th>
+                                        <th><mfDefaultSorter by="tnt">TNT</mfDefaultSorter></th>
+                                        <th><mfDefaultSorter by="ria">RIA</mfDefaultSorter></th>
+                                        
+                                    </tr>
+                                    <tr>
+                                </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let item of mf.data">
+                                        <td>{{item.reponse}}</td>
+                                        <td><input type="radio" name="one"/></td>
+                                        <td><input type="radio" name="two"/></td>
+                                        <td><input type="radio" name="three"/></td>
+                                        <td><input type="radio" name="prospects"/></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr class="text-center center-block">
+                                        <td colspan="8" class="text-center center-block">
+                                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div>
+                        </div>
                         </div>
                   </div>
                   <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isUploadfile = !isUploadfile"
@@ -108,7 +134,7 @@
                                         <option>--Choisir le type de pièce--</option>
                                         <option>CIN</option>
                                         <option>Passport</option>
-                                        <option>Carte consulaire</option>
+                                        <option>Carte Consulaire</option>
                                         <option> Autres Pièce... </option>
                                         </select>
                                 <label class="ng-tns-c25-10" for="exampleInputFile" _ngcontent-c25="">Choisir un fichier</label>

@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit {
         else if ( access.match(3) ){
             this.router.navigate(['/admincom']);
         }
+        else if ( access.match(1) ){
+            this.router.navigate(['/manager']);
+        }
         else {
             this.fakevalues = false;
             console.log(typeof access);

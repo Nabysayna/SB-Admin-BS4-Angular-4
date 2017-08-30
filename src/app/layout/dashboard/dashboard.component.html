@@ -13,16 +13,6 @@
         </div>
 
         <div class="col-md-12">
-        <ul class="list-group">
-          <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Propects' }}
-            </a>
-            <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Nouveau Client' }}
-            </a>
-
-
-        </ul>
             <ngb-carousel>
                 <ng-template ngbSlide *ngFor="let slider of sliders">
                     <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
