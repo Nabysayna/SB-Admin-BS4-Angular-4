@@ -12,6 +12,10 @@ import {NewclientService} from "../../services/newclient.service";
 })
 export class ProspectPdvComponent implements OnInit {
 
+    private staticAlertClosed: boolean = false;
+    private isEnregistrerProspect: boolean = false;
+
+
     @Input() infoprospect: any;
     private point:any;
     private alldatapoint:any;
@@ -173,7 +177,10 @@ export class ProspectPdvComponent implements OnInit {
         console.log("----------------------------------------------------------");
         this._newclientservice.modifPoint(this.prospection)
             .subscribe(
-                data => console.log(data),
+                data => {
+                    console.log(data);
+                    this.isEnregistrerProspect = true;
+                },
                 error => alert(error),
                 () => console.log('insertPoint')
             );
