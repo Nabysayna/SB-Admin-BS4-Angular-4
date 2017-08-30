@@ -188,28 +188,6 @@ export class FormComponent implements OnInit {
             );
     }
 
-    public dataprospect = [
-      {
-        "dateassignation": "Naby",
-        "prenom": "Naby",
-        "nom": "NDIAYE",
-        "tel": "11",
-        "zone": "Dakar centre",
-        "objectif": 3,
-        "note": 3,
-      },
-      {
-        "dateassignation": "bg",
-        "prenom": "Bamba",
-        "nom": "GNING",
-        "tel": "12",
-        "zone": "Dakar plateau",
-        "objectif": 5,
-        "note": 3,
-      }
-   
-    ];
-
     public data = [
       {
         "reponse": "Intéressé"
