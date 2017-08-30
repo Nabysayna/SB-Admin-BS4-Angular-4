@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {UtilService} from "../../services/util.service";
+import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
 @Component({
   selector: 'app-admincommercial',
   templateUrl: './admincommercial.component.html',
   styleUrls: ['./admincommercial.component.scss'],
-  providers:[UtilService ],
+  providers:[UtilService, AssignationSuiviService],
 
 })
 
 export class AdmincommercialComponent implements OnInit {
+
+    private staticAlertClosed: boolean = false;
+    private isEnregistrerAssignation: boolean = false;
 
     private filtreZone:string = "--Choix zone--";
     private filtreSousZone:string = "--Choix sous zone--";
@@ -38,7 +42,7 @@ export class AdmincommercialComponent implements OnInit {
         {indice:4, checked:false},
     ];
 
-	constructor(private _utilService:UtilService) { }
+	constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
   	ngOnInit() {
 	    this.getZones();
@@ -158,9 +162,13 @@ export class AdmincommercialComponent implements OnInit {
                 }
             };
             console.log(assignations);
-            this._utilService.assignationsuperviseur(assignations)
+            this._assignationsuiviService.assignationsuperviseur(assignations)
                 .subscribe(
-                    data => console.log(data),
+                    data => {
+                        console.log(data);
+                        this.isEnregistrerAssignation = true;
+                        this.filtreZone = "--Choix zone--";
+                    },
                     error => alert(error),
                     () => console.log('assignationsuperviseur')
                 );

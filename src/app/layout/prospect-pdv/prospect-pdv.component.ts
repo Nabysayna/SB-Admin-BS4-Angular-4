@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import {UtilService} from "../../services/util.service";
-import {NewclientService} from "../../services/newclient.service";
+import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
 @Component({
     selector: 'app-prospect-pdv',
     templateUrl: './prospect-pdv.component.html',
     styleUrls: ['./prospect-pdv.component.scss'],
     animations: [routerTransition()],
-    providers:[NewclientService]
+    providers:[AssignationSuiviService]
 })
 export class ProspectPdvComponent implements OnInit {
 
@@ -53,11 +53,11 @@ export class ProspectPdvComponent implements OnInit {
     };
 
 
-    constructor(private _newclientservice: NewclientService, private _utilService:UtilService) { }
+    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
     ngOnInit() {
         this.point = JSON.parse(this.infoprospect.point);
-        this._newclientservice.getZoneActivite()
+        this._utilService.getZoneActivite()
             .subscribe(
                 data => {
                     this.zonesactivites = data;
@@ -153,7 +153,7 @@ export class ProspectPdvComponent implements OnInit {
     }
 
     private getZoneActivite(){
-        this._newclientservice.getZoneActivite()
+        this._utilService.getZoneActivite()
             .subscribe(
                 data => {
                     this.zonesactivites = data;
@@ -175,7 +175,7 @@ export class ProspectPdvComponent implements OnInit {
 
 
         console.log("----------------------------------------------------------");
-        this._newclientservice.modifPoint(this.prospection)
+        this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
                     console.log(data);

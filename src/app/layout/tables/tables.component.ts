@@ -5,13 +5,14 @@ import {UtilService} from "../../services/util.service";
 
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
 @Component({
     selector: 'app-tables',
     templateUrl: './tables.component.html',
     styleUrls: ['./tables.component.scss'],
     animations: [routerTransition()],
-    providers:[UtilService]
+    providers:[UtilService, AssignationSuiviService]
 })
 export class TablesComponent implements OnInit {
 
@@ -28,11 +29,11 @@ export class TablesComponent implements OnInit {
     private client:any;
 
     closeResult: string;
-	constructor(private http: Http, private modalService: NgbModal, private _utilService: UtilService) {}
+	constructor(private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit(): void {
         this.getZones();
-        this._utilService.getAssignationsByCommercial()
+        this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
                     console.log(data);

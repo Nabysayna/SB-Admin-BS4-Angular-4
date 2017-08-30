@@ -35,6 +35,11 @@
             <input type="number" class="form-control input-sm"  [(ngModel)]="objetifsuperviseur" name="objetifsuperviseur" />
         </div>
 	</div>
+    <div *ngIf="isEnregistrerAssignation" class="row col-sm-12 text-center center-block">
+        <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
+            <strong>Success!</strong> Assignation avec success.
+        </ngb-alert>
+    </div>
     <div class="row col-sm-12 text-center center-block" style="padding-bottom: 1rem">
     	<button type="button"
                 class="btn btn-warning  input-sm"

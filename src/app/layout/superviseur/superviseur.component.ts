@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
+import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
 @Component({
     selector: 'app-superviseur',
     templateUrl: './superviseur.component.html',
     styleUrls: ['./superviseur.component.scss'],
-    providers:[UtilService ],
+    providers:[UtilService, AssignationSuiviService],
 })
 
 export class SuperviseurComponent implements OnInit {
 
+    private staticAlertClosed: boolean = false;
+    private isEnregistrerAssignation: boolean = false;
 
     private filterQuery:string = "";
     private filtreZone:string = "--Choix zone--";
@@ -31,13 +34,14 @@ export class SuperviseurComponent implements OnInit {
     private commercials:any[] = [];
     private data:any[] = [];
     private optionassignations:any[] = [];
+    private datasuivi:any[] = [];
 
     private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
-    constructor(private modalService: NgbModal, private _utilService:UtilService) { }
+    constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
     ngOnInit() {
-        this._utilService.getAssignationsBySuperviseur()
+        this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
                     console.log(data);
@@ -63,7 +67,33 @@ export class SuperviseurComponent implements OnInit {
                     console.log(this.zones);
                 },
                 error => alert(error),
-                () => console.log(this.data)
+                () => {
+                    console.log(this.data);
+                    this._assignationsuiviService.listsuiviforsuperviseur()
+                        .subscribe(
+                            data => {
+                                console.log(data);
+                                this.datasuivi = data.map(function(type) {
+                                    let client = JSON.parse(type.client);
+                                    console.log(client);
+                                    return {
+                                        id:type.id,
+                                        libellepoint:client.nom_point,
+                                        fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                        telephone:client.telephone_gerant,
+                                        adresse:client.adresse_point.adressepoint,
+                                        note:type.note,
+                                        dates_suivi:type.dates_suivi,
+                                        reponse:"",
+                                        qualification:"--Choisir une action--",
+                                        client:client,
+                                    };
+                                });
+                            },
+                            error => alert(error),
+                            () => console.log(this.datasuivi)
+                        );
+                }
             );
     }
 
@@ -88,8 +118,7 @@ export class SuperviseurComponent implements OnInit {
     private toInt(num: string) { return +num; }
 
     private getCommerciaux(): void {
-        let data = {token:"1234567889"};
-        this._utilService.getCommerciauxBySuperviseur(data)
+        this._utilService.getCommerciauxBySuperviseur()
             .subscribe(
                 data => {
                     this.commercials = data
@@ -159,9 +188,13 @@ export class SuperviseurComponent implements OnInit {
                 }
             };
             console.log(assignations);
-            this._utilService.assignationcommercial(assignations)
+            this._assignationsuiviService.assignationcommercial(assignations)
                 .subscribe(
-                    data => console.log(data),
+                    data => {
+                        console.log(data);
+                        this.isEnregistrerAssignation = true;
+                        this.filtreZone = "--Choix zone--";
+                    },
                     error => alert(error),
                     () => console.log('assignationcommercial')
                 );
@@ -173,6 +206,20 @@ export class SuperviseurComponent implements OnInit {
         }, (reason) => {} );
     }
 
-
+    private validersuivisuperviseur(suivi:any){
+        let suivisuperviseur = {
+            id:suivi.id,
+            dates_suivi:JSON.parse(suivi.dates_suivi),
+            reponse:suivi.reponse,
+            qualification:suivi.qualification,
+        };
+        //console.log(suivisuperviseur);
+        this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)
+            .subscribe(
+                data => console.log(data),
+                error => alert(error),
+                () => console.log('ajoutsuivifromsuperviseur')
+            );
+    }
 
 }

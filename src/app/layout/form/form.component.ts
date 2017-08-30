@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import {NewclientService} from "../../services/newclient.service";
 import {UtilService} from "../../services/util.service";
+import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
 @Component({
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
     animations: [routerTransition()],
-    providers: [NewclientService, UtilService]
+    providers: [UtilService, AssignationSuiviService]
 })
 export class FormComponent implements OnInit {
 	private fakevalues = true ;
@@ -65,7 +65,7 @@ export class FormComponent implements OnInit {
 
     private options:any[] = [];
 
-    constructor(private _newclientservice: NewclientService, private _utilService: UtilService) { }
+    constructor(private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
     ngOnInit() {
         this.getZoneActivite();
@@ -90,7 +90,7 @@ export class FormComponent implements OnInit {
     }
 
     private getZoneActivite(){
-        this._newclientservice.getZoneActivite()
+        this._utilService.getZoneActivite()
             .subscribe(
                 data => {
                     this.zonesactivites = data;
@@ -175,7 +175,7 @@ export class FormComponent implements OnInit {
     }
 
     validernewclient(){
-        this._newclientservice.insertPoint(this.client)
+        this._utilService.insertPoint(this.client)
             .subscribe(
                 data => console.log(data),
                 error => alert(error),
