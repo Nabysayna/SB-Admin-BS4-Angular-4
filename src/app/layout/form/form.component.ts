@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+import { Http, RequestOptions, RequestMethod, Headers  } from '@angular/http';
+import { Observable }     from 'rxjs/Observable';
 
 @Component({
     selector: 'app-form',
@@ -19,7 +21,9 @@ export class FormComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "service";
     public sortOrder = "asc";
-
+    allServices : any ;
+    reponsesProspect : string[] = [];
+    uploadedFileType : string ;
 
     private zonesactivites:{activites:any[],zones:any[]};
 	public isSelect=true;
@@ -57,7 +61,8 @@ export class FormComponent implements OnInit {
             codepostalproprietaire:0,
             geospatialproprietaire:{latitude:0,longitude:0},
         },
-
+        reponsesProspect : [],
+        piecesFournies : []
     };
 
     private rating = [
@@ -70,7 +75,11 @@ export class FormComponent implements OnInit {
 
     private options:any[] = [];
 
-    constructor(private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    uploadFile: any;
+    newImage : any ;
+
+
+    constructor(private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
 
     ngOnInit() {
         this.getZoneActivite();
@@ -91,6 +100,20 @@ export class FormComponent implements OnInit {
                 data => this.souszonespropietaires = data,
                 error => alert(error),
                 () => console.log(this.souszonespropietaires)
+            );
+    }
+
+    private getAllServices(){
+        this._utilService.getServices()
+            .subscribe(
+                data => this.allServices = data,
+                error => alert(error),
+                () => { 
+                        this.isSelect = !this.isSelect;
+                        for(let i=0 ; i<this.allServices.length ; i++){
+                            this.reponsesProspect.push("") ;
+                        }
+                      }
             );
     }
 
@@ -158,14 +181,6 @@ export class FormComponent implements OnInit {
         }
     }
 
-    private enregistercoordonneesgeospatialespoint(){
-        this.client.adressecompletpoint.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
-    }
-
-    private enregistercoordonneesgeospatialesproprietaire(){
-        this.client.adressecompletproprietaire.geospatialproprietaire = JSON.parse(sessionStorage.getItem('positionproprietaire'));
-    }
-
     get selectedOptions() {
         return this.options
             .filter(opt => opt.checked)
@@ -180,23 +195,65 @@ export class FormComponent implements OnInit {
     }
 
     validernewclient(){
+        this.client.adressecompletpoint.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
+        this.client.adressecompletproprietaire.geospatialproprietaire = JSON.parse(sessionStorage.getItem('positionproprietaire'));
+
+        for(let i = 0 ; i<this.allServices.length ; i++){
+            this.client.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
+        }
+
         this._utilService.insertPoint(this.client)
             .subscribe(
                 data => console.log(data),
                 error => alert(error),
                 () => console.log('insertPoint')
-            );
+        );  
     }
 
-    public data = [
+  apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
+
+  fileChange(event) {
+      let fileList: FileList = event.target.files;
+      if(fileList.length > 0) {
+          let file: File = fileList[0];
+          let formData:FormData = new FormData();
+          formData.append('file', file, file.name);
+          let headers = new Headers();
+
+          headers.append('Accept', 'application/json');
+          let options = new RequestOptions({
+                              headers: headers
+                            });
+
+          this.http.post(`${this.apiEndPoint}`, formData, options)
+              .map(res => res.json())
+              .catch(error => Observable.throw(error))
+              .subscribe(
+                  data => { console.log("Retour uploader "+data.generatedName) ;
+                           let newData = data;
+                           this.uploadFile = newData;
+                           this.newImage = this.uploadFile.generatedName ;
+                           this.client.piecesFournies.push(this.uploadedFileType+"#"+this.newImage) ;
+                        },
+                  error => console.log(error)
+              )
+      }
+  }
+
+
+
+    public possibleAnswers = [
+      {
+        "reponse": "A Déjà Souscri"
+      },
+      {
+        "reponse": "Souscrit Maintenant"
+      },
       {
         "reponse": "Intéressé"
       },
       {
         "reponse": "Pas Pour le Moment"
-      },
-      {
-        "reponse": "Souscrire Maintenant"
       },
       {
         "reponse": "Impossible"

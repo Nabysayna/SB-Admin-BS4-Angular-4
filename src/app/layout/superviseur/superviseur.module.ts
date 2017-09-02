@@ -5,6 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
+import { ProgressionbyModule } from '../progressionby/progressionby.module';
+import { RatingbyoptionModule } from '../ratingbyoption/ratingbyoption.module';
+
 import { SuperviseurComponent } from './superviseur.component';
 import { SuperviseurRoutingModule } from './superviseur-routing.module';
 import { PageHeaderModule } from './../../shared';
@@ -14,9 +17,6 @@ import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
-import {ProgressionbyComponent} from "../progressionby/progressionby.component";
-import {RatingbyoptionComponent} from "../ratingbyoption/ratingbyoption.component";
-
 
 @NgModule({
     imports: [
@@ -25,6 +25,8 @@ import {RatingbyoptionComponent} from "../ratingbyoption/ratingbyoption.componen
         SuperviseurRoutingModule,
         PageHeaderModule,
         DataTableModule,
+        ProgressionbyModule,
+        RatingbyoptionModule,
         NgbModule.forRoot(),
         Ng2Charts,
     ],
@@ -33,9 +35,6 @@ import {RatingbyoptionComponent} from "../ratingbyoption/ratingbyoption.componen
     	DataFilterPipe,
         ZonesFilterPipe,
         SousZonesFilterPipe,
-
-        ProgressionbyComponent,
-        RatingbyoptionComponent,
     ]
 })
 export class SuperviseurModule { }
