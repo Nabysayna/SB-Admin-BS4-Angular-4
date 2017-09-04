@@ -9,7 +9,6 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
     styleUrls: ['./superviseur.component.scss'],
     providers:[UtilService, AssignationSuiviService],
 })
-
 export class SuperviseurComponent implements OnInit {
 
     private staticAlertClosed: boolean = false;
@@ -20,6 +19,9 @@ export class SuperviseurComponent implements OnInit {
     private filtreSousZone:string = "--Choix sous zone--";
     private choixcommercial:string = "--Choix commercial--"
     private objetifcommercial:number = 0;
+
+    currentPointDocs : any ;
+    reponsesPointAuProspect : any ;
 
     private readyforassination:boolean=true;
     private isclickforassination:boolean=false;
@@ -202,7 +204,26 @@ export class SuperviseurComponent implements OnInit {
         }
     }
 
-    showModal(content) {
+    getLibellePiece(item){
+        return item.split("#")[0] ;
+    }
+
+    getNomFichier(item){
+        return item.split("#")[1] ;
+    }
+
+
+
+    showModal(content, i) {
+        this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
+        console.log( this.currentPointDocs ) ;
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
+    showModalDetail(content, i) {
+        this.reponsesPointAuProspect = JSON.parse(this.datasuivi[i].client.services) ;
+        console.log( this.reponsesPointAuProspect ) ;
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }

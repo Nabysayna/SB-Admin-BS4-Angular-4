@@ -205,12 +205,6 @@ export class ProspectPdvComponent implements OnInit {
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
 
-        console.log("----------------------------------------------------------");
-
-        console.log( "INFOS PROSPECT : "+JSON.stringify(this.prospection) );
-
-        console.log("----------------------------------------------------------");
-
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
