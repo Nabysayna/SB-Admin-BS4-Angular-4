@@ -143,13 +143,13 @@
       <div class="form-group col-md-6">
         <h4>Noter le point</h4>
         <div>
-          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-star-o': !option.checked, 'fa-star': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
         </div>
       </div>
     </div>
 
     <div class="row">
-        <button style="margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+        <button style="margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;" class="btn btn-outline-primary" (click)="getAllServices()"
             [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
             Prospection
         </button>
@@ -158,13 +158,22 @@
         <div id="collapseExampl" [ngbCollapse]="isSelect" style="margin-bottom: 1rem; margin-left: 0.3rem;">
             <div class="card">
                 <div class="card-block">
-                    <label>Etes-vous intéressé par le service ...? </label><select class="form-control input-sm" [(ngModel)]="questions">
-                    <option>Souscrire maintenant</option>
-                    <option>Intéressé</option>
-                    <option>Pas pour le moment</option>
-                    <option>Impossible</option>
-                    <option></option>
-                    </select>
+                    <div class="row table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                  <th>Réponse</th>
+                                  <th *ngFor="let item of possibleAnswers">{{item.reponse}}</th>
+                              </tr>
+                            </thead>
+                            <tbody *ngIf="allServices">
+                              <tr *ngFor="let service of allServices ; let i = index ">
+                                  <td>{{service.nom}}</td>
+                                  <td *ngFor="let item of possibleAnswers"><input type="radio" value="{{item.reponse}}" name="{{service.nom}}" [(ngModel)]="reponsesProspect[i]"/></td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
        </div>
@@ -177,18 +186,17 @@
     </div>
     <div class="row">
       <div class="form-group col-sm-4">
-        <select class="form-control input-sm">
-          <option>--Type de pièce--</option>
-          <option>CIN</option>
-          <option>Passport</option>
-          <option>Extrait de naissance</option>
-        </select>
+          <label>Libellé</label>
+          <select class="form-control input-sm" [(ngModel)]="uploadedFileType">
+              <option>--Choisir le type de pièce--</option>
+              <option value="cni">CIN</option>
+              <option value="passport">Passport</option>
+              <option value="carte consulaire">Carte Consulaire</option>
+              <option value="autre"> Autres Pièces... </option>
+          </select>
       </div>
       <div class="form-group col-sm-6">
-        <input class="form-control-file" type="file">
-      </div>
-      <div class="form-group col-sm-2">
-        <button>Charger</button>
+        <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChange($event)" placeholder="Uploader Image" accept=".pdf,.docx,.png,.jpg">
       </div>
     </div>
   </div>
@@ -202,6 +210,6 @@
 
 <div *ngIf="isEnregistrerProspect" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
     <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
-        <strong>Success!</strong> Prospection avec success, <br/>Veillez cliquer sur Fermer pour sortir!
+        <strong>Successfull!</strong> <br/>Veuillez cliquer sur Fermer pour sortir!
     </ngb-alert>
 </div>

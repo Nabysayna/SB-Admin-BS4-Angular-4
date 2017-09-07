@@ -29,10 +29,9 @@
                                 <input type="text" [(ngModel)]="client.adressecompletpoint.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
                                 <label>Code postal</label>
                                 <input type="number" [(ngModel)]="client.adressecompletpoint.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
-                                <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-default btn-circle">
-                                    <i class="fa fa-search"></i>Recherche Coordonnées Géospatiales du point
+                                <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-primary btn-circle">
+                                    <i class="fa fa-search"></i>Récupèrer les Coordonnées Géospatiales du point
                                 </button>
-                             <button (click)="enregistercoordonneesgeospatialespoint()" class="btn btn-sm btn-primary" >Valider les coordonnées</button>
                             </div>
                       </div>
                   </div>
@@ -61,10 +60,9 @@
                                 <input type="text" [(ngModel)]="client.adressecompletproprietaire.adresseproprietaire" name="adresseproprietaire" id="adresseproprietaire" class="form-control"  placeholder="adresse exacte" required>
                                 <label>Code postal</label>
                                 <input type="number" [(ngModel)]="client.adressecompletproprietaire.codepostalproprietaire" name="codepostalproprietaire" id="codepostalproprietaire" class="form-control"  placeholder="code postal propriétaire">
-                                <button (click)="coordonneesgeospatialesproprietaire()" type="button" class="btn btn-default btn-circle">
+                                <button (click)="coordonneesgeospatialesproprietaire()" type="button" class="btn btn-primary btn-circle">
                                     <i class="fa fa-search"></i>Recherche Coordonnées Géospatiales du proprietaire
                                 </button>
-                                <button (click)="enregistercoordonneesgeospatialesproprietaire()" class="btn btn-sm btn-primary">Enregistrer</button>
                             </div>
                       </div>
                   </div>
@@ -77,46 +75,31 @@
                           {{option.name}}
                         </div>
                   </div>
-                  <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isSelect = !isSelect"
+                  <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="getAllServices()"
                         [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl"> Prospection
                   </button>
                   <div id="collapseExampl" [ngbCollapse]="isSelect">
-                        <div class="card">
-                         <div class="col-xs-12 col-sm-12">
+                      <div class="card">
+                          <div class="col-xs-12 col-sm-12">
 
-                            <div class="row table-responsive">
-                                <table class="table table-hover" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-                                    <thead>
-                                    <tr>
-                                        <th><mfDefaultSorter by="reponse">Réponse</mfDefaultSorter></th>
-                                        <th><mfDefaultSorter by="postcash">PostCash</mfDefaultSorter></th>
-                                        <th><mfDefaultSorter by="tigocash">TigoCash</mfDefaultSorter></th>
-                                        <th><mfDefaultSorter by="tnt">TNT</mfDefaultSorter></th>
-                                        <th><mfDefaultSorter by="ria">RIA</mfDefaultSorter></th>
-                                    </tr>
-                                    <tr>
-                                </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr *ngFor="let item of mf.data">
-                                        <td>{{item.reponse}}</td>
-                                        <td><input type="radio" name="one"/></td>
-                                        <td><input type="radio" name="two"/></td>
-                                        <td><input type="radio" name="three"/></td>
-                                        <td><input type="radio" name="prospects"/></td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr class="text-center center-block">
-                                        <td colspan="8" class="text-center center-block">
-                                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                        </div>
+                              <div class="row table-responsive">
+                                  <table class="table table-hover">
+                                      <thead>
+                                      <tr>
+                                          <th>Réponse</th>
+                                          <th *ngFor="let item of possibleAnswers">{{item.reponse}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody *ngIf="allServices">
+                                      <tr *ngFor="let service of allServices ; let i = index ">
+                                          <td>{{service.nom}}</td>
+                                          <td *ngFor="let item of possibleAnswers"><input type="radio" value="{{item.reponse}}" name="{{service.nom}}" [(ngModel)]="reponsesProspect[i]"/></td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   <button style="margin-top:4rem; margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isUploadfile = !isUploadfile"
                         [attr.aria-expanded]="!isUploadfile" aria-controls="collapseExamplees">
@@ -126,15 +109,16 @@
                         <div class="card">
                             <div class="card-block">
                            <fieldset class="form-group" _ngcontent-c25="" style="margin-top: 1rem;">
-                                <label>Libellé</label><select class="form-control input-sm">
+                                <label>Libellé</label><select class="form-control input-sm" [(ngModel)]="uploadedFileType">
                                         <option>--Choisir le type de pièce--</option>
-                                        <option>CIN</option>
-                                        <option>Passport</option>
-                                        <option>Carte Consulaire</option>
-                                        <option> Autres Pièces... </option>
+                                        <option value="cni">CIN</option>
+                                        <option value="passport">Passport</option>
+                                        <option value="carte consulaire">Carte Consulaire</option>
+                                        <option value="autre"> Autres Pièces... </option>
                                         </select>
                                 <label class="ng-tns-c25-10" for="exampleInputFile" _ngcontent-c25="">Choisir un fichier</label>
-                                <input class="form-control-file" id="exampleInputFile" type="file" _ngcontent-c25="">
+                                <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChange($event)" placeholder="Uploader Image" accept=".pdf,.docx,.png,.jpg">
+
                             </fieldset>
                             </div>
                         </div>
@@ -142,13 +126,13 @@
                    <div>
                        <label>Avis sur point</label>
                         <p>
-                          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-heart-o': !option.checked, 'fa-heart': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+                          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-star-o': !option.checked, 'fa-star': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
                         </p>
                   </div>
             </div>
         </div>
     </div>
     <div style="margin-top: 4rem; margin-bottom: 4rem" class="text-center">
-        <button type="button" class="btn btn-success" (click)="validernewclient()"> Validation Enregistrement</button>
+        <button type="button" class="btn btn-success" (click)="validernewclient()"> Enregistrer le nouveau client</button>
     </div>
 </div>

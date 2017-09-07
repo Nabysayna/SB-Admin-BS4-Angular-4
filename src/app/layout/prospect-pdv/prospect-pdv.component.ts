@@ -3,6 +3,10 @@ import { routerTransition } from '../../router.animations';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
+import { Http, RequestOptions, RequestMethod, Headers  } from '@angular/http';
+import { Observable }     from 'rxjs/Observable';
+
+
 @Component({
     selector: 'app-prospect-pdv',
     templateUrl: './prospect-pdv.component.html',
@@ -14,6 +18,13 @@ export class ProspectPdvComponent implements OnInit {
 
     private staticAlertClosed: boolean = false;
     private isEnregistrerProspect: boolean = false;
+
+    uploadFile: any;
+    newImage : any ;
+    uploadedFileType : string ;
+
+    reponsesProspect : string[] = [];
+    allServices : any ;
 
 
     @Input() infoprospect: any;
@@ -41,6 +52,8 @@ export class ProspectPdvComponent implements OnInit {
 
         id_client:'',
         client:'',
+        reponsesProspect : [],
+        piecesFournies : [],
 
         noteprospect:0,
         niveau:1,
@@ -53,7 +66,7 @@ export class ProspectPdvComponent implements OnInit {
     };
 
 
-    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
 
     ngOnInit() {
         this.point = JSON.parse(this.infoprospect.point);
@@ -93,6 +106,20 @@ export class ProspectPdvComponent implements OnInit {
 
     }
 
+
+    private getAllServices(){
+        this._utilService.getServices()
+            .subscribe(
+                data => this.allServices = data,
+                error => alert(error),
+                () => { 
+                        this.isSelect = !this.isSelect;
+                        for(let i=0 ; i<this.allServices.length ; i++){
+                            this.reponsesProspect.push("") ;
+                        }
+                      }
+            );
+    }
 
     private selectZonePoint(){
         this._utilService.getSouszoneByZone(this.adresse_point.zonepoint)
@@ -174,23 +201,74 @@ export class ProspectPdvComponent implements OnInit {
         this.prospection.client = this.alldatapoint;
         this.prospection.infosup = this.infoprospect.infosup;
 
+        for(let i = 0 ; i<this.allServices.length ; i++){
+            this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
+        }
 
-        console.log("----------------------------------------------------------");
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
-                    console.log(data);
+                    // console.log(data);
                     this.isEnregistrerProspect = true;
                 },
                 error => alert(error),
-                () => console.log('insertPoint')
+                () => console.log('')
             );
     }
+
+apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
+
+  fileChange(event) {
+      let fileList: FileList = event.target.files;
+      if(fileList.length > 0) {
+          let file: File = fileList[0];
+          let formData:FormData = new FormData();
+          formData.append('file', file, file.name);
+          let headers = new Headers();
+
+          headers.append('Accept', 'application/json');
+          let options = new RequestOptions({
+                              headers: headers
+                            });
+
+          this.http.post(`${this.apiEndPoint}`, formData, options)
+              .map(res => res.json())
+              .catch(error => Observable.throw(error))
+              .subscribe(
+                  data => { console.log("Retour uploader "+data.generatedName) ;
+                           let newData = data;
+                           this.uploadFile = newData;
+                           this.newImage = this.uploadFile.generatedName ;
+                           this.prospection.piecesFournies.push(this.uploadedFileType+"#"+this.newImage) ;
+                        },
+                  error => console.log(error)
+              )
+      }
+  }
 
 
   validDonnees(){
       
   }
+
+    public possibleAnswers = [
+      {
+        "reponse": "A Déjà Souscri"
+      },
+      {
+        "reponse": "Souscrire Maintenant"
+      },
+      {
+        "reponse": "Intéressé"
+      },
+      {
+        "reponse": "Pas Pour le Moment"
+      },
+      {
+        "reponse": "Impossible"
+      },
+      
+    ];
 
 
 }

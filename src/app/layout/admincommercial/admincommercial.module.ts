@@ -7,6 +7,8 @@ import { AgmCoreModule } from '@agm/core';
 import { DataTableModule } from "angular2-datatable";
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
+import { ProgressionbyModule } from '../progressionby/progressionby.module';
+import { RatingbyoptionModule } from '../ratingbyoption/ratingbyoption.module';
 
 import { AdmincommercialComponent } from './admincommercial.component';
 import { AdmincommercialRoutingModule } from './admincommercial-routing.module';
@@ -17,12 +19,10 @@ import { ZonesAdminFilterPipe }   from '../../pipe/zones-admin-filter.pipe';
 import { SousZonesAdminFilterPipe }   from '../../pipe/souszones-admin-filter.pipe';
 
 import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
-import { ProgressionbyComponent} from '../progressionby/progressionby.component';
 
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { RatingModule } from 'ngx-bootstrap/rating';
 
-import {RatingbyoptionComponent} from '../ratingbyoption/ratingbyoption.component';
 
 
 @NgModule({
@@ -32,6 +32,8 @@ import {RatingbyoptionComponent} from '../ratingbyoption/ratingbyoption.componen
         AdmincommercialRoutingModule,
         PageHeaderModule,
         DataTableModule,
+        ProgressionbyModule,
+        RatingbyoptionModule,
         NgbModule.forRoot(),
         AgmCoreModule.forRoot({
 	      apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
@@ -46,8 +48,6 @@ import {RatingbyoptionComponent} from '../ratingbyoption/ratingbyoption.componen
     	ZonesAdminFilterPipe,
         SousZonesAdminFilterPipe,
     	AdminsuiviComponent,
-        ProgressionbyComponent,
-        RatingbyoptionComponent,
     ]
 })
 
