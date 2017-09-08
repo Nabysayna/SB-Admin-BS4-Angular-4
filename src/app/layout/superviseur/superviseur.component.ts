@@ -85,6 +85,8 @@ export class SuperviseurComponent implements OnInit {
                                         telephone:client.telephone_gerant,
                                         adresse:client.adresse_point.adressepoint,
                                         note:type.note,
+                                        id_assigner:type.id_assigner,
+                                        id_commercial:type.id_commercial,
                                         dates_suivi:type.dates_suivi,
                                         reponse:client.services,
                                         qualification:"--Choisir une action--",
@@ -234,6 +236,8 @@ export class SuperviseurComponent implements OnInit {
             dates_suivi:JSON.parse(suivi.dates_suivi),
             reponse:suivi.reponse,
             qualification:suivi.qualification,
+            id_assigner:suivi.id_assigner,
+            id_commercial:suivi.id_commercial,
         };
         //console.log(suivisuperviseur);
         this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)

@@ -112,7 +112,7 @@ export class ProspectPdvComponent implements OnInit {
             .subscribe(
                 data => this.allServices = data,
                 error => alert(error),
-                () => { 
+                () => {
                         this.isSelect = !this.isSelect;
                         for(let i=0 ; i<this.allServices.length ; i++){
                             this.reponsesProspect.push("") ;
@@ -208,7 +208,7 @@ export class ProspectPdvComponent implements OnInit {
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
-                    // console.log(data);
+                    console.log(data);
                     this.isEnregistrerProspect = true;
                 },
                 error => alert(error),
@@ -248,7 +248,7 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
 
 
   validDonnees(){
-      
+
   }
 
     public possibleAnswers = [
@@ -267,7 +267,7 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
       {
         "reponse": "Impossible"
       },
-      
+
     ];
 
 
