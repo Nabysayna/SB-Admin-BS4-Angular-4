@@ -74,6 +74,24 @@ export class AssignationSuiviService {
             .map(res => res.json());
     }
 
+    getSuperviseursForPerformance(){
+        let url = this.link+"/suivi/getsuperviseursforperformance";
+        let datas = JSON.stringify({token:this.basetoken});
+
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getCommerciauxForPerformance(){
+        let url = this.link+"/suivi/getcommerciauxforperformance";
+        let datas = JSON.stringify({token:this.basetoken});
+
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 }
 /**

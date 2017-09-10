@@ -33,12 +33,11 @@
             	<table class="table table-hover" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 			        <thead>
 			            <tr>
-			                <th><mfDefaultSorter by="assignation">Date assignation</mfDefaultSorter></th>
-			                <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
-			                <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
-			                <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="dateassignation">Date assignation</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="fullname">Superviseur</mfDefaultSorter></th>
+			                <th><mfDefaultSorter by="telelephone">Téléphone</mfDefaultSorter></th>
 			                <th><mfDefaultSorter by="zone">Zone</mfDefaultSorter></th>
-			                <th><mfDefaultSorter by="note">Performance</mfDefaultSorter></th>
+			                <th>Performance</th>
 			                <th>Action</th>
 			            </tr>
 			            <tr>
@@ -50,13 +49,12 @@
 			        </thead>
 			        <tbody>
 			            <tr *ngFor="let item of mf.data">
-			                <td>{{item.assignation}}</td>
-			                <td>{{item.prenom}}</td>
-			                <td>{{item.nom}}</td>
-			                <td>{{item.tel}}</td>
+			                <td>{{item.dateassignation}}</td>
+			                <td>{{item.fullname}}</td>
+			                <td>{{item.telephone}}</td>
 			                <td>{{item.zone}}</td>
 			                <td>
-							    <app-progressionby [max]="'10'" [dynamic]="item.note"></app-progressionby>
+							    <app-progressionby [max]="item.objectif" [dynamic]="item.atteint"></app-progressionby>
 							</td>
 			                <td><button type="button" class="btn btn-sm btn-info">Réassigner</button></td>
 			            </tr>
@@ -104,15 +102,14 @@
 	<div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
-		    	<table class="table table-hover" [mfData]="data | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+		    	<table class="table table-hover" [mfData]="datacommercial | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 			    	<thead>
 				        <tr>
-				            <th><mfDefaultSorter by="dateajout">Date</mfDefaultSorter></th>
-				            <th><mfDefaultSorter by="libellepoint">Superviseur</mfDefaultSorter></th>
-				            <th><mfDefaultSorter by="prenom">Prenom</mfDefaultSorter></th>
-				            <th><mfDefaultSorter by="nom">Nom</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="dateassignation">Date</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="fullname_superviseur">Superviseur</mfDefaultSorter></th>
+				            <th><mfDefaultSorter by="fullname_commercial">Commercial</mfDefaultSorter></th>
 				            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-				            <th><mfDefaultSorter by="adresse">Performance</mfDefaultSorter></th>
+				            <th>Performance</th>
 				        </tr>
 				        <tr><th colspan="5">
 					            Recherche:
@@ -121,12 +118,11 @@
 			        </thead>
 			        <tbody>
 				        <tr *ngFor="let item of mf.data">
-				            <td>12</td>
-				            <td>{{item.libellepoint}}</td>
-				            <td>{{item.prenom}}</td>
-				            <td>{{item.nom}}</td>
-				            <td>{{item.tel}}</td>
-				            <td><app-progressionby [max]="10" [dynamic]="item.note"></app-progressionby></td>
+				            <td>{{item.dateassignation}}</td>
+				            <td>{{item.fullname_superviseur}}</td>
+				            <td>{{item.fullname_commercial}}</td>
+				            <td>{{item.telephone}}</td>
+				            <td><app-progressionby [max]="item.objectif" [dynamic]="item.atteint"></app-progressionby></td>
 				        </tr>
 			        </tbody>
 			        <tfoot>
@@ -157,7 +153,7 @@
     <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem">
         <div class="card">
             <div class="card-header">
-                Performance des clients
+                Performance des commerciaux
             </div>
             <div class="card-block">
                 <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
