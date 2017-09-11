@@ -38,7 +38,6 @@
 			                <th><mfDefaultSorter by="telelephone">Téléphone</mfDefaultSorter></th>
 			                <th><mfDefaultSorter by="zone">Zone</mfDefaultSorter></th>
 			                <th>Performance</th>
-			                <th>Action</th>
 			            </tr>
 			            <tr>
 			                <th colspan="5">
@@ -49,14 +48,13 @@
 			        </thead>
 			        <tbody>
 			            <tr *ngFor="let item of mf.data">
-			                <td>{{item.dateassignation}}</td>
+			                <td>Depuis le {{item.dateassignation | date:'dd/MM/yyyy'}}</td>
 			                <td>{{item.fullname}}</td>
 			                <td>{{item.telephone}}</td>
 			                <td>{{item.zone}}</td>
 			                <td>
 							    <app-progressionby [max]="item.objectif" [dynamic]="item.atteint"></app-progressionby>
 							</td>
-			                <td><button type="button" class="btn btn-sm btn-info">Réassigner</button></td>
 			            </tr>
 			        </tbody>
 			        <tfoot>
@@ -118,7 +116,7 @@
 			        </thead>
 			        <tbody>
 				        <tr *ngFor="let item of mf.data">
-				            <td>{{item.dateassignation}}</td>
+				            <td>Depuis le {{item.dateassignation | date:'dd/MM/yyyy'}}</td>
 				            <td>{{item.fullname_superviseur}}</td>
 				            <td>{{item.fullname_commercial}}</td>
 				            <td>{{item.telephone}}</td>
@@ -142,10 +140,21 @@
     <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
         <div class="card mb-12">
             <div class="card-header">
+                Performance globale
+            </div>
+            <div class="card-block">
+                <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" >
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
+        <div class="card">
+            <div class="card-header">
                 Performance des superviseurs
             </div>
             <div class="card-block">
-                <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                <canvas baseChart [datasets]="barChartDataSuperviseur" [labels]="barChartLabelsSuperviseur" [options]="barChartOptions" [legend]="true" [chartType]="'bar'">
                 </canvas>
             </div>
         </div>

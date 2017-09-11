@@ -24,19 +24,25 @@ export class AdminsuiviComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "note";
     public sortOrder = "desc";
+    public toInt(num: string) { return +num; }
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
+
     private zones:any[] = [];
     private souszones:any[] = [];
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 
     // bar chart
-    public barChartOptions: any = {
-        scaleShowVerticalLines: false,
-        responsive: true
-    };
-    public barChartType: string = 'bar';
-    public barChartLegend: boolean = true;
+    public barChartOptions: any = { scaleShowVerticalLines: false, responsive: true };
     public barChartData: any[] = [];
     public barChartLabels: string[] = [];
+    public barChartDataSuperviseur: any[] = [];
+    public barChartLabelsSuperviseur: string[] = [];
+
+    // Doughnut
+    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetifs non atteint'];
+    public doughnutChartData: number[] = [50, 50];
+    public doughnutChartType: string = 'doughnut';
+
 
     constructor(private _assignationsuiviService:AssignationSuiviService, private router: Router) { }
 
@@ -45,7 +51,6 @@ export class AdminsuiviComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode){
-                        this.data = data.message;
                         let dataobjectiffixe:number[] = data.message.map(function(type) {
                             return type.objectif;
                         });
@@ -69,22 +74,29 @@ export class AdminsuiviComponent implements OnInit {
                     this._assignationsuiviService.getSuperviseursForPerformance()
                         .subscribe(
                             data => {
+                                this.data = data.message;
                                 if(data.errorCode){
+                                    let dataobjectiffixe:number[] = data.message.map(function(type) {
+                                        return type.objectif;
+                                    });
+                                    let dataobjectifatteint:number[] = data.message.map(function(type) {
+                                        return type.atteint;
+                                    });
+                                    this.barChartDataSuperviseur = [
+                                        { data: dataobjectiffixe, label: 'Objectifs fixés' },
+                                        { data: dataobjectifatteint, label: 'Objectifs atteints' }
+                                    ];
+                                    this.barChartLabelsSuperviseur = data.message.map(function(type) {
+                                        return type.prenom+' '+type.nom;
+                                    });
+
                                     let compteuratteint = 0;
-                                    let compteurpasatteint = 0;
+                                    let compteurtotalobjectif = 0;
                                     for(let element of data.message){
-                                        if (element.atteint.match(element.objectif)){
-                                            compteuratteint = compteuratteint +1;
-                                        }
-                                        else{
-                                            compteurpasatteint = compteurpasatteint +1;
-                                        }
+                                        compteurtotalobjectif = compteurtotalobjectif  + Number(element.objectif);
+                                        compteuratteint = compteuratteint +Number(element.atteint);
                                     }
-                                    console.log(compteuratteint+" "+compteurpasatteint);
-                                    this.doughnutChartData = [compteuratteint, compteurpasatteint];
-                                    console.log(this.doughnutChartData);
-
-
+                                    this.doughnutChartData = [compteuratteint, compteurtotalobjectif - compteuratteint];
                                 }
                                 else{
                                     this.router.navigate(['/login']);
@@ -117,7 +129,7 @@ export class AdminsuiviComponent implements OnInit {
                                     objectif:type.objectif,
                                     atteint:type.atteint,
                                     id_objectifassigne:type.id,
-                                    dateassignation:"De "+type.date_assigner+" à "+type.date_update,
+                                    dateassignation:type.date_assigner,
                                 };
                             });
                             this.data = this.datasuperviseur;
@@ -149,7 +161,7 @@ export class AdminsuiviComponent implements OnInit {
                                     sous_zone:type.sous_zone,
                                     objectif:type.objectif,
                                     atteint:type.atteint,
-                                    dateassignation:"De "+type.date_assigner+" à "+type.date_update,
+                                    dateassignation:type.date_assigner,
                                 };
                             });
                             this.data = this.datacommercial;
@@ -169,11 +181,7 @@ export class AdminsuiviComponent implements OnInit {
   		}
   	}
 
-    public toInt(num: string) { return +num; }
-
-    public sortByWordLength = (a: any) => { return a.adresse.length; }
-
-  	public getZones(): void {
+    public getZones(): void {
   		for (let i = 0; i < this.data.length; i++) {
   			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
   		}
@@ -190,13 +198,6 @@ export class AdminsuiviComponent implements OnInit {
   		}
   		return souszones ;
   	}
-
-
-
-    // Doughnut
-    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetifs non atteint'];
-    public doughnutChartData: number[] = [50, 50];
-    public doughnutChartType: string = 'doughnut';
 
 
 

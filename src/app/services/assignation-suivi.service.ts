@@ -66,6 +66,14 @@ export class AssignationSuiviService {
             .map(res => res.json());
     }
 
+    listsuiviarelancerforsuperviseur(){
+        let url = this.link+"/suivi/listsuiviarelancerforsuperviseur";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     ajoutsuivifromsuperviseur(data:any){
         let url = this.link+"/suivi/ajoutsuivifromsuperviseur";
         let datas = JSON.stringify({token:this.basetoken, data:data});

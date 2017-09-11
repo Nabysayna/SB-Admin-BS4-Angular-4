@@ -37,8 +37,9 @@ export class SuperviseurComponent implements OnInit {
     private data:any[] = [];
     private optionassignations:any[] = [];
     private datasuivi:any[] = [];
+    private datasuiviarelancer:any[] = [];
 
-    private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
+    private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
@@ -46,7 +47,6 @@ export class SuperviseurComponent implements OnInit {
         this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.data = data.map(function(type) {
                         return {
                             id:type.id,
@@ -66,37 +66,10 @@ export class SuperviseurComponent implements OnInit {
                     for (let i = 0; i < this.data.length; i++) {
                         if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
                     }
-                    console.log(this.zones);
                 },
                 error => alert(error),
                 () => {
-                    console.log(this.data);
-                    this._assignationsuiviService.listsuiviforsuperviseur()
-                        .subscribe(
-                            data => {
-                                console.log(data);
-                                this.datasuivi = data.map(function(type) {
-                                    let client = JSON.parse(type.client);
-                                    console.log(client);
-                                    return {
-                                        id:type.id,
-                                        libellepoint:client.nom_point,
-                                        fullname:client.prenom_gerant+" "+client.nom_gerant,
-                                        telephone:client.telephone_gerant,
-                                        adresse:client.adresse_point.adressepoint,
-                                        note:type.note,
-                                        id_assigner:type.id_assigner,
-                                        id_commercial:type.id_commercial,
-                                        dates_suivi:type.dates_suivi,
-                                        reponse:client.services,
-                                        qualification:"--Choisir une action--",
-                                        client:client,
-                                    };
-                                });
-                            },
-                            error => alert(error),
-                            () => console.log(this.datasuivi)
-                        );
+                    console.log('getAssignationsBySuperviseur');
                 }
             );
     }
@@ -106,16 +79,80 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this._assignationsuiviService.listsuiviforsuperviseur()
+                .subscribe(
+                    data => {
+                        this.datasuivi = data.map(function(type) {
+                            let client = JSON.parse(type.client);
+                            if (!type.qualification){
+                                return {
+                                    id:type.id,
+                                    libellepoint:client.nom_point,
+                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                    telephone:client.telephone_gerant,
+                                    adresse:client.adresse_point.adressepoint,
+                                    note:type.note,
+                                    id_assigner:type.id_assigner,
+                                    id_commercial:type.id_commercial,
+                                    dates_suivi:type.dates_suivi,
+                                    reponse:type.reponse,
+                                    qualification:"--Choisir une action--",
+                                    client:client
+                                }
+                            }
+                        });
+                        this.datasuivi = this.datasuivi.filter(opt => opt)
+                    },
+                    error => alert(error),
+                    () => {
+                        console.log(this.datasuivi);
+                    }
+                );
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
+            this.menuHead.menuHead4 = false;
+        }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+            this._assignationsuiviService.listsuiviarelancerforsuperviseur()
+                .subscribe(
+                    data => {
+                        this.datasuiviarelancer = data.map(function(type) {
+                            let client = JSON.parse(type.client);
+                            return {
+                                id:type.id,
+                                libellepoint:client.nom_point,
+                                fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                telephone:client.telephone_gerant,
+                                adresse:client.adresse_point.adressepoint,
+                                note:type.note,
+                                id_assigner:type.id_assigner,
+                                id_commercial:type.id_commercial,
+                                dates_suivi:type.dates_suivi,
+                                reponse:type.reponse,
+                                qualification:"--Choisir une action--",
+                                client:client
+                            };
+                        });
+                    },
+                    error => alert(error),
+                    () => {
+                        console.log('datasuiviarelancer');
+                    }
+                );
         }
     }
 
@@ -201,7 +238,9 @@ export class SuperviseurComponent implements OnInit {
                         this.selectZone();
                     },
                     error => alert(error),
-                    () => console.log('assignationcommercial')
+                    () => {
+                        console.log('assignationcommercial')
+                    }
                 );
         }
     }
@@ -224,7 +263,7 @@ export class SuperviseurComponent implements OnInit {
     }
 
     showModalDetail(content, i) {
-        this.reponsesPointAuProspect = JSON.parse(this.datasuivi[i].client.services) ;
+        this.reponsesPointAuProspect = JSON.parse(this.datasuivi[i].reponse) ;
         console.log( this.reponsesPointAuProspect ) ;
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
@@ -239,12 +278,39 @@ export class SuperviseurComponent implements OnInit {
             id_assigner:suivi.id_assigner,
             id_commercial:suivi.id_commercial,
         };
-        //console.log(suivisuperviseur);
+        this.datasuivi = this.datasuivi.filter(opt => opt!=suivi);
         this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)
             .subscribe(
-                data => console.log(data),
+                data => {
+                    console.log(data)
+                },
                 error => alert(error),
-                () => console.log('ajoutsuivifromsuperviseur')
+                () => {
+                     console.log('ajoutsuivifromsuperviseur')
+                }
+            );
+    }
+
+    private validersuiviarelancersuperviseur(suivi:any){
+        let suivisuperviseur = {
+            id:suivi.id,
+            dates_suivi:JSON.parse(suivi.dates_suivi),
+            reponse:suivi.reponse,
+            qualification:suivi.qualification,
+            id_assigner:suivi.id_assigner,
+            id_commercial:suivi.id_commercial,
+        };
+        this.datasuiviarelancer = this.datasuiviarelancer.filter(opt => opt!=suivi);
+
+        this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)
+            .subscribe(
+                data => {
+                    console.log(data)
+                },
+                error => alert(error),
+                () => {
+                    console.log('ajoutsuivifromsuperviseur')
+                }
             );
     }
 

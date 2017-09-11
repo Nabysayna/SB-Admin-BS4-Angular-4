@@ -84,7 +84,6 @@ export class ProspectPdvComponent implements OnInit {
                                 this.avoter(this.alldatapoint.avis-1);
                                 this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
                                 this.adresse_proprietaire = JSON.parse(this.alldatapoint.adresse_proprietaire);
-                                console.log(typeof this.zonesactivites);
                                 let letactivites = JSON.parse(this.alldatapoint.activites);
                                 this.optionsActivite = this.zonesactivites.activites.map(function(type) {
                                     if (letactivites.includes(type.activite)){
@@ -204,7 +203,7 @@ export class ProspectPdvComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-
+        location.reload();
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
