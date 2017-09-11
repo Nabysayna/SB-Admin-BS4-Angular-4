@@ -27,9 +27,50 @@ export class AdminsuiviComponent implements OnInit {
     private souszones:any[] = [];
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 
-	constructor(private _assignationsuiviService:AssignationSuiviService) { }
+    // bar chart
+    public barChartOptions: any = { scaleShowVerticalLines: false, responsive: true };
+    public barChartData: any[] = [];
+    public barChartLabels: string[] = [];
 
-  	ngOnInit() { }
+    constructor(private _assignationsuiviService:AssignationSuiviService) { }
+
+  	ngOnInit() {
+        this._assignationsuiviService.getCommerciauxForPerformance()
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.datacommercial = data.message.map(function(type) {
+                            return {
+                                fullname_commercial:type.fullname_commercial,
+                                fullname_superviseur:type.fullname_superviseur,
+                                telephone:type.telephone,
+                                zone:type.zone,
+                                sous_zone:type.sous_zone,
+                                objectif:type.objectif,
+                                atteint:type.atteint,
+                                dateassignation:"De "+type.date_assigner+" à "+type.date_update,
+                            };
+                        });
+                        let dataobjectiffixe:number[] = this.datacommercial.map(function(type) {
+                            return type.objectif;
+                        });
+                        let dataobjectifatteint:number[] = this.datacommercial.map(function(type) {
+                            return type.atteint;
+                        });
+                        this.barChartData = [
+                            { data: dataobjectiffixe, label: 'Objectifs fixés' },
+                            { data: dataobjectifatteint, label: 'Objectifs atteints' }
+                        ];
+                        this.barChartLabels = this.datacommercial.map(function(type) {
+                            return type.fullname_commercial;
+                        });
+                        this.data = this.datacommercial;
+                    }
+                },
+                error => alert(error),
+                () => this.getZones()
+            );
+    }
 
   	sousmenuHeadClick(option: number){
   		if(option == 1){
@@ -54,7 +95,6 @@ export class AdminsuiviComponent implements OnInit {
                                     dateassignation:"De "+type.date_assigner+" à "+type.date_update,
                                 };
                             });
-                            this.data = this.datasuperviseur;
                         }
                     },
                     error => alert(error),
@@ -65,27 +105,6 @@ export class AdminsuiviComponent implements OnInit {
   			this.sousmenuHead.menuHead1 = false;
   			this.sousmenuHead.menuHead2 = true;
   			this.sousmenuHead.menuHead3 = false;
-            this._assignationsuiviService.getCommerciauxForPerformance()
-                .subscribe(
-                    data => {
-                        if(data.errorCode){
-                            this.datacommercial = data.message.map(function(type) {
-                                return {
-                                    fullname_commercial:type.fullname_commercial,
-                                    fullname_superviseur:type.fullname_superviseur,
-                                    telephone:type.telephone,
-                                    zone:type.zone,
-                                    sous_zone:type.sous_zone,
-                                    objectif:type.objectif,
-                                    atteint:type.atteint,
-                                    dateassignation:"De "+type.date_assigner+" à "+type.date_update,
-                                };
-                            });
-                            this.data = this.datacommercial;                        }
-                    },
-                    error => alert(error),
-                    () => this.getZones()
-        );
   		}
   		else {
   			this.sousmenuHead.menuHead1 = false;
@@ -117,33 +136,11 @@ export class AdminsuiviComponent implements OnInit {
   	}
 
 
-  	// bar chart
-    public barChartOptions: any = {
-        scaleShowVerticalLines: false,
-        responsive: true
-    };
-    public barChartLabels: string[] = ['Awa Diagne', 'Michelle Sall', 'Bintou Touré', 'Oumou Dia'];
-    public barChartType: string = 'bar';
-    public barChartLegend: boolean = true;
-    public barChartData: any[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Objectifs fixés' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Objectifs atteints' }
-    ];
+
     // Doughnut
     public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetcy=tifs non atteint'];
     public doughnutChartData: number[] = [50, 45];
     public doughnutChartType: string = 'doughnut';
-
-    // events
-    public chartClicked(e: any): void {
-        console.log(e);
-    }
-
-    public chartHovered(e: any): void {
-        console.log(e);
-    }
-
-
 
 
 

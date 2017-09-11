@@ -8,7 +8,7 @@
 
 
 <div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead1">
-	<div class="row" style="padding-bottom: 2rem">
+	<div class="row" style="padding-bottom: 2rem" *ngIf="datacommercial">
         <div class="col-sm-3">
             <label class="label-control">Nombre d'Affichage</label>
             <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
@@ -73,7 +73,7 @@
 </div>
 
 <div class="container" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead2">
-	<div class="row" style="padding-bottom: 2rem">
+	<div class="row" style="padding-bottom: 2rem" *ngIf="datacommercial">
         <div class="col-sm-3">
             <label class="label-control">Nombre d'Affichage</label>
             <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
@@ -150,13 +150,13 @@
             </div>
         </div>
     </div>
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="datacommercial">
         <div class="card">
             <div class="card-header">
                 Performance des commerciaux
             </div>
             <div class="card-block">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="true" [chartType]="'bar'">
                 </canvas>
             </div>
         </div>
