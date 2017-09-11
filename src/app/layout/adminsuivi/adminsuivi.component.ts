@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+import {Router} from "@angular/router";
 
 
 
@@ -28,47 +29,71 @@ export class AdminsuiviComponent implements OnInit {
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 
     // bar chart
-    public barChartOptions: any = { scaleShowVerticalLines: false, responsive: true };
+    public barChartOptions: any = {
+        scaleShowVerticalLines: false,
+        responsive: true
+    };
+    public barChartType: string = 'bar';
+    public barChartLegend: boolean = true;
     public barChartData: any[] = [];
     public barChartLabels: string[] = [];
 
-    constructor(private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(private _assignationsuiviService:AssignationSuiviService, private router: Router) { }
 
   	ngOnInit() {
         this._assignationsuiviService.getCommerciauxForPerformance()
             .subscribe(
                 data => {
                     if(data.errorCode){
-                        this.datacommercial = data.message.map(function(type) {
-                            return {
-                                fullname_commercial:type.fullname_commercial,
-                                fullname_superviseur:type.fullname_superviseur,
-                                telephone:type.telephone,
-                                zone:type.zone,
-                                sous_zone:type.sous_zone,
-                                objectif:type.objectif,
-                                atteint:type.atteint,
-                                dateassignation:"De "+type.date_assigner+" à "+type.date_update,
-                            };
-                        });
-                        let dataobjectiffixe:number[] = this.datacommercial.map(function(type) {
+                        this.data = data.message;
+                        let dataobjectiffixe:number[] = data.message.map(function(type) {
                             return type.objectif;
                         });
-                        let dataobjectifatteint:number[] = this.datacommercial.map(function(type) {
+                        let dataobjectifatteint:number[] = data.message.map(function(type) {
                             return type.atteint;
                         });
                         this.barChartData = [
                             { data: dataobjectiffixe, label: 'Objectifs fixés' },
                             { data: dataobjectifatteint, label: 'Objectifs atteints' }
                         ];
-                        this.barChartLabels = this.datacommercial.map(function(type) {
+                        this.barChartLabels = data.message.map(function(type) {
                             return type.fullname_commercial;
                         });
-                        this.data = this.datacommercial;
+                    }
+                    else{
+                        this.router.navigate(['/login']);
                     }
                 },
                 error => alert(error),
-                () => this.getZones()
+                () => {
+                    this._assignationsuiviService.getSuperviseursForPerformance()
+                        .subscribe(
+                            data => {
+                                if(data.errorCode){
+                                    let compteuratteint = 0;
+                                    let compteurpasatteint = 0;
+                                    for(let element of data.message){
+                                        if (element.atteint.match(element.objectif)){
+                                            compteuratteint = compteuratteint +1;
+                                        }
+                                        else{
+                                            compteurpasatteint = compteurpasatteint +1;
+                                        }
+                                    }
+                                    console.log(compteuratteint+" "+compteurpasatteint);
+                                    this.doughnutChartData = [compteuratteint, compteurpasatteint];
+                                    console.log(this.doughnutChartData);
+
+
+                                }
+                                else{
+                                    this.router.navigate(['/login']);
+                                }
+                            },
+                            error => alert(error),
+                            () => console.log('cool')
+                        );
+                }
             );
     }
 
@@ -95,16 +120,47 @@ export class AdminsuiviComponent implements OnInit {
                                     dateassignation:"De "+type.date_assigner+" à "+type.date_update,
                                 };
                             });
+                            this.data = this.datasuperviseur;
+                        }
+                        else{
+                            this.router.navigate(['/login']);
                         }
                     },
                     error => alert(error),
                     () => this.getZones()
-        );
+            );
   		}
   		else if(option == 2){
   			this.sousmenuHead.menuHead1 = false;
   			this.sousmenuHead.menuHead2 = true;
   			this.sousmenuHead.menuHead3 = false;
+
+            this._assignationsuiviService.getCommerciauxForPerformance()
+                .subscribe(
+                    data => {
+                        console.log(data)
+                        if(data.errorCode){
+                            this.datacommercial = data.message.map(function(type) {
+                                return {
+                                    fullname_commercial:type.fullname_commercial,
+                                    fullname_superviseur:type.fullname_superviseur,
+                                    telephone:type.telephone,
+                                    zone:type.zone,
+                                    sous_zone:type.sous_zone,
+                                    objectif:type.objectif,
+                                    atteint:type.atteint,
+                                    dateassignation:"De "+type.date_assigner+" à "+type.date_update,
+                                };
+                            });
+                            this.data = this.datacommercial;
+                        }
+                        else{
+                            this.router.navigate(['/login']);
+                        }
+                    },
+                    error => alert(error),
+                    () => this.getZones()
+                );
   		}
   		else {
   			this.sousmenuHead.menuHead1 = false;
@@ -138,9 +194,11 @@ export class AdminsuiviComponent implements OnInit {
 
 
     // Doughnut
-    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetcy=tifs non atteint'];
-    public doughnutChartData: number[] = [50, 45];
+    public doughnutChartLabels: string[] = ['Objectifs Atteint', 'Objetifs non atteint'];
+    public doughnutChartData: number[] = [50, 50];
     public doughnutChartType: string = 'doughnut';
+
+
 
 
 

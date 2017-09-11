@@ -29,6 +29,7 @@ export class AuthenticatService {
 
     logout(): void {
         sessionStorage.removeItem('isLoggedin');
+        sessionStorage.removeItem('currentUser');
     }
 
 }

@@ -139,7 +139,7 @@
 </div>
 
 <div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead3">
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem">
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
         <div class="card mb-12">
             <div class="card-header">
                 Performance des superviseurs
@@ -150,7 +150,7 @@
             </div>
         </div>
     </div>
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="datacommercial">
+    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
         <div class="card">
             <div class="card-header">
                 Performance des commerciaux
