@@ -22,6 +22,7 @@ export class ProspectPdvComponent implements OnInit {
     uploadFile: any;
     newImage : any ;
     uploadedFileType : string ;
+    uploadfinished:boolean = true;
 
     reponsesProspect : string[] = [];
     allServices : any ;
@@ -218,6 +219,7 @@ export class ProspectPdvComponent implements OnInit {
 apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
 
   fileChange(event) {
+      this.uploadfinished = false;
       let fileList: FileList = event.target.files;
       if(fileList.length > 0) {
           let file: File = fileList[0];
@@ -240,7 +242,10 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
                            this.newImage = this.uploadFile.generatedName ;
                            this.prospection.piecesFournies.push(this.uploadedFileType+"#"+this.newImage) ;
                         },
-                  error => console.log(error)
+                  error => console.log(error),
+                  () => {
+                      this.uploadfinished = true;
+                  }
               )
       }
   }

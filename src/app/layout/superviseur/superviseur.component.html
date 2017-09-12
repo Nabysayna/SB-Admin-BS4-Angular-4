@@ -3,7 +3,7 @@
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Cleint à relancer</button>
     </div>
     <hr>
@@ -129,7 +129,7 @@
                         <td>{{item.telephone}}</td>
                         <td>{{item.adresse}}</td>
                         <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,i)">Détail Prospect</button></td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
                         <td>
                             <select class="form-control input-sm" [(ngModel)]="item.qualification">
                                 <option>--Choisir une action--</option>
@@ -233,7 +233,7 @@
                         <td>{{item.telephone}}</td>
                         <td>{{item.adresse}}</td>
                         <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,i)">Détail Prospect</button></td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
                         <td>
                             <select class="form-control input-sm" [(ngModel)]="item.qualification">
                                 <option>--Choisir une action--</option>

@@ -51,6 +51,8 @@ export class AdminsuiviComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode){
+                        console.log(data.message);
+
                         let dataobjectiffixe:number[] = data.message.map(function(type) {
                             return type.objectif;
                         });

@@ -127,30 +127,33 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = true;
-            this._assignationsuiviService.listsuiviarelancerforsuperviseur()
+            this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
                         this.datasuiviarelancer = data.map(function(type) {
                             let client = JSON.parse(type.client);
-                            return {
-                                id:type.id,
-                                libellepoint:client.nom_point,
-                                fullname:client.prenom_gerant+" "+client.nom_gerant,
-                                telephone:client.telephone_gerant,
-                                adresse:client.adresse_point.adressepoint,
-                                note:type.note,
-                                id_assigner:type.id_assigner,
-                                id_commercial:type.id_commercial,
-                                dates_suivi:type.dates_suivi,
-                                reponse:type.reponse,
-                                qualification:"--Choisir une action--",
-                                client:client
-                            };
+                            if (type.qualification){
+                                return {
+                                    id:type.id,
+                                    libellepoint:client.nom_point,
+                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                    telephone:client.telephone_gerant,
+                                    adresse:client.adresse_point.adressepoint,
+                                    note:type.note,
+                                    id_assigner:type.id_assigner,
+                                    id_commercial:type.id_commercial,
+                                    dates_suivi:type.dates_suivi,
+                                    reponse:type.reponse,
+                                    qualification:"--Choisir une action--",
+                                    client:client
+                                }
+                            }
                         });
+                        this.datasuiviarelancer = this.datasuiviarelancer.filter(opt => opt)
                     },
                     error => alert(error),
                     () => {
-                        console.log('datasuiviarelancer');
+                        console.log(this.datasuivi);
                     }
                 );
         }
@@ -262,8 +265,8 @@ export class SuperviseurComponent implements OnInit {
         }, (reason) => {} );
     }
 
-    showModalDetail(content, i) {
-        this.reponsesPointAuProspect = JSON.parse(this.datasuivi[i].reponse) ;
+    showModalDetail(content, item) {
+        this.reponsesPointAuProspect = JSON.parse(item.reponse) ;
         console.log( this.reponsesPointAuProspect ) ;
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
