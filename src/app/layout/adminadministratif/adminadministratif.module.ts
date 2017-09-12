@@ -5,13 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DataTableModule } from "angular2-datatable";
 
-
 import { AdminadministratifComponent } from './adminadministratif.component';
 import { AdminadministratifRoutingModule } from './adminadministratif-routing.module';
 import { PageHeaderModule } from './../../shared';
-
-import { ProgressionbyComponent } from '../progressionby/progressionby.component';
-
 
 import { DataAdminAdministratifAssignationFilterPipe }   from '../../pipe/data-admin-administratif-assignation-filter.pipe';
 import { DataAdminAdministratifSuiviFilterPipe }   from '../../pipe/data-admin-administratif-suivi-filter.pipe';
@@ -28,8 +24,7 @@ import { DataAdminAdministratifSuiviFilterPipe }   from '../../pipe/data-admin-a
         NgbModule.forRoot(),
     ],
     declarations: [
-    	AdminadministratifComponent, 
-        ProgressionbyComponent,
+    	AdminadministratifComponent,
 
         DataAdminAdministratifAssignationFilterPipe,
         DataAdminAdministratifSuiviFilterPipe

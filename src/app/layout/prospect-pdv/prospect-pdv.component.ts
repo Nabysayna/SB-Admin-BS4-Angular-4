@@ -16,8 +16,8 @@ import { Observable }     from 'rxjs/Observable';
 })
 export class ProspectPdvComponent implements OnInit {
 
-    private staticAlertClosed: boolean = false;
-    private isEnregistrerProspect: boolean = false;
+    public staticAlertClosed: boolean = false;
+    public isEnregistrerProspect: boolean = false;
 
     uploadFile: any;
     newImage : any ;
@@ -29,14 +29,14 @@ export class ProspectPdvComponent implements OnInit {
 
 
     @Input() infoprospect: any;
-    private point:any;
-    private alldatapoint:any;
-    private adresse_point:any;
-    private adresse_proprietaire:any;
-    private zonesactivites:{activites:any[],zones:any[]};
-    private isSelect=true;
-    private souszonespoints:any[];
-    private souszonespropietaires:any[];
+    public point:any;
+    public alldatapoint:any;
+    public adresse_point:any;
+    public adresse_proprietaire:any;
+    public zonesactivites:{activites:any[],zones:any[]};
+    public isSelect=true;
+    public souszonespoints:any[];
+    public souszonespropietaires:any[];
 
     isinfo = {isinfopoint:false, isinfoproprietaire:false, isinfocomplement:true};
     rating = [
@@ -46,9 +46,9 @@ export class ProspectPdvComponent implements OnInit {
         {indice:3, checked:false},
         {indice:4, checked:false},
     ];
-    private optionsActivite:any[] = [];
+    public optionsActivite:any[] = [];
 
-    private prospection: any = {
+    public prospection: any = {
         id_assignation_origin:0,
 
         id_client:'',
@@ -107,7 +107,7 @@ export class ProspectPdvComponent implements OnInit {
     }
 
 
-    private getAllServices(){
+    public getAllServices(){
         this._utilService.getServices()
             .subscribe(
                 data => this.allServices = data,
@@ -121,7 +121,7 @@ export class ProspectPdvComponent implements OnInit {
             );
     }
 
-    private selectZonePoint(){
+    public selectZonePoint(){
         this._utilService.getSouszoneByZone(this.adresse_point.zonepoint)
             .subscribe(
                 data => this.souszonespoints = data,
@@ -130,7 +130,7 @@ export class ProspectPdvComponent implements OnInit {
             );
     }
 
-    private selectZoneProprietaire(){
+    public selectZoneProprietaire(){
         this._utilService.getSouszoneByZone(this.adresse_proprietaire.zoneproprietaire)
             .subscribe(
                 data => this.souszonespropietaires = data,
@@ -139,7 +139,7 @@ export class ProspectPdvComponent implements OnInit {
             );
     }
 
-    private avoter(index:number): void{
+    public avoter(index:number): void{
         if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
             this.rating[index].checked = false;
         }
@@ -171,7 +171,7 @@ export class ProspectPdvComponent implements OnInit {
         .map(opt => opt.value)
     };
 
-    private updateCheckedoptionsActivite(): void{
+    public updateCheckedoptionsActivite(): void{
         console.log(this.selectedoptionsActivite);
         let activites = this.zonesactivites.activites;
         this.alldatapoint.activites = this.selectedoptionsActivite.map(function(option) {
@@ -179,7 +179,7 @@ export class ProspectPdvComponent implements OnInit {
         });
     }
 
-    private getZoneActivite(){
+    public getZoneActivite(){
         this._utilService.getZoneActivite()
             .subscribe(
                 data => {
@@ -191,7 +191,7 @@ export class ProspectPdvComponent implements OnInit {
     }
 
 
-    private enregistrerProspect(){
+    public enregistrerProspect(){
 
         this.alldatapoint.adresse_point = this.adresse_point;
         this.alldatapoint.adresse_proprietaire = this.adresse_proprietaire

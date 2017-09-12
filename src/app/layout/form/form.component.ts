@@ -14,7 +14,7 @@ import {Location} from '@angular/common';
     providers: [UtilService, AssignationSuiviService]
 })
 export class FormComponent implements OnInit {
-	private fakevalues = true ;
+	fakevalues = true ;
 	public isAdresseproprio=true;
 	public isAdressepoint=true;
 	public isUploadfile=true;
@@ -26,13 +26,13 @@ export class FormComponent implements OnInit {
     reponsesProspect : string[] = [];
     uploadedFileType : string ;
 
-    private zonesactivites:{activites:any[],zones:any[]};
+    zonesactivites:{activites:any[],zones:any[]};
 	public isSelect=true;
 
-    private souszonespoints:any[];
-    private souszonespropietaires:any[];
+    souszonespoints:any[];
+    souszonespropietaires:any[];
 
-    private client: any = {
+    client: any = {
         nompoint:'',
         adressecompletpoint:{
             zonepoint:'--Choix zone--',
@@ -66,7 +66,7 @@ export class FormComponent implements OnInit {
         piecesFournies : []
     };
 
-    private rating = [
+    rating = [
         {indice:0, checked:false},
         {indice:1, checked:false},
         {indice:2, checked:false},
@@ -74,7 +74,7 @@ export class FormComponent implements OnInit {
         {indice:4, checked:false},
     ];
 
-    private options:any[] = [];
+    options:any[] = [];
 
     uploadFile: any;
     newImage : any ;
@@ -86,7 +86,7 @@ export class FormComponent implements OnInit {
         this.getZoneActivite();
     }
 
-    private selectZonePoint(){
+    selectZonePoint(){
         this._utilService.getSouszoneByZone(this.client.adressecompletpoint.zonepoint)
             .subscribe(
                 data => this.souszonespoints = data,
@@ -95,7 +95,7 @@ export class FormComponent implements OnInit {
             );
     }
 
-    private selectZoneProprietaire(){
+    selectZoneProprietaire(){
         this._utilService.getSouszoneByZone(this.client.adressecompletproprietaire.zoneproprietaire)
             .subscribe(
                 data => this.souszonespropietaires = data,
@@ -104,7 +104,7 @@ export class FormComponent implements OnInit {
             );
     }
 
-    private getAllServices(){
+    getAllServices(){
         this._utilService.getServices()
             .subscribe(
                 data => this.allServices = data,
@@ -118,7 +118,7 @@ export class FormComponent implements OnInit {
             );
     }
 
-    private getZoneActivite(){
+    getZoneActivite(){
         this._utilService.getZoneActivite()
             .subscribe(
                 data => {
@@ -132,7 +132,7 @@ export class FormComponent implements OnInit {
             );
     }
 
-    private avoter(index:number): void{
+    avoter(index:number): void{
         if(  ( index + 1 == this.rating.length ) && ( this.rating[index].checked == true) ) {
             this.rating[index].checked = false;
         }
@@ -158,7 +158,7 @@ export class FormComponent implements OnInit {
         this.client.avissurpoint = arrayRating.length;
     }
 
-    private coordonneesgeospatialespoint(){
+    coordonneesgeospatialespoint(){
         if(navigator.geolocation){
             console.log("YES!") ;
             let geospatialpoint = {latitude:0,longitude:0};
@@ -170,7 +170,7 @@ export class FormComponent implements OnInit {
         }
     }
 
-    private coordonneesgeospatialesproprietaire(){
+    coordonneesgeospatialesproprietaire(){
         if(navigator.geolocation){
             console.log("YES!") ;
             let geospatialproprietaire = {latitude:0,longitude:0};
@@ -188,7 +188,7 @@ export class FormComponent implements OnInit {
             .map(opt => opt.value)
     };
 
-    private updateCheckedOptions(): void{
+    updateCheckedOptions(): void{
         let activites = this.zonesactivites.activites;
         this.client.typeactivite = this.selectedOptions.map(function(option) {
             return activites[Number(option)-1].activite;

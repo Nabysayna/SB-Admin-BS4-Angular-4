@@ -21,8 +21,8 @@ export class AdminadministratifComponent implements OnInit {
     public sortOrder = "desc";
 
     menuHead = {menuHead1:true, menuHead2:false};
-	
-	
+
+
     closeResult: string;
     constructor(private modalService: NgbModal) { }
 
@@ -30,11 +30,11 @@ export class AdminadministratifComponent implements OnInit {
 
   	menuHeadClick(option: number){
   		if(option == 1){
-  			this.menuHead.menuHead1 = true; 
+  			this.menuHead.menuHead1 = true;
   			this.menuHead.menuHead2 = false;
   		}
   		else{
-  			this.menuHead.menuHead1 = false; 
+  			this.menuHead.menuHead1 = false;
   			this.menuHead.menuHead2 = true;
   		}
   	}
@@ -47,8 +47,8 @@ export class AdminadministratifComponent implements OnInit {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     	});
   	}
-  	
-  	private getDismissReason(reason: any): string {
+
+    public getDismissReason(reason: any): string {
     	if (reason === ModalDismissReasons.ESC) {
       		return 'by pressing ESC';
     	} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -57,11 +57,11 @@ export class AdminadministratifComponent implements OnInit {
       		return  `with: ${reason}`;
     	}
   	}
-    
+
     public toInt(num: string) { return +num; }
 
     public sortByWordLength = (a: any) => { return a.adresse.length; }
-  
+
 
 	public dataadministratif = [
 	  {

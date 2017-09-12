@@ -27,7 +27,7 @@ export class RatingbyoptionComponent implements OnInit  {
   	}
 
 
-    private avoter(index:number): void{
+    public avoter(index:number): void{
 
         for (var i = 0; i<this.rating.length; i++) {
             if(i <= index) {

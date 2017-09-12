@@ -12,9 +12,9 @@ export class ProgressionbyComponent implements OnInit  {
 
     @Input() max: number;
     @Input() dynamic: number;
-    
-    private notes: number;
- 
+
+    public notes: number;
+
     public constructor() {}
 
     ngOnInit() {

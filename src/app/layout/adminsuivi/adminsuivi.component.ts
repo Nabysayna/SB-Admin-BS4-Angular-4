@@ -27,8 +27,8 @@ export class AdminsuiviComponent implements OnInit {
     public toInt(num: string) { return +num; }
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
-    private zones:any[] = [];
-    private souszones:any[] = [];
+    public zones:any[] = [];
+    public souszones:any[] = [];
   	sousmenuHead = {menuHead1:false, menuHead2:false, menuHead3:true};
 
     // bar chart

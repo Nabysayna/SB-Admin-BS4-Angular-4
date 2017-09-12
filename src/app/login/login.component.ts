@@ -13,10 +13,10 @@ import {AuthenticatService} from "../services/authenticat.service";
 
 export class LoginComponent implements OnInit {
 
-    private userName = ''  ;
-    private userPwd  = '' ;
-    private fakevalues : boolean ;
-    private data:any;
+    public userName = ''  ;
+    public userPwd  = '' ;
+    public fakevalues : boolean ;
+    public data:any;
 
     constructor(public router: Router, private _authenticatService: AuthenticatService) {
     }
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         this._authenticatService.logout();
     }
 
-    private wantLogin(){
+    public wantLogin(){
         this._authenticatService.postLogin(this.userName, this.userPwd)
         .subscribe(
             data => {
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
     }
 
-    private accesslevel(access: any){
+    public accesslevel(access: any){
         if ( !access){
             this.fakevalues = false;
         }

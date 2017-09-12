@@ -19,10 +19,10 @@ export class AdministratifComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "libellepoint";
     public sortOrder = "asc";
-    private zones:any[] = [];
-    private souszones:any[] = [];
+    public zones:any[] = [];
+    public souszones:any[] = [];
 
-    private client:any;
+    public client:any;
 
     closeResult: string;
 	constructor(private http: Http, private modalService: NgbModal) {}
@@ -37,8 +37,8 @@ export class AdministratifComponent implements OnInit {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     	});
   	}
-  	
-  	private getDismissReason(reason: any): string {
+
+    public getDismissReason(reason: any): string {
     	if (reason === ModalDismissReasons.ESC) {
       		return 'by pressing ESC';
     	} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -47,7 +47,7 @@ export class AdministratifComponent implements OnInit {
       		return  `with: ${reason}`;
     	}
   	}
-    
+
     public toInt(num: string) {
         return +num;
     }
@@ -63,7 +63,7 @@ export class AdministratifComponent implements OnInit {
     choice (){
     	console.log(this.data);
     }
-    
+
     public data = [
 		  {
 		    "pdv": "Naby NDIAYE",

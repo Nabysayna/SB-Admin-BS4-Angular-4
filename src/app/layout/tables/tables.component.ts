@@ -22,11 +22,11 @@ export class TablesComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "libellepoint";
     public sortOrder = "asc";
-    private zones:any[] = [];
-    private souszones:any[] = [];
-    private data:Array<any> = [];
+    zones:any[] = [];
+    souszones:any[] = [];
+    data:Array<any> = [];
 
-    private client:any;
+    client:any;
 
     closeResult: string;
 	constructor(private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
@@ -79,7 +79,7 @@ export class TablesComponent implements OnInit {
     	});
   	}
 
-  	private getDismissReason(reason: any): string {
+  	public getDismissReason(reason: any): string {
     	if (reason === ModalDismissReasons.ESC) {
       		return 'by pressing ESC';
     	} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

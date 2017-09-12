@@ -12,29 +12,29 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 
 export class AdmincommercialComponent implements OnInit {
 
-    private staticAlertClosed: boolean = false;
-    private isEnregistrerAssignation: boolean = false;
+    public staticAlertClosed: boolean = false;
+    public isEnregistrerAssignation: boolean = false;
 
-    private filtreZone:string = "--Choix zone--";
-    private filtreSousZone:string = "--Choix sous zone--";
-    private choixsuperviseur:string = "--Choix superviseur--"
-    private objetifsuperviseur:number = 0;
+    public filtreZone:string = "--Choix zone--";
+    public filtreSousZone:string = "--Choix sous zone--";
+    public choixsuperviseur:string = "--Choix superviseur--"
+    public objetifsuperviseur:number = 0;
 
-    private readyforassination:boolean=true;
-    private isclickforassination:boolean=false;
+    public readyforassination:boolean=true;
+    public isclickforassination:boolean=false;
 
-    private rowsOnPage = 5;
-    private sortBy = "note";
-    private sortOrder = "desc";
-    private sortByWordLength = (a: any) => { return a.adresse.length; }
+    public rowsOnPage = 5;
+    public sortBy = "note";
+    public sortOrder = "desc";
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
 
-    private zones:any[] = [];
-    private souszones:any[] = [];
-    private superviseurs:any[] = [];
-    private optionassignations:any[] = [];
+    public zones:any[] = [];
+    public souszones:any[] = [];
+    public superviseurs:any[] = [];
+    public optionassignations:any[] = [];
 
-    private menuHead = {menuHead1:true, menuHead2:false};
-    private rating = [
+    public menuHead = {menuHead1:true, menuHead2:false};
+    public rating = [
         {indice:0, checked:false},
         {indice:1, checked:false},
         {indice:2, checked:false},
@@ -49,7 +49,7 @@ export class AdmincommercialComponent implements OnInit {
         this.getSuperviseurs();
     }
 
-    private menuHeadClick(option: number){
+    public menuHeadClick(option: number){
   		if(option == 1){
   			this.menuHead.menuHead1 = true;
   			this.menuHead.menuHead2 = false;
@@ -60,9 +60,9 @@ export class AdmincommercialComponent implements OnInit {
   		}
   	}
 
-    private toInt(num: string) { return +num; }
+    public toInt(num: string) { return +num; }
 
-    private getSuperviseurs(): void {
+    public getSuperviseurs(): void {
         this._utilService.getSuperviseurs()
             .subscribe(
                 data => this.superviseurs = data,
@@ -71,7 +71,7 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-    private getZones(): void {
+    public getZones(): void {
         this._utilService.getZones()
             .subscribe(
                 data => this.zones = data,
@@ -80,7 +80,7 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-    private selectZone(){
+    public selectZone(){
         this.optionassignations = [];
         this._utilService.getSouszoneByZone(this.filtreZone.toString())
             .subscribe(
@@ -91,7 +91,7 @@ export class AdmincommercialComponent implements OnInit {
     }
 
 
-    private selectSouszone(){
+    public selectSouszone(){
         this._utilService.getPointBySouszone(this.filtreSousZone)
             .subscribe(
                 data => {
@@ -123,7 +123,7 @@ export class AdmincommercialComponent implements OnInit {
             .map(opt => opt.value);
     };
 
-    private updateCheckedOptions(): void{
+    public updateCheckedOptions(): void{
         //let activites = this.zonesactivites.activites;
         //this.client.typeactivite = this.selectedOptions.map(function(option) {
           //  return activites[Number(option)-1].activite;
@@ -131,7 +131,7 @@ export class AdmincommercialComponent implements OnInit {
         console.log(this.selectedOptions);
     }
 
-    private assignersuperviseur(){
+    public assignersuperviseur(){
         //let assignations =
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||

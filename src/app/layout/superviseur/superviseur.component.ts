@@ -11,35 +11,35 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 })
 export class SuperviseurComponent implements OnInit {
 
-    private staticAlertClosed: boolean = false;
-    private isEnregistrerAssignation: boolean = false;
+    public staticAlertClosed: boolean = false;
+    public isEnregistrerAssignation: boolean = false;
 
-    private filterQuery:string = "";
-    private filtreZone:string = "--Choix zone--";
-    private filtreSousZone:string = "--Choix sous zone--";
-    private choixcommercial:string = "--Choix commercial--"
-    private objetifcommercial:number = 0;
+    public filterQuery:string = "";
+    public filtreZone:string = "--Choix zone--";
+    public filtreSousZone:string = "--Choix sous zone--";
+    public choixcommercial:string = "--Choix commercial--"
+    public objetifcommercial:number = 0;
 
     currentPointDocs : any ;
     reponsesPointAuProspect : any ;
 
-    private readyforassination:boolean=true;
-    private isclickforassination:boolean=false;
+    public readyforassination:boolean=true;
+    public isclickforassination:boolean=false;
 
-    private rowsOnPage = 5;
-    private sortBy = "note";
-    private sortOrder = "desc";
-    private sortByWordLength = (a: any) => { return a.adresse.length; }
+    rowsOnPage = 5;
+    sortBy = "note";
+    public sortOrder = "desc";
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
 
-    private zones:any[] = [];
-    private souszones:any[] = [];
-    private commercials:any[] = [];
-    private data:any[] = [];
-    private optionassignations:any[] = [];
-    private datasuivi:any[] = [];
-    private datasuiviarelancer:any[] = [];
+    public zones:any[] = [];
+    public souszones:any[] = [];
+    public commercials:any[] = [];
+    public data:any[] = [];
+    public optionassignations:any[] = [];
+    public datasuivi:any[] = [];
+    public datasuiviarelancer:any[] = [];
 
-    private menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
@@ -74,7 +74,7 @@ export class SuperviseurComponent implements OnInit {
             );
     }
 
-    private menuHeadClick(option: number){
+    public menuHeadClick(option: number){
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
@@ -159,9 +159,9 @@ export class SuperviseurComponent implements OnInit {
         }
     }
 
-    private toInt(num: string) { return +num; }
+    public toInt(num: string) { return +num; }
 
-    private getCommerciaux(): void {
+    public getCommerciaux(): void {
         this._utilService.getCommerciauxBySuperviseur()
             .subscribe(
                 data => {
@@ -184,11 +184,11 @@ export class SuperviseurComponent implements OnInit {
         return souszones ;
     }
 
-    private selectZone() {
+    public selectZone() {
         this.optionassignations = [];
     }
 
-    private selectSouszone(){
+    public selectSouszone(){
         this.getCommerciaux();
         this.optionassignations = this.data
             .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
@@ -200,11 +200,11 @@ export class SuperviseurComponent implements OnInit {
             .map(opt => opt.value);
     };
 
-    private updateCheckedOptions(): void{
+    public updateCheckedOptions(): void{
         console.log(this.selectedOptions);
     }
 
-    private assignercommercial(){
+    public assignercommercial(){
 
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
@@ -272,7 +272,7 @@ export class SuperviseurComponent implements OnInit {
         }, (reason) => {} );
     }
 
-    private validersuivisuperviseur(suivi:any){
+    validersuivisuperviseur(suivi:any){
         let suivisuperviseur = {
             id:suivi.id,
             dates_suivi:JSON.parse(suivi.dates_suivi),
@@ -294,7 +294,7 @@ export class SuperviseurComponent implements OnInit {
             );
     }
 
-    private validersuiviarelancersuperviseur(suivi:any){
+    public validersuiviarelancersuperviseur(suivi:any){
         let suivisuperviseur = {
             id:suivi.id,
             dates_suivi:JSON.parse(suivi.dates_suivi),
