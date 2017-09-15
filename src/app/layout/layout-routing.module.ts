@@ -14,7 +14,7 @@ const routes: Routes = [
             { path: 'administratif', loadChildren: './administratif/administratif.module#AdministratifModule' },
             { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
             { path: 'manager', loadChildren: './manager/manager.module#ManagerModule' },
-
+            { path: 'managerstock', loadChildren: './managerstock/managerstock.module#ManagerstockModule' },
         ]
     }
 ];

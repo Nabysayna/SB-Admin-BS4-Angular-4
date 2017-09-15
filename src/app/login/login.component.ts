@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
                 }
             },
             error => alert(error),
-            () => console.log(this.data)
+            () => console.log(sessionStorage.getItem('currentUser'))
         );
 
     }
@@ -59,6 +59,9 @@ export class LoginComponent implements OnInit {
         }
         else if ( access.match(2) ){
             this.router.navigate(['/adminadministratif']);
+        }
+        else if ( access.match(8) ){
+            this.router.navigate(['/managerstock']);
         }
         else if ( access.match(3) ){
             this.router.navigate(['/admincom']);

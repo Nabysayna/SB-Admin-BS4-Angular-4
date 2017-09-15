@@ -1,0 +1,149 @@
+<div class="container-fuid">
+    <div class="row">
+        <div class="col-sm-3">
+            <em style="text-align: center; margin: 0 auto">Articles affichés sur le site</em>
+            <pagination-template #p="paginationApi" [id]="'second'" (pageChange)="p2 = $event">
+                <div class="custom-pagination">
+                    <div class="pagination-previous" [class.disabled]="p.isFirstPage()" style="text-align: center">
+                        <a *ngIf="!p.isFirstPage()" (click)="p.previous()"> <i class="fa fa-chevron-up" aria-hidden="true"></i> </a>
+                    </div>
+
+                    <div class="well well-sm" *ngFor="let article of listarticlesvuweb  | paginate: { itemsPerPage: 2, currentPage: p2 , id: 'second'}" style="margin: 0 auto">
+                        <img src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}" alt="Card image cap" height="200" width="200">
+                        <div class="text-center">
+                            <p class="card-title">{{article.designation}}</p>
+                            <input type="checkbox" name="items" value="{{article.value}}"
+                                   [(ngModel)]="article.checked" (change)="updateCheckedOptionsvuweb()"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="pagination-next" [class.disabled]="p.isLastPage()" style="text-align: center">
+                        <a *ngIf="!p.isLastPage()" (click)="p.next()"> <i class="fa fa-chevron-down" aria-hidden="true"></i> </a>
+                    </div>
+                </div>
+            </pagination-template>
+            <div style="text-align: center; margin-top: 1rem; " >
+                <button type="button" class="btn btn-success btn-sm" (click)="open(contentApercu, article)"> Apercu avant validation</button>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <em>Tous les articles</em>
+            <div class="row">
+                <div class="col-sm-4 card" *ngFor="let article of listarticlesfrompv  | paginate: { itemsPerPage: 3, currentPage: p1 , id: 'first'}">
+                    <img class="card-img-top" src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}"  alt="Card image cap" width="200" height="200">
+                    <div class="card-block" style="text-align: center ;">
+                        <h4 class="card-title">{{article.designation}}</h4>
+                        <p class="card-text">{{article.description}}</p>
+                        <span *ngIf="!article.checked"><button type="button" class="btn btn-secondary btn-sm" (click)="article.checked = true; updateCheckedOptionsfrompv()">
+                            <i class="fa fa-square-o" aria-hidden="true"></i> Cocher
+                        </button></span>
+                        <span *ngIf="article.checked"><button type="button" class="btn btn-secondary btn-sm" (click)="article.checked = false; updateCheckedOptionsfrompv()">
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i> Décocher
+                        </button></span>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="open(content, article)"> Modifier</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center center-block" style="margin-top: 3rem; margin-bottom: 5rem; margin-right: auto; margin-left: auto; text-align: center">
+                <pagination-controls previousLabel="Précedent" nextLabel="Suivant" (pageChange)="p1 = $event" id="first"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss" >
+    <div class="modal-header" *ngIf="article">
+        <h4 class="modal-title">Modification de l'article</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card" >
+            <img class="card-img-top" src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}"  alt="Card image cap" width="200" height="200">
+            <div class="card-block" style="text-align: center ;">
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <input type="file" class="form-control-file" id="imagearticle" accept=".jpg, .jpeg, .png" title="Changer l'image" ngFileSelect>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="designationarticle" class="col-sm-2 col-form-label">Désignation</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="designationarticle" placeholder="Désignation" [(ngModel)]="article.designation">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="descriptionarcticle" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="descriptionarcticle" rows="3" [(ngModel)]="article.description"></textarea>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" (click)="validmodifarticle(); c('Close click')">Valider modification</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #contentApercu let-c="close" let-d="dismiss" >
+    <div class="modal-header">
+        <h4 class="modal-title">Apercu</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-4">
+                    <em style="text-align: center; margin: 0 auto">Articles à retirer</em>
+                    <div class="well well-sm" *ngFor="let article of listarticlesretirer | paginate: { itemsPerPage: 2, currentPage: p3 , id: 'third'}" style="margin: 0 auto">
+                        <img src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}" alt="Card image cap" height="200" width="200">
+                        <div class="text-center">
+                            <p class="card-title">{{article.designation}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <em style="text-align: center; margin: 0 auto">Articles à rajouter</em>
+                    <div class="well well-sm" *ngFor="let article of listarticlesrajouter | paginate: { itemsPerPage: 2, currentPage: p4 , id: 'four'}" style="margin: 0 auto">
+                        <img src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}" alt="Card image cap" height="200" width="200">
+                        <div class="text-center">
+                            <p class="card-title">{{article.designation}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <em style="text-align: center; margin: 0 auto">Articles pour comparer</em>
+                    <div class="well well-sm" *ngFor="let article of listarticlescomparer  | paginate: { itemsPerPage: 2, currentPage: p5 , id: 'five'}" style="margin: 0 auto">
+                        <img src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}" alt="Card image cap" height="200" width="200">
+                        <div class="text-center">
+                            <p class="card-title">{{article.designation}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <pagination-controls directionLinks="false" (pageChange)="p3 = $event" id="third"></pagination-controls>
+                </div>
+                <div class="col-sm-4">
+                    <pagination-controls directionLinks="false" (pageChange)="p4 = $event" id="four"></pagination-controls>
+                </div>
+                <div class="col-sm-4">
+                    <pagination-controls directionLinks="false" (pageChange)="p5 = $event" id="five"></pagination-controls>
+                </div>
+            </div>
+            <hr/>
+            <div class="row" style="margin: 0 auto; text-align: center; width: 10%; margin-top: 1rem; margin-bottom: 1rem">
+                <button type="button" class="btn btn-success" (click)="validarcticleafficher(); c('Close click')">Valider</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+

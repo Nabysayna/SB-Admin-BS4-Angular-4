@@ -1,0 +1,45 @@
+<div class="row">
+    <ul class="nav nav-tabs  justify-content-center" style="text-align: center; margin: 0 auto">
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[0]}" (click)="menustockClick(0)">Nouvel arrivage</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[1]}" (click)="menustockClick(1)">En vedette</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[2]}" (click)="menustockClick(2)">Femme</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[3]}" (click)="menustockClick(3)">Promo</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[4]}" (click)="menustockClick(4)">Homme</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[5]}" (click)="menustockClick(5)">Electronique</a></li>
+    </ul>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[0]">
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !arrivals[0], 'btn-success': arrivals[0]}" (click)="menu1stockClick(0,0)" style="margin-bottom: 1rem">NOUVEAUTES</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !arrivals[1], 'btn-success': arrivals[1]}" (click)="menu1stockClick(0,1)" style="margin-bottom: 1rem">EN VEDETTE</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !arrivals[2], 'btn-success': arrivals[2]}" (click)="menu1stockClick(0,2)" style="margin-bottom: 1rem">MEILLEURES VENTES</button>
+    </div>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[1]" >
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[0], 'btn-success': featured[0]}" (click)="menu1stockClick(1,0)" style="margin-bottom: 1rem">EN VEDETTE</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[1], 'btn-success': featured[1]}" (click)="menu1stockClick(1,1)" style="margin-bottom: 1rem">DERNIER CRI</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[2], 'btn-success': featured[2]}" (click)="menu1stockClick(1,2)" style="margin-bottom: 1rem">MEILLEURES VENTES</button>
+    </div>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[2]" >
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[0], 'btn-success': femme[0]}" (click)="menu1stockClick(2,0)" style="margin-bottom: 1rem">HABITS</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[1], 'btn-success': femme[1]}" (click)="menu1stockClick(2,1)" style="margin-bottom: 1rem">TOPS</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[2], 'btn-success': femme[2]}" (click)="menu1stockClick(2,2)" style="margin-bottom: 1rem">SACS A MAIN</button>
+    </div>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[3]" >
+    </div>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[4]" >
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !homme[0], 'btn-success': homme[0]}" (click)="menu1stockClick(4,0)" style="margin-bottom: 1rem">VETEMENTS</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !homme[1], 'btn-success': homme[1]}" (click)="menu1stockClick(4,1)" style="margin-bottom: 1rem">CHAUSSURES</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !homme[2], 'btn-success': homme[2]}" (click)="menu1stockClick(4,2)" style="margin-bottom: 1rem">ACCESSOIRES</button>
+    </div>
+
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[5]" >
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !elctronique[0], 'btn-success': elctronique[0]}" (click)="menu1stockClick(5,0)" style="margin-bottom: 1rem">NOUVEAUTES</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !elctronique[1], 'btn-success': elctronique[1]}" (click)="menu1stockClick(5,1)" style="margin-bottom: 1rem">EN VEDETTE</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !elctronique[2], 'btn-success': elctronique[2]}" (click)="menu1stockClick(5,2)" style="margin-bottom: 1rem">DERNIER CRI VENTES</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !elctronique[3], 'btn-success': elctronique[3]}" (click)="menu1stockClick(5,3)" style="margin-bottom: 1rem">MEILLEURES VENTES</button>
+    </div>
+</div>
+<app-stockmanaging [listeacrticles]="listearticlesselectionner"></app-stockmanaging>
