@@ -6,6 +6,7 @@ import {UtilService} from "../../services/util.service";
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-tables',
@@ -29,7 +30,7 @@ export class TablesComponent implements OnInit {
     client:any;
 
     closeResult: string;
-	constructor(private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
+	constructor(public router: Router, private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit(): void {
         this.getZones();
@@ -74,7 +75,8 @@ export class TablesComponent implements OnInit {
   		this.client = client;
     	this.modalService.open(content, {size: 'lg'}).result.then((result) => {
       		this.closeResult = `Closed with: ${result}`;
-    	}, (reason) => {
+            this.router.navigate(['/dashboard']);
+        }, (reason) => {
       		this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     	});
   	}

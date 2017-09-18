@@ -5,6 +5,7 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 import { Http, RequestOptions, RequestMethod, Headers  } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 import {Location} from '@angular/common';
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-form',
@@ -80,7 +81,7 @@ export class FormComponent implements OnInit {
     newImage : any ;
 
 
-    constructor(private _location: Location, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
+    constructor(public router: Router, private _location: Location, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
 
     ngOnInit() {
         this.getZoneActivite();
@@ -207,7 +208,7 @@ export class FormComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
-                    location.reload();
+                    this.router.navigate(['/dashboard']);
                 },
                 error => alert(error),
                 () => console.log('insertPoint')

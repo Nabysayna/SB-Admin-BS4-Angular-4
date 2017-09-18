@@ -3,8 +3,9 @@ import { routerTransition } from '../../router.animations';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 
-import { Http, RequestOptions, RequestMethod, Headers  } from '@angular/http';
+import { Http, RequestOptions, Headers  } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -67,7 +68,7 @@ export class ProspectPdvComponent implements OnInit {
     };
 
 
-    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
+    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http, public router: Router) { }
 
     ngOnInit() {
         this.point = JSON.parse(this.infoprospect.point);
@@ -204,12 +205,14 @@ export class ProspectPdvComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-        location.reload();
+        //location.reload();
+
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
                     console.log(data);
                     this.isEnregistrerProspect = true;
+                    //this.router.navigate(['/dashboard']);
                 },
                 error => alert(error),
                 () => console.log('')
