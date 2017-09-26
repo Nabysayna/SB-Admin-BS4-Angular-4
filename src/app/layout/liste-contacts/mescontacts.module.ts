@@ -13,9 +13,6 @@ import { PageHeaderModule } from './../../shared';
 
 import { DataFilterPipe }   from './data-filter.pipe';
 
-import { GeomapComponent } from '../geomap/geomap.component';
-
-import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
 import {MesContactsComponent} from "./mescontacts.component";
 
 
@@ -35,8 +32,6 @@ import {MesContactsComponent} from "./mescontacts.component";
     declarations: [
         MesContactsComponent,
     	DataFilterPipe,
-    	GeomapComponent,
-        ProspectPdvComponent
     ]
 })
 export class MesContactsModule { }
