@@ -94,7 +94,6 @@ export class AdminadministratifComponent implements OnInit {
 	];
 
 
-
     public data = [
 	  {
 	    "superviseur": "Naby NDIAYE",

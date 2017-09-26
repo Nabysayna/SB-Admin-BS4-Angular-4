@@ -1,0 +1,47 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Mes contacts'" [icon]="'fa-table'"></app-page-header>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="points | dataFilterContact: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_proprietaire">Propriétaire</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="5">
+                            Recherche:
+                            <input class="form-control" [(ngModel)]="filterQuery"/>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>
+                            {{i+1}}
+                        </td>
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname_proprietaire}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

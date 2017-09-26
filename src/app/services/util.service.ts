@@ -78,6 +78,14 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getPointByCommercial(){
+        let url = this.link+"/client/getpointscommercial";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getCommerciauxBySuperviseur(){
         let url = this.link+"/user/commercial";
         let datas = JSON.stringify({token:this.basetoken});
