@@ -10,7 +10,7 @@ import {Observable} from 'rxjs/Observable';
 export class UtilService {
 
 
-    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
     private headers = new Headers();
     private basetoken:any;
 
@@ -70,6 +70,14 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getZoneByRegion(region:string){
+        let url = this.link+"/util/zone";
+        let datas = JSON.stringify({region:region});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getPointBySouszone(souszone:string){
         let url = this.link+"/client/pointbysouszone";
         let datas = JSON.stringify({souszone:souszone});
@@ -112,6 +120,12 @@ export class UtilService {
 
     getZoneActivite(){
         let url = this.link+"/util/zone-activite";
+        return this._http.get(url)
+            .map(res => res.json());
+    }
+
+    getRegionActivite(){
+        let url = this.link+"/util/region-activite";
         return this._http.get(url)
             .map(res => res.json());
     }

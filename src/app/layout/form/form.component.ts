@@ -23,19 +23,22 @@ export class FormComponent implements OnInit {
     public rowsOnPage = 5;
     public sortBy = "service";
     public sortOrder = "asc";
-    allServices : any ;
+    allServices : any[] = [] ;
     reponsesProspect : string[] = [];
     uploadedFileType : string ;
 
-    zonesactivites:{activites:any[],zones:any[]};
+    regionsactivites:{activites:any[],regions:any[]};
 	public isSelect=true;
 
+    zonespoints:any[];
+    zonespropietaires:any[];
     souszonespoints:any[];
     souszonespropietaires:any[];
 
     client: any = {
         nompoint:'',
         adressecompletpoint:{
+            regionpoint:'--Choix région--',
             zonepoint:'--Choix zone--',
             souszonepoint:'--Choix sous zone--',
             adressepoint:'',
@@ -57,6 +60,7 @@ export class FormComponent implements OnInit {
         telephoneproprietaire:'',
         emailproprietaire:'',
         adressecompletproprietaire:{
+            regionproprietaire:'--Choix région--',
             zoneproprietaire:'--Choix zone--',
             souszoneproprietaire:'--Choix sous zone--',
             adresseproprietaire:'',
@@ -84,7 +88,28 @@ export class FormComponent implements OnInit {
     constructor(public router: Router, private _location: Location, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
 
     ngOnInit() {
-        this.getZoneActivite();
+        //this.getZoneActivite();
+        this.getRegionActivite();
+    }
+
+    selectRegionPoint(){
+        this.client.adressecompletpoint.souszonepoint = '--Choix sous zone--';
+        this._utilService.getZoneByRegion(this.client.adressecompletpoint.regionpoint)
+            .subscribe(
+                data => this.zonespoints = data,
+                error => alert(error),
+                () => console.log(this.zonespoints)
+            );
+    }
+
+    selectRegionProprietaire(){
+        this.client.adressecompletproprietaire.souszoneproprietaire = '--Choix sous zone--';
+        this._utilService.getZoneByRegion(this.client.adressecompletproprietaire.regionproprietaire)
+            .subscribe(
+                data => this.zonespropietaires = data,
+                error => alert(error),
+                () => console.log(this.zonespropietaires)
+            );
     }
 
     selectZonePoint(){
@@ -119,17 +144,18 @@ export class FormComponent implements OnInit {
             );
     }
 
-    getZoneActivite(){
-        this._utilService.getZoneActivite()
+    getRegionActivite(){
+        this._utilService.getRegionActivite()
             .subscribe(
                 data => {
-                    this.zonesactivites = data;
-                    this.options = this.zonesactivites.activites.map(function(type) {
+                    console.log(data);
+                    this.regionsactivites = data;
+                    this.options = this.regionsactivites.activites.map(function(type) {
                         return {name:type.activite, value:type.id, checked:false};
                     });
                 },
                 error => alert(error),
-                () => console.log(this.zonesactivites)
+                () => console.log(this.regionsactivites)
             );
     }
 
@@ -190,10 +216,11 @@ export class FormComponent implements OnInit {
     };
 
     updateCheckedOptions(): void{
-        let activites = this.zonesactivites.activites;
+        let activites = this.regionsactivites.activites;
         this.client.typeactivite = this.selectedOptions.map(function(option) {
             return activites[Number(option)-1].activite;
         });
+        console.log(this.client.typeactivite);
     }
 
     validernewclient(){
@@ -203,6 +230,7 @@ export class FormComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.client.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
+        console.log(this.client);
 
         this._utilService.insertPoint(this.client)
             .subscribe(

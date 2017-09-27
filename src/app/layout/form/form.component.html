@@ -2,59 +2,78 @@
     <app-page-header [heading]="'Nouveau-Client'" [icon]="'fa-table'"></app-page-header>
     <div class="row" >
         <h3 class="page-header">Nouveau Client</h3>
-        <div class="col-sm-12" style="margin-top: 2rem;"  *ngIf="zonesactivites">
+        <div class="col-sm-12" style="margin-top: 2rem;"  *ngIf="regionsactivites">
               <div class="col-sm-12 col-xs-12" >
+                  <h5 style="margin-top: 2rem">Point</h5>
                   <input type="text" [(ngModel)]="client.nompoint"   name="nompoint" id="nompoint" class="form-control"  placeholder="Nom Point" required>
+                  <a class="btn btn-outline-primary" style="margin-bottom: 1rem;" (click)="isAdressepoint = !isAdressepoint"
+                     [attr.aria-expanded]="!isAdressepoint" aria-controls="collapseExamples"> Adresse point
+                  </a>
+                  <div id="collapseExamples" [ngbCollapse]="isAdressepoint">
+                      <div class="card">
+                          <div class="card-block">
+                              <label>Région</label>
+                              <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.regionpoint" (change)="selectRegionPoint()">
+                                  <option>--Choix région--</option>
+                                  <option  *ngFor="let region of regionsactivites.regions">{{region.nom}}</option>
+                                  <option  >autre</option>
+                              </select>
+                              <label>Zones</label>
+                              <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.zonepoint" (change)="selectZonePoint()">
+                                  <option>--Choix zone--</option>
+                                  <option  *ngFor="let zone of zonespoints">{{zone.nom}}</option>
+                                  <option>autre</option>
+                              </select>
+                              <label>Sous-zones</label>
+                              <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.souszonepoint">
+                                  <option>--Choix sous zone--</option>
+                                  <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
+                                  <option>autre</option>
+                              </select>
+                              <label>Adresse exacte</label>
+                              <input type="text" [(ngModel)]="client.adressecompletpoint.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
+                              <label>Code postal</label>
+                              <input type="number" [(ngModel)]="client.adressecompletpoint.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
+                              <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-primary btn-circle">
+                                  <i class="fa fa-search"></i>Récupèrer les Coordonnées Géospatiales du point
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <h5 style="margin-top: 2rem">Le gérant</h5>
                   <input type="text" [(ngModel)]="client.prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder="prénom gérant" required>
                   <input type="text" [(ngModel)]="client.nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder="nom gérant" required>
                   <input type="text" [(ngModel)]="client.telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder="téléphone gérant" required>
                   <input type="email" [(ngModel)]="client.emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder="email gérant" required>
-                  <a class="btn btn-outline-primary" style="margin-bottom: 1rem;" (click)="isAdressepoint = !isAdressepoint"
-                        [attr.aria-expanded]="!isAdressepoint" aria-controls="collapseExamples"> Adresse point
-                  </a>
-                  <div id="collapseExamples" [ngbCollapse]="isAdressepoint">
-                      <div class="card">
-                            <div class="card-block">
-                                <label>Zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.zonepoint" (change)="selectZonePoint()">
-                                   <option>--Choix zone--</option>
-                                   <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
-                                </select>
-                                <label>Sous-zones</label>
-                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletpoint.souszonepoint">
-                                    <option>--Choix sous zone--</option>
-                                    <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
-                                </select>
-                                <label>Adresse exacte</label>
-                                <input type="text" [(ngModel)]="client.adressecompletpoint.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
-                                <label>Code postal</label>
-                                <input type="number" [(ngModel)]="client.adressecompletpoint.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
-                                <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-primary btn-circle">
-                                    <i class="fa fa-search"></i>Récupèrer les Coordonnées Géospatiales du point
-                                </button>
-                            </div>
-                      </div>
-                  </div>
+                  <h5 style="margin-top: 2rem">Le propriétaire <small>(si pas connu, mettre les infos du gérant à la place)</small></h5>
                   <input type="text" [(ngModel)]="client.prenomproprietaire"   name="prenomproprietaire" id="prenomproprietaire" class="form-control"  placeholder="prénom propiétaire" required>
                   <input type="text" [(ngModel)]="client.nomproprietaire"   name="nomproprietaire" id="nomproprietaire" class="form-control" placeholder="nom propiétaire" required>
                   <input type="text" [(ngModel)]="client.telephoneproprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone propiétaire" required>
                   <input type="email" [(ngModel)]="client.emailproprietaire"   name="emailpropietaire" id="emailpropietaire" class="form-control" placeholder="email propiétaire" required>
-                  <a style="margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isAdresseproprio = !isAdresseproprio"
+                  <!--<a style="margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isAdresseproprio = !isAdresseproprio"
                       [attr.aria-expanded]="!isAdresseproprio" aria-controls="collapseExample">
                       Adresse propriétaire
-                  </a>
+                  </a>-->
                   <div id="collapseExample" [ngbCollapse]="isAdresseproprio">
                       <div class="card">
                             <div class="card-block">
+                                <label>Région</label>
+                                <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.regionproprietaire" (change)="selectRegionProprietaire()">
+                                    <option>--Choix région--</option>
+                                    <option  *ngFor="let region of regionsactivites.regions">{{region.nom}}</option>
+                                    <option  >autre</option>
+                                </select>
                                 <label>Zones</label>
                                 <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.zoneproprietaire" (change)="selectZoneProprietaire()">
                                     <option>--Choix zone--</option>
-                                    <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+                                    <option  *ngFor="let zone of zonespropietaires">{{zone.nom}}</option>
+                                    <option>autre</option>
                                 </select>
                                 <label>Sous zones</label>
                                 <select class="form-control input-sm" [(ngModel)]="client.adressecompletproprietaire.souszoneproprietaire">
-                                    <option>--Choix sous zone--</option>
+                                    <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
                                     <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
+                                    <option>autre</option>
                                 </select>
                                 <label>Adresse exacte</label>
                                 <input type="text" [(ngModel)]="client.adressecompletproprietaire.adresseproprietaire" name="adresseproprietaire" id="adresseproprietaire" class="form-control"  placeholder="adresse exacte" required>
@@ -66,7 +85,7 @@
                             </div>
                       </div>
                   </div>
-                  <h5>Types d'activités</h5>
+                  <h5 style="margin-top: 2rem">Types d'activités</h5>
                   <div class="row">
                         <div  *ngFor="let option of options"  class="col-sm-6 col-xs-12">
                           <input type="checkbox" name="options" value="{{option.value}}"
