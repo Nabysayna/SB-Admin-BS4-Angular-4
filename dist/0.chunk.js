@@ -351,8 +351,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AssignationSuiviService = (function () {
     function AssignationSuiviService(_http) {
         this._http = _http;
-        this.link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-        //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+        //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+        this.link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]();
         this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
@@ -466,8 +466,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UtilService = (function () {
     function UtilService(_http) {
         this._http = _http;
-        this.link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-        //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+        //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+        this.link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]();
         this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
