@@ -1,6 +1,13 @@
 webpackJsonp([3],{
 
-/***/ "../../../../../src/app/layout/geomap/geomap.component.css":
+/***/ "../../../../../src/app/layout/dashboard/components/chat/chat.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"chat-panel card card-default\">\r\n    <div class=\"card-header\">\r\n        <i class=\"fa fa-comments fa-fw\"></i>\r\n        Chat\r\n        <div class=\" pull-right\" ngbDropdown>\r\n            <button class=\"btn btn-secondary btn-sm\" ngbDropdownToggle>\r\n                <span class=\"caret\"></span>\r\n            </button>\r\n            <ul class=\"dropdown-menu dropdown-menu-right\">\r\n                <li role=\"menuitem\"><a class=\"dropdown-item\" href=\"#\">\r\n                    <i class=\"fa fa-refresh fa-fw\"></i> Refresh</a>\r\n                </li>\r\n                <li role=\"menuitem\"><a class=\"dropdown-item\" href=\"#\">\r\n                    <i class=\"fa fa-check-circle fa-fw\"></i> Available</a>\r\n                </li>\r\n                <li role=\"menuitem\"><a class=\"dropdown-item\" href=\"#\">\r\n                    <i class=\"fa fa-times fa-fw\"></i> Busy</a>\r\n                </li>\r\n                <li class=\"divider dropdown-divider\"></li>\r\n                <li role=\"menuitem\">\r\n                    <a href=\"#\" class=\"dropdown-item\">\r\n                        <i class=\"fa fa-times fa-fw\"></i> Busy\r\n                    </a>\r\n                </li>\r\n                <li>\r\n                    <a href=\"#\" class=\"dropdown-item\">\r\n                        <i class=\"fa fa-clock-o fa-fw\"></i> Away\r\n                    </a>\r\n                </li>\r\n                <li class=\"divider\"></li>\r\n                <li>\r\n                  <a href=\"#\" class=\"dropdown-item\">\r\n                    <i class=\"fa fa-sign-out fa-fw\"></i> Sign Out\r\n                  </a>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n    <!-- /.panel-heading -->\r\n    <div class=\"card-block\">\r\n        <ul class=\"chat\">\r\n            <li class=\"left clearfix\">\r\n                <span class=\"chat-img pull-left\">\r\n                    <img src=\"http://placehold.it/50/55C1E7/fff\" alt=\"User Avatar\" class=\"img-circle\">\r\n                </span>\r\n                <div class=\"chat-body clearfix\">\r\n                    <div class=\"header\">\r\n                        <strong class=\"primary-font\">Jack Sparrow</strong>\r\n                        <small class=\"pull-right text-muted\">\r\n                            <i class=\"fa fa-clock-o fa-fw\"></i> 12 mins ago\r\n                        </small>\r\n                    </div>\r\n                    <p>\r\n                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.\r\n                    </p>\r\n                </div>\r\n            </li>\r\n            <li class=\"right clearfix\">\r\n                <span class=\"chat-img pull-right\">\r\n                    <img src=\"http://placehold.it/50/FA6F57/fff\" alt=\"User Avatar\" class=\"img-circle\">\r\n                </span>\r\n                <div class=\"chat-body clearfix\">\r\n                    <div class=\"header\">\r\n                        <small class=\" text-muted\">\r\n                            <i class=\"fa fa-clock-o fa-fw\"></i> 13 mins ago\r\n                        </small>\r\n                        <strong class=\"pull-right primary-font\">Bhaumik Patel</strong>\r\n                    </div>\r\n                    <p>\r\n                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.\r\n                    </p>\r\n                </div>\r\n            </li>\r\n            <li class=\"left clearfix\">\r\n                <span class=\"chat-img pull-left\">\r\n                    <img src=\"http://placehold.it/50/55C1E7/fff\" alt=\"User Avatar\" class=\"img-circle\">\r\n                </span>\r\n                <div class=\"chat-body clearfix\">\r\n                    <div class=\"header\">\r\n                        <strong class=\"primary-font\">Jack Sparrow</strong>\r\n                        <small class=\"pull-right text-muted\">\r\n                            <i class=\"fa fa-clock-o fa-fw\"></i> 14 mins ago\r\n                        </small>\r\n                    </div>\r\n                    <p>\r\n                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.\r\n                    </p>\r\n                </div>\r\n            </li>\r\n            <li class=\"right clearfix\">\r\n                <span class=\"chat-img pull-right\">\r\n                    <img src=\"http://placehold.it/50/FA6F57/fff\" alt=\"User Avatar\" class=\"img-circle\">\r\n                </span>\r\n                <div class=\"chat-body clearfix\">\r\n                    <div class=\"header\">\r\n                        <small class=\" text-muted\">\r\n                            <i class=\"fa fa-clock-o fa-fw\"></i> 15 mins ago\r\n                        </small>\r\n                        <strong class=\"pull-right primary-font\">Bhaumik Patel</strong>\r\n                    </div>\r\n                    <p>\r\n                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.\r\n                    </p>\r\n                </div>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n    <!-- /.card-body -->\r\n    <div class=\"card-footer\">\r\n        <div class=\"input-group\">\r\n            <input id=\"btn-input\" type=\"text\" class=\"form-control input-sm\" placeholder=\"Type your message here...\">\r\n            <span class=\"input-group-btn\">\r\n                <button class=\"btn btn-warning btn-sm\" id=\"btn-chat\">\r\n                    Send\r\n                </button>\r\n            </span>\r\n        </div>\r\n    </div>\r\n    <!-- /.card-footer -->\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/components/chat/chat.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -8,7 +15,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "agm-map {\r\n  height: 20rem;\r\n}", ""]);
+exports.push([module.i, ".chat-panel .chat-dropdown {\n  margin-top: -3px; }\n\n.chat-panel .chat {\n  height: 350px;\n  overflow-y: scroll;\n  margin: 0;\n  padding: 0;\n  list-style: none; }\n  .chat-panel .chat .left img {\n    margin-right: 15px; }\n  .chat-panel .chat .right img {\n    margin-left: 15px; }\n  .chat-panel .chat li {\n    margin-bottom: 10px;\n    margin-right: 15px;\n    padding-bottom: 5px;\n    border-bottom: 1px dotted #999; }\n\n.chat-panel .card-footer input {\n  padding: 3px; }\n", ""]);
 
 // exports
 
@@ -18,20 +25,12 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/layout/geomap/geomap.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "\n<agm-map [latitude]=\"adresse_point.geospatialpoint.latitude\" [longitude]=\"adresse_point.geospatialpoint.longitude\" [zoom]=\"zoom\">\n    <agm-marker [label]=\"'Point'\" [latitude]=\"adresse_point.geospatialpoint.latitude\" [longitude]=\"adresse_point.geospatialpoint.longitude\" [iconUrl]=\"'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Chartreuse-icon.png'\"></agm-marker>\n    <!-- <agm-marker [label]=\"'Proprietaire'\" [latitude]=\"adresse_proprietaire.geospatialproprietaire.latitude\" [longitude]=\"adresse_proprietaire.geospatialproprietaire.latitude\" [iconUrl]=\"'http://download.seaicons.com/icons/icons-land/vista-map-markers/64/Map-Marker-Flag-1-Left-Pink-icon.png'\" ></agm-marker> -->\n</agm-map>\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/geomap/geomap.component.ts":
+/***/ "../../../../../src/app/layout/dashboard/components/chat/chat.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_util_service__ = __webpack_require__("../../../../../src/app/services/util.service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GeomapComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -42,440 +41,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-var GeomapComponent = (function () {
-    function GeomapComponent(_utilService) {
-        this._utilService = _utilService;
-        this.title = 'BBS INVEST first AGM project';
-        this.lat = 14.762589983648722;
-        this.lng = -17.44974915234375;
-        this.zoom = 13;
-        this.adresse_point = { zonepoint: '', souszonepoint: '', adressepoint: '', codepostalpoint: 14, geospatialpoint: { latitude: 14.7625731, longitude: -17.4497353 } };
-        this.adresse_proprietaire = { zoneproprietaire: "Grand Dakar", souszoneproprietaire: "Colobane", adresseproprietaire: "KLHLKG", codepostalproprietaire: 29089, geospatialproprietaire: { latitude: 14.7625731, longitude: -17.4497353 } };
+var ChatComponent = (function () {
+    function ChatComponent() {
     }
-    GeomapComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        console.log(this.macarte);
-        this._utilService.getAdresseByPoint(this.macarte.id_point)
-            .subscribe(function (data) {
-            console.log(data);
-            _this.adresse_point = JSON.parse(data.adresse_point);
-            _this.adresse_proprietaire = JSON.parse(data.adresse_proprietaire);
-        }, function (error) { return alert(error); }, function () { return console.log("adresse point data"); });
-    };
-    return GeomapComponent;
+    ChatComponent.prototype.ngOnInit = function () { };
+    return ChatComponent;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Object)
-], GeomapComponent.prototype, "macarte", void 0);
-GeomapComponent = __decorate([
+ChatComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-geomap',
-        template: __webpack_require__("../../../../../src/app/layout/geomap/geomap.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/layout/geomap/geomap.component.css")],
-        providers: [__WEBPACK_IMPORTED_MODULE_1__services_util_service__["a" /* UtilService */]]
+        selector: 'app-chat',
+        template: __webpack_require__("../../../../../src/app/layout/dashboard/components/chat/chat.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/layout/dashboard/components/chat/chat.component.scss")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_util_service__["a" /* UtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_util_service__["a" /* UtilService */]) === "function" && _a || Object])
-], GeomapComponent);
+    __metadata("design:paramtypes", [])
+], ChatComponent);
 
-var _a;
-//# sourceMappingURL=geomap.component.js.map
+//# sourceMappingURL=chat.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.html":
+/***/ "../../../../../src/app/layout/dashboard/components/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__timeline_timeline_component__ = __webpack_require__("../../../../../src/app/layout/dashboard/components/timeline/timeline.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__timeline_timeline_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__notification_notification_component__ = __webpack_require__("../../../../../src/app/layout/dashboard/components/notification/notification.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__notification_notification_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chat_chat_component__ = __webpack_require__("../../../../../src/app/layout/dashboard/components/chat/chat.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__chat_chat_component__["a"]; });
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/components/notification/notification.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\" style=\"padding-bottom: 2rem\">\r\n  <div class=\"page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block\">\r\n    <h1>Point de vente de {{ infoprospect.libellepoint }}</h1>\r\n    <hr>\r\n  </div>\r\n</div>\r\n<div class=\"row\" style=\"padding-bottom: 2rem\" *ngIf=\"alldatapoint && zonesactivites\">\r\n  <h3 type=\"button\" class=\"btn btn-primary btn-circle\" (click)=\"isinfo.isinfopoint=!isinfo.isinfopoint; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=false\"><span><i class=\"fa fa-plus\" *ngIf=\"!isinfo.isinfopoint\"></i><i class=\"fa fa-window-minimize\" *ngIf=\"isinfo.isinfopoint\"></i> Info gerant</span></h3>\r\n  <div class=\"col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1\" *ngIf=\"isinfo.isinfopoint\">\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-6 col-sm-6 col-xs-6\">\r\n        <label>Prénom gerant</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.prenom_gerant\"   name=\"prenomgerant\" id=\"prenomgerant\" class=\"form-control\"  placeholder={{infoprospect.prenom}} required>\r\n      </div>\r\n      <div class=\"form-group col-md-6 col-sm-6 col-xs-6\">\r\n        <label>Nom gerant</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.nom_gerant\"   name=\"nomgerant\" id=\"nomgerant\" class=\"form-control\" placeholder={{infoprospect.nom}} required>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-6 col-sm-6 col-xs-6\">\r\n        <label>Téléphone gerant</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.telephone_gerant\"   name=\"telephonegerant\" id=\"telephonegerant\" class=\"form-control\" placeholder={{infoprospect.tel}} required>\r\n      </div>\r\n      <div class=\"form-group col-md-6 col-sm-6 col-xs-6\">\r\n        <label>Email gerant</label>\r\n        <input type=\"email\" [(ngModel)]=\"alldatapoint.email_gerant\"   name=\"emailgerant\" id=\"emailgerant\" class=\"form-control\" placeholder={{infoprospect.email}} required>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Zone point</label>\r\n        <select class=\"form-control input-sm\" [(ngModel)]=\"adresse_point.zonepoint\">\r\n            <option>--Choix zone--</option>\r\n            <option  *ngFor=\"let zone of zonesactivites.zones\">{{zone.nom}}</option>\r\n        </select>\r\n      </div>\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Sous zone point</label>\r\n        <select class=\"form-control input-sm\" [(ngModel)]=\"adresse_point.souszonepoint\">\r\n            <option>--Choix sous zone--</option>\r\n            <option  *ngFor=\"let souszone of souszonespoints\">{{souszone.nom}}</option>\r\n        </select>\r\n      </div>\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Code postale</label>\r\n        <input type=\"number\" [(ngModel)]=\"adresse_point.codepostalpoint\"   name=\"codepostalpoint\" id=\"codepostalpoint\" class=\"form-control\"  placeholder=\"code postal point\">\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <fieldset class=\"form-group  col-md-6\">\r\n        <label>Adresse du point</label>\r\n        <textarea class=\"form-control\" rows=\"4\" [(ngModel)]=\"adresse_point.adressepoint\"   name=\"adressepoint\" id=\"adressepoint\" class=\"form-control\"  placeholder=\"adresse exacte\" required></textarea>\r\n      </fieldset>\r\n      <fieldset class=\"form-group  col-md-6\">\r\n        <label>Cordonnées geospatiales</label>\r\n        <input type=\"number\" [(ngModel)]=\"adresse_point.geospatialpoint.latitude\"   name=\"latitudepoint\" id=\"latitudepoint\" class=\"form-control\"  placeholder={{infoprospect.latitude}}>\r\n        <input type=\"number\" [(ngModel)]=\"adresse_point.geospatialpoint.longitude\"   name=\"longitudepoint\" id=\"longitudepoint\" class=\"form-control\"  placeholder={{infoprospect.longitude}}>\r\n      </fieldset>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div class=\"row\" style=\"padding-bottom: 2rem\">\r\n  <h3 type=\"button\" class=\"btn btn-primary btn-circle\" (click)=\"isinfo.isinfopoint=false; isinfo.isinfoproprietaire=!isinfo.isinfoproprietaire; isinfo.isinfocomplement=false\"><span><i class=\"fa fa-plus\" *ngIf=\"!isinfo.isinfoproprietaire\"></i><i class=\"fa fa-window-minimize\" *ngIf=\"isinfo.isinfoproprietaire\"></i> Info proprietaire</span></h3>\r\n  <div class=\"col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1\" *ngIf=\"isinfo.isinfoproprietaire\">\r\n    <hr>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-6\">\r\n        <label>Prénom proprietaire</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.prenom_proprietaire\"   name=\"prenomproprietaire\" id=\"prenomproprietaire\" class=\"form-control\"  placeholder=\"prénom proprietaire\" required>\r\n      </div>\r\n      <div class=\"form-group col-md-6\">\r\n        <label>Nom proprietaire</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.nom_proprietaire\"   name=\"nomproprietaire\" id=\"nomproprietaire\" class=\"form-control\" placeholder=\"nom proprietaire\" required>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-6\">\r\n        <label>Téléphone proprietaire</label>\r\n        <input type=\"text\" [(ngModel)]=\"alldatapoint.telephone_proprietaire\"   name=\"telephoneproprietaire\" id=\"telephoneproprietaire\" class=\"form-control\" placeholder=\"téléphone proprietaire\" required>\r\n      </div>\r\n      <div class=\"form-group col-md-6\">\r\n        <label>Email proprietaire</label>\r\n        <input type=\"email\" [(ngModel)]=\"alldatapoint.email_proprietaire\"   name=\"emailproprietaire\" id=\"emailproprietaire\" class=\"form-control\" placeholder=\"email proprietaire\" required>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Zone proprietaire</label>\r\n        <select class=\"form-control input-sm\" [(ngModel)]=\"adresse_proprietaire.zoneproprietaire\">\r\n            <option>--Choix zone--</option>\r\n            <option  *ngFor=\"let zone of zonesactivites.zones\">{{zone.nom}}</option>\r\n        </select>\r\n      </div>\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Sous zone proprietaire</label>\r\n        <select class=\"form-control input-sm\" [(ngModel)]=\"adresse_proprietaire.souszoneproprietaire\">\r\n          <option>--Choix sous zone--</option>\r\n          <option  *ngFor=\"let souszone of souszonespropietaires\">{{souszone.nom}}</option>\r\n        </select>\r\n      </div>\r\n      <div class=\"form-group col-md-4\">\r\n        <label>Code postale</label>\r\n        <input type=\"number\" [(ngModel)]=\"adresse_proprietaire.codepostalproprietaire\"   name=\"codepostalpointproprietaire\" id=\"codepostalpointproprietaire\" class=\"form-control\"  placeholder=\"code postal point\">\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <fieldset class=\"form-group  col-md-6\">\r\n        <label>Adresse proprietaire</label>\r\n        <textarea class=\"form-control\" rows=\"4\" [(ngModel)]=\"adresse_proprietaire.adresseproprietaire\"   name=\"adressepointproprietaire\" id=\"adressepointproprietaire\" class=\"form-control\"  placeholder=\"adresse exacte proprietaire\" required></textarea>\r\n      </fieldset>\r\n      <fieldset class=\"form-group  col-md-6\">\r\n        <label>Cordonnées geospatiales proprietaire</label>\r\n        <input type=\"number\" [(ngModel)]=\"adresse_proprietaire.geospatialproprietaire.latitude\"   name=\"latitudeproprietaire\" id=\"latitudeproprietaire\" class=\"form-control\"  placeholder=\"latitude proprietaire\">\r\n        <input type=\"number\" [(ngModel)]=\"adresse_proprietaire.geospatialproprietaire.longitude\"   name=\"longitudeproprietaire\" id=\"longitudeproprietaire\" class=\"form-control\"  placeholder=\"longitude proprietaire\">\r\n      </fieldset>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div class=\"row\" style=\"padding-bottom: 2rem\">\r\n  <h3 type=\"button\" class=\"btn btn-primary btn-circle\" (click)=\"isinfo.isinfopoint=false; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=!isinfo.isinfocomplement\"><span><i class=\"fa fa-plus\" *ngIf=\"!isinfo.isinfocomplement\"></i><i class=\"fa fa-window-minimize\" *ngIf=\"isinfo.isinfocomplement\"></i> Info complementaire</span></h3>\r\n  <div *ngIf=\"isinfo.isinfocomplement\">\r\n    <hr>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-sm-12 col-xs-12 \">\r\n        <h4>Types d'activités du point</h4>\r\n          <div class=\"row\">\r\n              <div  *ngFor=\"let option of optionsActivite\"  class=\"col-sm-6 col-xs-12\">\r\n                  <input type=\"checkbox\" name=\"optionsActivite\" value=\"{{option.value}}\"\r\n                         [(ngModel)]=\"option.checked\" (change)=\"updateCheckedoptionsActivite()\"\r\n                  />\r\n                  {{option.name}}\r\n              </div>\r\n              <div class=\"col-sm-6 col-xs-12\">\r\n                  <label>Autre ...</label>\r\n              </div>\r\n          </div>\r\n\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-md-6\">\r\n        <h4>Noter le point</h4>\r\n        <div>\r\n          <span *ngFor=\"let option of rating\"><i [ngClass]=\"{'fa': true, 'fa-star-o': !option.checked, 'fa-star': option.checked}\" aria-hidden=\"true\" (click)=\"avoter(option.indice)\"></i></span>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n        <button style=\"margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;\" class=\"btn btn-outline-primary\" (click)=\"getAllServices()\"\r\n            [attr.aria-expanded]=\"!isSelect\" aria-controls=\"collapseExampl\">\r\n            Prospection\r\n        </button>\r\n    </div>\r\n    <div class=\"row\">\r\n        <div id=\"collapseExampl\" [ngbCollapse]=\"isSelect\" style=\"margin-bottom: 1rem; margin-left: 0.3rem;\">\r\n            <div class=\"card\">\r\n                <div class=\"card-block\">\r\n                    <div class=\"row table-responsive\">\r\n                        <table class=\"table table-hover\">\r\n                            <thead>\r\n                              <tr>\r\n                                  <th>Réponse</th>\r\n                                  <th *ngFor=\"let item of possibleAnswers\">{{item.reponse}}</th>\r\n                              </tr>\r\n                            </thead>\r\n                            <tbody *ngIf=\"allServices\">\r\n                              <tr *ngFor=\"let service of allServices ; let i = index \">\r\n                                  <td>{{service.nom}}</td>\r\n                                  <td *ngFor=\"let item of possibleAnswers\"><input type=\"radio\" value=\"{{item.reponse}}\" name=\"{{service.nom}}\" [(ngModel)]=\"reponsesProspect[i]\"/></td>\r\n                              </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       </div>\r\n     </div>\r\n\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-sm-4\">\r\n        <label>Documents joints</label>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"form-group col-sm-4\">\r\n          <label>Libellé</label>\r\n          <select class=\"form-control input-sm\" [(ngModel)]=\"uploadedFileType\">\r\n              <option>--Choisir le type de pièce--</option>\r\n              <option value=\"cni\">CIN</option>\r\n              <option value=\"passport\">Passport</option>\r\n              <option value=\"carte consulaire\">Carte Consulaire</option>\r\n              <option value=\"autre\"> Autres Pièces... </option>\r\n          </select>\r\n      </div>\r\n      <div class=\"form-group col-sm-6\">\r\n        <input type=\"file\" class=\"form-control-file\" id=\"exampleInputFile\" (change)=\"fileChange($event)\" placeholder=\"Uploader Image\" accept=\".pdf,.docx,.png,.jpg\">\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<div class=\"row center-block\" style=\"padding-top: 2rem; padding-bottom: 1rem\" *ngIf=\"!isEnregistrerProspect\">\r\n  <div class=\"page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block\">\r\n    <button type=\"button\" class=\"btn btn-warning\" (click)=\"enregistrerProspect()\" [disabled]=\"reponsesProspect.length == 0 || !uploadfinished\">Valider les nouvelles données</button>\r\n  </div>\r\n</div>\r\n\r\n<div *ngIf=\"isEnregistrerProspect\" class=\"page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block\">\r\n    <ngb-alert [type]=\"'success'\" *ngIf=\"!staticAlertClosed\" (close)=\"staticAlertClosed = true\">\r\n        <strong>Successfull!</strong> <br/>Veuillez cliquer sur Fermer pour sortir!\r\n    </ngb-alert>\r\n</div>\r\n"
+module.exports = "<div class=\"card-block\">\r\n    <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-comment fa-fw\"></i> New Comment\r\n            <span class=\"float-right text-muted small\"><em>4 minutes ago</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-twitter fa-fw\"></i> 3 New Followers\r\n            <span class=\"float-right text-muted small\"><em>12 minutes ago</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-envelope fa-fw\"></i> Message Sent\r\n            <span class=\"float-right text-muted small\"><em>27 minutes ago</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-tasks fa-fw\"></i> New Task\r\n            <span class=\"float-right text-muted small\"><em>43 minutes ago</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-upload fa-fw\"></i> Server Rebooted\r\n            <span class=\"float-right text-muted small\"><em>11:32 AM</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-bolt fa-fw\"></i> Server Crashed!\r\n            <span class=\"float-right text-muted small\"><em>11:13 AM</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-warning fa-fw\"></i> Server Not Responding\r\n            <span class=\"float-right text-muted small\"><em>10:57 AM</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-shopping-cart fa-fw\"></i> New Order Placed\r\n            <span class=\"float-right text-muted small\"><em>9:49 AM</em></span>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item clearfix d-block\">\r\n            <i class=\"fa fa-money fa-fw\"></i> Payment Received\r\n            <span class=\"float-right text-muted small\"><em>Yesterday</em></span>\r\n        </a>\r\n    </div>\r\n    <!-- /.list-group -->\r\n    <a href=\"#\" class=\"btn btn-default btn-block\">View All Alerts</a>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".form-control {\n  margin-bottom: 1rem; }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router_animations__ = __webpack_require__("../../../../../src/app/router.animations.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_util_service__ = __webpack_require__("../../../../../src/app/services/util.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_assignation_suivi_service__ = __webpack_require__("../../../../../src/app/services/assignation-suivi.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProspectPdvComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var ProspectPdvComponent = (function () {
-    function ProspectPdvComponent(_utilService, _assignationsuiviService, http, router) {
-        this._utilService = _utilService;
-        this._assignationsuiviService = _assignationsuiviService;
-        this.http = http;
-        this.router = router;
-        this.staticAlertClosed = false;
-        this.isEnregistrerProspect = false;
-        this.uploadfinished = true;
-        this.reponsesProspect = [];
-        this.isSelect = true;
-        this.isinfo = { isinfopoint: false, isinfoproprietaire: false, isinfocomplement: true };
-        this.rating = [
-            { indice: 0, checked: false },
-            { indice: 1, checked: false },
-            { indice: 2, checked: false },
-            { indice: 3, checked: false },
-            { indice: 4, checked: false },
-        ];
-        this.optionsActivite = [];
-        this.prospection = {
-            id_assignation_origin: 0,
-            id_client: '',
-            client: '',
-            reponsesProspect: [],
-            piecesFournies: [],
-            noteprospect: 0,
-            niveau: 1,
-            datesuivi: {
-                dateniveau1: '',
-                dateniveau2: '',
-                dateniveau3: '',
-            },
-        };
-        this.apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php';
-        this.possibleAnswers = [
-            {
-                "reponse": "A Déjà Souscri"
-            },
-            {
-                "reponse": "Souscrire Maintenant"
-            },
-            {
-                "reponse": "Intéressé"
-            },
-            {
-                "reponse": "Pas Pour le Moment"
-            },
-            {
-                "reponse": "Impossible"
-            },
-        ];
-    }
-    ProspectPdvComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.point = JSON.parse(this.infoprospect.point);
-        this._utilService.getZoneActivite()
-            .subscribe(function (data) {
-            _this.zonesactivites = data;
-        }, function (error) { return alert(error); }, function () {
-            _this._utilService.getAllDataPoint(_this.infoprospect.id_point)
-                .subscribe(function (data) {
-                _this.alldatapoint = data;
-                _this.avoter(_this.alldatapoint.avis - 1);
-                _this.adresse_point = JSON.parse(_this.alldatapoint.adresse_point);
-                _this.adresse_proprietaire = JSON.parse(_this.alldatapoint.adresse_proprietaire);
-                var letactivites = JSON.parse(_this.alldatapoint.activites);
-                _this.optionsActivite = _this.zonesactivites.activites.map(function (type) {
-                    if (letactivites.includes(type.activite)) {
-                        return { name: type.activite, value: type.id, checked: true };
-                    }
-                    else {
-                        return { name: type.activite, value: type.id, checked: false };
-                    }
-                });
-            }, function (error) { return alert(error); }, function () {
-                _this.selectZonePoint();
-                _this.selectZoneProprietaire();
-            });
-        });
-    };
-    ProspectPdvComponent.prototype.getAllServices = function () {
-        var _this = this;
-        this._utilService.getServices()
-            .subscribe(function (data) { return _this.allServices = data; }, function (error) { return alert(error); }, function () {
-            _this.isSelect = !_this.isSelect;
-            for (var i = 0; i < _this.allServices.length; i++) {
-                _this.reponsesProspect.push("");
-            }
-        });
-    };
-    ProspectPdvComponent.prototype.selectZonePoint = function () {
-        var _this = this;
-        this._utilService.getSouszoneByZone(this.adresse_point.zonepoint)
-            .subscribe(function (data) { return _this.souszonespoints = data; }, function (error) { return alert(error); }, function () { return console.log(_this.souszonespoints); });
-    };
-    ProspectPdvComponent.prototype.selectZoneProprietaire = function () {
-        var _this = this;
-        this._utilService.getSouszoneByZone(this.adresse_proprietaire.zoneproprietaire)
-            .subscribe(function (data) { return _this.souszonespropietaires = data; }, function (error) { return alert(error); }, function () { return console.log(_this.souszonespropietaires); });
-    };
-    ProspectPdvComponent.prototype.avoter = function (index) {
-        if ((index + 1 == this.rating.length) && (this.rating[index].checked == true)) {
-            this.rating[index].checked = false;
-        }
-        else {
-            for (var i = 0; i < this.rating.length; i++) {
-                if (i < index) {
-                    this.rating[i].checked = true;
-                }
-                else if (i == index) {
-                    if ((this.rating[i].checked == true) && (this.rating[i + 1].checked == false)) {
-                        this.rating[i].checked = false;
-                    }
-                    else {
-                        this.rating[i].checked = true;
-                    }
-                }
-                else {
-                    this.rating[i].checked = false;
-                }
-            }
-        }
-        var arrayRating = this.rating.filter(function (opt) { return opt.checked; });
-        this.prospection.noteprospect = arrayRating.length;
-    };
-    Object.defineProperty(ProspectPdvComponent.prototype, "selectedoptionsActivite", {
-        get: function () {
-            return this.optionsActivite
-                .filter(function (opt) { return opt.checked; })
-                .map(function (opt) { return opt.value; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    ProspectPdvComponent.prototype.updateCheckedoptionsActivite = function () {
-        console.log(this.selectedoptionsActivite);
-        var activites = this.zonesactivites.activites;
-        this.alldatapoint.activites = this.selectedoptionsActivite.map(function (option) {
-            return activites[Number(option) - 1].activite;
-        });
-    };
-    ProspectPdvComponent.prototype.getZoneActivite = function () {
-        var _this = this;
-        this._utilService.getZoneActivite()
-            .subscribe(function (data) {
-            _this.zonesactivites = data;
-        }, function (error) { return alert(error); }, function () { return console.log(_this.zonesactivites); });
-    };
-    ProspectPdvComponent.prototype.enregistrerProspect = function () {
-        var _this = this;
-        this.alldatapoint.adresse_point = this.adresse_point;
-        this.alldatapoint.adresse_proprietaire = this.adresse_proprietaire;
-        this.prospection.id_assignation_origin = this.infoprospect.id;
-        this.prospection.id_client = this.infoprospect.id_point;
-        this.prospection.client = this.alldatapoint;
-        this.prospection.infosup = this.infoprospect.infosup;
-        for (var i = 0; i < this.allServices.length; i++) {
-            this.prospection.reponsesProspect.push(this.allServices[i].nom + "#" + this.reponsesProspect[i]);
-        }
-        //location.reload();
-        this._assignationsuiviService.modifPoint(this.prospection)
-            .subscribe(function (data) {
-            console.log(data);
-            _this.isEnregistrerProspect = true;
-            //this.router.navigate(['/dashboard']);
-        }, function (error) { return alert(error); }, function () { return console.log(''); });
-    };
-    ProspectPdvComponent.prototype.fileChange = function (event) {
-        var _this = this;
-        this.uploadfinished = false;
-        var fileList = event.target.files;
-        if (fileList.length > 0) {
-            var file = fileList[0];
-            var formData = new FormData();
-            formData.append('file', file, file.name);
-            var headers = new __WEBPACK_IMPORTED_MODULE_4__angular_http__["c" /* Headers */]();
-            headers.append('Accept', 'application/json');
-            var options = new __WEBPACK_IMPORTED_MODULE_4__angular_http__["d" /* RequestOptions */]({
-                headers: headers
-            });
-            this.http.post("" + this.apiEndPoint, formData, options)
-                .map(function (res) { return res.json(); })
-                .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_5_rxjs_Observable__["Observable"].throw(error); })
-                .subscribe(function (data) {
-                console.log("Retour uploader " + data.generatedName);
-                var newData = data;
-                _this.uploadFile = newData;
-                _this.newImage = _this.uploadFile.generatedName;
-                _this.prospection.piecesFournies.push(_this.uploadedFileType + "#" + _this.newImage);
-            }, function (error) { return console.log(error); }, function () {
-                _this.uploadfinished = true;
-            });
-        }
-    };
-    ProspectPdvComponent.prototype.validDonnees = function () {
-    };
-    return ProspectPdvComponent;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Object)
-], ProspectPdvComponent.prototype, "infoprospect", void 0);
-ProspectPdvComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-prospect-pdv',
-        template: __webpack_require__("../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.scss")],
-        animations: [__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__router_animations__["a" /* routerTransition */])()],
-        providers: [__WEBPACK_IMPORTED_MODULE_3__services_assignation_suivi_service__["a" /* AssignationSuiviService */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_util_service__["a" /* UtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_util_service__["a" /* UtilService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_assignation_suivi_service__["a" /* AssignationSuiviService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_assignation_suivi_service__["a" /* AssignationSuiviService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_http__["b" /* Http */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__angular_router__["a" /* Router */]) === "function" && _d || Object])
-], ProspectPdvComponent);
-
-var _a, _b, _c, _d;
-//# sourceMappingURL=prospect-pdv.component.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/data-filter.pipe.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataFilterPipe; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var DataFilterPipe = (function () {
-    function DataFilterPipe() {
-    }
-    DataFilterPipe.prototype.transform = function (array, query) {
-        if (query) {
-            return __WEBPACK_IMPORTED_MODULE_0_lodash__["filter"](array, function (row) { return (row.libellepoint.toLowerCase().indexOf(query.toLowerCase()) > -1 || row.fullname.toLowerCase().indexOf(query.toLowerCase()) > -1 || row.adresse.toLowerCase().indexOf(query.toLowerCase()) > -1); });
-        }
-        return array;
-    };
-    return DataFilterPipe;
-}());
-DataFilterPipe = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Pipe"])({
-        name: "dataFilter"
-    })
-], DataFilterPipe);
-
-//# sourceMappingURL=data-filter.pipe.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/souszones-filter.pipe.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SousZonesFilterPipe; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var SousZonesFilterPipe = (function () {
-    function SousZonesFilterPipe() {
-    }
-    SousZonesFilterPipe.prototype.transform = function (array, query) {
-        if (query) {
-            return __WEBPACK_IMPORTED_MODULE_0_lodash__["filter"](array, function (row) { return row.sous_zone.toLowerCase().indexOf(query.toLowerCase()) > -1; });
-        }
-        return array;
-    };
-    return SousZonesFilterPipe;
-}());
-SousZonesFilterPipe = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Pipe"])({
-        name: "souszonesFilter"
-    })
-], SousZonesFilterPipe);
-
-//# sourceMappingURL=souszones-filter.pipe.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/tables-routing.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tables_component__ = __webpack_require__("../../../../../src/app/layout/tables/tables.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TablesRoutingModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tables_component__["a" /* TablesComponent */] }
-];
-var TablesRoutingModule = (function () {
-    function TablesRoutingModule() {
-    }
-    return TablesRoutingModule;
-}());
-TablesRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild(routes)],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
-    })
-], TablesRoutingModule);
-
-//# sourceMappingURL=tables-routing.module.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/tables.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div [@routerTransition]>\r\n    <app-page-header [heading]=\"'Prospects'\" [icon]=\"'fa-table'\"></app-page-header>\r\n\r\n    <div class=\"row\" style=\"padding-bottom: 2rem\">\r\n        <div class=\"col-sm-3\">\r\n            <label class=\"label-control\">Nombre d'Affichage</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"rowsOnPage\">\r\n                <option [ngValue]=\"5\">5</option>\r\n                <option [ngValue]=\"10\">10</option>\r\n                <option [ngValue]=\"25\">25</option>\r\n                <option [ngValue]=\"50\">50</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-3\">\r\n            <label>Zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreZone\">\r\n                <option>--Choix zone--</option>\r\n                <option  *ngFor=\"let zone of zones\">{{zone}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-3\">\r\n            <label>Sous zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreSousZone\">\r\n                <option>--Choix sous zone--</option>\r\n                <option  *ngFor=\"let souszone of sousZonesOfCurrentZone()\">{{souszone}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-12\">\r\n\r\n            <div class=\"row table-responsive\">\r\n                <table class=\"table table-hover\" [mfData]=\"data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery\" #mf=\"mfDataTable\" [mfRowsOnPage]=\"rowsOnPage\" [(mfSortBy)]=\"sortBy\" [(mfSortOrder)]=\"sortOrder\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th><mfDefaultSorter by=\"dateajout\">Date assignation</mfDefaultSorter></th>\r\n                        <th><mfDefaultSorter by=\"libellepoint\">Nom Point</mfDefaultSorter></th>\r\n                        <th><mfDefaultSorter by=\"fullname\">Gérant(e)</mfDefaultSorter></th>\r\n                        <th><mfDefaultSorter by=\"telephone\">Téléphone</mfDefaultSorter></th>\r\n                        <th><mfDefaultSorter by=\"adresse\">Adresse</mfDefaultSorter></th>\r\n                        <th>Action</th>\r\n                        <th>Option</th>\r\n                    </tr>\r\n                    <tr>\r\n                    <th colspan=\"5\">\r\n                        Recherche:\r\n                        <input class=\"form-control\" [(ngModel)]=\"filterQuery\"/>\r\n                    </th>\r\n                </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                    <tr *ngFor=\"let item of mf.data\">\r\n                        <td>{{item.infosup.date_assignationcommercial | date}}</td>\r\n                        <td>{{item.libellepoint}}</td>\r\n                        <td>{{item.fullname}}</td>\r\n                        <td>{{item.telephone}}</td>\r\n                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>\r\n                        <td >\r\n                            <button type=\"button\" class=\"btn btn-primary\" (click)=\"open(content, item)\">Voir Map</button>\r\n                        </td>\r\n                        <td><button type=\"button\" class=\"btn btn-primary\" (click)=\"open(contentProspect, item)\">Prospecter</button></td>\r\n                    </tr>\r\n                    </tbody>\r\n                    <tfoot>\r\n                    <tr class=\"text-center center-block\">\r\n                        <td colspan=\"8\" class=\"text-center center-block\">\r\n                            <mfBootstrapPaginator [rowsOnPageSet]=\"[5,10,25]\"></mfBootstrapPaginator>\r\n                        </td>\r\n                    </tr>\r\n                    </tfoot>\r\n                </table>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<ng-template #content let-c=\"close\" let-d=\"dismiss\" >\r\n    <div class=\"modal-header\" *ngIf=\"client\">\r\n        <h4 class=\"modal-title\">Coordonnée du point '{{client.libellepoint}}' de '{{client.fullname}}'</h4>\r\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\r\n            <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n    </div>\r\n    <div class=\"modal-body\">\r\n        <app-geomap [macarte]=\"client\"></app-geomap>\r\n    </div>\r\n</ng-template>\r\n\r\n<ng-template #contentProspect let-c=\"close\" let-d=\"dismiss\" >\r\n    <div class=\"modal-body\">\r\n        <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\r\n            <span aria-hidden=\"true\">&times;</span>\r\n        </button>\r\n        <app-prospect-pdv [infoprospect]=\"client\"></app-prospect-pdv>\r\n    </div>\r\n    <div class=\"modal-footer\">\r\n        <button type=\"button\" class=\"btn btn-secondary\" (click)=\"c('Close click')\">Fermer</button>\r\n    </div>\r\n</ng-template>\r\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/tables.component.scss":
+/***/ "../../../../../src/app/layout/dashboard/components/notification/notification.component.scss":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -493,18 +102,170 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/layout/tables/tables.component.ts":
+/***/ "../../../../../src/app/layout/dashboard/components/notification/notification.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router_animations__ = __webpack_require__("../../../../../src/app/router.animations.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_util_service__ = __webpack_require__("../../../../../src/app/services/util.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_assignation_suivi_service__ = __webpack_require__("../../../../../src/app/services/assignation-suivi.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TablesComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NotificationComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var NotificationComponent = (function () {
+    function NotificationComponent() {
+    }
+    NotificationComponent.prototype.ngOnInit = function () { };
+    return NotificationComponent;
+}());
+NotificationComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-notification',
+        template: __webpack_require__("../../../../../src/app/layout/dashboard/components/notification/notification.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/layout/dashboard/components/notification/notification.component.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], NotificationComponent);
+
+//# sourceMappingURL=notification.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/components/timeline/timeline.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"card-block\">\r\n    <ul class=\"timeline\">\r\n        <li>\r\n            <div class=\"timeline-badge\"><i class=\"fa fa-check\"></i>\r\n            </div>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                    <p><small class=\"text-muted\"><i class=\"fa fa-clock-o\"></i> 11 hours ago via Twitter</small>\r\n                    </p>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li class=\"timeline-inverted\">\r\n            <div class=\"timeline-badge warning\"><i class=\"fa fa-credit-card\"></i>\r\n            </div>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li>\r\n            <div class=\"timeline-badge danger\"><i class=\"fa fa-bomb\"></i>\r\n            </div>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li class=\"timeline-inverted\">\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li>\r\n            <div class=\"timeline-badge info\"><i class=\"fa fa-save\"></i>\r\n            </div>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>\r\n                    <hr>\r\n                    <div class=\"btn-group\">\r\n                        <button type=\"button\" class=\"btn btn-primary btn-sm dropdown-toggle\" data-toggle=\"dropdown\">\r\n                            <i class=\"fa fa-gear\"></i>  <span class=\"caret\"></span>\r\n                        </button>\r\n                        <ul class=\"dropdown-menu\" role=\"menu\">\r\n                            <li><a href=\"#\">Action</a>\r\n                            </li>\r\n                            <li><a href=\"#\">Another action</a>\r\n                            </li>\r\n                            <li><a href=\"#\">Something else here</a>\r\n                            </li>\r\n                            <li class=\"divider\"></li>\r\n                            <li><a href=\"#\">Separated link</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n        <li class=\"timeline-inverted\">\r\n            <div class=\"timeline-badge success\"><i class=\"fa fa-graduation-cap\"></i>\r\n            </div>\r\n            <div class=\"timeline-panel\">\r\n                <div class=\"timeline-heading\">\r\n                    <h4 class=\"timeline-title\">Lorem ipsum dolor</h4>\r\n                </div>\r\n                <div class=\"timeline-body\">\r\n                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.</p>\r\n                </div>\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/components/timeline/timeline.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".timeline {\n  position: relative;\n  padding: 20px 0 20px;\n  list-style: none; }\n\n.timeline:before {\n  content: \" \";\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 50%;\n  width: 3px;\n  margin-left: -1.5px;\n  background-color: #eeeeee; }\n\n.timeline > li {\n  position: relative;\n  margin-bottom: 20px; }\n\n.timeline > li:before,\n.timeline > li:after {\n  content: \" \";\n  display: table; }\n\n.timeline > li:after {\n  clear: both; }\n\n.timeline > li:before,\n.timeline > li:after {\n  content: \" \";\n  display: table; }\n\n.timeline > li:after {\n  clear: both; }\n\n.timeline > li > .timeline-panel {\n  float: left;\n  position: relative;\n  width: 46%;\n  padding: 20px;\n  border: 1px solid #d4d4d4;\n  border-radius: 2px;\n  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175); }\n\n.timeline > li > .timeline-panel:before {\n  content: \" \";\n  display: inline-block;\n  position: absolute;\n  top: 26px;\n  right: -15px;\n  border-top: 15px solid transparent;\n  border-right: 0 solid #ccc;\n  border-bottom: 15px solid transparent;\n  border-left: 15px solid #ccc; }\n\n.timeline > li > .timeline-panel:after {\n  content: \" \";\n  display: inline-block;\n  position: absolute;\n  top: 27px;\n  right: -14px;\n  border-top: 14px solid transparent;\n  border-right: 0 solid #fff;\n  border-bottom: 14px solid transparent;\n  border-left: 14px solid #fff; }\n\n.timeline > li > .timeline-badge {\n  z-index: 100;\n  position: absolute;\n  top: 16px;\n  left: 50%;\n  width: 50px;\n  height: 50px;\n  margin-left: -25px;\n  border-radius: 50% 50% 50% 50%;\n  text-align: center;\n  font-size: 1.4em;\n  line-height: 50px;\n  color: #fff;\n  background-color: #999999; }\n\n.timeline > li.timeline-inverted > .timeline-panel {\n  float: right; }\n\n.timeline > li.timeline-inverted > .timeline-panel:before {\n  right: auto;\n  left: -15px;\n  border-right-width: 15px;\n  border-left-width: 0; }\n\n.timeline > li.timeline-inverted > .timeline-panel:after {\n  right: auto;\n  left: -14px;\n  border-right-width: 14px;\n  border-left-width: 0; }\n\n.timeline-badge.primary {\n  background-color: #2e6da4 !important; }\n\n.timeline-badge.success {\n  background-color: #3f903f !important; }\n\n.timeline-badge.warning {\n  background-color: #f0ad4e !important; }\n\n.timeline-badge.danger {\n  background-color: #d9534f !important; }\n\n.timeline-badge.info {\n  background-color: #5bc0de !important; }\n\n.timeline-title {\n  margin-top: 0;\n  color: inherit; }\n\n.timeline-body > p,\n.timeline-body > ul {\n  margin-bottom: 0; }\n\n.timeline-body > p + p {\n  margin-top: 5px; }\n\n@media (max-width: 767px) {\n  ul.timeline:before {\n    left: 40px; }\n  ul.timeline > li > .timeline-panel {\n    width: calc(100% - 90px);\n    width: -webkit-calc(100% - 90px); }\n  ul.timeline > li > .timeline-badge {\n    top: 16px;\n    left: 15px;\n    margin-left: 0; }\n  ul.timeline > li > .timeline-panel {\n    float: right; }\n  ul.timeline > li > .timeline-panel:before {\n    right: auto;\n    left: -15px;\n    border-right-width: 15px;\n    border-left-width: 0; }\n  ul.timeline > li > .timeline-panel:after {\n    right: auto;\n    left: -14px;\n    border-right-width: 14px;\n    border-left-width: 0; } }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/components/timeline/timeline.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TimelineComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var TimelineComponent = (function () {
+    function TimelineComponent() {
+    }
+    TimelineComponent.prototype.ngOnInit = function () {
+    };
+    return TimelineComponent;
+}());
+TimelineComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-timeline',
+        template: __webpack_require__("../../../../../src/app/layout/dashboard/components/timeline/timeline.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/layout/dashboard/components/timeline/timeline.component.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], TimelineComponent);
+
+//# sourceMappingURL=timeline.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/dashboard-routing.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboard_component__ = __webpack_require__("../../../../../src/app/layout/dashboard/dashboard.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardRoutingModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var routes = [
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_2__dashboard_component__["a" /* DashboardComponent */] }
+];
+var DashboardRoutingModule = (function () {
+    function DashboardRoutingModule() {
+    }
+    return DashboardRoutingModule;
+}());
+DashboardRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */].forChild(routes)],
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* RouterModule */]]
+    })
+], DashboardRoutingModule);
+
+//# sourceMappingURL=dashboard-routing.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/dashboard.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div [@routerTransition]>\r\n    <h2 class=\"text-muted\">BBS CRM Plateforme <small></small></h2>\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-4 col-xs-4\">\r\n            <a [routerLink]=\"['/mescontacts']\" [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\">\r\n                <i class=\"fa fa-fw fa-table\"></i>&nbsp;{{ 'Mes Contacts' }}\r\n            </a>\r\n        </div>\r\n\r\n        <div class=\"col-sm-4 col-xs-4\">\r\n            <a [routerLink]=\"['/tables']\" [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\">\r\n                <i class=\"fa fa-fw fa-table\"></i>&nbsp;{{ 'Propects' }}\r\n            </a>\r\n        </div>\r\n        <div class=\"col-sm-4 col-xs-4\">\r\n            <a [routerLink]=\"['/forms']\" [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\">\r\n                <i class=\"fa fa-fw fa-edit\"></i>&nbsp;{{ 'Nouveau Client' }}\r\n            </a>\r\n        </div>\r\n\r\n        <div class=\"col-md-12\">\r\n            <ngb-carousel>\r\n                <ng-template ngbSlide *ngFor=\"let slider of sliders\">\r\n                    <img class=\"img-fluid mx-auto d-block\" [src]=\"slider.imagePath\" alt=\"Random first slide\" width=\"100%\">\r\n                    <div class=\"carousel-caption\">\r\n                        <h3>{{slider.label}}</h3>\r\n                        <p>{{slider.text}}</p>\r\n                    </div>\r\n                </ng-template>\r\n            </ngb-carousel>\r\n        </div>\r\n    </div>\r\n    <hr>\r\n    <hr />\r\n\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/dashboard.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "a {\n  margin-bottom: 2rem !important;\n  background-color: #0275d8;\n  color: #FFF; }\n\na:hover {\n  background-color: #FFF;\n  color: #0275d8; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/layout/dashboard/dashboard.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router_animations__ = __webpack_require__("../../../../../src/app/router.animations.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -516,147 +277,68 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-
-
-
-
-var TablesComponent = (function () {
-    function TablesComponent(router, http, modalService, _utilService, _assignationsuiviService) {
-        this.router = router;
-        this.http = http;
-        this.modalService = modalService;
-        this._utilService = _utilService;
-        this._assignationsuiviService = _assignationsuiviService;
-        this.filterQuery = "";
-        this.filtreZone = "";
-        this.filtreSousZone = "";
-        this.rowsOnPage = 5;
-        this.sortBy = "libellepoint";
-        this.sortOrder = "asc";
-        this.zones = [];
-        this.souszones = [];
-        this.data = [];
-        this.sortByWordLength = function (a) {
-            return a.adresse.length;
-        };
-    }
-    TablesComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.getZones();
-        this._assignationsuiviService.getAssignationsByCommercial()
-            .subscribe(function (data) {
-            console.log(data);
-            _this.data = data.map(function (type) {
-                return {
-                    id: type.id,
-                    id_point: type.id_client,
-                    point: type.client,
-                    libellepoint: JSON.parse(type.client).libellepoint,
-                    prenom: JSON.parse(type.client).prenom,
-                    nom: JSON.parse(type.client).nom,
-                    fullname: JSON.parse(type.client).fullname,
-                    telephone: JSON.parse(type.client).telephone,
-                    adresse: JSON.parse(type.client).adresse,
-                    note: JSON.parse(type.client).note,
-                    zone: type.zone, sous_zone: type.sous_zone,
-                    commentaire: '',
-                    infosup: JSON.parse(type.infosup),
-                    value: type.id,
-                    checked: false,
-                    id_superviseur: type.id_superviseur,
-                    superviseur: JSON.parse(type.superviseur),
-                    id_commercial: type.id_commercial,
-                    commercial: JSON.parse(type.commercial)
-                };
-            });
-            for (var i = 0; i < _this.data.length; i++) {
-                if (!_this.zones.includes(_this.data[i].zone))
-                    _this.zones.push(_this.data[i].zone);
-            }
-            console.log(_this.zones);
-        }, function (error) { return alert(error); }, function () { return console.log(_this.data); });
-    };
-    TablesComponent.prototype.open = function (content, client) {
-        var _this = this;
-        this.client = client;
-        this.modalService.open(content, { size: 'lg' }).result.then(function (result) {
-            _this.closeResult = "Closed with: " + result;
-            _this.router.navigate(['/dashboard']);
-        }, function (reason) {
-            _this.closeResult = "Dismissed " + _this.getDismissReason(reason);
+var DashboardComponent = (function () {
+    function DashboardComponent() {
+        this.alerts = [];
+        this.sliders = [];
+        this.sliders.push({
+            imagePath: 'assets/images/slider1.jpg',
+            label: 'First slide label',
+            text: 'Nulla vitae elit libero, a pharetra augue mollis interdum.'
+        }, {
+            imagePath: 'assets/images/slider2.jpg',
+            label: 'Second slide label',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+        }, {
+            imagePath: 'assets/images/slider3.jpg',
+            label: 'Third slide label',
+            text: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
         });
+        this.alerts.push({
+            id: 1,
+            type: 'success',
+            message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n                Voluptates est animi quibusdam praesentium quam, et perspiciatis,\n                consectetur velit culpa molestias dignissimos\n                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum"
+        }, {
+            id: 2,
+            type: 'warning',
+            message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n                Voluptates est animi quibusdam praesentium quam, et perspiciatis,\n                consectetur velit culpa molestias dignissimos\n                voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum"
+        });
+    }
+    DashboardComponent.prototype.ngOnInit = function () {
     };
-    TablesComponent.prototype.getDismissReason = function (reason) {
-        if (reason === __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["b" /* ModalDismissReasons */].ESC) {
-            return 'by pressing ESC';
-        }
-        else if (reason === __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["b" /* ModalDismissReasons */].BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        }
-        else {
-            return "with: " + reason;
-        }
+    DashboardComponent.prototype.closeAlert = function (alert) {
+        var index = this.alerts.indexOf(alert);
+        this.alerts.splice(index, 1);
     };
-    TablesComponent.prototype.toInt = function (num) {
-        return +num;
-    };
-    TablesComponent.prototype.getZones = function () {
-        for (var i = 0; i < this.data.length; i++) {
-            if (!this.zones.includes(this.data[i].zone))
-                this.zones.push(this.data[i].zone);
-        }
-    };
-    TablesComponent.prototype.sousZonesOfCurrentZone = function () {
-        var souszones = [];
-        for (var i = 0; i < this.data.length; i++) {
-            if (this.data[i].zone == this.filtreZone) {
-                if (!souszones.includes(this.data[i].sous_zone))
-                    souszones.push(this.data[i].sous_zone);
-            }
-        }
-        return souszones;
-    };
-    return TablesComponent;
+    return DashboardComponent;
 }());
-TablesComponent = __decorate([
+DashboardComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-tables',
-        template: __webpack_require__("../../../../../src/app/layout/tables/tables.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/layout/tables/tables.component.scss")],
-        animations: [__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__router_animations__["a" /* routerTransition */])()],
-        providers: [__WEBPACK_IMPORTED_MODULE_3__services_util_service__["a" /* UtilService */], __WEBPACK_IMPORTED_MODULE_5__services_assignation_suivi_service__["a" /* AssignationSuiviService */]]
+        selector: 'app-dashboard',
+        template: __webpack_require__("../../../../../src/app/layout/dashboard/dashboard.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/layout/dashboard/dashboard.component.scss")],
+        animations: [__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__router_animations__["a" /* routerTransition */])()]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_6__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["c" /* NgbModal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__ng_bootstrap_ng_bootstrap__["c" /* NgbModal */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__services_util_service__["a" /* UtilService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_util_service__["a" /* UtilService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_assignation_suivi_service__["a" /* AssignationSuiviService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_assignation_suivi_service__["a" /* AssignationSuiviService */]) === "function" && _e || Object])
-], TablesComponent);
+    __metadata("design:paramtypes", [])
+], DashboardComponent);
 
-var _a, _b, _c, _d, _e;
-//# sourceMappingURL=tables.component.js.map
+//# sourceMappingURL=dashboard.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/layout/tables/tables.module.ts":
+/***/ "../../../../../src/app/layout/dashboard/dashboard.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular2_datatable__ = __webpack_require__("../../../../angular2-datatable/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angular2_datatable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_angular2_datatable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_rating__ = __webpack_require__("../../../../ngx-bootstrap/rating/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__tables_component__ = __webpack_require__("../../../../../src/app/layout/tables/tables.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__tables_routing_module__ = __webpack_require__("../../../../../src/app/layout/tables/tables-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared__ = __webpack_require__("../../../../../src/app/shared/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__data_filter_pipe__ = __webpack_require__("../../../../../src/app/layout/tables/data-filter.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__zones_filter_pipe__ = __webpack_require__("../../../../../src/app/layout/tables/zones-filter.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__souszones_filter_pipe__ = __webpack_require__("../../../../../src/app/layout/tables/souszones-filter.pipe.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__geomap_geomap_component__ = __webpack_require__("../../../../../src/app/layout/geomap/geomap.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__prospect_pdv_prospect_pdv_component__ = __webpack_require__("../../../../../src/app/layout/prospect-pdv/prospect-pdv.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TablesModule", function() { return TablesModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_routing_module__ = __webpack_require__("../../../../../src/app/layout/dashboard/dashboard-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dashboard_component__ = __webpack_require__("../../../../../src/app/layout/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components__ = __webpack_require__("../../../../../src/app/layout/dashboard/components/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared__ = __webpack_require__("../../../../../src/app/shared/index.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardModule", function() { return DashboardModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -670,82 +352,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-
-
-
-
-
-
-
-var TablesModule = (function () {
-    function TablesModule() {
+var DashboardModule = (function () {
+    function DashboardModule() {
     }
-    return TablesModule;
+    return DashboardModule;
 }());
-TablesModule = __decorate([
+DashboardModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_8__tables_routing_module__["a" /* TablesRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_9__shared__["b" /* PageHeaderModule */],
-            __WEBPACK_IMPORTED_MODULE_5_angular2_datatable__["DataTableModule"],
-            __WEBPACK_IMPORTED_MODULE_3__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_4__agm_core__["a" /* AgmCoreModule */].forRoot({
-                apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'
-            }),
-            __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_rating__["a" /* RatingModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["d" /* NgbCarouselModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_2__ng_bootstrap_ng_bootstrap__["e" /* NgbAlertModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3__dashboard_routing_module__["a" /* DashboardRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_6__shared__["c" /* StatModule */],
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_7__tables_component__["a" /* TablesComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__data_filter_pipe__["a" /* DataFilterPipe */],
-            __WEBPACK_IMPORTED_MODULE_11__zones_filter_pipe__["a" /* ZonesFilterPipe */],
-            __WEBPACK_IMPORTED_MODULE_12__souszones_filter_pipe__["a" /* SousZonesFilterPipe */],
-            __WEBPACK_IMPORTED_MODULE_13__geomap_geomap_component__["a" /* GeomapComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__prospect_pdv_prospect_pdv_component__["a" /* ProspectPdvComponent */]
+            __WEBPACK_IMPORTED_MODULE_4__dashboard_component__["a" /* DashboardComponent */],
+            __WEBPACK_IMPORTED_MODULE_5__components__["a" /* TimelineComponent */],
+            __WEBPACK_IMPORTED_MODULE_5__components__["b" /* NotificationComponent */],
+            __WEBPACK_IMPORTED_MODULE_5__components__["c" /* ChatComponent */]
         ]
     })
-], TablesModule);
+], DashboardModule);
 
-//# sourceMappingURL=tables.module.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/layout/tables/zones-filter.pipe.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__("../../../../lodash/lodash.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ZonesFilterPipe; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-var ZonesFilterPipe = (function () {
-    function ZonesFilterPipe() {
-    }
-    ZonesFilterPipe.prototype.transform = function (array, query) {
-        if (query) {
-            return __WEBPACK_IMPORTED_MODULE_0_lodash__["filter"](array, function (row) { return row.zone.toLowerCase().indexOf(query.toLowerCase()) > -1; });
-        }
-        return array;
-    };
-    return ZonesFilterPipe;
-}());
-ZonesFilterPipe = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Pipe"])({
-        name: "zonesFilter"
-    })
-], ZonesFilterPipe);
-
-//# sourceMappingURL=zones-filter.pipe.js.map
+//# sourceMappingURL=dashboard.module.js.map
 
 /***/ })
 

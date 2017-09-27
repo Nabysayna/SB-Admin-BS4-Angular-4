@@ -39,7 +39,7 @@ AdmincommercialRoutingModule = __decorate([
 /***/ "../../../../../src/app/layout/admincommercial/admincommercial.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h3 class=\"page-header\"><u>Administrateur commercial</u></h3>\r\n<div class=\"row\" style=\"padding-bottom: 1rem;padding-top: 1rem\">\r\n  \t<div class=\"page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block\">\r\n\t\t<button type=\"button\" [ngClass]=\"{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}\" (click)=\"menuHeadClick(1)\">Assignation</button>\r\n\t\t<button type=\"button\" [ngClass]=\"{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}\" (click)=\"menuHeadClick(2)\">Suivi</button>\r\n\t</div>\r\n    <hr>\r\n</div>\r\n\r\n<div class=\"container-fluid\" *ngIf=\"menuHead.menuHead1\">\r\n\t<div class=\"row\" style=\"padding-bottom: 2rem\">\r\n        <div class=\"col-sm-3\">\r\n            <label>Zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreZone\" (change)=\"selectZone()\">\r\n                <option>--Choix zone--</option>\r\n                <option  *ngFor=\"let zone of zones\">{{zone.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-3\">\r\n            <label>Sous zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreSousZone\"  (change)=\"selectSouszone()\">\r\n                <option>--Choix sous zone--</option>\r\n                <option  *ngFor=\"let souszone of souszones\">{{souszone.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-4\">\r\n            <label>Superviseur</label>\r\n            <select name=\"singleSelectsuperviseur\"  id=\"singleSelectsuperviseur\" class=\"form-control input-sm\" [(ngModel)]=\"choixsuperviseur\">\r\n                <option [attr.value]=\"'-1'\">--Choix superviseur--</option>\r\n                <option  *ngFor=\"let superviseur of superviseurs\" [attr.value]=\"superviseur.id\">{{superviseur.prenom}} {{superviseur.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-2\">\r\n            <label >Objectif</label>\r\n            <input type=\"number\" class=\"form-control input-sm\"  [(ngModel)]=\"objetifsuperviseur\" name=\"objetifsuperviseur\" />\r\n        </div>\r\n\t</div>\r\n    <div *ngIf=\"isEnregistrerAssignation\" class=\"row col-sm-12 text-center center-block\">\r\n        <ngb-alert [type]=\"'success'\" *ngIf=\"!staticAlertClosed\" (close)=\"staticAlertClosed = true\">\r\n            <strong>Success!</strong> Assignation avec success.\r\n        </ngb-alert>\r\n    </div>\r\n    <div class=\"row col-sm-12 text-center center-block\" style=\"padding-bottom: 1rem\">\r\n    \t<button type=\"button\"\r\n                class=\"btn btn-warning  input-sm\"\r\n                (click)=\"assignersuperviseur()\"\r\n                style=\"margin-left: auto; margin-right: auto;\"\r\n                [disabled]=\"\r\n                    filtreZone == '--Choix zone--' ||\r\n                    filtreSousZone == '--Choix sous zone--' ||\r\n                    choixsuperviseur == '--Choix superviseur--' ||\r\n                    objetifsuperviseur <= 0 ||\r\n                    selectedOptions.length <= 0\r\n                \">Assigner</button>\r\n    </div>\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-12\">\r\n            <div class=\"row table-responsive\">\r\n\t\t        <table class=\"table table-hover\" [mfData]=\"optionassignations\" #mf=\"mfDataTable\" [mfRowsOnPage]=\"rowsOnPage\" [(mfSortBy)]=\"sortBy\" [(mfSortOrder)]=\"sortOrder\">\r\n\t                <thead>\r\n\t                    <tr>\r\n\t                        <th>#</th>\r\n\t                        <th><mfDefaultSorter by=\"libellepoint\">Nom Point</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"fullname\">Gérant(e)</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"telephone\">Téléphone</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"adresse\">Adresse</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"note\">Note</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"commentaire\">Commentaire</mfDefaultSorter></th>\r\n\t                    </tr>\r\n\t                </thead>\r\n\t                <tbody>\r\n\t                    <tr *ngFor=\"let item of mf.data; let i = index \">\r\n\t                        <td>\r\n                                <input type=\"checkbox\" name=\"items\" value=\"{{item.value}}\"\r\n                                       [(ngModel)]=\"item.checked\" (change)=\"updateCheckedOptions()\"\r\n                                />\r\n\t                       </td>\r\n\t                        <td>{{item.libellepoint}}</td>\r\n\t                        <td>{{item.fullname}}</td>\r\n\t                        <td>{{item.telephone}}</td>\r\n\t                        <td>{{item.adresse}}</td>\r\n\t                        <td><app-ratingbyoption [rate]=\"item.note-1\" [ratingstatic]=\"true\"></app-ratingbyoption></td>\r\n\t                        <td><textarea  class=\"form-control\" placeholder=\"Notification\" [(ngModel)]=\"item.commentaire\">{{item.commentaire}}</textarea></td>\r\n\t                    </tr>\r\n\t                </tbody>\r\n\t                <tfoot>\r\n\t                    <tr class=\"text-center center-block\">\r\n\t                        <td colspan=\"8\" class=\"text-center center-block\">\r\n\t                            <mfBootstrapPaginator [rowsOnPageSet]=\"[5,10,25]\"></mfBootstrapPaginator>\r\n\t                        </td>\r\n\t                    </tr>\r\n\t                </tfoot>\r\n                </table>\r\n            </div>\r\n        </div>\r\n\t</div>\r\n</div>\r\n\r\n\r\n<div  class=\"container\" *ngIf=\"menuHead.menuHead2\" >\r\n\t<app-adminsuivi></app-adminsuivi>\r\n</div>\r\n"
+module.exports = "<h3 class=\"page-header\"><u>Administrateur commercial</u></h3>\r\n<div class=\"row\" style=\"padding-bottom: 1rem;padding-top: 1rem\">\r\n  \t<div class=\"page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block\">\r\n\t\t<button type=\"button\" [ngClass]=\"{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}\" (click)=\"menuHeadClick(1)\">Assignation</button>\r\n\t\t<button type=\"button\" [ngClass]=\"{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}\" (click)=\"menuHeadClick(2)\">Suivi</button>\r\n\t</div>\r\n    <hr>\r\n</div>\r\n\r\n<div class=\"container-fluid\" *ngIf=\"menuHead.menuHead1\">\r\n\t<div class=\"row\" style=\"padding-bottom: 2rem\">\r\n        <div class=\"col-sm-2\">\r\n            <label>Région</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreRegion\" (change)=\"selectRegion()\">\r\n                <option>--Choix région--</option>\r\n                <option  *ngFor=\"let region of regions\">{{region.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-2\">\r\n            <label>Zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreZone\" (change)=\"selectZone()\">\r\n                <option>--Choix zone--</option>\r\n                <option  *ngFor=\"let zone of zones\">{{zone.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-3\">\r\n            <label>Sous zone</label>\r\n            <select class=\"form-control input-sm\" [(ngModel)]=\"filtreSousZone\"  (change)=\"selectSouszone()\">\r\n                <option>--Choix sous zone--</option>\r\n                <option  *ngFor=\"let souszone of souszones\">{{souszone.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-3\">\r\n            <label>Superviseur</label>\r\n            <select name=\"singleSelectsuperviseur\"  id=\"singleSelectsuperviseur\" class=\"form-control input-sm\" [(ngModel)]=\"choixsuperviseur\">\r\n                <option [attr.value]=\"'-1'\">--Choix superviseur--</option>\r\n                <option  *ngFor=\"let superviseur of superviseurs\" [attr.value]=\"superviseur.id\">{{superviseur.prenom}} {{superviseur.nom}}</option>\r\n            </select>\r\n        </div>\r\n        <div class=\"col-sm-2\">\r\n            <label >Objectif</label>\r\n            <input type=\"number\" class=\"form-control input-sm\"  [(ngModel)]=\"objetifsuperviseur\" name=\"objetifsuperviseur\" />\r\n        </div>\r\n\t</div>\r\n    <div *ngIf=\"isEnregistrerAssignation\" class=\"row col-sm-12 text-center center-block\">\r\n        <ngb-alert [type]=\"'success'\" *ngIf=\"!staticAlertClosed\" (close)=\"staticAlertClosed = true\">\r\n            <strong>Success!</strong> Assignation avec success.\r\n        </ngb-alert>\r\n    </div>\r\n    <div class=\"row col-sm-12 text-center center-block\" style=\"padding-bottom: 1rem\">\r\n    \t<button type=\"button\"\r\n                class=\"btn btn-warning  input-sm\"\r\n                (click)=\"assignersuperviseur()\"\r\n                style=\"margin-left: auto; margin-right: auto;\"\r\n                [disabled]=\"\r\n                    filtreRegion == '--Choix région--' ||\r\n                    filtreZone == '--Choix zone--' ||\r\n                    filtreSousZone == '--Choix sous zone--' ||\r\n                    choixsuperviseur == '--Choix superviseur--' ||\r\n                    objetifsuperviseur <= 0 ||\r\n                    selectedOptions.length <= 0\r\n                \">Assigner</button>\r\n    </div>\r\n    <div class=\"row\">\r\n        <div class=\"col-xs-12 col-sm-12\">\r\n            <div class=\"row table-responsive\">\r\n\t\t        <table class=\"table table-hover\" [mfData]=\"optionassignations\" #mf=\"mfDataTable\" [mfRowsOnPage]=\"rowsOnPage\" [(mfSortBy)]=\"sortBy\" [(mfSortOrder)]=\"sortOrder\">\r\n\t                <thead>\r\n\t                    <tr>\r\n\t                        <th>#</th>\r\n\t                        <th><mfDefaultSorter by=\"libellepoint\">Nom Point</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"fullname\">Gérant(e)</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"telephone\">Téléphone</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"adresse\">Adresse</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"note\">Note</mfDefaultSorter></th>\r\n\t                        <th><mfDefaultSorter by=\"commentaire\">Commentaire</mfDefaultSorter></th>\r\n\t                    </tr>\r\n\t                </thead>\r\n\t                <tbody>\r\n\t                    <tr *ngFor=\"let item of mf.data; let i = index \">\r\n\t                        <td><input type=\"checkbox\" name=\"items\" value=\"{{item.value}}\" [(ngModel)]=\"item.checked\" /></td>\r\n\t                        <td>{{item.libellepoint}}</td>\r\n\t                        <td>{{item.fullname}}</td>\r\n\t                        <td>{{item.telephone}}</td>\r\n\t                        <td>{{item.adresse}}</td>\r\n\t                        <td><app-ratingbyoption [rate]=\"item.note-1\" [ratingstatic]=\"true\"></app-ratingbyoption></td>\r\n\t                        <td><textarea  class=\"form-control\" placeholder=\"Notification\" [(ngModel)]=\"item.commentaire\">{{item.commentaire}}</textarea></td>\r\n\t                    </tr>\r\n\t                </tbody>\r\n\t                <tfoot>\r\n\t                    <tr class=\"text-center center-block\">\r\n\t                        <td colspan=\"8\" class=\"text-center center-block\">\r\n\t                            <mfBootstrapPaginator [rowsOnPageSet]=\"[5,10,25]\"></mfBootstrapPaginator>\r\n\t                        </td>\r\n\t                    </tr>\r\n\t                </tfoot>\r\n                </table>\r\n            </div>\r\n        </div>\r\n\t</div>\r\n</div>\r\n\r\n\r\n<div  class=\"container\" *ngIf=\"menuHead.menuHead2\" >\r\n\t<app-adminsuivi></app-adminsuivi>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -87,6 +87,7 @@ var AdmincommercialComponent = (function () {
         this._assignationsuiviService = _assignationsuiviService;
         this.staticAlertClosed = false;
         this.isEnregistrerAssignation = false;
+        this.filtreRegion = "--Choix région--";
         this.filtreZone = "--Choix zone--";
         this.filtreSousZone = "--Choix sous zone--";
         this.choixsuperviseur = "--Choix superviseur--";
@@ -97,22 +98,15 @@ var AdmincommercialComponent = (function () {
         this.sortBy = "note";
         this.sortOrder = "desc";
         this.sortByWordLength = function (a) { return a.adresse.length; };
+        this.regions = [];
         this.zones = [];
         this.souszones = [];
         this.superviseurs = [];
         this.optionassignations = [];
         this.menuHead = { menuHead1: true, menuHead2: false };
-        this.rating = [
-            { indice: 0, checked: false },
-            { indice: 1, checked: false },
-            { indice: 2, checked: false },
-            { indice: 3, checked: false },
-            { indice: 4, checked: false },
-        ];
     }
     AdmincommercialComponent.prototype.ngOnInit = function () {
-        this.getZones();
-        this.getSuperviseurs();
+        this.getRegionsSuperviseurs();
     };
     AdmincommercialComponent.prototype.menuHeadClick = function (option) {
         if (option == 1) {
@@ -125,15 +119,94 @@ var AdmincommercialComponent = (function () {
         }
     };
     AdmincommercialComponent.prototype.toInt = function (num) { return +num; };
-    AdmincommercialComponent.prototype.getSuperviseurs = function () {
+    AdmincommercialComponent.prototype.getRegionsSuperviseurs = function () {
         var _this = this;
-        this._utilService.getSuperviseurs()
-            .subscribe(function (data) { return _this.superviseurs = data; }, function (error) { return alert(error); }, function () { return console.log(_this.superviseurs); });
+        this._utilService.getRegionsSuperviseurs()
+            .subscribe(function (data) {
+            console.log(data);
+            _this.superviseurs = data.superviseurs;
+            _this.regions = data.regions;
+        }, function (error) { return alert(error); }, function () { return console.log('getRegionsSuperviseurs'); });
     };
-    AdmincommercialComponent.prototype.getZones = function () {
-        var _this = this;
+    /*public getSuperviseurs(): void {
+        this._utilService.getSuperviseurs()
+            .subscribe(
+                data => this.superviseurs = data,
+                error => alert(error),
+                () => console.log(this.superviseurs)
+            );
+    }
+
+    public getZones(): void {
         this._utilService.getZones()
-            .subscribe(function (data) { return _this.zones = data; }, function (error) { return alert(error); }, function () { return console.log("Finish"); });
+            .subscribe(
+                data => this.zones = data,
+                error => alert(error),
+                () => console.log("Finish")
+            );
+    }
+*/
+    /*  public selectRegion(){
+          this.optionassignations = [];
+          this.filtreSousZone = "--Choix sous zone--";
+          this._utilService.getZoneByRegion(this.filtreRegion.toString())
+              .subscribe(
+                  data => {
+                      console.log(data);
+                      this.zones = data
+                  },
+                  error => alert(error),
+                  () => console.log(this.zones)
+              );
+      }
+  
+  
+      public selectZone(){
+          this.optionassignations = [];
+          this._utilService.getSouszoneByZone(this.filtreZone.toString())
+              .subscribe(
+                  data => this.souszones = data,
+                  error => alert(error),
+                  () => console.log(this.souszones)
+              );
+      }
+  
+  
+      public selectSouszone(){
+          this._utilService.getPointBySouszone(this.filtreSousZone)
+              .subscribe(
+                  data => {
+                      console.log(data);
+                      this.optionassignations = data.map(function(type) {
+                          return {
+                              id:type.id,
+                              libellepoint:type.libellepoint,
+                              prenom:type.prenom,
+                              nom:type.nom,
+                              fullname:type.fullname,
+                              telephone:type.telephone,
+                              adresse:type.adresse,
+                              note:type.note,
+                              commentaire:'',
+                              value:type.id,
+                              checked:false
+                          };
+                      });
+                  },
+                  error => alert(error),
+                  () => console.log(this.optionassignations)
+              );
+      }
+  */
+    AdmincommercialComponent.prototype.selectRegion = function () {
+        var _this = this;
+        this.optionassignations = [];
+        this.filtreSousZone = "--Choix sous zone--";
+        this._utilService.getZoneByRegion(this.filtreRegion.toString())
+            .subscribe(function (data) {
+            console.log(data);
+            _this.zones = data;
+        }, function (error) { return alert(error); }, function () { return console.log(_this.zones); });
     };
     AdmincommercialComponent.prototype.selectZone = function () {
         var _this = this;
@@ -173,18 +246,12 @@ var AdmincommercialComponent = (function () {
         configurable: true
     });
     ;
-    AdmincommercialComponent.prototype.updateCheckedOptions = function () {
-        //let activites = this.zonesactivites.activites;
-        //this.client.typeactivite = this.selectedOptions.map(function(option) {
-        //  return activites[Number(option)-1].activite;
-        //});
-        console.log(this.selectedOptions);
-    };
     AdmincommercialComponent.prototype.assignersuperviseur = function () {
         var _this = this;
         //let assignations =
         this.isclickforassination = true;
         if (this.filtreZone == "--Choix zone--" ||
+            this.filtreRegion == "--Choix région--" ||
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixsuperviseur == "--Choix superviseur--" ||
             this.objetifsuperviseur == 0) {
@@ -197,6 +264,7 @@ var AdmincommercialComponent = (function () {
                 return optionassignations_1.find(function (assigne) { return assigne.id == Number(option); });
             });
             var assignations = {
+                region: this.filtreRegion,
                 zone: this.filtreZone,
                 souszone: this.filtreSousZone,
                 superviseur: this.superviseurs.find(function (superviseur) { return superviseur.id == _this.choixsuperviseur; }),

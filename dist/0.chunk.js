@@ -351,8 +351,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AssignationSuiviService = (function () {
     function AssignationSuiviService(_http) {
         this._http = _http;
-        //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-        this.link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+        this.link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+        //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]();
         this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
@@ -466,8 +466,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var UtilService = (function () {
     function UtilService(_http) {
         this._http = _http;
-        //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-        this.link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+        this.link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+        //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Headers */]();
         this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
@@ -521,6 +521,20 @@ var UtilService = (function () {
         return this._http.post(url, params, { headers: this.headers })
             .map(function (res) { return res.json(); });
     };
+    UtilService.prototype.getPointByRegion = function (region) {
+        var url = this.link + "/client/pointbyregion";
+        var datas = JSON.stringify({ region: region });
+        var params = 'params=' + datas;
+        return this._http.post(url, params, { headers: this.headers })
+            .map(function (res) { return res.json(); });
+    };
+    UtilService.prototype.getPointByZone = function (zone) {
+        var url = this.link + "/client/pointbyzone";
+        var datas = JSON.stringify({ zone: zone });
+        var params = 'params=' + datas;
+        return this._http.post(url, params, { headers: this.headers })
+            .map(function (res) { return res.json(); });
+    };
     UtilService.prototype.getPointBySouszone = function (souszone) {
         var url = this.link + "/client/pointbysouszone";
         var datas = JSON.stringify({ souszone: souszone });
@@ -554,6 +568,11 @@ var UtilService = (function () {
         var datas = JSON.stringify(data);
         var params = 'params=' + datas;
         return this._http.post(url, params, { headers: this.headers })
+            .map(function (res) { return res.json(); });
+    };
+    UtilService.prototype.getRegionsSuperviseurs = function () {
+        var url = this.link + "/util/region-superviseur";
+        return this._http.get(url)
             .map(function (res) { return res.json(); });
     };
     UtilService.prototype.getZoneActivite = function () {
