@@ -15,6 +15,7 @@ export class SuperviseurComponent implements OnInit {
     public isEnregistrerAssignation: boolean = false;
 
     public filterQuery:string = "";
+    public filtreRegion:string = "--Choix région--";
     public filtreZone:string = "--Choix zone--";
     public filtreSousZone:string = "--Choix sous zone--";
     public choixcommercial:string = "--Choix commercial--"
@@ -31,6 +32,7 @@ export class SuperviseurComponent implements OnInit {
     public sortOrder = "desc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
+    public regions:any[] = [];
     public zones:any[] = [];
     public souszones:any[] = [];
     public commercials:any[] = [];
@@ -57,14 +59,14 @@ export class SuperviseurComponent implements OnInit {
                             telephone:JSON.parse(type.client).telephone,
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
-                            zone:type.zone, sous_zone:type.sous_zone,
+                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
                             commentaire:'',
                             infosup:JSON.parse(type.infosup),
                             value:type.id, checked:false
                         };
                     });
                     for (let i = 0; i < this.data.length; i++) {
-                        if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
+                        if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
                 },
                 error => alert(error),
@@ -173,15 +175,18 @@ export class SuperviseurComponent implements OnInit {
             );
     }
 
-    sousZonesOfCurrentZone(){
-        let souszones : any[] =  [] ;
+    public selectRegion() {
+        this.filtreSousZone = "--Choix sous zone--";
+        this.optionassignations = [];
+        console.log(this.filtreRegion);
+        this.zones =  [] ;
         for (let i = 0; i < this.data.length; i++) {
-            if( this.data[i].zone==this.filtreZone ){
-                if( !souszones.includes(this.data[i].sous_zone) )
-                    souszones.push(this.data[i].sous_zone);
+            if( this.data[i].region==this.filtreRegion ){
+                if( !this.zones.includes(this.data[i].zone) )
+                    this.zones.push(this.data[i].zone);
             }
         }
-        return souszones ;
+        console.log(this.zones);
     }
 
     public selectZone() {
@@ -192,6 +197,17 @@ export class SuperviseurComponent implements OnInit {
         this.getCommerciaux();
         this.optionassignations = this.data
             .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
+    }
+
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
     }
 
     get selectedOptions():any {
@@ -205,9 +221,9 @@ export class SuperviseurComponent implements OnInit {
     }
 
     public assignercommercial(){
-
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
+            this.filtreRegion == "--Choix région--" ||
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixcommercial == "--Choix commercial--" ||
             this.objetifcommercial == 0 ){
@@ -237,8 +253,8 @@ export class SuperviseurComponent implements OnInit {
                     data => {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
-                        this.filtreZone = "--Choix zone--";
-                        this.selectZone();
+                        this.filtreRegion = "--Choix région--";
+                        this.selectRegion();
                     },
                     error => alert(error),
                     () => {
@@ -255,8 +271,6 @@ export class SuperviseurComponent implements OnInit {
     getNomFichier(item){
         return item.split("#")[1] ;
     }
-
-
 
     showModal(content, i) {
         this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;

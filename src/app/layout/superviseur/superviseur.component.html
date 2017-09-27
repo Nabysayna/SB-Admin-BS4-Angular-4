@@ -11,9 +11,16 @@
 
 <div class="container-fluid" *ngIf="menuHead.menuHead1">
     <div class="row" style="padding-bottom: 2rem">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegion"  (change)="selectRegion()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone"  (change)="selectZone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
                 <option>--Choix zone--</option>
                 <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
@@ -21,11 +28,11 @@
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="selectSouszone()">
-                <option>--Choix sous zone--</option>
+                <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
                 <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label>Commercial</label>
             <select name="singleSelectcommercial"  id="singleSelectcommercial" class="form-control input-sm" [(ngModel)]="choixcommercial">
                 <option [attr.value]="'-1'">--Choix commercial--</option>
@@ -49,6 +56,7 @@
                 style="margin-left: auto; margin-right: auto;"
                 [disabled]="
                     filtreZone == '--Choix zone--' ||
+                    filtreRegion == '--Choix région--' ||
                     filtreSousZone == '--Choix sous zone--' ||
                     choixcommercial == '--Choix commercial--' ||
                     objetifcommercial <= 0 ||

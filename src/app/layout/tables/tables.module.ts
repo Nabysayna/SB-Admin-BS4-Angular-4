@@ -19,6 +19,7 @@ import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 import { GeomapComponent } from '../geomap/geomap.component';
 
 import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
+import {RegionsFilterPipe} from "./regions-filter.pipe";
 
 
 @NgModule({
@@ -35,9 +36,10 @@ import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
         RatingModule.forRoot(),
     ],
     declarations: [
-    	TablesComponent, 
+    	TablesComponent,
     	DataFilterPipe,
-    	ZonesFilterPipe,
+        ZonesFilterPipe,
+        RegionsFilterPipe,
     	SousZonesFilterPipe,
     	GeomapComponent,
         ProspectPdvComponent

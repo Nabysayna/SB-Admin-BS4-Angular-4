@@ -6,7 +6,7 @@
 </div>
 <div class="row" style="padding-bottom: 2rem" *ngIf="alldatapoint && zonesactivites">
   <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=!isinfo.isinfopoint; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfopoint"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfopoint"></i> Info gerant</span></h3>
-  <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1" *ngIf="isinfo.isinfopoint">
+  <div class="col-sm-12" *ngIf="isinfo.isinfopoint">
     <div class="row">
       <div class="form-group col-md-6 col-sm-6 col-xs-6">
         <label>Prénom gerant</label>
@@ -28,21 +28,28 @@
       </div>
     </div>
     <div class="row">
-      <div class="form-group col-md-4">
-        <label>Zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
-            <option>--Choix zone--</option>
-            <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
-        </select>
-      </div>
-      <div class="form-group col-md-4">
+        <!--<div class="form-group col-md-3">
+            <label>Région point</label>
+            <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint">
+                <option>&#45;&#45;Choix région&#45;&#45;</option>
+                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+            </select>
+        </div>-->
+        <div class="form-group col-md-3">
+            <label>Zone point</label>
+            <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
         <label>Sous zone point</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
             <option>--Choix sous zone--</option>
             <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label>Code postale</label>
         <input type="number" [(ngModel)]="adresse_point.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
       </div>
@@ -53,16 +60,20 @@
         <textarea class="form-control" rows="4" [(ngModel)]="adresse_point.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
       </fieldset>
       <fieldset class="form-group  col-md-6">
-        <label>Cordonnées geospatiales</label>
-        <input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
-        <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>
+        <label>Cordonnées geospatiales du point</label>
+          <!--<input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
+          <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>-->
+          <button (click)="coordonneesgeospatiales()" type="button" class="btn btn-primary btn-sm btn-circle">
+              <i class="fa fa-search"></i>Rechercher Coordonnées Géospatiales
+          </button>
       </fieldset>
+
     </div>
   </div>
 </div>
 <div class="row" style="padding-bottom: 2rem">
   <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=false; isinfo.isinfoproprietaire=!isinfo.isinfoproprietaire; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfoproprietaire"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfoproprietaire"></i> Info proprietaire</span></h3>
-  <div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1" *ngIf="isinfo.isinfoproprietaire">
+  <div class="col-sm-12" *ngIf="isinfo.isinfoproprietaire">
     <hr>
     <div class="row">
       <div class="form-group col-md-6">
@@ -84,18 +95,18 @@
         <input type="email" [(ngModel)]="alldatapoint.email_proprietaire"   name="emailproprietaire" id="emailproprietaire" class="form-control" placeholder="email proprietaire" required>
       </div>
     </div>
-    <div class="row">
+    <!--<div class="row">
       <div class="form-group col-md-4">
         <label>Zone proprietaire</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.zoneproprietaire">
-            <option>--Choix zone--</option>
+            <option>&#45;&#45;Choix zone&#45;&#45;</option>
             <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
         </select>
       </div>
       <div class="form-group col-md-4">
         <label>Sous zone proprietaire</label>
         <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.souszoneproprietaire">
-          <option>--Choix sous zone--</option>
+          <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
           <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
         </select>
       </div>
@@ -114,7 +125,7 @@
         <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.latitude"   name="latitudeproprietaire" id="latitudeproprietaire" class="form-control"  placeholder="latitude proprietaire">
         <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.longitude"   name="longitudeproprietaire" id="longitudeproprietaire" class="form-control"  placeholder="longitude proprietaire">
       </fieldset>
-    </div>
+    </div>-->
   </div>
 </div>
 <div class="row" style="padding-bottom: 2rem">

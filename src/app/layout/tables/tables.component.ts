@@ -18,14 +18,18 @@ import {Router} from "@angular/router";
 export class TablesComponent implements OnInit {
 
     public filterQuery = "";
+    public filtreRegion = "";
     public filtreZone = "";
     public filtreSousZone = "";
+
     public rowsOnPage = 5;
     public sortBy = "libellepoint";
     public sortOrder = "asc";
+
+    regions:any[] = [];
     zones:any[] = [];
     souszones:any[] = [];
-    data:Array<any> = [];
+    data:any[] = [];
 
     client:any;
 
@@ -33,12 +37,11 @@ export class TablesComponent implements OnInit {
 	constructor(public router: Router, private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit(): void {
-        this.getZones();
         this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
                     console.log(data);
-                    this.data = data.map(function(type) {
+                    this.data = data.message.map(function(type) {
                         return {
                             id:type.id,
                             id_point:type.id_client,
@@ -50,7 +53,7 @@ export class TablesComponent implements OnInit {
                             telephone:JSON.parse(type.client).telephone,
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
-                            zone:type.zone, sous_zone:type.sous_zone,
+                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
                             commentaire:'',
                             infosup:JSON.parse(type.infosup),
                             value:type.id,
@@ -62,9 +65,8 @@ export class TablesComponent implements OnInit {
                         };
                     });
                     for (let i = 0; i < this.data.length; i++) {
-                        if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
+                        if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
-                    console.log(this.zones);
                 },
                 error => alert(error),
                 () => console.log(this.data)
@@ -99,22 +101,27 @@ export class TablesComponent implements OnInit {
         return a.adresse.length;
     }
 
-  	public getZones(): void {
-  		for (let i = 0; i < this.data.length; i++) {
-  			if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
-  		}
-  	}
+    public selectRegion() {
+        this.zones =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].region==this.filtreRegion ){
+                if( !this.zones.includes(this.data[i].zone) )
+                    this.zones.push(this.data[i].zone);
+            }
+        }
+        console.log(this.zones);
+    }
 
-  	sousZonesOfCurrentZone(){
-  		let souszones : any[] =  [] ;
-    	for (let i = 0; i < this.data.length; i++) {
-  			if( this.data[i].zone==this.filtreZone ){
-  				if( !souszones.includes(this.data[i].sous_zone) )
-	  				souszones.push(this.data[i].sous_zone);
-  			}
-  		}
-  		return souszones ;
-  	}
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
+    }
 
 
 }

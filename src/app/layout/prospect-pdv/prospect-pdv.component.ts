@@ -35,6 +35,7 @@ export class ProspectPdvComponent implements OnInit {
     public adresse_point:any;
     public adresse_proprietaire:any;
     public zonesactivites:{activites:any[],zones:any[]};
+    public regionsactivites:{activites:any[],regions:any[]};
     public isSelect=true;
     public souszonespoints:any[];
     public souszonespropietaires:any[];
@@ -76,6 +77,12 @@ export class ProspectPdvComponent implements OnInit {
             .subscribe(
                 data => {
                     this.zonesactivites = data;
+                    let geospatialpoint = {latitude:0,longitude:0};
+                    navigator.geolocation.getCurrentPosition(function(position){
+                        geospatialpoint.longitude = position.coords.longitude;
+                        geospatialpoint.latitude = position.coords.latitude;
+                        sessionStorage.setItem('positionpoint',JSON.stringify(geospatialpoint)) ;
+                    }) ;
                 },
                 error => alert(error),
                 () => {
@@ -100,12 +107,37 @@ export class ProspectPdvComponent implements OnInit {
                             () => {
                                 this.selectZonePoint();
                                 this.selectZoneProprietaire();
+                                this.adresse_point.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
                             }
                         );
                 }
             );
 
     }
+
+    public getZoneActivite(){
+        this._utilService.getZoneActivite()
+            .subscribe(
+                data => {
+                    this.zonesactivites = data;
+                },
+                error => alert(error),
+                () => console.log(this.zonesactivites)
+            );
+    }
+
+
+    getRegionActivite(){
+        this._utilService.getRegionActivite()
+            .subscribe(
+                data => {
+                    this.regionsactivites = data;
+                },
+                error => alert(error),
+                () => console.log(this.regionsactivites)
+            );
+    }
+
 
 
     public getAllServices(){
@@ -138,6 +170,18 @@ export class ProspectPdvComponent implements OnInit {
                 error => alert(error),
                 () => console.log(this.souszonespropietaires)
             );
+    }
+
+    coordonneesgeospatiales(){
+        if(navigator.geolocation){
+            console.log("YES!") ;
+            let geospatialpoint = {latitude:0,longitude:0};
+            navigator.geolocation.getCurrentPosition(function(position){
+                geospatialpoint.longitude = position.coords.longitude;
+                geospatialpoint.latitude = position.coords.latitude;
+                sessionStorage.setItem('positionpoint',JSON.stringify(geospatialpoint)) ;
+            }) ;
+        }
     }
 
     public avoter(index:number): void{
@@ -180,20 +224,9 @@ export class ProspectPdvComponent implements OnInit {
         });
     }
 
-    public getZoneActivite(){
-        this._utilService.getZoneActivite()
-            .subscribe(
-                data => {
-                    this.zonesactivites = data;
-                },
-                error => alert(error),
-                () => console.log(this.zonesactivites)
-            );
-    }
-
-
     public enregistrerProspect(){
 
+        this.adresse_point.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
         this.alldatapoint.adresse_point = this.adresse_point;
         this.alldatapoint.adresse_proprietaire = this.adresse_proprietaire
 
@@ -205,8 +238,6 @@ export class ProspectPdvComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-        //location.reload();
-
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {

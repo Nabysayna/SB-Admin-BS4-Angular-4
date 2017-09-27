@@ -9,7 +9,14 @@
 
 <div class="container-fluid" *ngIf="menuHead.menuHead1">
 	<div class="row" style="padding-bottom: 2rem">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegion" (change)="selectRegion()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
             <label>Zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
                 <option>--Choix zone--</option>
@@ -23,7 +30,7 @@
                 <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label>Superviseur</label>
             <select name="singleSelectsuperviseur"  id="singleSelectsuperviseur" class="form-control input-sm" [(ngModel)]="choixsuperviseur">
                 <option [attr.value]="'-1'">--Choix superviseur--</option>
@@ -46,6 +53,7 @@
                 (click)="assignersuperviseur()"
                 style="margin-left: auto; margin-right: auto;"
                 [disabled]="
+                    filtreRegion == '--Choix région--' ||
                     filtreZone == '--Choix zone--' ||
                     filtreSousZone == '--Choix sous zone--' ||
                     choixsuperviseur == '--Choix superviseur--' ||
@@ -70,11 +78,7 @@
 	                </thead>
 	                <tbody>
 	                    <tr *ngFor="let item of mf.data; let i = index ">
-	                        <td>
-                                <input type="checkbox" name="items" value="{{item.value}}"
-                                       [(ngModel)]="item.checked" (change)="updateCheckedOptions()"
-                                />
-	                       </td>
+	                        <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
 	                        <td>{{item.libellepoint}}</td>
 	                        <td>{{item.fullname}}</td>
 	                        <td>{{item.telephone}}</td>

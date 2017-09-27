@@ -11,6 +11,7 @@ export class UtilService {
 
 
     private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
     private basetoken:any;
 
@@ -78,6 +79,22 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getPointByRegion(region:string){
+        let url = this.link+"/client/pointbyregion";
+        let datas = JSON.stringify({region:region});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getPointByZone(zone:string){
+        let url = this.link+"/client/pointbyzone";
+        let datas = JSON.stringify({zone:zone});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getPointBySouszone(souszone:string){
         let url = this.link+"/client/pointbysouszone";
         let datas = JSON.stringify({souszone:souszone});
@@ -115,6 +132,12 @@ export class UtilService {
         let datas = JSON.stringify(data);
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getRegionsSuperviseurs(){
+        let url = this.link+"/util/region-superviseur";
+        return this._http.get(url)
             .map(res => res.json());
     }
 

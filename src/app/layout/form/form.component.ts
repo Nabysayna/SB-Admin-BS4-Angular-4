@@ -88,11 +88,26 @@ export class FormComponent implements OnInit {
     constructor(public router: Router, private _location: Location, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http) { }
 
     ngOnInit() {
-        //this.getZoneActivite();
         this.getRegionActivite();
     }
 
+    getRegionActivite(){
+        this._utilService.getRegionActivite()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.regionsactivites = data;
+                    this.options = this.regionsactivites.activites.map(function(type) {
+                        return {name:type.activite, value:type.id, checked:false};
+                    });
+                },
+                error => alert(error),
+                () => console.log(this.regionsactivites)
+            );
+    }
+
     selectRegionPoint(){
+        this.client.adressecompletpoint.zonepoint = '--Choix zone--';
         this.client.adressecompletpoint.souszonepoint = '--Choix sous zone--';
         this._utilService.getZoneByRegion(this.client.adressecompletpoint.regionpoint)
             .subscribe(
@@ -103,6 +118,7 @@ export class FormComponent implements OnInit {
     }
 
     selectRegionProprietaire(){
+        this.client.adressecompletproprietaire.zoneproprietaire = '--Choix zone--';
         this.client.adressecompletproprietaire.souszoneproprietaire = '--Choix sous zone--';
         this._utilService.getZoneByRegion(this.client.adressecompletproprietaire.regionproprietaire)
             .subscribe(
@@ -141,21 +157,6 @@ export class FormComponent implements OnInit {
                             this.reponsesProspect.push("") ;
                         }
                       }
-            );
-    }
-
-    getRegionActivite(){
-        this._utilService.getRegionActivite()
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.regionsactivites = data;
-                    this.options = this.regionsactivites.activites.map(function(type) {
-                        return {name:type.activite, value:type.id, checked:false};
-                    });
-                },
-                error => alert(error),
-                () => console.log(this.regionsactivites)
             );
     }
 

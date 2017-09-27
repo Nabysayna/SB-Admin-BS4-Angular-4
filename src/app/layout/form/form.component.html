@@ -1,5 +1,5 @@
  <div id="page-wrapper" [@routerTransition]>
-    <app-page-header [heading]="'Nouveau-Client'" [icon]="'fa-table'"></app-page-header>
+    <app-page-header [heading]="'Nouveau Client'" [icon]="'fa-table'"></app-page-header>
     <div class="row" >
         <h3 class="page-header">Nouveau Client</h3>
         <div class="col-sm-12" style="margin-top: 2rem;"  *ngIf="regionsactivites">
@@ -143,7 +143,7 @@
                         </div>
                    </div>
                    <div>
-                       <label>Avis sur point</label>
+                       <label>Notez le point</label>
                         <p>
                           <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-star-o': !option.checked, 'fa-star': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
                         </p>
