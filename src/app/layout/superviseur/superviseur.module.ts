@@ -16,6 +16,7 @@ import {DataTableModule} from "angular2-datatable";
 import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
+import {FormuserbbsComponent} from "../formuserbbs/formuserbbs.component";
 
 
 @NgModule({
@@ -35,6 +36,8 @@ import { SousZonesFilterPipe }   from './souszones-filter.pipe';
     	DataFilterPipe,
         ZonesFilterPipe,
         SousZonesFilterPipe,
+        FormuserbbsComponent,
+
     ]
 })
 export class SuperviseurModule { }

@@ -1,0 +1,226 @@
+<div class="row" style="padding-bottom: 2rem">
+  <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+    <h1>Point de vente de {{ infoprospect.libellepoint }}</h1>
+    <hr>
+  </div>
+</div>
+<div class="row" style="padding-bottom: 2rem" *ngIf="alldatapoint && zonesactivites">
+  <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=!isinfo.isinfopoint; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfopoint"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfopoint"></i> Info gerant</span></h3>
+  <div class="col-sm-12" *ngIf="isinfo.isinfopoint">
+    <div class="row">
+      <div class="form-group col-md-6 col-sm-6 col-xs-6">
+        <label>Prénom gerant</label>
+        <input type="text" [(ngModel)]="alldatapoint.prenom_gerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder={{infoprospect.prenom}} required>
+      </div>
+      <div class="form-group col-md-6 col-sm-6 col-xs-6">
+        <label>Nom gerant</label>
+        <input type="text" [(ngModel)]="alldatapoint.nom_gerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder={{infoprospect.nom}} required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6 col-sm-6 col-xs-6">
+        <label>Téléphone gerant</label>
+        <input type="text" [(ngModel)]="alldatapoint.telephone_gerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder={{infoprospect.tel}} required>
+      </div>
+      <div class="form-group col-md-6 col-sm-6 col-xs-6">
+        <label>Email gerant</label>
+        <input type="email" [(ngModel)]="alldatapoint.email_gerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder={{infoprospect.email}} required>
+      </div>
+    </div>
+    <div class="row">
+        <!--<div class="form-group col-md-3">
+            <label>Région point</label>
+            <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint">
+                <option>&#45;&#45;Choix région&#45;&#45;</option>
+                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+            </select>
+        </div>-->
+        <div class="form-group col-md-3">
+            <label>Zone point</label>
+            <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+        <label>Sous zone point</label>
+        <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
+            <option>--Choix sous zone--</option>
+            <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label>Code postale</label>
+        <input type="number" [(ngModel)]="adresse_point.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
+      </div>
+    </div>
+    <div class="row">
+      <fieldset class="form-group  col-md-6">
+        <label>Adresse du point</label>
+        <textarea class="form-control" rows="4" [(ngModel)]="adresse_point.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
+      </fieldset>
+      <fieldset class="form-group  col-md-6">
+        <label>Cordonnées geospatiales du point</label>
+          <!--<input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
+          <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>-->
+          <button (click)="coordonneesgeospatiales()" type="button" class="btn btn-primary btn-sm btn-circle">
+              <i class="fa fa-search"></i>Rechercher Coordonnées Géospatiales
+          </button>
+      </fieldset>
+
+    </div>
+  </div>
+</div>
+<div class="row" style="padding-bottom: 2rem">
+  <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=false; isinfo.isinfoproprietaire=!isinfo.isinfoproprietaire; isinfo.isinfocomplement=false"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfoproprietaire"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfoproprietaire"></i> Info proprietaire</span></h3>
+  <div class="col-sm-12" *ngIf="isinfo.isinfoproprietaire">
+    <hr>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Prénom proprietaire</label>
+        <input type="text" [(ngModel)]="alldatapoint.prenom_proprietaire"   name="prenomproprietaire" id="prenomproprietaire" class="form-control"  placeholder="prénom proprietaire" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Nom proprietaire</label>
+        <input type="text" [(ngModel)]="alldatapoint.nom_proprietaire"   name="nomproprietaire" id="nomproprietaire" class="form-control" placeholder="nom proprietaire" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Téléphone proprietaire</label>
+        <input type="text" [(ngModel)]="alldatapoint.telephone_proprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone proprietaire" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Email proprietaire</label>
+        <input type="email" [(ngModel)]="alldatapoint.email_proprietaire"   name="emailproprietaire" id="emailproprietaire" class="form-control" placeholder="email proprietaire" required>
+      </div>
+    </div>
+    <!--<div class="row">
+      <div class="form-group col-md-4">
+        <label>Zone proprietaire</label>
+        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.zoneproprietaire">
+            <option>&#45;&#45;Choix zone&#45;&#45;</option>
+            <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Sous zone proprietaire</label>
+        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.souszoneproprietaire">
+          <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
+          <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Code postale</label>
+        <input type="number" [(ngModel)]="adresse_proprietaire.codepostalproprietaire"   name="codepostalpointproprietaire" id="codepostalpointproprietaire" class="form-control"  placeholder="code postal point">
+      </div>
+    </div>
+    <div class="row">
+      <fieldset class="form-group  col-md-6">
+        <label>Adresse proprietaire</label>
+        <textarea class="form-control" rows="4" [(ngModel)]="adresse_proprietaire.adresseproprietaire"   name="adressepointproprietaire" id="adressepointproprietaire" class="form-control"  placeholder="adresse exacte proprietaire" required></textarea>
+      </fieldset>
+      <fieldset class="form-group  col-md-6">
+        <label>Cordonnées geospatiales proprietaire</label>
+        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.latitude"   name="latitudeproprietaire" id="latitudeproprietaire" class="form-control"  placeholder="latitude proprietaire">
+        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.longitude"   name="longitudeproprietaire" id="longitudeproprietaire" class="form-control"  placeholder="longitude proprietaire">
+      </fieldset>
+    </div>-->
+  </div>
+</div>
+<div class="row" style="padding-bottom: 2rem">
+  <h3 type="button" class="btn btn-primary btn-circle" (click)="isinfo.isinfopoint=false; isinfo.isinfoproprietaire=false; isinfo.isinfocomplement=!isinfo.isinfocomplement"><span><i class="fa fa-plus" *ngIf="!isinfo.isinfocomplement"></i><i class="fa fa-window-minimize" *ngIf="isinfo.isinfocomplement"></i> Info complementaire</span></h3>
+  <div *ngIf="isinfo.isinfocomplement">
+    <hr>
+    <div class="row">
+      <div class="form-group col-sm-12 col-xs-12 ">
+        <h4>Types d'activités du point</h4>
+          <div class="row">
+              <div  *ngFor="let option of optionsActivite"  class="col-sm-6 col-xs-12">
+                  <input type="checkbox" name="optionsActivite" value="{{option.value}}"
+                         [(ngModel)]="option.checked" (change)="updateCheckedoptionsActivite()"
+                  />
+                  {{option.name}}
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <label>Autre ...</label>
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <h4>Noter le point</h4>
+        <div>
+          <span *ngFor="let option of rating"><i [ngClass]="{'fa': true, 'fa-star-o': !option.checked, 'fa-star': option.checked}" aria-hidden="true" (click)="avoter(option.indice)"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <button style="margin-top:2rem; margin-bottom: 1rem; margin-left: 0.3rem;" class="btn btn-outline-primary" (click)="getAllServices()"
+            [attr.aria-expanded]="!isSelect" aria-controls="collapseExampl">
+            Prospection
+        </button>
+    </div>
+    <div class="row">
+        <div id="collapseExampl" [ngbCollapse]="isSelect" style="margin-bottom: 1rem; margin-left: 0.3rem;">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                  <th>Réponse</th>
+                                  <th *ngFor="let item of possibleAnswers">{{item.reponse}}</th>
+                              </tr>
+                            </thead>
+                            <tbody *ngIf="allServices">
+                              <tr *ngFor="let service of allServices ; let i = index ">
+                                  <td>{{service.nom}}</td>
+                                  <td *ngFor="let item of possibleAnswers"><input type="radio" value="{{item.reponse}}" name="{{service.nom}}" [(ngModel)]="reponsesProspect[i]"/></td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+       </div>
+     </div>
+
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <label>Documents joints</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-4">
+          <label>Libellé</label>
+          <select class="form-control input-sm" [(ngModel)]="uploadedFileType">
+              <option>--Choisir le type de pièce--</option>
+              <option value="cni">CIN</option>
+              <option value="passport">Passport</option>
+              <option value="carte consulaire">Carte Consulaire</option>
+              <option value="autre"> Autres Pièces... </option>
+          </select>
+      </div>
+      <div class="form-group col-sm-6">
+        <input type="file" class="form-control-file" id="exampleInputFile" (change)="fileChange($event)" placeholder="Uploader Image" accept=".pdf,.docx,.png,.jpg">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem" *ngIf="!isEnregistrerProspect">
+  <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()" [disabled]="reponsesProspect.length == 0 || !uploadfinished">Valider les nouvelles données</button>
+  </div>
+</div>
+
+<div *ngIf="isEnregistrerProspect" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+    <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
+        <strong>Successfull!</strong> <br/>Veuillez cliquer sur Fermer pour sortir!
+    </ngb-alert>
+</div>

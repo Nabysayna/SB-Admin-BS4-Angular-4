@@ -1,0 +1,47 @@
+<div class="row" *ngIf="commercial">
+    <h2 style="text-align: center; margin: 0 auto"> {{ commercial.type}} </h2>
+</div>
+<div class="row" style="padding-bottom: 2rem">
+  <div class="col-sm-12">
+    <hr>
+      <div class="row">
+          <div class="form-group col-md-6">
+              <label>Prénom</label>
+              <input type="text" [(ngModel)]="commercial.prenom"  name="prenomcom" id="prenomcom" class="form-control"  placeholder="prénom commercial" required>
+          </div>
+          <div class="form-group col-md-6">
+              <label>Nom</label>
+              <input type="text" [(ngModel)]="commercial.nom" name="nomcom" id="nomcom" class="form-control" placeholder="nom commercial" required>
+          </div>
+      </div>
+      <div class="row">
+          <div class="form-group col-md-6">
+              <label>Téléphone</label>
+              <input type="text" [(ngModel)]="commercial.telephone" name="telephonecom" id="telephonecom" class="form-control" placeholder="téléphone commercial" required>
+          </div>
+          <div class="form-group col-md-6">
+              <label>Email</label>
+              <input type="email" [(ngModel)]="commercial.email" name="emailcom" id="emailcom" class="form-control" placeholder="email commercial" required>
+          </div>
+      </div>
+      <div class="row">
+          <div class="form-group col-md-6">
+            <label>Mot de passe</label>
+            <input type="password" [(ngModel)]="commercial.pwd" name="pwdcom" id="pwdcom" class="form-control" placeholder="Mot de passe" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Confirm mot de passe</label>
+            <input type="password" [(ngModel)]="confirmpwdcom" name="confirpwdcom" id="confirpwdcom" class="form-control" placeholder="Confirm mot de passe" required>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row" style="text-align: center; margin: 0 auto;"  *ngIf="!isEnregistrerCommercial">
+     <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-warning" (click)="enregisternouvcom()" [disabled]="!commercial.prenom || !commercial.telephone || !commercial.email || !commercial.pwd || commercial.pwd!=confirmpwdcom"> Enregistrer </button>
+</div>
+
+<div *ngIf="isEnregistrerCommercial" class="row" style="text-align: center; margin: 0 auto;">
+    <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
+        <strong>Successfull!</strong> Commercial bien ajouté<br/>Veuillez cliquer sur Fermer pour sortir!
+    </ngb-alert>
+</div>

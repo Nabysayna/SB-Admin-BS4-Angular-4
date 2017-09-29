@@ -27,21 +27,25 @@ export class SuperviseurComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    rowsOnPage = 5;
+    rowsOnPage = 12;
     sortBy = "note";
     public sortOrder = "desc";
+    sortByCom = "fullname";
+    public sortOrderCom = "asc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
     public regions:any[] = [];
     public zones:any[] = [];
     public souszones:any[] = [];
     public commercials:any[] = [];
+    public commercial:{type:string, prenom:string, nom:string, login:string, pwd:string, telephone:number};
     public data:any[] = [];
     public optionassignations:any[] = [];
     public datasuivi:any[] = [];
     public datasuiviarelancer:any[] = [];
+    public datasuivivalider:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
@@ -82,12 +86,16 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -123,12 +131,16 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -158,6 +170,34 @@ export class SuperviseurComponent implements OnInit {
                         console.log(this.datasuivi);
                     }
                 );
+        }
+        if(option == 5){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = true;
+            this.menuHead.menuHead6 = false;
+            this._assignationsuiviService.listsuiviforsuperviseur()
+                .subscribe(
+                    data => {
+                        this.datasuivivalider = this.datasuivi.filter(opt => opt)
+                    },
+                    error => alert(error),
+                    () => {
+                        console.log(this.datasuivi);
+                    }
+                );
+        }
+        if(option == 6){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = true;
+            this.getCommerciaux();
+            console.log(this.commercials);
         }
     }
 
@@ -275,6 +315,12 @@ export class SuperviseurComponent implements OnInit {
     showModal(content, i) {
         this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
         console.log( this.currentPointDocs ) ;
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
+    showModalCommercial(content, commercial:any) {
+        this.commercial = commercial?commercial:{type:'Nouveau commercial', prenom:'', nom:'', login:'', pwd:'', telephone:77}
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }

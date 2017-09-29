@@ -70,77 +70,6 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-    /*public getSuperviseurs(): void {
-        this._utilService.getSuperviseurs()
-            .subscribe(
-                data => this.superviseurs = data,
-                error => alert(error),
-                () => console.log(this.superviseurs)
-            );
-    }
-
-    public getZones(): void {
-        this._utilService.getZones()
-            .subscribe(
-                data => this.zones = data,
-                error => alert(error),
-                () => console.log("Finish")
-            );
-    }
-*/
-  /*  public selectRegion(){
-        this.optionassignations = [];
-        this.filtreSousZone = "--Choix sous zone--";
-        this._utilService.getZoneByRegion(this.filtreRegion.toString())
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.zones = data
-                },
-                error => alert(error),
-                () => console.log(this.zones)
-            );
-    }
-
-
-    public selectZone(){
-        this.optionassignations = [];
-        this._utilService.getSouszoneByZone(this.filtreZone.toString())
-            .subscribe(
-                data => this.souszones = data,
-                error => alert(error),
-                () => console.log(this.souszones)
-            );
-    }
-
-
-    public selectSouszone(){
-        this._utilService.getPointBySouszone(this.filtreSousZone)
-            .subscribe(
-                data => {
-                    console.log(data);
-                    this.optionassignations = data.map(function(type) {
-                        return {
-                            id:type.id,
-                            libellepoint:type.libellepoint,
-                            prenom:type.prenom,
-                            nom:type.nom,
-                            fullname:type.fullname,
-                            telephone:type.telephone,
-                            adresse:type.adresse,
-                            note:type.note,
-                            commentaire:'',
-                            value:type.id,
-                            checked:false
-                        };
-                    });
-                },
-                error => alert(error),
-                () => console.log(this.optionassignations)
-            );
-    }
-*/
-
     public selectRegion(){
         this.optionassignations = [];
         this.filtreSousZone = "--Choix sous zone--";
@@ -200,7 +129,6 @@ export class AdmincommercialComponent implements OnInit {
     };
 
     public assignersuperviseur(){
-        //let assignations =
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
             this.filtreRegion == "--Choix région--" ||
@@ -231,7 +159,6 @@ export class AdmincommercialComponent implements OnInit {
                     commentaireforcommercial:''
                 }
             };
-            console.log(assignations);
             this._assignationsuiviService.assignationsuperviseur(assignations)
                 .subscribe(
                     data => {

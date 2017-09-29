@@ -10,8 +10,8 @@ import {Observable} from 'rxjs/Observable';
 export class UtilService {
 
 
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
     private basetoken:any;
 
@@ -150,6 +150,14 @@ export class UtilService {
     getRegionActivite(){
         let url = this.link+"/util/region-activite";
         return this._http.get(url)
+            .map(res => res.json());
+    }
+
+    ajoutCommercial(data:any){
+        let url = this.link+"/user/ajoutcommercial";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 

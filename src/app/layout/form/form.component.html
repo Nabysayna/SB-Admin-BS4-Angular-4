@@ -152,6 +152,6 @@
         </div>
     </div>
     <div style="margin-top: 4rem; margin-bottom: 4rem" class="text-center">
-        <button type="button" class="btn btn-success" (click)="validernewclient()"> Enregistrer le nouveau client</button>
+        <button type="button" class="btn btn-success" (click)="validernewclient()" [disabled]="!client.nompoint || !client.telephonegerant || !client.telephoneproprietaire || !client.adressecompletpoint.souszonepoint || !client.adressecompletpoint.adressepoint"> Enregistrer le nouveau client</button>
     </div>
 </div>

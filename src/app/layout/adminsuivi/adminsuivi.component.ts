@@ -43,6 +43,8 @@ export class AdminsuiviComponent implements OnInit {
     public doughnutChartData: number[] = [50, 50];
     public doughnutChartType: string = 'doughnut';
 
+    date_for_suivi = new Date();
+
 
     constructor(private _assignationsuiviService:AssignationSuiviService, private router: Router) { }
 
@@ -76,8 +78,14 @@ export class AdminsuiviComponent implements OnInit {
                     this._assignationsuiviService.getSuperviseursForPerformance()
                         .subscribe(
                             data => {
+                                console.log(data.message);
                                 this.data = data.message;
                                 if(data.errorCode){
+
+                                    let supervisorDataAll = this.data;
+                                    console.log(supervisorDataAll);
+
+                                    console.log(this.date_for_suivi.getFullYear()+'-'+this.date_for_suivi.getMonth()+'-'+this.date_for_suivi.getDate()+' 24:59:59');
                                     let dataobjectiffixe:number[] = data.message.map(function(type) {
                                         return type.objectif;
                                     });
@@ -91,6 +99,8 @@ export class AdminsuiviComponent implements OnInit {
                                     this.barChartLabelsSuperviseur = data.message.map(function(type) {
                                         return type.prenom+' '+type.nom;
                                     });
+
+
 
                                     let compteuratteint = 0;
                                     let compteurtotalobjectif = 0;
