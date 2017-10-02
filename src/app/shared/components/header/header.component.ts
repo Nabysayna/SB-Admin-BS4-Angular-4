@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
 
+    currentUsername:any;
+
     constructor(private translate: TranslateService, public router: Router) {
         this.router.events.subscribe((val) => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992) {
@@ -17,7 +19,10 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.currentUsername = JSON.parse(sessionStorage.getItem('currentUser')).username;
+        console.log(this.currentUsername);
+    }
 
     toggleSidebar() {
         const dom: any = document.querySelector('body');

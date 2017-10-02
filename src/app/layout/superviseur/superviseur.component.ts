@@ -15,6 +15,7 @@ export class SuperviseurComponent implements OnInit {
     public isEnregistrerAssignation: boolean = false;
 
     public filterQuery:string = "";
+    public filtreRegion:string = "--Choix région--";
     public filtreZone:string = "--Choix zone--";
     public filtreSousZone:string = "--Choix sous zone--";
     public choixcommercial:string = "--Choix commercial--"
@@ -26,20 +27,25 @@ export class SuperviseurComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    rowsOnPage = 5;
+    rowsOnPage = 12;
     sortBy = "note";
     public sortOrder = "desc";
+    sortByCom = "fullname";
+    public sortOrderCom = "asc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
+    public regions:any[] = [];
     public zones:any[] = [];
     public souszones:any[] = [];
     public commercials:any[] = [];
+    public commercial:{type:string, prenom:string, nom:string, login:string, pwd:string, telephone:number};
     public data:any[] = [];
     public optionassignations:any[] = [];
     public datasuivi:any[] = [];
     public datasuiviarelancer:any[] = [];
+    public datasuivivalider:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
@@ -57,14 +63,14 @@ export class SuperviseurComponent implements OnInit {
                             telephone:JSON.parse(type.client).telephone,
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
-                            zone:type.zone, sous_zone:type.sous_zone,
+                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
                             commentaire:'',
                             infosup:JSON.parse(type.infosup),
                             value:type.id, checked:false
                         };
                     });
                     for (let i = 0; i < this.data.length; i++) {
-                        if(!this.zones.includes(this.data[i].zone)) this.zones.push(this.data[i].zone);
+                        if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
                 },
                 error => alert(error),
@@ -80,12 +86,16 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -121,12 +131,16 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -157,6 +171,34 @@ export class SuperviseurComponent implements OnInit {
                     }
                 );
         }
+        if(option == 5){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = true;
+            this.menuHead.menuHead6 = false;
+            this._assignationsuiviService.listsuiviforsuperviseur()
+                .subscribe(
+                    data => {
+                        this.datasuivivalider = this.datasuivi.filter(opt => opt)
+                    },
+                    error => alert(error),
+                    () => {
+                        console.log(this.datasuivi);
+                    }
+                );
+        }
+        if(option == 6){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = true;
+            this.getCommerciaux();
+            console.log(this.commercials);
+        }
     }
 
     public toInt(num: string) { return +num; }
@@ -173,15 +215,18 @@ export class SuperviseurComponent implements OnInit {
             );
     }
 
-    sousZonesOfCurrentZone(){
-        let souszones : any[] =  [] ;
+    public selectRegion() {
+        this.filtreSousZone = "--Choix sous zone--";
+        this.optionassignations = [];
+        console.log(this.filtreRegion);
+        this.zones =  [] ;
         for (let i = 0; i < this.data.length; i++) {
-            if( this.data[i].zone==this.filtreZone ){
-                if( !souszones.includes(this.data[i].sous_zone) )
-                    souszones.push(this.data[i].sous_zone);
+            if( this.data[i].region==this.filtreRegion ){
+                if( !this.zones.includes(this.data[i].zone) )
+                    this.zones.push(this.data[i].zone);
             }
         }
-        return souszones ;
+        console.log(this.zones);
     }
 
     public selectZone() {
@@ -192,6 +237,17 @@ export class SuperviseurComponent implements OnInit {
         this.getCommerciaux();
         this.optionassignations = this.data
             .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
+    }
+
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
     }
 
     get selectedOptions():any {
@@ -205,9 +261,9 @@ export class SuperviseurComponent implements OnInit {
     }
 
     public assignercommercial(){
-
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
+            this.filtreRegion == "--Choix région--" ||
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixcommercial == "--Choix commercial--" ||
             this.objetifcommercial == 0 ){
@@ -237,8 +293,8 @@ export class SuperviseurComponent implements OnInit {
                     data => {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
-                        this.filtreZone = "--Choix zone--";
-                        this.selectZone();
+                        this.filtreRegion = "--Choix région--";
+                        this.selectRegion();
                     },
                     error => alert(error),
                     () => {
@@ -256,11 +312,15 @@ export class SuperviseurComponent implements OnInit {
         return item.split("#")[1] ;
     }
 
-
-
     showModal(content, i) {
         this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
         console.log( this.currentPointDocs ) ;
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
+    showModalCommercial(content, commercial:any) {
+        this.commercial = commercial?commercial:{type:'Nouveau commercial', prenom:'', nom:'', login:'', pwd:'', telephone:77}
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }

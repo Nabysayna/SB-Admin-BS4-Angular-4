@@ -4,16 +4,25 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Cleint à relancer</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Clients à relancer</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">Clients valider</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)">Mes commerciaux</button>
     </div>
     <hr>
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead1">
     <div class="row" style="padding-bottom: 2rem">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegion"  (change)="selectRegion()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone"  (change)="selectZone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
                 <option>--Choix zone--</option>
                 <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
@@ -21,11 +30,11 @@
         <div class="col-sm-3">
             <label>Sous zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreSousZone" (change)="selectSouszone()">
-                <option>--Choix sous zone--</option>
+                <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
                 <option  *ngFor="let souszone of sousZonesOfCurrentZone()">{{souszone}}</option>
             </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label>Commercial</label>
             <select name="singleSelectcommercial"  id="singleSelectcommercial" class="form-control input-sm" [(ngModel)]="choixcommercial">
                 <option [attr.value]="'-1'">--Choix commercial--</option>
@@ -49,6 +58,7 @@
                 style="margin-left: auto; margin-right: auto;"
                 [disabled]="
                     filtreZone == '--Choix zone--' ||
+                    filtreRegion == '--Choix région--' ||
                     filtreSousZone == '--Choix sous zone--' ||
                     choixcommercial == '--Choix commercial--' ||
                     objetifcommercial <= 0 ||
@@ -261,6 +271,87 @@
     </div>
 </div>
 
+<div  class="container-fluid" *ngIf="menuHead.menuHead5" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="datasuivivalider | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th>Consultation</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            Recherche:
+                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead6" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="commercials" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
+                        <!--<th>Action</th>-->
+                    </tr>
+                    <tr>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th colspan="2" style="text-align: right"><button type="button"  (click)="showModalCommercial(contentAjoutCommercial,false)" class="btn btn-warning"> ajouter commercial </button></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.email}}</td>
+                        <!--<td><button type="button" class="btn btn-primary btn-sm"> modifier </button></td>-->
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title"> Extraction</h4>
@@ -331,3 +422,14 @@
     </div>
 </ng-template>
 
+<ng-template #contentAjoutCommercial let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <app-formuserbbs [commercial]="commercial"></app-formuserbbs>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click'); getCommerciaux()">Fermer</button>
+    </div>
+</ng-template>

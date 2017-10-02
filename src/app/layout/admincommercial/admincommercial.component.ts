@@ -15,6 +15,7 @@ export class AdmincommercialComponent implements OnInit {
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
 
+    public filtreRegion:string = "--Choix région--";
     public filtreZone:string = "--Choix zone--";
     public filtreSousZone:string = "--Choix sous zone--";
     public choixsuperviseur:string = "--Choix superviseur--"
@@ -28,25 +29,19 @@ export class AdmincommercialComponent implements OnInit {
     public sortOrder = "desc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
+    public regions:any[] = [];
     public zones:any[] = [];
     public souszones:any[] = [];
     public superviseurs:any[] = [];
     public optionassignations:any[] = [];
 
     public menuHead = {menuHead1:true, menuHead2:false};
-    public rating = [
-        {indice:0, checked:false},
-        {indice:1, checked:false},
-        {indice:2, checked:false},
-        {indice:3, checked:false},
-        {indice:4, checked:false},
-    ];
 
-	constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+
+    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
   	ngOnInit() {
-	    this.getZones();
-        this.getSuperviseurs();
+        this.getRegionsSuperviseurs();
     }
 
     public menuHeadClick(option: number){
@@ -62,23 +57,33 @@ export class AdmincommercialComponent implements OnInit {
 
     public toInt(num: string) { return +num; }
 
-    public getSuperviseurs(): void {
-        this._utilService.getSuperviseurs()
+    public getRegionsSuperviseurs(): void {
+        this._utilService.getRegionsSuperviseurs()
             .subscribe(
-                data => this.superviseurs = data,
+                data => {
+                    console.log(data)
+                    this.superviseurs = data.superviseurs
+                    this.regions = data.regions
+                },
                 error => alert(error),
-                () => console.log(this.superviseurs)
+                () => console.log('getRegionsSuperviseurs')
             );
     }
 
-    public getZones(): void {
-        this._utilService.getZones()
+    public selectRegion(){
+        this.optionassignations = [];
+        this.filtreSousZone = "--Choix sous zone--";
+        this._utilService.getZoneByRegion(this.filtreRegion.toString())
             .subscribe(
-                data => this.zones = data,
+                data => {
+                    console.log(data);
+                    this.zones = data
+                },
                 error => alert(error),
-                () => console.log("Finish")
+                () => console.log(this.zones)
             );
     }
+
 
     public selectZone(){
         this.optionassignations = [];
@@ -123,18 +128,10 @@ export class AdmincommercialComponent implements OnInit {
             .map(opt => opt.value);
     };
 
-    public updateCheckedOptions(): void{
-        //let activites = this.zonesactivites.activites;
-        //this.client.typeactivite = this.selectedOptions.map(function(option) {
-          //  return activites[Number(option)-1].activite;
-        //});
-        console.log(this.selectedOptions);
-    }
-
     public assignersuperviseur(){
-        //let assignations =
         this.isclickforassination = true;
         if( this.filtreZone == "--Choix zone--" ||
+            this.filtreRegion == "--Choix région--" ||
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixsuperviseur == "--Choix superviseur--" ||
             this.objetifsuperviseur == 0 ){
@@ -147,6 +144,7 @@ export class AdmincommercialComponent implements OnInit {
                 return optionassignations.find( (assigne) => assigne.id == Number(option));
             });
             let assignations:any = {
+                region:this.filtreRegion,
                 zone:this.filtreZone,
                 souszone:this.filtreSousZone,
                 superviseur:this.superviseurs.find( (superviseur) => superviseur.id ==this.choixsuperviseur),
@@ -161,7 +159,6 @@ export class AdmincommercialComponent implements OnInit {
                     commentaireforcommercial:''
                 }
             };
-            console.log(assignations);
             this._assignationsuiviService.assignationsuperviseur(assignations)
                 .subscribe(
                     data => {

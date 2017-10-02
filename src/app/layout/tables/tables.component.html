@@ -12,6 +12,13 @@
             </select>
         </div>
         <div class="col-sm-3">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegion" (change)="selectRegion()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
             <label>Zone</label>
             <select class="form-control input-sm" [(ngModel)]="filtreZone">
                 <option>--Choix zone--</option>
@@ -31,7 +38,7 @@
         <div class="col-xs-12 col-sm-12">
 
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="data | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                <table class="table table-hover" [mfData]="data | regionsFilter: filtreRegion | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="dateajout">Date assignation</mfDefaultSorter></th>

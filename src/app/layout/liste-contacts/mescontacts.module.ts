@@ -8,25 +8,19 @@ import {DataTableModule} from "angular2-datatable";
 import { RatingModule } from 'ngx-bootstrap/rating';
 
 
-import { TablesComponent } from './tables.component';
-import { TablesRoutingModule } from './tables-routing.module';
+import { MesContactsRoutingModule } from './mescontacts-routing.module';
 import { PageHeaderModule } from './../../shared';
 
 import { DataFilterPipe }   from './data-filter.pipe';
-import { ZonesFilterPipe }   from './zones-filter.pipe';
-import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 
-import { GeomapComponent } from '../geomap/geomap.component';
-
-import { ProspectPdvComponent } from '../prospect-pdv/prospect-pdv.component';
-import {RegionsFilterPipe} from "./regions-filter.pipe";
+import {MesContactsComponent} from "./mescontacts.component";
 
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        TablesRoutingModule,
+        MesContactsRoutingModule,
         PageHeaderModule,
         DataTableModule,
         NgbModule.forRoot(),
@@ -36,13 +30,8 @@ import {RegionsFilterPipe} from "./regions-filter.pipe";
         RatingModule.forRoot(),
     ],
     declarations: [
-    	TablesComponent,
+        MesContactsComponent,
     	DataFilterPipe,
-        ZonesFilterPipe,
-        RegionsFilterPipe,
-    	SousZonesFilterPipe,
-    	GeomapComponent,
-        ProspectPdvComponent
     ]
 })
-export class TablesModule { }
+export class MesContactsModule { }
