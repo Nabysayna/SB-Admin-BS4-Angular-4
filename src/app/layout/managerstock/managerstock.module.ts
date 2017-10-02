@@ -32,7 +32,7 @@ import {StockmanagingComponent} from "../stockmanaging/stockmanaging.component";
         RatingbyoptionModule,
         NgbModule.forRoot(),
         Ng2Charts,
-        NgxPaginationModule,
+       NgxPaginationModule,
     ],
     declarations: [
         ManagerstockComponent,
