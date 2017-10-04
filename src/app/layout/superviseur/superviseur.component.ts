@@ -39,15 +39,17 @@ export class SuperviseurComponent implements OnInit {
     public souszones:any[] = [];
     public commercials:any[] = [];
     public commercial:{type:string, prenom:string, nom:string, login:string, pwd:string, telephone:number};
+    public prospects:any=[];
+    public clients:any=[];
     public data:any[] = [];
     public optionassignations:any[] = [];
     public datasuivi:any[] = [];
     public datasuiviarelancer:any[] = [];
     public datasuivivalider:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
 
-    constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit() {
         this._assignationsuiviService.getAssignationsBySuperviseur()
@@ -88,6 +90,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -96,6 +100,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -133,6 +139,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -141,6 +149,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = true;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -178,6 +188,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
             this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -196,8 +208,34 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = true;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this.getCommerciaux();
             console.log(this.commercials);
+        }
+        if(option == 7){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = true;
+            this.menuHead.menuHead8 = false;
+            this.getProspect();
+            
+        }
+        if(option == 8){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = true;
+            this.getClient();
+            
         }
     }
 
@@ -212,6 +250,71 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => console.log(this.commercials)
+            );
+    }
+    public getProspect(){
+       this._utilService.getProspectValide()
+            .subscribe(
+                data => {
+                    this.prospects = data;
+                    console.log(this.prospects);
+                    this.prospects = data.map(function(type){
+						let client = JSON.parse(type.client);
+						let commercial = JSON.parse(type.commercial);
+						return {
+                                    id:type.id,
+                                    libellepoint:client.nom_point,
+                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                    telephone:client.telephone_gerant,
+                                    adresse:client.adresse_point.adressepoint,
+                                    note:type.note,
+                                    id_assigner:type.id_assigner,
+                                    id_commercial:type.id_commercial,
+                                    dates_suivi:type.dates_suivi,
+                                    reponse:type.reponse,
+                                    qualification:"--Choisir une action--",
+                                    client:client,
+                                    nomcommercial:commercial.prenom+" "+commercial.prenom
+                                }
+                    });
+                        
+                    if(data.errorCode) this.prospects = data;
+                },
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+     /* var pros1={'prenom':'magor','nom':'sy'};
+      var pros2={'prenom':'naby','nom':'ndiaye'};
+      this.prospects.push(pros1);
+      this.prospects.push(pros2);*/
+
+    }
+    public getClient(){
+       this._utilService.getClients()
+            .subscribe(
+                data => {
+                    this.clients = data;
+                    console.log(this.clients);
+                    this.clients = data.map(function(type){
+					let client = JSON.parse(type.adresse);
+					let tel = JSON.parse(type.tel);
+					let nom = JSON.parse(type.nom_point);
+					let gerant = JSON.parse(type.gerant);
+					//let commercial = JSON.parse(type.commercial);
+						return { 
+                                    adresse:client.zonepoint,
+                                    gerant:gerant,
+                                    tel:tel,
+                                    nom_point:nom,
+                                    
+                                     
+                                }
+                    });
+                        
+                    if(data.errorCode) this.clients = data;
+                },
+                error => alert(error),
+                () => console.log(this.clients)
             );
     }
 
