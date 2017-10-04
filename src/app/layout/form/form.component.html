@@ -1,8 +1,7 @@
  <div id="page-wrapper" [@routerTransition]>
     <app-page-header [heading]="'Nouveau Client'" [icon]="'fa-table'"></app-page-header>
     <div class="row" >
-        <h3 class="page-header">Nouveau Client</h3>
-        <div class="col-sm-12" style="margin-top: 2rem;"  *ngIf="regionsactivites">
+        <div class="col-sm-12" *ngIf="regionsactivites">
               <div class="col-sm-12 col-xs-12" >
                   <h5 style="margin-top: 2rem">Point</h5>
                   <input type="text" [(ngModel)]="client.nompoint"   name="nompoint" id="nompoint" class="form-control"  placeholder="Nom Point" required>

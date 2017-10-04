@@ -29,13 +29,20 @@ export class AdmincommercialComponent implements OnInit {
     public sortOrder = "desc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
+    public rowsOnPageCom = 10;
+    sortByCom = "fullname";
+    public sortOrderCom = "asc";
+    filterQueryCommercial:any;
+
+    public commercials:any[] = [];
+
     public regions:any[] = [];
     public zones:any[] = [];
     public souszones:any[] = [];
     public superviseurs:any[] = [];
     public optionassignations:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
 
     constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
@@ -45,14 +52,24 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     public menuHeadClick(option: number){
-  		if(option == 1){
-  			this.menuHead.menuHead1 = true;
-  			this.menuHead.menuHead2 = false;
-  		}
-  		else{
-  			this.menuHead.menuHead1 = false;
-  			this.menuHead.menuHead2 = true;
-  		}
+        if(option == 1){
+            this.menuHead.menuHead1 = true;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+        }
+        if(option == 2){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = true;
+            this.menuHead.menuHead3 = false;
+        }
+        if(option == 3){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = true;
+            this.getCommerciaux();
+            this.getRegionsSuperviseurs();
+        }
+
   	}
 
     public toInt(num: string) { return +num; }
@@ -70,6 +87,22 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
+    choixsuperviseurforcommercial(id_superviseur){
+        console.log(id_superviseur);
+    }
+
+    public getCommerciaux(): void {
+        this._utilService.getCommerciaux()
+            .subscribe(
+                data => {
+                    this.commercials = data
+                    if(data.errorCode) this.commercials = data.message;
+                },
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+    }
+
     public selectRegion(){
         this.optionassignations = [];
         this.filtreSousZone = "--Choix sous zone--";
@@ -84,7 +117,6 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-
     public selectZone(){
         this.optionassignations = [];
         this._utilService.getSouszoneByZone(this.filtreZone.toString())
@@ -94,7 +126,6 @@ export class AdmincommercialComponent implements OnInit {
                 () => console.log(this.souszones)
             );
     }
-
 
     public selectSouszone(){
         this._utilService.getPointBySouszone(this.filtreSousZone)
@@ -173,5 +204,16 @@ export class AdmincommercialComponent implements OnInit {
         }
     }
 
+    reaffectercommercial(item){
+        console.log(item);
+        this._utilService.affectationCommercial(item)
+            .subscribe(
+                data => {
+                    console.log(data);
+                },
+                error => alert(error),
+                () => console.log('affectationCommercial')
+            );
+    }
 
 }

@@ -1,20 +1,26 @@
 <div [@routerTransition]>
     <h2 class="text-muted">BBS CRM Plateforme <small></small></h2>
     <div class="row">
-        <div class="col-sm-4 col-xs-4">
+        <div class="col-3">
             <a [routerLink]="['/mescontacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Mes Contacts' }}
             </a>
         </div>
 
-        <div class="col-sm-4 col-xs-4">
+        <div class="col-3">
             <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Propects' }}
             </a>
         </div>
-        <div class="col-sm-4 col-xs-4">
+        <div class="col-3">
             <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Nouveau Client' }}
+            </a>
+        </div>
+
+        <div class="col-3">
+            <a [routerLink]="['/formsentool']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'New Client Sentool' }}
             </a>
         </div>
 

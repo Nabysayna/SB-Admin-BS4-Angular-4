@@ -40,7 +40,6 @@ export class TablesComponent implements OnInit {
         this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.data = data.message.map(function(type) {
                         return {
                             id:type.id,
@@ -54,7 +53,7 @@ export class TablesComponent implements OnInit {
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
                             region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
-                            commentaire:'',
+                            commentaire:type.commentaire,
                             infosup:JSON.parse(type.infosup),
                             value:type.id,
                             checked:false,
@@ -69,7 +68,7 @@ export class TablesComponent implements OnInit {
                     }
                 },
                 error => alert(error),
-                () => console.log(this.data)
+                () => console.log('getAssignationsByCommercial')
             );
     }
 

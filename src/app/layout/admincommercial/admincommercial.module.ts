@@ -22,6 +22,7 @@ import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
 
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import {DataFilterCommercialPipe} from "./filterdata-commercial.pipe";
 
 
 
@@ -48,6 +49,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     	ZonesAdminFilterPipe,
         SousZonesAdminFilterPipe,
     	AdminsuiviComponent,
+
+        DataFilterCommercialPipe,
     ]
 })
 

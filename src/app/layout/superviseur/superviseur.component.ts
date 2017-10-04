@@ -50,9 +50,15 @@ export class SuperviseurComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
     ngOnInit() {
+        this.getAssignationsBySuperviseur();
+    }
+
+    getAssignationsBySuperviseur() {
         this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
+                    console.log(data);
+                    console.log('------------------------------------------------------------------------------------');
                     this.data = data.map(function(type) {
                         return {
                             id:type.id,
@@ -64,7 +70,7 @@ export class SuperviseurComponent implements OnInit {
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
                             region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
-                            commentaire:'',
+                            commentaire:type.commentaire,
                             infosup:JSON.parse(type.infosup),
                             value:type.id, checked:false
                         };
@@ -88,6 +94,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead6 = false;
+            this.getAssignationsBySuperviseur();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -293,7 +300,9 @@ export class SuperviseurComponent implements OnInit {
                     data => {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
+                        this.regions = [];
                         this.filtreRegion = "--Choix région--";
+                        this.getAssignationsBySuperviseur();
                         this.selectRegion();
                     },
                     error => alert(error),

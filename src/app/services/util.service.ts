@@ -153,6 +153,12 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getRegionZoneActivite(){
+        let url = this.link+"/util/region-zone-activite";
+        return this._http.get(url)
+            .map(res => res.json());
+    }
+
     ajoutCommercial(data:any){
         let url = this.link+"/user/ajoutcommercial";
         let datas = JSON.stringify({token:this.basetoken, data:data});
@@ -163,6 +169,22 @@ export class UtilService {
 
     insertPoint(data:any){
         let url = this.link+"/client/insertpoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    modifPoint(data:any){
+        let url = this.link+"/client/modifpoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    affectationCommercial(data:any){
+        let url = this.link+"/util/affectationcommercial";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
