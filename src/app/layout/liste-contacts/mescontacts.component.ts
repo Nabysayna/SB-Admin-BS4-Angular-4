@@ -37,6 +37,7 @@ export class MesContactsComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
+                    console.log('------------------------');
                     this.points = data.message.map(function(type) {
                         let adresse = JSON.parse(type.adresse_point)
                         return {

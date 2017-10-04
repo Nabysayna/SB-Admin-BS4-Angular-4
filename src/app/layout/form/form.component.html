@@ -42,12 +42,12 @@
                   <h5 style="margin-top: 2rem">Le gérant</h5>
                   <input type="text" [(ngModel)]="client.prenomgerant"   name="prenomgerant" id="prenomgerant" class="form-control"  placeholder="prénom gérant" required>
                   <input type="text" [(ngModel)]="client.nomgerant"   name="nomgerant" id="nomgerant" class="form-control" placeholder="nom gérant" required>
-                  <input type="text" [(ngModel)]="client.telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder="téléphone gérant" required>
+                  <input type="number" [(ngModel)]="client.telephonegerant"   name="telephonegerant" id="telephonegerant" class="form-control" placeholder="téléphone gérant" required>
                   <input type="email" [(ngModel)]="client.emailgerant"   name="emailgerant" id="emailgerant" class="form-control" placeholder="email gérant" required>
                   <h5 style="margin-top: 2rem">Le propriétaire <small>(si pas connu, mettre les infos du gérant à la place)</small></h5>
                   <input type="text" [(ngModel)]="client.prenomproprietaire"   name="prenomproprietaire" id="prenomproprietaire" class="form-control"  placeholder="prénom propiétaire" required>
                   <input type="text" [(ngModel)]="client.nomproprietaire"   name="nomproprietaire" id="nomproprietaire" class="form-control" placeholder="nom propiétaire" required>
-                  <input type="text" [(ngModel)]="client.telephoneproprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone propiétaire" required>
+                  <input type="number" [(ngModel)]="client.telephoneproprietaire"   name="telephoneproprietaire" id="telephoneproprietaire" class="form-control" placeholder="téléphone propiétaire" required>
                   <input type="email" [(ngModel)]="client.emailproprietaire"   name="emailpropietaire" id="emailpropietaire" class="form-control" placeholder="email propiétaire" required>
                   <!--<a style="margin-bottom: 1rem;" class="btn btn-outline-primary" (click)="isAdresseproprio = !isAdresseproprio"
                       [attr.aria-expanded]="!isAdresseproprio" aria-controls="collapseExample">
