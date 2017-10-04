@@ -10,6 +10,7 @@ import {Observable} from 'rxjs/Observable';
 export class UtilService {
 
 
+    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
     private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
@@ -116,6 +117,20 @@ export class UtilService {
         let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
+            .map(res =>res.json());
+    }
+    getProspectValide(){
+        let url = this.link+"/client/getprospects";
+           let datas = JSON.stringify({token:this.basetoken});
+           let param='param='+datas;
+        return this._http.post(url, param ,{headers:this.headers})
+            .map(res => res.json());
+    }
+    getClients(){
+        let url = this.link+"/client/getclient";
+           let datas = JSON.stringify({token:this.basetoken});
+           let param='param='+datas;
+        return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
 

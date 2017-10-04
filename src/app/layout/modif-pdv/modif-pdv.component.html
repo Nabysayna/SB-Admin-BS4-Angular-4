@@ -15,17 +15,17 @@
       <div class="row">
           <div class="form-group col-sm-3">
               <label>Region point</label>
-              <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint">
-                  <option>--Choix region--</option>
+              <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint" (change)="selectRegionPoint()">
+                  <option>--Choix région--</option>
                   <option  *ngFor="let region of regionszonesactivites.regions">{{region.nom}}</option>
-                  <option>autre</option>
+                  <option  >autre</option>
               </select>
           </div>
           <div class="form-group col-sm-3">
               <label>Zone point</label>
-              <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
+              <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint" (change)="selectZonePoint()">
                   <option>--Choix zone--</option>
-                  <option  *ngFor="let zone of regionszonesactivites.zones">{{zone.nom}}</option>
+                  <option  *ngFor="let zone of zonespoints">{{zone.nom}}</option>
                   <option>autre</option>
               </select>
           </div>

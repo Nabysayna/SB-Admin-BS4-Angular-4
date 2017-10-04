@@ -36,6 +36,7 @@ export class ModifPdvComponent implements OnInit {
     public adresse_point:{regionpoint:string, zonepoint:string, souszonepoint:string, adressepoint:string, codepostalpoint:number, geospatialpoint:any} = {regionpoint:'', zonepoint:'', souszonepoint:'', adressepoint:'', codepostalpoint:0, geospatialpoint:''};
     public regionszonesactivites:{activites:any[], zones:any[], regions:any[]};
     public isSelect=true;
+    public zonespoints:any[];
     public souszonespoints:any[];
 
     isinfocomplement:boolean = false;
@@ -89,6 +90,7 @@ export class ModifPdvComponent implements OnInit {
                             },
                             error => alert(error),
                             () => {
+                                this.selectRegionPoint();
                                 this.selectZonePoint();
                                 this.adresse_point.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
                             }
@@ -112,7 +114,18 @@ export class ModifPdvComponent implements OnInit {
             );
     }
 
-    public selectZonePoint(){
+    selectRegionPoint(){
+        this.adresse_point.zonepoint = '--Choix zone--';
+        this.adresse_point.souszonepoint = '--Choix sous zone--';
+        this._utilService.getZoneByRegion(this.adresse_point.regionpoint)
+            .subscribe(
+                data => this.zonespoints = data,
+                error => alert(error),
+                () => console.log(this.zonespoints)
+            );
+    }
+
+    selectZonePoint(){
         this._utilService.getSouszoneByZone(this.adresse_point.zonepoint)
             .subscribe(
                 data => this.souszonespoints = data,
