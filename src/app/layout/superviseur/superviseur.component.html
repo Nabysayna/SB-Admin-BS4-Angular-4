@@ -371,9 +371,9 @@
 	                   <td>{{p.nomcommercial}}</td>
 	                   <td><input type="button" value="action" class="btn btn-primary" /></td>
 	               </tr>
-		
+
 	</table>
-	
+
 </div>
 <div class="container-fluid" *ngIf="menuHead.menuHead8">
 	<table class="table table-striped table-codensed">
@@ -381,19 +381,23 @@
                         <th>Nom Point</th>
                         <th>Gérant(e)</th>
                         <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Commercial</th>
                         <th>Action</th>
                     </tr>
 	               <tr *ngFor="let p of clients">
 	                   <td>{{p.nom_point}}</td>
 	                   <td>{{p.gerant}}</td>
-	                   <td>{{p.tel}}</td>
-	                  
-	                   
+                       <td>{{p.tel}}</td>
+                       <td>{{p.adresse}}</td>
+                       <td>{{p.commercial}}</td>
+
+
 	                   <td><input type="button" value="action" class="btn btn-primary" /></td>
 	               </tr>
-		
+
 	</table>
-	
+
 </div>
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">

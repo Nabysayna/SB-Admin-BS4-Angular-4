@@ -291,25 +291,25 @@ export class SuperviseurComponent implements OnInit {
     }
 
     public getClient(){
-       this._utilService.getClients()
+        this._utilService.getClients()
             .subscribe(
                 data => {
                     this.clients = data;
                     console.log(this.clients);
-                    this.clients = data.map(function(type){
-					let client = JSON.parse(type.adresse);
-					let tel = type.tel;
-					let nom = type.nom_point;
-					let gerant = type.gerant;
-					//let commercial = JSON.parse(type.commercial);
-						return {
-                                    adresse:client.zonepoint,
-                                    gerant:gerant,
-                                    tel:tel,
-                                    nom_point:nom,
+                    this.clients = data.map(function(type,data){
 
+                        // let tel = data.json.tel;
+                        //let nom = data.json.nom_point;
+                        // let gerant = data.json.gerant;
+                        let client = JSON.parse(type.adresse);
+                        return {
+                            adresse:client.adressepoint,
+                            gerant:type.gerant+" "+type.gerantnom,
+                            tel:type.tel,
+                            nom_point:type.nom_point,
+                            commercial:type.commercial,
 
-                                }
+                        }
                     });
 
                     if(data.errorCode) this.clients = data;

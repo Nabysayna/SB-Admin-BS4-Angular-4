@@ -75,7 +75,7 @@ export class AdminsuiviComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
-                    this._assignationsuiviService.getSuperviseursForPerformance()
+                    this._assignationsuiviService.getSuperviseursForPerformancetest()
                         .subscribe(
                             data => {
                                 console.log(data.message);
@@ -85,7 +85,6 @@ export class AdminsuiviComponent implements OnInit {
                                     let supervisorDataAll = this.data;
                                     console.log(supervisorDataAll);
 
-                                    console.log(this.date_for_suivi.getFullYear()+'-'+this.date_for_suivi.getMonth()+'-'+this.date_for_suivi.getDate()+' 24:59:59');
                                     let dataobjectiffixe:number[] = data.message.map(function(type) {
                                         return type.objectif;
                                     });
@@ -115,7 +114,31 @@ export class AdminsuiviComponent implements OnInit {
                                 }
                             },
                             error => alert(error),
-                            () => console.log('cool')
+                            () => {
+                                console.log('cool');
+/*
+                                this._assignationsuiviService.getSuperviseursForPerformancetest()
+                                    .subscribe(
+                                        data => {
+                                            console.log(data.message);
+
+                                            let dataobjectiffixe:number[] = data.message.map(function(type) {
+                                                return type.objectif;
+                                            });
+                                            let dataobjectifatteint:number[] = data.message.map(function(type) {
+                                                return type.atteint;
+                                            });
+
+                                            console.log(dataobjectiffixe);
+                                            console.log('--------------------------');
+                                            console.log(dataobjectifatteint);
+
+                                        },
+                                        error => alert(error),
+                                        () => console.log('dans cool')
+                                    );
+*/
+                            }
                         );
                 }
             );
