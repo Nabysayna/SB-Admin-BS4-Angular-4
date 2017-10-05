@@ -227,7 +227,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
-            //this.getProspect();
+            this.getProspect();
 
         }
         if(option == 8){
@@ -239,7 +239,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = true;
-            //this.getClient();
+            this.getClient();
 
         }
     }
@@ -298,9 +298,9 @@ export class SuperviseurComponent implements OnInit {
                     console.log(this.clients);
                     this.clients = data.map(function(type){
 					let client = JSON.parse(type.adresse);
-					let tel = JSON.parse(type.tel);
-					let nom = JSON.parse(type.nom_point);
-					let gerant = JSON.parse(type.gerant);
+					let tel = type.tel;
+					let nom = type.nom_point;
+					let gerant = type.gerant;
 					//let commercial = JSON.parse(type.commercial);
 						return {
                                     adresse:client.zonepoint,
