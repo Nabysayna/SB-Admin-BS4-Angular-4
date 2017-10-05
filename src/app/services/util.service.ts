@@ -11,8 +11,8 @@ export class UtilService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
     private basetoken:any;
 
@@ -201,6 +201,14 @@ export class UtilService {
     affectationCommercial(data:any){
         let url = this.link+"/util/affectationcommercial";
         let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getNouveauxpoints(){
+        let url = this.link+"/client/getnouveauxpoints";
+        let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());

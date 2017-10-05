@@ -35,6 +35,7 @@ export class AdmincommercialComponent implements OnInit {
     filterQueryCommercial:any;
 
     public commercials:any[] = [];
+    public listenewpoints:any[] = [];
 
     public regions:any[] = [];
     public zones:any[] = [];
@@ -42,7 +43,7 @@ export class AdmincommercialComponent implements OnInit {
     public superviseurs:any[] = [];
     public optionassignations:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
 
     constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
@@ -56,16 +57,40 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.getCommerciaux();
+            this.getRegionsSuperviseurs();
+        }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.getNouveauxpoints();
+
+        }
+        if(option == 5){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = true;
             this.getCommerciaux();
             this.getRegionsSuperviseurs();
         }
@@ -215,5 +240,91 @@ export class AdmincommercialComponent implements OnInit {
                 () => console.log('affectationCommercial')
             );
     }
+
+
+
+
+
+
+
+    public filterQueryNewPts = "";
+    public filtreRegionNewPts = "";
+    public filtreZoneNewPts = "";
+    public filtreSousZoneNewPts = "";
+    public rowsOnPageNewPts = 5;
+    public sortByNewPts = "libellepoint";
+    public sortOrderNewPts = "asc";
+    adresseNewPts:any[] = [];
+    regionsNewPts:any[] = [];
+    zonesNewPts:any[] = [];
+    souszonesNewPts:any[] = [];
+    dataNewPts:any[] = [];
+
+    public getNouveauxpoints(): void {
+        this._utilService.getNouveauxpoints()
+            .subscribe(
+                data => {
+                    this.listenewpoints = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adresse_point);
+                        return {
+                            date_ajout:type.date_ajout,
+                            nom_point:type.nom_point,
+                            fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
+                            telephone_gerant:type.telephone_gerant,
+                            adresse_point: adresse_point.adressepoint+" "+adresse_point.souszonepoint,
+                            fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
+                        }
+                    });
+                    console.log(this.listenewpoints);
+
+                    //this.adresseNewPts = data.message.map(function (type) {
+                    //    return JSON.parse(type.adresse_point)
+                    //});
+                    //console.log(this.adresseNewPts);
+
+
+                    //for (let i = 0; i < this.dataNewPts.length; i++) {
+                      //  if(!this.regionsNewPts.includes(this.dataNewPts[i].region)) this.regionsNewPts.push(this.dataNewPts[i].region);
+                    //}
+
+                },
+                error => alert(error),
+                () => console.log('getNouveauxpoints')
+            );
+    }
+
+
+
+    public toIntNewPts(num: string) {
+        return +num;
+    }
+
+    public sortByWordLengthNewPts = (a: any) => {
+        return a.adresse.length;
+    }
+
+    public selectRegionNewPts() {
+        this.zonesNewPts =  [] ;
+        for (let i = 0; i < this.dataNewPts.length; i++) {
+            if( this.dataNewPts[i].region==this.filtreRegionNewPts ){
+                if( !this.zonesNewPts.includes(this.dataNewPts[i].zone) )
+                    this.zonesNewPts.push(this.dataNewPts[i].zone);
+            }
+        }
+        console.log(this.zones);
+    }
+
+    sousZonesOfCurrentZoneNewPts(){
+        let souszonesNewPts : any[] =  [] ;
+        for (let i = 0; i < this.dataNewPts.length; i++) {
+            if( this.dataNewPts[i].zone==this.filtreZone ){
+                if( !souszonesNewPts.includes(this.dataNewPts[i].sous_zone) )
+                    souszonesNewPts.push(this.dataNewPts[i].sous_zone);
+            }
+        }
+        return souszonesNewPts ;
+    }
+
+
 
 }

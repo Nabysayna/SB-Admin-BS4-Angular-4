@@ -4,6 +4,8 @@
 		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Affectation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Les nouveaux points</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">Les points déployés</button>
 	</div>
     <hr>
 </div>
@@ -107,6 +109,90 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="commercials | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullnamesuperviseur">Superviseur affecté</mfDefaultSorter></th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.email}}</td>
+                        <td>
+                            <select name="singleSelectcommercial-{{i}}"  id="singleSelectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur" (change)="choixsuperviseurforcommercial(item.id_superviseur)">
+                                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
+                            </select>
+                        </td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="reaffectercommercial(item)"> reaffecter </button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead4" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="listenewpoints | dataFilterNewPoint: filterQueryNewPoint" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Commercial</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.date_ajout | date}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td>{{item.fullname_commercial}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead5" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
