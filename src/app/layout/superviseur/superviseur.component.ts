@@ -295,17 +295,18 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     this.clients = data;
                     console.log(this.clients);
-                    this.clients = data.map(function(type){
-					let client = JSON.parse(type.adresse);
-					let tel = JSON.parse(type.tel);
-					let nom = JSON.parse(type.nom_point);
-					let gerant = JSON.parse(type.gerant);
-					//let commercial = JSON.parse(type.commercial);
+                    this.clients = data.map(function(type,data){
+					
+					// let tel = data.json.tel;
+					 //let nom = data.json.nom_point;
+					// let gerant = data.json.gerant;
+					 let client = JSON.parse(type.adresse);
 						return { 
-                                    adresse:client.zonepoint,
-                                    gerant:gerant,
-                                    tel:tel,
-                                    nom_point:nom,
+                                    adresse:client.adressepoint,
+                                    gerant:type.gerant,
+                                    tel:type.tel,
+                                    nom_point:type.nom_point,
+                                    commercial:type.commercial,
                                     
                                      
                                 }
