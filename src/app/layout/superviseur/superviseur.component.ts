@@ -52,6 +52,10 @@ export class SuperviseurComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit() {
+        this.getAssignationsBySuperviseur();
+    }
+
+    getAssignationsBySuperviseur() {
         this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
@@ -66,7 +70,7 @@ export class SuperviseurComponent implements OnInit {
                             adresse:JSON.parse(type.client).adresse,
                             note:JSON.parse(type.client).note,
                             region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
-                            commentaire:'',
+                            commentaire:type.commentaire,
                             infosup:JSON.parse(type.infosup),
                             value:type.id, checked:false
                         };
@@ -92,6 +96,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.getAssignationsBySuperviseur();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -223,7 +228,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
             this.getProspect();
-            
+
         }
         if(option == 8){
             this.menuHead.menuHead1 = false;
@@ -235,7 +240,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = true;
             this.getClient();
-            
+
         }
     }
 
@@ -277,18 +282,14 @@ export class SuperviseurComponent implements OnInit {
                                     nomcommercial:commercial.prenom+" "+commercial.prenom
                                 }
                     });
-                        
+
                     if(data.errorCode) this.prospects = data;
                 },
                 error => alert(error),
                 () => console.log(this.commercials)
             );
-     /* var pros1={'prenom':'magor','nom':'sy'};
-      var pros2={'prenom':'naby','nom':'ndiaye'};
-      this.prospects.push(pros1);
-      this.prospects.push(pros2);*/
-
     }
+
     public getClient(){
        this._utilService.getClients()
             .subscribe(
@@ -307,11 +308,10 @@ export class SuperviseurComponent implements OnInit {
                                     tel:type.tel,
                                     nom_point:type.nom_point,
                                     commercial:type.commercial,
-                                    
-                                     
+                                                                         
                                 }
                     });
-                        
+
                     if(data.errorCode) this.clients = data;
                 },
                 error => alert(error),
@@ -397,7 +397,10 @@ export class SuperviseurComponent implements OnInit {
                     data => {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
+                        this.regions = [];
                         this.filtreRegion = "--Choix région--";
+                        this.objetifcommercial = 0;
+                        this.getAssignationsBySuperviseur();
                         this.selectRegion();
                     },
                     error => alert(error),
@@ -429,7 +432,7 @@ export class SuperviseurComponent implements OnInit {
         }, (reason) => {} );
     }
 
-    showModalDetail(content, item) {
+    showModalDetail(con0tent, item) {
         this.reponsesPointAuProspect = JSON.parse(item.reponse) ;
         console.log( this.reponsesPointAuProspect ) ;
         this.modalService.open(content).result.then( (result) => {

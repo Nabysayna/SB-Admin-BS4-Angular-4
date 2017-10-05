@@ -11,13 +11,13 @@ export class UtilService {
 
 
     private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-   // private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
+    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
     private basetoken:any;
 
     constructor(private _http: Http){
-        this.headers.append('Content-Type', 'application/x-www-form-urlencoded');        
+        this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
     }
 
@@ -119,14 +119,14 @@ export class UtilService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res =>res.json());
     }
-    getProspectValide(){ 
+    getProspectValide(){
         let url = this.link+"/client/getprospects";
            let datas = JSON.stringify({token:this.basetoken});
            let param='param='+datas;
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
-    getClients(){ 
+    getClients(){
         let url = this.link+"/client/getclient";
            let datas = JSON.stringify({token:this.basetoken});
            let param='param='+datas;
@@ -168,6 +168,12 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getRegionZoneActivite(){
+        let url = this.link+"/util/region-zone-activite";
+        return this._http.get(url)
+            .map(res => res.json());
+    }
+
     ajoutCommercial(data:any){
         let url = this.link+"/user/ajoutcommercial";
         let datas = JSON.stringify({token:this.basetoken, data:data});
@@ -178,6 +184,22 @@ export class UtilService {
 
     insertPoint(data:any){
         let url = this.link+"/client/insertpoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    modifPoint(data:any){
+        let url = this.link+"/client/modifpoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    affectationCommercial(data:any){
+        let url = this.link+"/util/affectationcommercial";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

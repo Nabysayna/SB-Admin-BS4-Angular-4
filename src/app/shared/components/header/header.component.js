@@ -19,7 +19,10 @@ var HeaderComponent = (function () {
             }
         });
     }
-    HeaderComponent.prototype.ngOnInit = function () { };
+    HeaderComponent.prototype.ngOnInit = function () {
+        this.currentUsername = JSON.parse(sessionStorage.getItem('currentUser')).username;
+        console.log(this.currentUsername);
+    };
     HeaderComponent.prototype.toggleSidebar = function () {
         var dom = document.querySelector('body');
         dom.classList.toggle('push-right');

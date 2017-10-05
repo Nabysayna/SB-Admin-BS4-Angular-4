@@ -46,6 +46,7 @@
                         <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
                         <th>Action</th>
                         <th>Option</th>
                     </tr>
@@ -63,6 +64,7 @@
                         <td>{{item.fullname}}</td>
                         <td>{{item.telephone}}</td>
                         <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
+                        <td>{{item.commentaire?item.commentaire:'---'}}</td>
                         <td >
                             <button type="button" class="btn btn-primary" (click)="open(content, item)">Voir Map</button>
                         </td>

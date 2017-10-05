@@ -9,13 +9,12 @@ const routes: Routes = [
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'},
             { path: 'tables', loadChildren: './tables/tables.module#TablesModule' },
             { path: 'mescontacts', loadChildren: './liste-contacts/mescontacts.module#MesContactsModule' },
+
             { path: 'forms', loadChildren: './form/form.module#FormModule' },
+            { path: 'formsentool', loadChildren: './formclientsentool/formclientsentool.module#FormclientsentoolModule' },
+
             { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },
-/*
-            { path: 'administratif', loadChildren: './administratif/administratif.module#AdministratifModule' },
-            { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
-*/
             { path: 'manager', loadChildren: './manager/manager.module#ManagerModule' },
             { path: 'managerstock', loadChildren: './managerstock/managerstock.module#ManagerstockModule' },
         ]

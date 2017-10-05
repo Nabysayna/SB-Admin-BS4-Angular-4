@@ -14,6 +14,7 @@ import { PageHeaderModule } from './../../shared';
 import { DataFilterPipe }   from './data-filter.pipe';
 
 import {MesContactsComponent} from "./mescontacts.component";
+import {ModifPdvComponent} from "../modif-pdv/modif-pdv.component";
 
 
 @NgModule({
@@ -32,6 +33,8 @@ import {MesContactsComponent} from "./mescontacts.component";
     declarations: [
         MesContactsComponent,
     	DataFilterPipe,
+        ModifPdvComponent,
+
     ]
 })
 export class MesContactsModule { }

@@ -1,0 +1,85 @@
+<div id="page-wrapper" [@routerTransition]>
+     <app-page-header [heading]="'Souscrivez à la plateforme Sentool'" [icon]="'fa-table'"></app-page-header>
+     <div class="row" >
+        <div class="col-sm-12" *ngIf="regionsactivites">
+              <div class="col-sm-12 col-xs-12" >
+                  <div class="row">
+                      <div class="form-group col-sm-6">
+                          <label for="nomEntrepriseSentool">Nom de l'entreprise</label>
+                          <input type="text" class="form-control" id="nomEntrepriseSentool"  [(ngModel)]="clientsentool.nometps" placeholder="Nom de l'entreprise">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="nomBoutikSentool">Nom de la boutique en ligne</label>
+                          <input type="text" class="form-control" id="nomBoutikSentool"  [(ngModel)]="clientsentool.nomshop" placeholder="Nom de la boutique en ligne">
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="form-group col-sm-6">
+                          <label for="prenomSentool">Prénom</label>
+                          <input type="text" class="form-control" id="prenomSentool" [(ngModel)]="clientsentool.prenom" placeholder="Prénom client">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="nomSentool">Nom</label>
+                          <input type="text" class="form-control" id="nomSentool" [(ngModel)]="clientsentool.nom" placeholder="Nom client">
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="form-group col-sm-6">
+                          <label for="emailSentool">Email</label>
+                          <input type="email" class="form-control" id="emailSentool" [(ngModel)]="clientsentool.email" placeholder="Email client">
+                      </div>
+                      <div class="form-group col-sm-6">
+                          <label for="telephoneSentool">Télephone</label>
+                          <input type="number" class="form-control" id="telephoneSentool" [(ngModel)]="clientsentool.telephone" placeholder="Télephone client">
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="form-group col-sm-4">
+                          <label for="regionSentool">Région</label>
+                          <select class="form-control input-sm" id="regionSentool" [(ngModel)]="clientsentool.adresse.region" (change)="selectRegion()">
+                              <option>--Choix région--</option>
+                              <option  *ngFor="let region of regionsactivites.regions">{{region.nom}}</option>
+                              <option  >autre</option>
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label for="zoneSentool">Zones</label>
+                          <select class="form-control input-sm" id="zoneSentool" [(ngModel)]="clientsentool.adresse.zone" (change)="selectZone()">
+                              <option>--Choix zone--</option>
+                              <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+                              <option>autre</option>
+                          </select>
+                      </div>
+                      <div class="form-group col-sm-4">
+                          <label for="souszoneSentool">Sous zones</label>
+                          <select class="form-control input-sm" id="souszoneSentool" [(ngModel)]="clientsentool.adresse.souszone">
+                              <option>--Choix sous zone--</option>
+                              <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+                              <option>autre</option>
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="adresseSentool" class="col-sm-2 col-form-label">Adresse exacte</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" id="adresseSentool" [(ngModel)]="clientsentool.adresse.address" placeholder="Adresse exacte">
+                      </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="reponsesouscripdejaexit" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+            <strong>Warning:</strong> <br/> Ce compte existe déjà!
+    </div>
+
+    <div style="margin-top: 2rem; margin-bottom: 4rem;" class="text-center">
+        <button type="button" class="btn btn-info" (click)="annulersouscrire()"> Retour </button>
+        <button type="button" class="btn btn-success" (click)="validernewclientsentool()" [disabled]="!clientsentool.nometps || !clientsentool.nomshop || !clientsentool.nom || !clientsentool.prenom || !clientsentool.email ||
+        !clientsentool.telephone || !clientsentool.adresse.region || !clientsentool.adresse.zone || !clientsentool.adresse.souszone || !clientsentool.adresse.address"> Valider souscription </button>
+    </div>
+</div>

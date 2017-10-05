@@ -211,8 +211,4 @@ export class AdminsuiviComponent implements OnInit {
   		return souszones ;
   	}
 
-
-
-
-
 }
