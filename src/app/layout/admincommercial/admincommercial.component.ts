@@ -34,8 +34,15 @@ export class AdmincommercialComponent implements OnInit {
     public sortOrderCom = "asc";
     filterQueryCommercial:any;
 
+    public rowsOnPageNewPoint = 10;
+    public sortByNewPoint = "date_ajout";
+    public sortOrderNewPoint = "desc";
+    public filterQueryNewPoint:any;
+    public filterQueryDeploye:any;
+
     public commercials:any[] = [];
     public listenewpoints:any[] = [];
+    public listepointsdepoye:any[] = [];
 
     public regions:any[] = [];
     public zones:any[] = [];
@@ -59,6 +66,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.getRegionsSuperviseurs();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -91,8 +99,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
-            this.getCommerciaux();
-            this.getRegionsSuperviseurs();
+            this.getPointsdeploye();
         }
 
   	}
@@ -245,21 +252,6 @@ export class AdmincommercialComponent implements OnInit {
 
 
 
-
-
-    public filterQueryNewPts = "";
-    public filtreRegionNewPts = "";
-    public filtreZoneNewPts = "";
-    public filtreSousZoneNewPts = "";
-    public rowsOnPageNewPts = 5;
-    public sortByNewPts = "libellepoint";
-    public sortOrderNewPts = "asc";
-    adresseNewPts:any[] = [];
-    regionsNewPts:any[] = [];
-    zonesNewPts:any[] = [];
-    souszonesNewPts:any[] = [];
-    dataNewPts:any[] = [];
-
     public getNouveauxpoints(): void {
         this._utilService.getNouveauxpoints()
             .subscribe(
@@ -271,58 +263,37 @@ export class AdmincommercialComponent implements OnInit {
                             nom_point:type.nom_point,
                             fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
                             telephone_gerant:type.telephone_gerant,
-                            adresse_point: adresse_point.adressepoint+" "+adresse_point.souszonepoint,
+                            adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
                             fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
                         }
                     });
                     console.log(this.listenewpoints);
-
-                    //this.adresseNewPts = data.message.map(function (type) {
-                    //    return JSON.parse(type.adresse_point)
-                    //});
-                    //console.log(this.adresseNewPts);
-
-
-                    //for (let i = 0; i < this.dataNewPts.length; i++) {
-                      //  if(!this.regionsNewPts.includes(this.dataNewPts[i].region)) this.regionsNewPts.push(this.dataNewPts[i].region);
-                    //}
-
                 },
                 error => alert(error),
                 () => console.log('getNouveauxpoints')
             );
     }
 
-
-
-    public toIntNewPts(num: string) {
-        return +num;
-    }
-
-    public sortByWordLengthNewPts = (a: any) => {
-        return a.adresse.length;
-    }
-
-    public selectRegionNewPts() {
-        this.zonesNewPts =  [] ;
-        for (let i = 0; i < this.dataNewPts.length; i++) {
-            if( this.dataNewPts[i].region==this.filtreRegionNewPts ){
-                if( !this.zonesNewPts.includes(this.dataNewPts[i].zone) )
-                    this.zonesNewPts.push(this.dataNewPts[i].zone);
-            }
-        }
-        console.log(this.zones);
-    }
-
-    sousZonesOfCurrentZoneNewPts(){
-        let souszonesNewPts : any[] =  [] ;
-        for (let i = 0; i < this.dataNewPts.length; i++) {
-            if( this.dataNewPts[i].zone==this.filtreZone ){
-                if( !souszonesNewPts.includes(this.dataNewPts[i].sous_zone) )
-                    souszonesNewPts.push(this.dataNewPts[i].sous_zone);
-            }
-        }
-        return souszonesNewPts ;
+    public getPointsdeploye(): void {
+        this._utilService.getPointsdeploye()
+            .subscribe(
+                data => {
+                    this.listepointsdepoye = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adressecomplet);
+                        return {
+                            date_ajout: type.date_ajout,
+                            nom_point: type.nomentreprise,
+                            fullname_gerant: type.prenom + " " + type.nom,
+                            telephone_gerant: type.telephone,
+                            adresse_point: adresse_point.adresse?adresse_point.adresse+',':'' + " " + adresse_point.souszone + ", " + adresse_point.zone,
+                            fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
+                        }
+                    });
+                    console.log(this.listepointsdepoye);
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
     }
 
 

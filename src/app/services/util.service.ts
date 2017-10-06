@@ -214,5 +214,13 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getPointsdeploye(){
+        let url = this.link+"/client/getpointsdeploye";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 }

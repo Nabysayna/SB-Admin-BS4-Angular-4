@@ -5,7 +5,7 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Affectation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Les nouveaux points</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">Les points déployés</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">Les points souscris à Sentool</button>
 	</div>
     <hr>
 </div>
@@ -131,7 +131,7 @@
                         <td>{{item.telephone}}</td>
                         <td>{{item.email}}</td>
                         <td>
-                            <select name="singleSelectcommercial-{{i}}"  id="singleSelectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur" (change)="choixsuperviseurforcommercial(item.id_superviseur)">
+                            <select name="sselectcommercial-{{i}}"  id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur">
                                 <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
                             </select>
                         </td>
@@ -155,7 +155,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="listenewpoints | dataFilterNewPoint: filterQueryNewPoint" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                <table class="table table-hover" [mfData]="listenewpoints | dataFilterNewPoint: filterQueryNewPoint" #mfNewPoint="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
@@ -163,15 +163,15 @@
                         <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_commercial">Commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Commercial ajouté</mfDefaultSorter></th>
                     </tr>
                     <tr>
-                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryNewPoint"/></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mf.data; let i = index ">
-                        <td>{{item.date_ajout | date}}</td>
+                    <tr *ngFor="let item of mfNewPoint.data; let i = index ">
+                        <td>{{item.date_ajout}}</td>
                         <td>{{item.nom_point}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>
@@ -196,30 +196,30 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="commercials | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                <table class="table table-hover" [mfData]="listepointsdepoye | dataFilterNewPoint: filterQueryDeploye" #mfPointDeploye="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
-                        <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullnamesuperviseur">Superviseur affecté</mfDefaultSorter></th>
-                        <th>Action</th>
+                        <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Boutique</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Commercial déployé</mfDefaultSorter></th>
                     </tr>
                     <tr>
-                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryDeploye"/></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mf.data; let i = index ">
-                        <td>{{item.fullname}}</td>
-                        <td>{{item.telephone}}</td>
-                        <td>{{item.email}}</td>
-                        <td>
-                            <select name="singleSelectcommercial-{{i}}"  id="singleSelectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur" (change)="choixsuperviseurforcommercial(item.id_superviseur)">
-                                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
-                            </select>
-                        </td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="reaffectercommercial(item)"> reaffecter </button></td>
+                    <tr *ngFor="let item of mfPointDeploye.data; let i = index ">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td>{{item.fullname_commercial}}</td>
                     </tr>
                     </tbody>
                     <tfoot>
