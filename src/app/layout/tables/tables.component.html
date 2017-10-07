@@ -51,11 +51,9 @@
                         <th>Option</th>
                     </tr>
                     <tr>
-                    <th colspan="5">
-                        Recherche:
-                        <input class="form-control" [(ngModel)]="filterQuery"/>
-                    </th>
-                </tr>
+                        <th colspan="5"> Recherche: <input class="form-control" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{data.length}}</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let item of mf.data">
