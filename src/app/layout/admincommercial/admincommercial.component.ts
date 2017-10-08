@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admincommercial',
@@ -40,7 +41,7 @@ export class AdmincommercialComponent implements OnInit {
     public filterQueryNewPoint:any;
     public filterQueryDeploye:any;
 
-    public commercials:any[] = [];
+    public commerciaux:any[] = [];
     public listenewpoints:any[] = [];
     public listepointsdepoye:any[] = [];
 
@@ -53,7 +54,7 @@ export class AdmincommercialComponent implements OnInit {
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
 
-    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
   	ngOnInit() {
         this.getRegionsSuperviseurs();
@@ -81,8 +82,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = true;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.getCommerciaux();
-            this.getRegionsSuperviseurs();
+            this.getComSuperviseurs();
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -106,6 +106,24 @@ export class AdmincommercialComponent implements OnInit {
 
     public toInt(num: string) { return +num; }
 
+    public getComSuperviseurs(): void {
+        this._utilService.getComSuperviseurs()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.superviseurs = data.message.superviseurs;
+                        this.commerciaux = data.message.commerciaux;
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('getComSuperviseurs')
+            );
+    }
+
     public getRegionsSuperviseurs(): void {
         this._utilService.getRegionsSuperviseurs()
             .subscribe(
@@ -121,18 +139,6 @@ export class AdmincommercialComponent implements OnInit {
 
     choixsuperviseurforcommercial(id_superviseur){
         console.log(id_superviseur);
-    }
-
-    public getCommerciaux(): void {
-        this._utilService.getCommerciaux()
-            .subscribe(
-                data => {
-                    this.commercials = data
-                    if(data.errorCode) this.commercials = data.message;
-                },
-                error => alert(error),
-                () => console.log(this.commercials)
-            );
     }
 
     public selectRegion(){
