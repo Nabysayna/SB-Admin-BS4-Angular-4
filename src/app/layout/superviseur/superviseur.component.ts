@@ -353,7 +353,8 @@ export class SuperviseurComponent implements OnInit {
                                     dates_suivi:type.dates_suivi,
                                     reponse:type.reponse,
                                     qualification:"--Choisir une action--",
-                                    client:client,
+                                   // client:client,
+                                    region:client.region,
                                     zone:client.adresse_point.zonepoint,
                                     szone:client.adresse_point.souszonepoint,
                                     nomcommercial:commercial.prenom+" "+commercial.prenom
@@ -380,11 +381,11 @@ export class SuperviseurComponent implements OnInit {
 					// let gerant = data.json.gerant;
 					 let client = JSON.parse(type.adresse);
 						return { 
-                                    adresse:client.adressepoint,
+                                    adresse:client.adress,
                                     gerant:type.gerant+" "+type.gerantnom,
                                     tel:type.tel,
                                     nom_point:type.nom_point,
-                                    commercial:type.commercial,
+                                    
                                                                          
                                 }
                     });
@@ -440,6 +441,7 @@ export class SuperviseurComponent implements OnInit {
         this.entreprise=p.libellepoint;
         this.zne=p.zone;
         this.szone=p.szone;
+        this.region=p.region;
   }
   validernewclientsentool(form:NgForm){
        var cli=form.value;
