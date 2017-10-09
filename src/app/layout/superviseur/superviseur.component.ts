@@ -106,7 +106,7 @@ export class SuperviseurComponent implements OnInit {
         reponsesProspect : [],
         piecesFournies : []
     };
-    
+
     regionsactivites:{activites:any[],regions:any[]};
     zone:any[];
     souszone:any[];
@@ -369,7 +369,7 @@ export class SuperviseurComponent implements OnInit {
     }
 
     public getClient(){
-         this._utilService.getClients()
+        this._utilService.getClients()
             .subscribe(
                 data => {
                     this.clients = data;
@@ -388,6 +388,7 @@ export class SuperviseurComponent implements OnInit {
                                     
                                                                          
                                 }
+
                     });
 
                     if(data.errorCode) this.clients = data;
@@ -397,7 +398,7 @@ export class SuperviseurComponent implements OnInit {
             );
     }
     public ajout(content,p){
-      
+
        this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
         this.remplissage(p);
@@ -424,7 +425,7 @@ export class SuperviseurComponent implements OnInit {
          this.boutique='';
          this.adresse='';
          this.tel='';
-     
+
   }
   remplissage(p){
         var full=p.fullname.split(' ');
@@ -449,15 +450,14 @@ export class SuperviseurComponent implements OnInit {
        this.clsentool.prenom=cli.prenom;
        this.clsentool.email=cli.email;
        this.clsentool.telephone=cli.tel;
-       this.clsentool.nometps="";
+       this.clsentool.nometps= cli.entreprise;
+       this.clsentool.nomshop= cli.boutique;
        this.clsentool.adresse.region=cli.region;
-       this.clsentool.adresse.zone=cli.zone;
+       this.clsentool.adresse.zone=cli.zne;
        this.clsentool.adresse.souszone=cli.szone;
-       this.clsentool.adresse.adress=cli.adresse;
-       
-        console.log(JSON.stringify(this.clsentool));
+       this.clsentool.adresse.address=cli.adresse;
         this._apiplatform.souscrireSentool(this.clsentool)
-            .subscribe(                                                   
+            .subscribe(
                 data => {
                     //console.log(data);
                     if(data.message && data.message =='dejainscrit'){
@@ -471,41 +471,7 @@ export class SuperviseurComponent implements OnInit {
                 () => console.log('souscrireSentool')
             );
     }
-    
-   /* inscription(f:NgForm){
-      var m=f.value;
-      m.region="region";
-      m.zone="zone";
-      this.client.adressecompletpoint.regionpoint="Dakar";
-      this.client.adressecompletpoint.zonepoint="Dakar";
-      this.client.adressecompletpoint.souszonepoint="Alamadie";
-      this.client.adressecompletpoint.adressepoint="si biir dakar";
-      this.client.nomproprietaire=m.nom;
-      this.client.nomboutique=m.boutique;
-      this.client.nompoint=m.entreprise;
-      this.client.prenomproprietaire=m.prenom;
-      this.client.telephoneproprietaire=m.tel;
-      this.client.emailproprietaire=m.email;
-      this._utilService.insertPoint(this.client)
-            .subscribe(
-                data => {
-                      console.log(data);
-                      this.reponse1=true;
-                    if(data.errorCode=='true'){
-                         this.reponse1=true;
-                         this.clear();
-        
-                       }
-                    if(data.errorCode=='false'){
-                        // this.reponse2=true;
-                      }
-                },
-                error => alert(error),
-                () => console.log('insertPoint')
-        );
-      
-      
-    }*/
+
     getgerant(p){
         //return p.split("#")[0] ;
         return p.nom_point;

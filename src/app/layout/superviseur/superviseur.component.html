@@ -1,14 +1,14 @@
 <h3 class="page-header"><u>Superviseur</u></h3>
 <div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)">Assignation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Suivi</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Extraction</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Clients à relancer</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">Clients valider</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)">Mes commerciaux</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)">Deploiement</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)">Portefeuille</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Extraction</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Clients valider</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
     </div>
     <hr>
 </div>
@@ -127,11 +127,8 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2">
-                            Recherche:
-                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
-
-                        </th>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{datasuivi.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -184,11 +181,8 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2">
-                            Recherche:
-                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
-
-                        </th>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{datasuivi.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -231,11 +225,8 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2">
-                            Recherche:
-                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
-
-                        </th>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{datasuiviarelancer.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -287,11 +278,8 @@
                         <th>Consultation</th>
                     </tr>
                     <tr>
-                        <th colspan="2">
-                            Recherche:
-                            <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/>
-
-                        </th>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{datasuivivalider.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -326,10 +314,10 @@
                         <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
-                        <!--<th>Action</th>-->
                     </tr>
                     <tr>
                         <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th>Total : {{commercials.length}}</th>
                         <th colspan="2" style="text-align: right"><button type="button"  (click)="showModalCommercial(contentAjoutCommercial,false)" class="btn btn-warning"> ajouter commercial </button></th>
                     </tr>
                     </thead>
@@ -338,7 +326,6 @@
                         <td>{{item.fullname}}</td>
                         <td>{{item.telephone}}</td>
                         <td>{{item.email}}</td>
-                        <!--<td><button type="button" class="btn btn-primary btn-sm"> modifier </button></td>-->
                     </tr>
                     </tbody>
                     <tfoot>
@@ -371,12 +358,12 @@
 	                   <td>{{p.telephone}}</td>
 	                   <td>{{p.adresse}}</td>
 	                   <td>{{p.nomcommercial}}</td>
-	                   <td><input type="button" (click)="ajout(contentnewclient,p)" value="action" class="btn btn-primary" /></td>
-	                   
+	                   <td><input type="button" (click)="rep1= false; ajout(contentnewclient,p)" value="action" class="btn btn-primary" /></td>
+
 	               </tr>
-		
+
 	</table>
-	
+
 </div>
 <div class="container-fluid" *ngIf="menuHead.menuHead8" >
 	<table class="table table-striped table-codensed">
@@ -394,14 +381,13 @@
 	                   <td>{{p.tel}}</td>
 	                   <td>{{p.adresse}}</td>
 	               </tr>
-		
+
 	</table>
-	
+
 </div>
 <ng-template #contentnewclient let-c="close" >
 	<div class="modal-header">
-		<p>nouveau client</p>
-		<h5 *ngIf="rep1" class="alert alert-success">Enregistrement Reussi</h5>
+		<p>nouveau client sentool</p>
 	</div>
  <div class="modal-body">
   <form #for="ngForm" name="form" method="post">
@@ -433,7 +419,7 @@
                       <div class="form-group col-sm-4">
                           <label for="souszoneSentool">Sous zones</label>
                           <input type="text" name="szone" [(ngModel)]="szone" class="form-control input-sm" id="souszoneSentool" required />
-                              
+
                       </div>
          </div>
       <div class="row">
@@ -442,8 +428,9 @@
 			 <input name="adresse" [(ngModel)]="adresse" type="text" class="form-control" placeholder="adresse exacte" />
         </div>
 	  </div>
-	  <input type="button" [disabled]="!for.valid" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
+	  <input *ngIf="!rep1" type="button" [disabled]="!for.valid" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
    </form>
+     <h5 *ngIf="rep1" class="alert alert-success text-center" style="text-align: center">Enregistrement Reussi</h5>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-danger" (click)="c('Close click')">fermer</button>

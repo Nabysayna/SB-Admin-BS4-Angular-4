@@ -9,9 +9,9 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class AssignationSuiviService {
 
-    private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     private headers = new Headers();
     private basetoken:any;
 
@@ -86,6 +86,15 @@ export class AssignationSuiviService {
 
     getSuperviseursForPerformance(){
         let url = this.link+"/suivi/getsuperviseursforperformance";
+        let datas = JSON.stringify({token:this.basetoken});
+
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getSuperviseursForPerformancetest(){
+        let url = this.link+"/suivi/getsuperviseursforperformancetest";
         let datas = JSON.stringify({token:this.basetoken});
 
         let params = 'params='+datas;

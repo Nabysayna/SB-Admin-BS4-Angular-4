@@ -1,0 +1,89 @@
+<h3 class="page-header"><u>Manager</u></h3>
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)"  style="margin-bottom: 1rem;">Dashboard</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)"  style="margin-bottom: 1rem;">Affectation</button>
+	</div>
+    <hr>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead1" >
+    <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center" *ngIf="dashboardNbres">
+        <div class="col-sm-3" style="margin-bottom: 1rem;">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h4 class="card-title">{{dashboardNbres.nbrenewpts}}</h4>
+                    <p class="card-text">Nouveaux points.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="margin-bottom: 1rem;">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h4 class="card-title">{{dashboardNbres.nbreptsvalider}}</h4>
+                    <p class="card-text">Points validés.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="margin-bottom: 1rem;">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h4 class="card-title">{{dashboardNbres.nbreptssouscsenntool}}</h4>
+                    <p class="card-text">Points souscrits à Sentool.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" style="margin-bottom: 1rem;">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h4 class="card-title">{{dashboardNbres.nbrecoms}}</h4>
+                    <p class="card-text">Commerciaux.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="commerciaux | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
+                        <th> Superviseur affecté </th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                        <th>Total : {{commerciaux.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.email}}</td>
+                        <td *ngIf="item.id_superviseur && superviseurs && superviseurs.length!=0">
+                            <select name="sselectcommercial-{{i}}"  id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur">
+                                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
+                            </select>
+                        </td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="reaffectercommercial(item)"> reaffecter </button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

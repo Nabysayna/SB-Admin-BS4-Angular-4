@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admincommercial',
@@ -34,7 +35,15 @@ export class AdmincommercialComponent implements OnInit {
     public sortOrderCom = "asc";
     filterQueryCommercial:any;
 
-    public commercials:any[] = [];
+    public rowsOnPageNewPoint = 10;
+    public sortByNewPoint = "date_ajout";
+    public sortOrderNewPoint = "desc";
+    public filterQueryNewPoint:any;
+    public filterQueryDeploye:any;
+
+    public commerciaux:any[] = [];
+    public listenewpoints:any[] = [];
+    public listepointsdepoye:any[] = [];
 
     public regions:any[] = [];
     public zones:any[] = [];
@@ -42,10 +51,10 @@ export class AdmincommercialComponent implements OnInit {
     public superviseurs:any[] = [];
     public optionassignations:any[] = [];
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
 
-    constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
 
   	ngOnInit() {
         this.getRegionsSuperviseurs();
@@ -56,23 +65,64 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.getRegionsSuperviseurs();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
-            this.getCommerciaux();
-            this.getRegionsSuperviseurs();
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.getComSuperviseurs();
+        }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.getNouveauxpoints();
+
+        }
+        if(option == 5){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = true;
+            this.getPointsdeploye();
         }
 
   	}
 
     public toInt(num: string) { return +num; }
+
+    public getComSuperviseurs(): void {
+        this._utilService.getComSuperviseurs()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.superviseurs = data.message.superviseurs;
+                        this.commerciaux = data.message.commerciaux;
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('getComSuperviseurs')
+            );
+    }
 
     public getRegionsSuperviseurs(): void {
         this._utilService.getRegionsSuperviseurs()
@@ -89,18 +139,6 @@ export class AdmincommercialComponent implements OnInit {
 
     choixsuperviseurforcommercial(id_superviseur){
         console.log(id_superviseur);
-    }
-
-    public getCommerciaux(): void {
-        this._utilService.getCommerciaux()
-            .subscribe(
-                data => {
-                    this.commercials = data
-                    if(data.errorCode) this.commercials = data.message;
-                },
-                error => alert(error),
-                () => console.log(this.commercials)
-            );
     }
 
     public selectRegion(){
@@ -215,5 +253,55 @@ export class AdmincommercialComponent implements OnInit {
                 () => console.log('affectationCommercial')
             );
     }
+
+
+
+
+
+    public getNouveauxpoints(): void {
+        this._utilService.getNouveauxpoints()
+            .subscribe(
+                data => {
+                    this.listenewpoints = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adresse_point);
+                        return {
+                            date_ajout:type.date_ajout,
+                            nom_point:type.nom_point,
+                            fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
+                            telephone_gerant:type.telephone_gerant,
+                            adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
+                            fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
+                        }
+                    });
+                    console.log(this.listenewpoints);
+                },
+                error => alert(error),
+                () => console.log('getNouveauxpoints')
+            );
+    }
+
+    public getPointsdeploye(): void {
+        this._utilService.getPointsdeploye()
+            .subscribe(
+                data => {
+                    this.listepointsdepoye = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adressecomplet);
+                        return {
+                            date_ajout: type.date_ajout,
+                            nom_point: type.nomentreprise,
+                            fullname_gerant: type.prenom + " " + type.nom,
+                            telephone_gerant: type.telephone,
+                            adresse_point: adresse_point.adresse?adresse_point.adresse+',':'' + " " + adresse_point.souszone + ", " + adresse_point.zone,
+                            fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
+                        }
+                    });
+                    console.log(this.listepointsdepoye);
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
+    }
+
+
 
 }
