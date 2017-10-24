@@ -4,6 +4,7 @@ import {UtilService} from "../../services/util.service";
 import { NgForm } from '@angular/forms';
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {ApiPlatformService} from "../../services/apiplateform.service";
+import {Color} from "ng2-charts";
 
 @Component({
     selector: 'app-superviseur',
@@ -121,7 +122,7 @@ export class SuperviseurComponent implements OnInit {
         },
     };
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
 
     constructor(private _apiplatform: ApiPlatformService,private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {this.reponse1=false;}
 
@@ -170,6 +171,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getAssignationsBySuperviseur();
         }
         if(option == 2){
@@ -181,6 +183,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -220,6 +223,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -230,6 +234,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -269,6 +274,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -289,6 +295,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = true;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getCommerciaux();
             console.log(this.commercials);
         }
@@ -301,8 +308,8 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getProspect();
-
         }
         if(option == 8){
             this.menuHead.menuHead1 = false;
@@ -313,9 +320,27 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = true;
+            this.menuHead.menuHead9 = false;
             this.getClient();
-
         }
+        if(option == 9){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = true;
+
+            this.datasetsPPV = [{
+                data: this.doughnutChartDataPPV,
+                backgroundColor: ["green", "orange", "yellow", "red"]
+            }];
+            this.estcheckPerformancePPV('journee');
+        }
+
     }
 
     public toInt(num: string) { return +num; }
@@ -371,32 +396,31 @@ export class SuperviseurComponent implements OnInit {
         this._utilService.getClients()
             .subscribe(
                 data => {
-                    this.clients = data;
-                    console.log(this.clients);
-                    this.clients = data.map(function(type,data){
+                    this.clients = data.message.map(function(type){
                         let client = JSON.parse(type.adresse);
                         return {
-                            adresse:client.adressepoint,
+                            adresse:client.address,
                             gerant:type.gerant+" "+type.gerantnom,
+                            date_ajout:type.date_ajout,
                             tel:type.tel,
                             nom_point:type.nom_point,
                             commercial:type.commercial,
 
                         }
                     });
-
-                    if(data.errorCode) this.clients = data;
                 },
                 error => alert(error),
                 () => console.log(this.clients)
             );
     }
+
     public ajout(content,p){
 
        this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
         this.remplissage(p);
     }
+
     //select region
     SelectRegion(){
         this.clientsentool.adresse.zone = '--Choix zone--';
@@ -408,6 +432,7 @@ export class SuperviseurComponent implements OnInit {
                 () => console.log(this.zones)
             );
     }
+
      clear(){
          this.prenom='';
          this.nom='';
@@ -421,6 +446,7 @@ export class SuperviseurComponent implements OnInit {
          this.tel='';
 
   }
+
   remplissage(p){
         var full=p.fullname.split(' ');
         var ng=full.length;
@@ -437,6 +463,7 @@ export class SuperviseurComponent implements OnInit {
         this.zne=p.zone;
         this.szone=p.szone;
   }
+
   validernewclientsentool(form:NgForm){
        var cli=form.value;
        this.clsentool.nom=cli.nom;
@@ -469,6 +496,7 @@ export class SuperviseurComponent implements OnInit {
         //return p.split("#")[0] ;
         return p.nom_point;
     }
+
     getRegionActivite(){
         this._utilService.getRegionActivite()
             .subscribe(
@@ -645,5 +673,123 @@ export class SuperviseurComponent implements OnInit {
                 }
             );
     }
+
+
+
+    // Doughnut
+    public doughnutChartLabelsPPV: string[] = ['Faible', 'Passable', 'Assez-bien', 'Bien'];
+    public doughnutChartDataPPV: number[] = [150, 100, 50, 25];
+    public colorsEmptyObject: Array<Color> = [{}];
+    public datasetsPPV: any[];
+    public typeperformancePPV:string = " dans la journée";
+    public checkPerformancePPV:any = {journee: true, semaine: false, mois: false};
+    public performancesadminpdv:any;
+    public performancesadminpdvbyadmin:any;
+    public typedateperformancesadminpdv:string;
+    public lotperformancesadminpdv:string;
+    public rowsOnPagePPV = 12;
+    public sortByPPV = "recette";
+    public sortOrderPPV = "desc";
+    public chartClickedPPV(e:any):void {
+        if (e.active[0]){
+            this.estdetailPerformancePPV(e.active[0]._model.label);
+        }
+    }
+    public showModalPPV(content) {
+        this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
+    }
+    public performancessupperviseurclasserbydate(type:string):void {
+        this.performancesadminpdv = undefined;
+        this._apiplatform.getperformancessupperviseurclasserbydate(type)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.datasetsPPV = [{
+                            data: data.message.nbrepoints,
+                            backgroundColor: ["green", "orange", "yellow", "red"]
+                        }];
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydate')
+                }
+            );
+    }
+
+    public estcheckPerformancePPV(type: string){
+        if(type == 'journee'){
+            this.checkPerformancePPV.journee = true;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.typeperformancePPV = "dans la journée";
+        }
+        else if(type == 'semaine'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = true;
+            this.checkPerformancePPV.mois = false;
+            this.typeperformancePPV = "dans la semaine";
+        }
+        else if(type == 'mois'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = true;
+            this.typeperformancePPV = "dans le mois";
+        }
+        this.typedateperformancesadminpdv = type;
+        this.performancessupperviseurclasserbydate(type);
+    }
+
+    public estdetailPerformancePPV(lot:string){
+        let type:string="";
+        if (this.checkPerformancePPV.journee) {
+            type = "journee";
+        }
+        if (this.checkPerformancePPV.semaine) {
+            type = "semaine";
+        }
+        if (this.checkPerformancePPV.mois) {
+            type = "mois";
+        }
+        console.log(type+' '+lot);
+        this.typedateperformancesadminpdv = type;
+        this.lotperformancesadminpdv = lot;
+        this._apiplatform.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
+            .subscribe(
+                data => {
+                    console.log(data)
+                    if(data.errorCode){
+                        this.performancesadminpdv = data.message;
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydatebylot')
+                }
+            );
+    }
+    public detailperformancesadminclasserbydateandlot(adminpdv: any, content){
+        console.log(adminpdv);
+        this.performancesadminpdvbyadmin = undefined;
+        this._apiplatform.getperformancessupperviseurclasserbydatebySup({adminpdv:adminpdv, typedate:this.typedateperformancesadminpdv})
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.performancesadminpdvbyadmin = data.message;
+                        console.log(this.performancesadminpdvbyadmin);
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydatebySup')
+                }
+            );
+       this.showModalPPV(content);
+    }
+
+
+
+
+
 
 }

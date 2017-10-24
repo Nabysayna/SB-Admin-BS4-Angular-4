@@ -1,0 +1,24 @@
+<div id="mySidenav" class="sidenav text-left" style="text-align: left">
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" >Les réclamations</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Modification adresse points</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Guide utilisation caissier</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Guide utilisation superviseur</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">FAQ</a>
+</div>
+
+<div id="main">
+    <h2>Sidenav Push Example</h2>
+
+    <div class="container-fluid" *ngIf="menuHead.menuHead1">
+        Hi ds
+    </div>
+
+    <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+        jdskflq
+    </div>
+
+    <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+        jsdfkkl
+    </div>
+
+</div>
