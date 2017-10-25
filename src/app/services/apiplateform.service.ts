@@ -52,4 +52,22 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
+    getPointsdeployeModifyAdresse(){
+        let url = this.link+"/apiplatform/getpointsdeployemodifyadresse";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validModifyAdressePoint(data:any){
+        let url = this.link+"/apiplatform/validmodifyadressepoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+
+
 }

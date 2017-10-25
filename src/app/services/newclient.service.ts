@@ -43,6 +43,12 @@ export class NewclientService {
             .map(res => res.json());
     }
 
-
+    getPointBySouszoneByZone(data:any){
+        let url = this.link+"/client/pointbysouszonebyzone";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
 
 }

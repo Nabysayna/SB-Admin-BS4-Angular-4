@@ -1,16 +1,50 @@
 <div id="mySidenav" class="sidenav text-left" style="text-align: left">
-    <a [ngClass]="{'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" >Les réclamations</a>
-    <a [ngClass]="{'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Modification adresse points</a>
-    <a [ngClass]="{'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">Guide utilisation caissier</a>
-    <a [ngClass]="{'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)">Guide utilisation superviseur</a>
-    <a [ngClass]="{'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)">FAQ</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" >Modification adresse points</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)">Les réclamations</a>
+    <a [ngClass]="{'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)">FAQ</a>
 </div>
 
 <div id="main">
-    <h2>Sidenav Push Example</h2>
 
     <div class="container-fluid" *ngIf="menuHead.menuHead1">
-        Hi ds
+        <h2>Points avec adresse incomplet</h2>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="row table-responsive">
+                    <table class="table table-hover" [mfData]="listepointsdepoye | dataFilterModifAdressePoint: filterQueryModifAdressePts" #mfModifAdressePts="mfDataTable" [mfRowsOnPage]="rowsOnPageModifAdressePts" [(mfSortBy)]="sortByModifAdressePts" [(mfSortOrder)]="sortOrderModifAdressePts">
+                        <thead>
+                        <tr>
+                            <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryModifAdressePts"/></th>
+                            <th>Total : {{listepointsdepoye.length}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of mfModifAdressePts.data; let i = index ">
+                            <td>{{item.nom_point}}</td>
+                            <td>{{item.fullname_gerant}}</td>
+                            <td>{{item.telephone_gerant}}</td>
+                            <td>{{item.adresse_point}}</td>
+                            <td><button class="btn btn-primary btn-sm" (click)="openModifyAdressePoints(item,contentModifyAdressePoints)">Modify</button></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr class="text-center center-block">
+                            <td colspan="8" class="text-center center-block">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
@@ -18,7 +52,69 @@
     </div>
 
     <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+        jdskflq
+    </div>
+
+    <div  class="container-fluid" *ngIf="menuHead.menuHead4" >
+        jdskflq
+    </div>
+
+    <div  class="container-fluid" *ngIf="menuHead.menuHead5" >
         jsdfkkl
     </div>
 
 </div>
+
+<ng-template #contentModifyAdressePoints let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title"> Adresse points "{{pointsdepoye.nom_point}}" {{pointsdepoye.telephone_gerant}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group row">
+            <label for="regionSentoolModif" class="col-sm-3 col-form-label">Région</label>
+            <div class="col-sm-9">
+                <select class="form-control input-sm" id="regionSentoolModif" name="regionSentoolModif" [(ngModel)]="pointsdepoye.adressecomplet.region" (change)="selectRegion()">
+                    <option selected>--Choix région--</option>
+                    <option *ngFor="let region of regions">{{region.nom}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="iszones && pointsdepoye.adressecomplet.region!='--Choix région--'">
+            <label for="zoneSentoolModif" class="col-sm-3 col-form-label">Zones</label>
+            <div class="col-sm-9">
+                <select class="form-control input-sm" id="zoneSentoolModif" name="zoneSentoolModif" [(ngModel)]="pointsdepoye.adressecomplet.zone" (change)="selectZone()">
+                    <option>--Choix zone--</option>
+                    <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="issouszones && pointsdepoye.adressecomplet.zone!='--Choix zone--'">
+            <label for="souzoneSentoolModif" class="col-sm-3 col-form-label">Sous zones</label>
+            <div class="col-sm-9">
+                <select class="form-control input-sm" id="souzoneSentoolModif" name="souzoneSentoolModif" [(ngModel)]="pointsdepoye.adressecomplet.souszone">
+                    <option>--Choix sous zone--</option>
+                    <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row" *ngIf="issouszones && pointsdepoye.adressecomplet.souszone!='--Choix sous zone--'">
+            <label for="adresseSentoolModif" class="col-sm-3 col-form-label">Adresse exacte</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="adresseSentoolModif" name="adresseSentoolModif" [(ngModel)]="pointsdepoye.adressecomplet.address" placeholder="Adresse exacte" rows="3"></textarea>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer text-center" style="text-align: center !important; margin: 0 auto">
+        <button type="button" class="btn btn-success btn-sm"
+                (click)="validmodifyadressepoints()"
+                [disabled]="!pointsdepoye.adressecomplet.address || pointsdepoye.adressecomplet.souszone=='--Choix sous zone--' || pointsdepoye.adressecomplet.zone=='--Choix zone--' || pointsdepoye.adressecomplet.region=='--Choix région--'"
+        >Valider</button>
+    </div>
+</ng-template>

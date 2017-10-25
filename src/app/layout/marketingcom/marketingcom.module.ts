@@ -6,6 +6,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarketingcomComponent } from './marketingcom.component';
 import { MarketingcomRoutingModule } from './marketingcom-routing.module';
 import { PageHeaderModule } from './../../shared';
+ import {DataTableModule} from "angular2-datatable";
+ import {DataFilterModifAdressePointPipe} from "./filterdata-modifadressepoint.pipe";
 
 
 
@@ -16,9 +18,13 @@ import { PageHeaderModule } from './../../shared';
         MarketingcomRoutingModule,
         PageHeaderModule,
         NgbModule.forRoot(),
+
+        DataTableModule,
     ],
     declarations: [
         MarketingcomComponent,
+
+        DataFilterModifAdressePointPipe,
     ]
 })
 export class MarketingcomModule { }

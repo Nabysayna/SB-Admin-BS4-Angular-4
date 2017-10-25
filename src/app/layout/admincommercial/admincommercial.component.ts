@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {Router} from "@angular/router";
+import {NewclientService} from "../../services/newclient.service";
 
 @Component({
   selector: 'app-admincommercial',
   templateUrl: './admincommercial.component.html',
   styleUrls: ['./admincommercial.component.scss'],
-  providers:[UtilService, AssignationSuiviService],
+  providers:[UtilService, AssignationSuiviService, NewclientService],
 
 })
 
@@ -54,7 +55,7 @@ export class AdmincommercialComponent implements OnInit {
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
 
-    constructor(public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private _newclientService:NewclientService) { }
 
   	ngOnInit() {
         this.getRegionsSuperviseurs();
@@ -157,7 +158,7 @@ export class AdmincommercialComponent implements OnInit {
 
     public selectZone(){
         this.optionassignations = [];
-        this._utilService.getSouszoneByZone(this.filtreZone.toString())
+        this._utilService.getSouszoneByZoneByRegion({region: this.filtreRegion.toString(), zone: this.filtreZone.toString()})
             .subscribe(
                 data => this.souszones = data,
                 error => alert(error),
@@ -166,7 +167,7 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     public selectSouszone(){
-        this._utilService.getPointBySouszone(this.filtreSousZone)
+        this._newclientService.getPointBySouszoneByZone({zone:this.filtreZone, souszone:this.filtreSousZone})
             .subscribe(
                 data => {
                     console.log(data);
@@ -254,10 +255,6 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-
-
-
-
     public getNouveauxpoints(): void {
         this._utilService.getNouveauxpoints()
             .subscribe(
@@ -301,7 +298,5 @@ export class AdmincommercialComponent implements OnInit {
                 () => console.log('getPointsdeploye')
             );
     }
-
-
 
 }

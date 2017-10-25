@@ -63,6 +63,13 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getSouszoneByZoneByRegion(data:any){
+        let url = this.link+"/util/souszonebyzonebyregion";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
 
     getSouszoneByZone(zone:string){
         let url = this.link+"/util/souszone";
@@ -119,6 +126,7 @@ export class UtilService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res =>res.json());
     }
+
     getProspectValide(){
         let url = this.link+"/client/getprospects";
            let datas = JSON.stringify({token:this.basetoken});
@@ -126,6 +134,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     getClients(){
         let url = this.link+"/client/getclient";
            let datas = JSON.stringify({token:this.basetoken});
@@ -158,6 +167,12 @@ export class UtilService {
 
     getZoneActivite(){
         let url = this.link+"/util/zone-activite";
+        return this._http.get(url)
+            .map(res => res.json());
+    }
+
+    getRegion(){
+        let url = this.link+"/util/region";
         return this._http.get(url)
             .map(res => res.json());
     }
