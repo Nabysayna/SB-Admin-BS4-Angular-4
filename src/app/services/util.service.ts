@@ -197,6 +197,14 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    ajoutSuperviseur(data:any){
+        let url = this.link+"/user/ajoutsuperviseur";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     insertPoint(data:any){
         let url = this.link+"/client/insertpoint";
         let datas = JSON.stringify({token:this.basetoken, data:data});

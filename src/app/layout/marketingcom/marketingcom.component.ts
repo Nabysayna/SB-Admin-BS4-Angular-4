@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ApiPlatformService} from "../../services/apiplateform.service";
@@ -16,7 +16,13 @@ export class MarketingcomComponent implements OnInit {
     public sortOrderModifAdressePts = "asc";
     public filterQueryModifAdressePts:any;
 
+    public rowsOnPageReclamationsnonresolu = 10;
+    public sortByReclamationsnonresolu = "date_reclamation";
+    public sortOrderReclamationsnonresolu = "asc";
+    public filterQueryReclamationsnonresolu:any;
+
     public listepointsdepoye:any[] = [];
+    public listereclamationsnonresolu:any[] = [];
     public pointsdepoye:any;
 
     public regions:any[] = [];
@@ -29,11 +35,10 @@ export class MarketingcomComponent implements OnInit {
 
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
-    constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService) { }
+    constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService){}
 
     ngOnInit() {
-        console.log('welcome');
-        this.getPointsdeploye();
+        this.getPointsdeployeModifyAdresse();
     }
 
     public menuHeadClick(option: number){
@@ -43,7 +48,7 @@ export class MarketingcomComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.getPointsdeploye();
+            this.getPointsdeployeModifyAdresse();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -51,6 +56,7 @@ export class MarketingcomComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.getReclamationsNonResolu();
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
@@ -75,25 +81,52 @@ export class MarketingcomComponent implements OnInit {
         }
     }
 
-    public getPointsdeploye(): void {
+    public getPointsdeployeModifyAdresse(): void {
         this._apiPlatformService.getPointsdeployeModifyAdresse()
             .subscribe(
                 data => {
-                    console.log(data.message);
-                    this.listepointsdepoye = data.message.map(function (type) {
-                        let adresse_point = JSON.parse(type.adressecomplet);
-                        return {
-                            date_ajout: type.date_ajout,
-                            nom_point: type.nomentreprise,
-                            login: type.email,
-                            fullname_gerant: type.prenom + " " + type.nom,
-                            telephone_gerant: type.telephone,
-                            adressecomplet: adresse_point,
-                            adresse_point: adresse_point.adresse?adresse_point.adresse+',':'' + " " + adresse_point.souszone + ", " + adresse_point.zone,
-                            fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
-                        }
-                    });
-                    this.getRegion();
+                    if(data.errorCode==0){
+                        this.listepointsdepoye = data.message.map(function (type) {
+                            let adresse_point = JSON.parse(type.adresse);
+                            return {
+                                idUser: type.idUser,
+                                nom_point: JSON.parse(type.infosup).nometps,
+                                nom_boutique: JSON.parse(type.infosup).nomshop,
+                                login: type.login,
+                                fullname_gerant: type.prenom + " " + type.nom,
+                                telephone_gerant: type.telephone,
+                                adressecomplet: adresse_point,
+                                adresse_point: adresse_point.address+", " + adresse_point.souszone + ", " + adresse_point.zone,
+                            }
+                        });
+                        console.log(this.listepointsdepoye);
+                        this.getRegion();
+                    }
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
+    }
+
+    public getReclamationsNonResolu(): void {
+        this._apiPlatformService.getReclamationsNonResolu()
+            .subscribe(
+                data => {
+                    if(data.errorCode==0){
+                        this.listereclamationsnonresolu = data.message.map(function (type) {
+                            return {
+                                id_reclamation: type.id,
+                                date_reclamation: type.dateajout.date.split('.')[0],
+                                nom_point: JSON.parse(type.infosup).nometps,
+                                name_caissier: type.name_caissier,
+                                telephone: type.telephone.split('221')[1],
+                                nomservice: type.nomservice,
+                                sujet: type.sujet,
+                                message: type.message,
+                            }
+                        });
+                        console.log(this.listereclamationsnonresolu);
+                    }
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
@@ -167,7 +200,18 @@ export class MarketingcomComponent implements OnInit {
         this.pointsdepoye = undefined;
     }
 
-
+    validresolutionreclamation(reclamation){
+        console.log(reclamation);
+        this._apiPlatformService.validReclamationsNonResolu(reclamation)
+            .subscribe(
+                data => {
+                    console.log(data);
+                },
+                error => alert(error),
+                () => console.log('validReclamationsNonResolu')
+            );
+        this.listereclamationsnonresolu = this.listereclamationsnonresolu.filter( opt => opt.id_reclamation!=reclamation.id_reclamation );
+    }
 
 
 }

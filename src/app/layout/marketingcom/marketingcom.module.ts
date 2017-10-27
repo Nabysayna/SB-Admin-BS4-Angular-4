@@ -8,6 +8,7 @@ import { MarketingcomRoutingModule } from './marketingcom-routing.module';
 import { PageHeaderModule } from './../../shared';
  import {DataTableModule} from "angular2-datatable";
  import {DataFilterModifAdressePointPipe} from "./filterdata-modifadressepoint.pipe";
+ import {DataFilterfilterQueryReclamationsnonresoluPipe} from "./filterdata-reclamationsnonresolu.pipe";
 
 
 
@@ -25,6 +26,7 @@ import { PageHeaderModule } from './../../shared';
         MarketingcomComponent,
 
         DataFilterModifAdressePointPipe,
+        DataFilterfilterQueryReclamationsnonresoluPipe,
     ]
 })
 export class MarketingcomModule { }

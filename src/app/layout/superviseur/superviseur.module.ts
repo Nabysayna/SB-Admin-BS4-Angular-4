@@ -17,6 +17,8 @@ import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 import {FormuserbbsComponent} from "../formuserbbs/formuserbbs.component";
+import {DataFilterListeComPipe} from "./data-filter-list-com.pipe";
+import {DataFilterListeCliPipe} from "./data-filter-list-portefeuille.pipe";
 
 
 @NgModule({
@@ -37,6 +39,8 @@ import {FormuserbbsComponent} from "../formuserbbs/formuserbbs.component";
         ZonesFilterPipe,
         SousZonesFilterPipe,
         FormuserbbsComponent,
+        DataFilterListeComPipe,
+        DataFilterListeCliPipe,
 
     ]
 })

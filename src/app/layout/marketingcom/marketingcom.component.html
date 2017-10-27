@@ -10,8 +10,8 @@
         <h2>Points avec adresse incomplet</h2>
         <div class="row">
             <div class="col-xs-12 col-sm-12">
-                <div class="row table-responsive">
-                    <table class="table table-hover" [mfData]="listepointsdepoye | dataFilterModifAdressePoint: filterQueryModifAdressePts" #mfModifAdressePts="mfDataTable" [mfRowsOnPage]="rowsOnPageModifAdressePts" [(mfSortBy)]="sortByModifAdressePts" [(mfSortOrder)]="sortOrderModifAdressePts">
+                <div class="row">
+                    <table class="table table-hover table-responsive" [mfData]="listepointsdepoye | dataFilterModifAdressePoint: filterQueryModifAdressePts" #mfModifAdressePts="mfDataTable" [mfRowsOnPage]="rowsOnPageModifAdressePts" [(mfSortBy)]="sortByModifAdressePts" [(mfSortOrder)]="sortOrderModifAdressePts">
                         <thead>
                         <tr>
                             <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
@@ -48,7 +48,49 @@
     </div>
 
     <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
-        jdskflq
+        <h2>Liste des réclamations</h2>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="row">
+                    <table class="table table-hover table-responsive" [mfData]="listereclamationsnonresolu | dataFilterfilterQueryReclamationsnonresolu: filterQueryReclamationsnonresolu" #mfreclamationsnonresolu="mfDataTable" [mfRowsOnPage]="rowsOnPageReclamationsnonresolu" [(mfSortBy)]="sortByReclamationsnonresolu" [(mfSortOrder)]="sortOrderReclamationsnonresolu">
+                        <thead>
+                        <tr>
+                            <th><mfDefaultSorter by="date_reclamation">Date réclamation</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="name_caissier">Gérant(e)</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="nomservice">Type service</mfDefaultSorter></th>
+                            <th colspan="2" style="text-align: center">Action</th>
+                        </tr>
+                        <tr>
+                            <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryReclamationsnonresolu"/></th>
+                            <th>Total : {{listereclamationsnonresolu.length}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of mfreclamationsnonresolu.data; let i = index ">
+                            <td>{{item.date_reclamation}}</td>
+                            <td>{{item.nom_point}}</td>
+                            <td>{{item.name_caissier}}</td>
+                            <td>{{item.telephone}}</td>
+                            <td>{{item.nomservice}}</td>
+                            <td style="margin: 0 auto; text-align: center">
+                                <button type="button" class="btn btn-outline-warning btn-sm" ngbPopover="{{item.message}}" triggers="mouseenter:mouseleave" popoverTitle="Sujet: {{item.sujet}}">Voir réclamation</button>
+                            </td>
+                            <td><button class="btn btn-success btn-sm" (click)="validresolutionreclamation(item)">Résoudre</button></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr class="text-center center-block">
+                            <td colspan="8" class="text-center center-block">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div  class="container-fluid" *ngIf="menuHead.menuHead3" >

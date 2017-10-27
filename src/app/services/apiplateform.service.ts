@@ -68,6 +68,22 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
+    getReclamationsNonResolu(){
+        let url = this.link+"/apiplatform/getreclamationsnonresolu";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validReclamationsNonResolu(data:any){
+        let url = this.link+"/apiplatform/validreclamationsnonresolu";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 
 }

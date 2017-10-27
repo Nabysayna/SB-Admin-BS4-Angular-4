@@ -71,16 +71,19 @@ export class FormclientsentoolComponent implements OnInit {
     }
 
     validernewclientsentool(){
-        console.log(this.clientsentool);
         this._apiplatform.souscrireSentool(this.clientsentool)
             .subscribe(
                 data => {
-                    console.log(data);
-                    if(data.message && data.message =='dejainscrit'){
-                        this.reponsesouscripdejaexit = true;
+                    if(data.errorCode){
+                        if(data.message =='dejainscrit'){
+                            this.reponsesouscripdejaexit = true;
+                        }
+                        else{
+                            this.router.navigate(['/dashboard']);
+                        }
                     }
                     else{
-                        this.router.navigate(['/dashboard']);
+                        this.router.navigate(['/login']);
                     }
                 },
                 error => alert(error),
