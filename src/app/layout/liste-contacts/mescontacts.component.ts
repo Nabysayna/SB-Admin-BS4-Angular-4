@@ -18,7 +18,7 @@ export class MesContactsComponent implements OnInit {
 
     public filterQuery:any;
     public rowsOnPage = 10;
-    public sortBy = "note";
+    public sortBy = "date_ajout";
     public sortOrder = "desc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
@@ -67,6 +67,8 @@ export class MesContactsComponent implements OnInit {
                             id_gerant_point:type.id_gerant_point,
                             id_proprietaire_point:type.id_proprietaire_point,
                             id_commercial:type.id_commercial,
+
+                            date_ajout:type.date_ajout,
                         };
                     });
                 },

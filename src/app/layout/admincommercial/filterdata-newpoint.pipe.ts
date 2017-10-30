@@ -15,6 +15,7 @@ export class DataFilterNewPointPipe implements PipeTransform {
                     row.nom_point.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                     row.fullname_gerant.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                     row.adresse_point.toLowerCase().indexOf(query.toLowerCase())>-1 ||
+                    row.telephone_gerant.toLocaleString().indexOf(query.toLowerCase())>-1 ||
                     row.fullname_commercial.toLowerCase().indexOf(query.toLowerCase())>-1
 
                 ) });

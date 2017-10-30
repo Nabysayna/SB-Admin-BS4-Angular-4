@@ -21,7 +21,7 @@ export class AdmincommercialComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false};
 
     public modalRef: NgbModalRef;
 

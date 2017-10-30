@@ -188,13 +188,12 @@ export class FormComponent implements OnInit {
 
     coordonneesgeospatialespoint(){
         if(navigator.geolocation){
-            console.log("YES!") ;
-            let geospatialpoint = {latitude:0,longitude:0};
-            navigator.geolocation.getCurrentPosition(function(position){
-                geospatialpoint.longitude = position.coords.longitude;
-                geospatialpoint.latitude = position.coords.latitude;
-                sessionStorage.setItem('positionpoint',JSON.stringify(geospatialpoint)) ;
-            }) ;
+            navigator.geolocation.getCurrentPosition(position => {
+                this.client.adressecompletpoint.geospatialpoint.longitude = position.coords.longitude;
+                this.client.adressecompletpoint.geospatialpoint.latitude = position.coords.latitude;
+                console.log('test 1');
+                console.log(this.client.adressecompletpoint.geospatialpoint);
+            });
         }
     }
 
@@ -225,7 +224,6 @@ export class FormComponent implements OnInit {
     }
 
     validernewclient(){
-        this.client.adressecompletpoint.geospatialpoint = JSON.parse(sessionStorage.getItem('positionpoint'));
         this.client.adressecompletproprietaire.geospatialproprietaire = JSON.parse(sessionStorage.getItem('positionproprietaire'));
 
         for(let i = 0 ; i<this.allServices.length ; i++){

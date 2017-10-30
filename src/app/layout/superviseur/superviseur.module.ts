@@ -19,6 +19,7 @@ import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 import {FormuserbbsComponent} from "../formuserbbs/formuserbbs.component";
 import {DataFilterListeComPipe} from "./data-filter-list-com.pipe";
 import {DataFilterListeCliPipe} from "./data-filter-list-portefeuille.pipe";
+import {DataFilterSuiviAssignComPipe} from "./data-filter-suiviassigncom.pipe";
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {DataFilterListeCliPipe} from "./data-filter-list-portefeuille.pipe";
         FormuserbbsComponent,
         DataFilterListeComPipe,
         DataFilterListeCliPipe,
+        DataFilterSuiviAssignComPipe,
 
     ]
 })

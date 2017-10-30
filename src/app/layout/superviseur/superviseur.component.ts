@@ -159,7 +159,7 @@ export class SuperviseurComponent implements OnInit {
                                     libellepoint:client.nom_point,
                                     fullname:client.prenom_gerant+" "+client.nom_gerant,
                                     telephone:client.telephone_gerant,
-                                    adresse:client.adresse_point.adressepoint,
+                                    adresse:client.adresse_point.adressepoint!=undefined?client.adresse_point.adressepoint+" "+client.adresse_point.souszonepoint+" "+client.adresse_point.zonepoint:JSON.parse(client.adresse_point).adressepoint+" "+JSON.parse(client.adresse_point).souszonepoint+" "+JSON.parse(client.adresse_point).zonepoint,
                                     note:type.note,
                                     id_assigner:type.id_assigner,
                                     id_commercial:type.id_commercial,
@@ -174,7 +174,7 @@ export class SuperviseurComponent implements OnInit {
                     },
                     error => alert(error),
                     () => {
-                        console.log(this.datasuivi);
+                        console.log('listsuiviforsuperviseur');
                     }
                 );
         }
@@ -210,7 +210,7 @@ export class SuperviseurComponent implements OnInit {
                                     libellepoint:client.nom_point,
                                     fullname:client.prenom_gerant+" "+client.nom_gerant,
                                     telephone:client.telephone_gerant,
-                                    adresse:client.adresse_point.adressepoint,
+                                    adresse:client.adresse_point.adressepoint!=undefined?client.adresse_point.adressepoint+" "+client.adresse_point.souszonepoint+" "+client.adresse_point.zonepoint:JSON.parse(client.adresse_point).adressepoint+" "+JSON.parse(client.adresse_point).souszonepoint+" "+JSON.parse(client.adresse_point).zonepoint,
                                     note:type.note,
                                     id_assigner:type.id_assigner,
                                     id_commercial:type.id_commercial,
@@ -357,6 +357,8 @@ export class SuperviseurComponent implements OnInit {
         this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
+                    console.log('--------')
+                    console.log(data)
                     this.data = data.map(function(type) {
                         return {
                             id:type.id,
@@ -365,7 +367,7 @@ export class SuperviseurComponent implements OnInit {
                             nom:JSON.parse(type.client).nom,
                             fullname:JSON.parse(type.client).fullname,
                             telephone:JSON.parse(type.client).telephone,
-                            adresse:JSON.parse(type.client).adresse,
+                            adresse:JSON.parse(type.client).adresse?JSON.parse(type.client).adresse:'-',
                             note:JSON.parse(type.client).note,
                             region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
                             commentaire:type.commentaire,
@@ -376,6 +378,7 @@ export class SuperviseurComponent implements OnInit {
                     for (let i = 0; i < this.data.length; i++) {
                         if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
+                    console.log(this.regions);
                 },
                 error => alert(error),
                 () => {

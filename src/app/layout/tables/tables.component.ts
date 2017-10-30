@@ -40,6 +40,7 @@ export class TablesComponent implements OnInit {
         this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
+                    console.log(data);
                     this.data = data.message.map(function(type) {
                         return {
                             id:type.id,

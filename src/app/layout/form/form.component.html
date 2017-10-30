@@ -33,9 +33,13 @@
                               <input type="text" [(ngModel)]="client.adressecompletpoint.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required>
                               <label>Code postal</label>
                               <input type="number" [(ngModel)]="client.adressecompletpoint.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
-                              <button (click)="coordonneesgeospatialespoint()" type="button" class="btn btn-primary btn-circle">
-                                  <i class="fa fa-search"></i>Récupèrer les Coordonnées Géospatiales du point
-                              </button>
+                              <div class="row">
+                                  <button (click)="coordonneesgeospatialespoint()" *ngIf="client.adressecompletpoint.geospatialpoint.latitude==0" type="button" class="btn btn-primary btn-circle">
+                                      <i class="fa fa-search"></i>Coordonnées Géospatiales du point
+                                  </button>
+                                  <strong *ngIf="client.adressecompletpoint.geospatialpoint.latitude!=0" style="background-color: greenyellow"><i class="fa fa-check"></i>Coordonnées Géospatiales du point récupèré avec succés
+                                  </strong>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -151,6 +155,10 @@
         </div>
     </div>
     <div style="margin-top: 4rem; margin-bottom: 4rem" class="text-center">
-        <button type="button" class="btn btn-success" (click)="validernewclient()" [disabled]="!client.nompoint || !client.telephonegerant || !client.telephoneproprietaire || !client.adressecompletpoint.souszonepoint || !client.adressecompletpoint.adressepoint"> Enregistrer le nouveau client</button>
+        <button type="button" class="btn btn-success"
+                (click)="validernewclient()"
+                [disabled]="!client.nompoint || !client.telephonegerant || !client.telephoneproprietaire ||
+                !client.adressecompletpoint.souszonepoint || !client.adressecompletpoint.adressepoint"
+        > Enregistrer le nouveau client</button>
     </div>
 </div>

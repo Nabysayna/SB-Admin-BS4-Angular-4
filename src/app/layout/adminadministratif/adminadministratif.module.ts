@@ -3,14 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { DataTableModule } from "angular2-datatable";
-
 import { AdminadministratifComponent } from './adminadministratif.component';
 import { AdminadministratifRoutingModule } from './adminadministratif-routing.module';
 import { PageHeaderModule } from './../../shared';
-
-import { DataAdminAdministratifAssignationFilterPipe }   from '../../pipe/data-admin-administratif-assignation-filter.pipe';
-import { DataAdminAdministratifSuiviFilterPipe }   from '../../pipe/data-admin-administratif-suivi-filter.pipe';
 
 
 
@@ -20,14 +15,10 @@ import { DataAdminAdministratifSuiviFilterPipe }   from '../../pipe/data-admin-a
         FormsModule,
         AdminadministratifRoutingModule,
         PageHeaderModule,
-        DataTableModule,
         NgbModule.forRoot(),
     ],
     declarations: [
     	AdminadministratifComponent,
-
-        DataAdminAdministratifAssignationFilterPipe,
-        DataAdminAdministratifSuiviFilterPipe
     ]
 })
 

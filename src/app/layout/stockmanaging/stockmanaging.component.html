@@ -2,13 +2,13 @@
     <div class="row">
         <div class="col-sm-3">
             <em style="text-align: center; margin: 0 auto">Articles affichés sur le site</em>
-            <pagination-template #p="paginationApi" [id]="'second'" (pageChange)="p2 = $event">
+            <pagination-template #p="paginationApi" [id]="'second'" (pageChange)="p20 = $event">
                 <div class="custom-pagination">
                     <div class="pagination-previous" [class.disabled]="p.isFirstPage()" style="text-align: center">
                         <a *ngIf="!p.isFirstPage()" (click)="p.previous()"> <i class="fa fa-chevron-up" aria-hidden="true"></i> </a>
                     </div>
 
-                    <div class="well well-sm" *ngFor="let article of listarticlesvuweb  | paginate: { itemsPerPage: 2, currentPage: p2 , id: 'second'}" style="margin: 0 auto">
+                    <div class="well well-sm" *ngFor="let article of listarticlesvuweb  | paginate: { itemsPerPage: 2, currentPage: p20 , id: 'second'}" style="margin: 0 auto">
                         <img src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}" alt="Card image cap" height="200" width="200">
                         <div class="text-center">
                             <p class="card-title">{{article.designation}}</p>
@@ -30,7 +30,7 @@
         <div class="col-sm-9">
             <em>Tous les articles</em>
             <div class="row">
-                <div class="col-sm-4 card" *ngFor="let article of listarticlesfrompv  | paginate: { itemsPerPage: 3, currentPage: p1 , id: 'first'}">
+                <div class="col-sm-4 card" *ngFor="let article of listarticlesfrompv  | paginate: { itemsPerPage: 3, currentPage: p10 , id: 'first'}">
                     <img class="card-img-top" src="http://localhost/dev-bbsinvest-plateform/EsquisseBackEnd/server-backend-upload/img/{{article.nomImg}}"  alt="Card image cap" width="200" height="200">
                     <div class="card-block" style="text-align: center ;">
                         <h4 class="card-title">{{article.designation}}</h4>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="row text-center center-block" style="margin-top: 3rem; margin-bottom: 5rem; margin-right: auto; margin-left: auto; text-align: center">
-                <pagination-controls previousLabel="Précedent" nextLabel="Suivant" (pageChange)="p1 = $event" id="first"></pagination-controls>
+                <pagination-controls previousLabel="Précedent" nextLabel="Suivant" (pageChange)="p10 = $event" id="first"></pagination-controls>
             </div>
         </div>
     </div>

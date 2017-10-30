@@ -115,7 +115,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="datasuivi | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                <table class="table table-hover" [mfData]="datasuivi | dataFilterSuiviAssignCom: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
@@ -128,7 +128,7 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
                         <th>Total : {{datasuivi.length}}</th>
                     </tr>
                     </thead>
@@ -168,7 +168,7 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
-    <div class="row">
+    <!--<div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
                 <table class="table table-hover" [mfData]="datasuivi | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -182,7 +182,7 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
                         <th>Total : {{datasuivi.length}}</th>
                     </tr>
                     </thead>
@@ -206,7 +206,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead4" >
@@ -226,7 +226,7 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
                         <th>Total : {{datasuiviarelancer.length}}</th>
                     </tr>
                     </thead>
@@ -266,7 +266,7 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead5" >
-    <div class="row">
+    <!--<div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
                 <table class="table table-hover" [mfData]="datasuivivalider | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
@@ -302,7 +302,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead6" >
@@ -677,7 +677,6 @@
                 <div *ngIf="userexist" style="text-align: center; margin: 0 auto">
                     <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
                 </div>
-                <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-success btn-sm" (click)="enregisternouvsup()" [disabled]="!superviseurNew.prenom || !superviseurNew.telephone || !superviseurNew.email || !superviseurNew.pwd || superviseurNew.pwd!=confirmpwdsup"> Enregistrer </button>
             </div>
             <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-success" (click)="enregisternouvcom()" [disabled]="!commercialNew.prenom || !commercialNew.telephone || !commercialNew.email || !commercialNew.pwd || commercialNew.pwd!=confirmpwdcom"> Enregistrer </button>
         </div>

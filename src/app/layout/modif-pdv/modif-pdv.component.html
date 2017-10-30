@@ -13,46 +13,44 @@
           </div>
       </div>
       <div class="row">
-          <div class="form-group col-sm-3">
+          <div class="form-group col-sm-4">
               <label>Region point</label>
               <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint" (change)="selectRegionPoint()">
                   <option>--Choix région--</option>
                   <option  *ngFor="let region of regionszonesactivites.regions">{{region.nom}}</option>
-                  <option  >autre</option>
               </select>
           </div>
-          <div class="form-group col-sm-3">
+          <div class="form-group col-sm-4">
               <label>Zone point</label>
               <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint" (change)="selectZonePoint()">
                   <option>--Choix zone--</option>
                   <option  *ngFor="let zone of zonespoints">{{zone.nom}}</option>
-                  <option>autre</option>
               </select>
           </div>
-          <div class="form-group col-sm-3">
+          <div class="form-group col-sm-4">
               <label>Sous zone point</label>
               <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
                   <option>--Choix sous zone--</option>
                   <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
-                  <option>autre</option>
               </select>
           </div>
-          <div class="form-group col-sm-3">
+
+      </div>
+      <div class="row">
+          <div class="form-group col-sm-6">
               <label>Code postale</label>
               <input type="number" [(ngModel)]="adresse_point.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
           </div>
-      </div>
-      <div class="row">
           <fieldset class="form-group  col-sm-6">
               <label>Adresse du point</label>
               <textarea class="form-control" rows="3" [(ngModel)]="adresse_point.adressepoint"   name="adressepoint" id="adressepoint" class="form-control"  placeholder="adresse exacte" required></textarea>
           </fieldset>
-          <fieldset class="form-group  col-sm-6">
+          <!--<fieldset class="form-group  col-sm-6">
               <label>Cordonnées geospatiales du point</label>
               <button (click)="coordonneesgeospatiales()" type="button" class="btn btn-primary btn-sm btn-circle">
                   <i class="fa fa-search"></i>Rechercher Coordonnées Géospatiales
               </button>
-          </fieldset>
+          </fieldset>-->
       </div>
       <hr>
       <div class="row">

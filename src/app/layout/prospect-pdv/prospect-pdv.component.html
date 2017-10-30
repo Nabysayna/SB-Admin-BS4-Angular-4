@@ -63,9 +63,13 @@
         <label>Cordonnées geospatiales du point</label>
           <!--<input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
           <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>-->
-          <button (click)="coordonneesgeospatiales()" type="button" class="btn btn-primary btn-sm btn-circle">
-              <i class="fa fa-search"></i>Rechercher Coordonnées Géospatiales
-          </button>
+          <div class="row">
+              <button (click)="coordonneesgeospatiales()" *ngIf="adresse_point.geospatialpoint.latitude==0" type="button" class="btn btn-primary btn-circle">
+                  <i class="fa fa-search"></i>Coordonnées Géospatiales du point
+              </button>
+              <strong *ngIf="adresse_point.geospatialpoint.latitude!=0" style="background-color: greenyellow"><i class="fa fa-check"></i>Coordonnées Géospatiales du point récupèré avec succés
+              </strong>
+          </div>
       </fieldset>
 
     </div>
@@ -95,37 +99,6 @@
         <input type="email" [(ngModel)]="alldatapoint.email_proprietaire"   name="emailproprietaire" id="emailproprietaire" class="form-control" placeholder="email proprietaire" required>
       </div>
     </div>
-    <!--<div class="row">
-      <div class="form-group col-md-4">
-        <label>Zone proprietaire</label>
-        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.zoneproprietaire">
-            <option>&#45;&#45;Choix zone&#45;&#45;</option>
-            <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
-        </select>
-      </div>
-      <div class="form-group col-md-4">
-        <label>Sous zone proprietaire</label>
-        <select class="form-control input-sm" [(ngModel)]="adresse_proprietaire.souszoneproprietaire">
-          <option>&#45;&#45;Choix sous zone&#45;&#45;</option>
-          <option  *ngFor="let souszone of souszonespropietaires">{{souszone.nom}}</option>
-        </select>
-      </div>
-      <div class="form-group col-md-4">
-        <label>Code postale</label>
-        <input type="number" [(ngModel)]="adresse_proprietaire.codepostalproprietaire"   name="codepostalpointproprietaire" id="codepostalpointproprietaire" class="form-control"  placeholder="code postal point">
-      </div>
-    </div>
-    <div class="row">
-      <fieldset class="form-group  col-md-6">
-        <label>Adresse proprietaire</label>
-        <textarea class="form-control" rows="4" [(ngModel)]="adresse_proprietaire.adresseproprietaire"   name="adressepointproprietaire" id="adressepointproprietaire" class="form-control"  placeholder="adresse exacte proprietaire" required></textarea>
-      </fieldset>
-      <fieldset class="form-group  col-md-6">
-        <label>Cordonnées geospatiales proprietaire</label>
-        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.latitude"   name="latitudeproprietaire" id="latitudeproprietaire" class="form-control"  placeholder="latitude proprietaire">
-        <input type="number" [(ngModel)]="adresse_proprietaire.geospatialproprietaire.longitude"   name="longitudeproprietaire" id="longitudeproprietaire" class="form-control"  placeholder="longitude proprietaire">
-      </fieldset>
-    </div>-->
   </div>
 </div>
 <div class="row" style="padding-bottom: 2rem">
@@ -215,7 +188,7 @@
 
 <div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem" *ngIf="!isEnregistrerProspect">
   <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()" [disabled]="reponsesProspect.length == 0 || !uploadfinished">Valider les nouvelles données</button>
+    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()" [disabled]="reponsesProspect.length == 0  || !uploadfinished">Valider les nouvelles données</button>
   </div>
 </div>
 
