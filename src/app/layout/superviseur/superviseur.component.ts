@@ -12,6 +12,8 @@ import {ApiPlatformService} from "../../services/apiplateform.service";
     providers:[UtilService, AssignationSuiviService,ApiPlatformService],
 })
 export class SuperviseurComponent implements OnInit {
+    public audio=false;
+    public deposits=[];
     public form:any;
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
@@ -121,9 +123,12 @@ export class SuperviseurComponent implements OnInit {
         },
     };
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
 
-    constructor(private _apiplatform: ApiPlatformService,private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {this.reponse1=false;}
+    constructor(private _apiplatform: ApiPlatformService,private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService){
+           this.reponse1=false;
+           setInterval(()=>this.alertdeposit(),50000);
+    }
 
     ngOnInit() {
         this.getAssignationsBySuperviseur();
@@ -170,6 +175,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getAssignationsBySuperviseur();
         }
         if(option == 2){
@@ -181,6 +187,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -220,6 +227,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -230,6 +238,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -269,6 +278,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this._assignationsuiviService.listsuiviforsuperviseur()
                 .subscribe(
                     data => {
@@ -289,6 +299,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = true;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getCommerciaux();
             console.log(this.commercials);
         }
@@ -301,6 +312,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getProspect();
 
         }
@@ -313,12 +325,88 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = true;
+            this.menuHead.menuHead9 = false;
             this.getClient();
+
+        }
+        if(option == 9){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = true;
+            this.getdeposit();
+            
 
         }
     }
 
     public toInt(num: string) { return +num; }
+    getdeposit(){
+      // this.deposits=[{'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'}];
+       this._utilService.getlistsDepositcc()
+            .subscribe(
+                data => {
+                    this.deposits=data;
+                   if(data==''){
+                    }
+                    else{
+						this.deposits=data;
+					}
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );
+    }
+    arreterson(){
+      this.audio=false;
+    }
+    alertdeposit(){
+        this._utilService.alertdepositcc()
+            .subscribe(
+                data => {
+                    
+                   if(data.reponse=="ok"){
+                       this.audio=true;
+                    }
+                    
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );
+       
+    }
+    validerDepositcc(){
+      // this.deposits=[{'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'}];
+       this._utilService.validerDepositcc()
+            .subscribe(
+                data => {
+                    this.deposits=data;
+                   // var plays=document.querySelector("#audio");
+                    //plays.play();
+                   if(data==''){
+                    }
+                    else{
+						this.deposits=data;
+					}
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );
+    }
+    tocurrency(number){
+      return Number(number).toLocaleString();
+      
+    }
+    validerDeposit(){
+       console.log('deposit valider');
+       var plays=document.querySelector("#audio");
+       
+    }
 
     public getCommerciaux(): void {
         this._utilService.getCommerciauxBySuperviseur()
