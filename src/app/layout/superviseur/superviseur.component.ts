@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
 import { NgForm } from '@angular/forms';
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {ApiPlatformService} from "../../services/apiplateform.service";
+import {Color} from "ng2-charts";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-superviseur',
@@ -36,17 +38,6 @@ export class SuperviseurComponent implements OnInit {
    public entreprise='';
    public boutique='';
    public zne='';
-   public clsentool: any = {
-        nom:'', prenom:'', telephone:'', email:'',
-        nometps:'', nomshop:'',
-        adresse:{
-            region:'--Choix région--',
-            zone:'--Choix zone--',
-            souszone:'--Choix sous zone--',
-            address:'',
-        },
-    };
-
     currentPointDocs : any ;
     reponsesPointAuProspect : any ;
 
@@ -56,17 +47,16 @@ export class SuperviseurComponent implements OnInit {
     rowsOnPage = 12;
     sortBy = "note";
     public sortOrder = "desc";
-    sortByCom = "fullname";
-    public sortOrderCom = "asc";
     public sortByWordLength = (a: any) => { return a.adresse.length; }
 
     public regions:any[] = [];
     public zones:any[] = [];
+    public iszones:boolean;
     public souszones:any[] = [];
+    public issouszones:boolean;
+
     public commercials:any[] = [];
-    public commercial:{type:string, prenom:string, nom:string, login:string, pwd:string, telephone:number};
     public prospects:any=[];
-    public clients:any=[];
     public data:any[] = [];
     public optionassignations:any[] = [];
     public datasuivi:any[] = [];
@@ -109,7 +99,6 @@ export class SuperviseurComponent implements OnInit {
         piecesFournies : []
     };
 
-    regionsactivites:{activites:any[],regions:any[]};
     zone:any[];
     souszone:any[];
     public clientsentool: any = {
@@ -125,44 +114,14 @@ export class SuperviseurComponent implements OnInit {
 
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
 
-    constructor(private _apiplatform: ApiPlatformService,private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService){
-           this.reponse1=false;
-           setInterval(()=>this.alertdeposit(),50000);
-    }
+
+    public modalRef: NgbModalRef;
+
+    constructor(public router: Router, private _apiplatform: ApiPlatformService, private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {this.reponse1=false;}
 
     ngOnInit() {
         this.getAssignationsBySuperviseur();
-    }
-
-    getAssignationsBySuperviseur() {
-        this._assignationsuiviService.getAssignationsBySuperviseur()
-            .subscribe(
-                data => {
-                    this.data = data.map(function(type) {
-                        return {
-                            id:type.id,
-                            libellepoint:JSON.parse(type.client).libellepoint,
-                            prenom:JSON.parse(type.client).prenom,
-                            nom:JSON.parse(type.client).nom,
-                            fullname:JSON.parse(type.client).fullname,
-                            telephone:JSON.parse(type.client).telephone,
-                            adresse:JSON.parse(type.client).adresse,
-                            note:JSON.parse(type.client).note,
-                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
-                            commentaire:type.commentaire,
-                            infosup:JSON.parse(type.infosup),
-                            value:type.id, checked:false
-                        };
-                    });
-                    for (let i = 0; i < this.data.length; i++) {
-                        if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
-                    }
-                },
-                error => alert(error),
-                () => {
-                    console.log('getAssignationsBySuperviseur');
-                }
-            );
+        setInterval(()=>this.alertdeposit(),50000);
     }
 
     public menuHeadClick(option: number){
@@ -177,6 +136,11 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
             this.getAssignationsBySuperviseur();
+            this.filtreRegion = "--Choix région--";
+            this.filtreZone = "--Choix zone--";
+            this.filtreSousZone = "--Choix sous zone--";
+            this.choixcommercial = "--Choix commercial--";
+
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -314,7 +278,6 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
             this.getProspect();
-
         }
         if(option == 8){
             this.menuHead.menuHead1 = false;
@@ -327,7 +290,6 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = true;
             this.menuHead.menuHead9 = false;
             this.getClient();
-
         }
         if(option == 9){
             this.menuHead.menuHead1 = false;
@@ -339,6 +301,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = true;
+
             this.getdeposit();
             
 
@@ -449,12 +412,15 @@ export class SuperviseurComponent implements OnInit {
                                 }
                     });
 
-                    if(data.errorCode) this.prospects = data;
-                },
-                error => alert(error),
-                () => console.log(this.commercials)
-            );
+            this.datasetsPPV = [{
+                data: this.doughnutChartDataPPV,
+                backgroundColor: ["red", "yellow", "orange", "green"]
+            }];
+            this.estcheckPerformancePPV('journee');
+        }
+
     }
+
 
     public getClient(){
         this._utilService.getClients()
@@ -479,19 +445,11 @@ export class SuperviseurComponent implements OnInit {
 
                     });
 
-                    if(data.errorCode) this.clients = data;
-                },
-                error => alert(error),
-                () => console.log(this.clients)
-            );
+    public closedModal(){
+        this.modalRef.close('Close click');
     }
-    public ajout(content,p){
+    public toInt(num: string) { return +num; }
 
-       this.modalService.open(content).result.then( (result) => {
-        }, (reason) => {} );
-        this.remplissage(p);
-    }
-    //select region
     SelectRegion(){
         this.clientsentool.adresse.zone = '--Choix zone--';
         this.clientsentool.adresse.souszone = '--Choix sous zone--';
@@ -502,6 +460,7 @@ export class SuperviseurComponent implements OnInit {
                 () => console.log(this.zones)
             );
     }
+
      clear(){
          this.prenom='';
          this.nom='';
@@ -564,61 +523,46 @@ export class SuperviseurComponent implements OnInit {
         //return p.split("#")[0] ;
         return p.nom_point;
     }
-    getRegionActivite(){
-        this._utilService.getRegionActivite()
+
+
+    getLibellePiece(item){
+        return item.split("#")[0] ;
+    }
+
+
+    /************************************************************************************
+     *********************************   PARTIE ASSIGNATION   ****************************
+     ***********************************************************************************/
+
+    getAssignationsBySuperviseur() {
+        this._assignationsuiviService.getAssignationsBySuperviseur()
             .subscribe(
                 data => {
-                    console.log(data);
-                    this.regionsactivites = data;
+                    this.data = data.map(function(type) {
+                        return {
+                            id:type.id,
+                            libellepoint:JSON.parse(type.client).libellepoint,
+                            prenom:JSON.parse(type.client).prenom,
+                            nom:JSON.parse(type.client).nom,
+                            fullname:JSON.parse(type.client).fullname,
+                            telephone:JSON.parse(type.client).telephone,
+                            adresse:JSON.parse(type.client).adresse,
+                            note:JSON.parse(type.client).note,
+                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
+                            commentaire:type.commentaire,
+                            infosup:JSON.parse(type.infosup),
+                            value:type.id, checked:false
+                        };
+                    });
+                    for (let i = 0; i < this.data.length; i++) {
+                        if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
+                    }
                 },
                 error => alert(error),
-                () => console.log(this.regionsactivites)
+                () => {
+                    console.log('getAssignationsBySuperviseur');
+                }
             );
-    }
-
-    public selectRegion() {
-        this.filtreSousZone = "--Choix sous zone--";
-        this.optionassignations = [];
-        console.log(this.filtreRegion);
-        this.zones =  [] ;
-        for (let i = 0; i < this.data.length; i++) {
-            if( this.data[i].region==this.filtreRegion ){
-                if( !this.zones.includes(this.data[i].zone) )
-                    this.zones.push(this.data[i].zone);
-            }
-        }
-        console.log(this.zones);
-    }
-
-    public selectZone() {
-        this.optionassignations = [];
-    }
-
-    public selectSouszone(){
-        this.getCommerciaux();
-        this.optionassignations = this.data
-            .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
-    }
-
-    sousZonesOfCurrentZone(){
-        let souszones : any[] =  [] ;
-        for (let i = 0; i < this.data.length; i++) {
-            if( this.data[i].zone==this.filtreZone ){
-                if( !souszones.includes(this.data[i].sous_zone) )
-                    souszones.push(this.data[i].sous_zone);
-            }
-        }
-        return souszones ;
-    }
-
-    get selectedOptions():any {
-        return this.optionassignations
-            .filter(opt => opt.checked)
-            .map(opt => opt.value);
-    };
-
-    public updateCheckedOptions(): void{
-        console.log(this.selectedOptions);
     }
 
     public assignercommercial(){
@@ -668,33 +612,49 @@ export class SuperviseurComponent implements OnInit {
         }
     }
 
-    getLibellePiece(item){
-        return item.split("#")[0] ;
+    public selectRegion() {
+        this.filtreSousZone = "--Choix sous zone--";
+        this.optionassignations = [];
+        console.log(this.filtreRegion);
+        this.zones =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].region==this.filtreRegion ){
+                if( !this.zones.includes(this.data[i].zone) )
+                    this.zones.push(this.data[i].zone);
+            }
+        }
+        console.log(this.zones);
+    }
+    public selectZone() {
+        this.optionassignations = [];
+    }
+    public selectSouszone(){
+        this.getCommerciaux();
+        this.optionassignations = this.data
+            .filter(data => (data.zone==this.filtreZone && data.sous_zone==this.filtreSousZone) );
+    }
+    sousZonesOfCurrentZone(){
+        let souszones : any[] =  [] ;
+        for (let i = 0; i < this.data.length; i++) {
+            if( this.data[i].zone==this.filtreZone ){
+                if( !souszones.includes(this.data[i].sous_zone) )
+                    souszones.push(this.data[i].sous_zone);
+            }
+        }
+        return souszones ;
+    }
+    get selectedOptions():any {
+        return this.optionassignations
+            .filter(opt => opt.checked)
+            .map(opt => opt.value);
+    };
+    public updateCheckedOptions(): void{
+        console.log(this.selectedOptions);
     }
 
-    getNomFichier(item){
-        return item.split("#")[1] ;
-    }
-
-    showModal(content, i) {
-        this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
-        console.log( this.currentPointDocs ) ;
-        this.modalService.open(content).result.then( (result) => {
-        }, (reason) => {} );
-    }
-
-    showModalCommercial(content, commercial:any) {
-        this.commercial = commercial?commercial:{type:'Nouveau commercial', prenom:'', nom:'', login:'', pwd:'', telephone:77}
-        this.modalService.open(content).result.then( (result) => {
-        }, (reason) => {} );
-    }
-
-    showModalDetail(content, item) {
-        this.reponsesPointAuProspect = JSON.parse(item.reponse) ;
-        console.log( this.reponsesPointAuProspect ) ;
-        this.modalService.open(content).result.then( (result) => {
-        }, (reason) => {} );
-    }
+    /************************************************************************************
+     *********************************   PARTIE SUIVI ASSIGNATION  et RELANCE ****************************
+     ***********************************************************************************/
 
     validersuivisuperviseur(suivi:any){
         let suivisuperviseur = {
@@ -713,7 +673,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
-                     console.log('ajoutsuivifromsuperviseur')
+                    console.log('ajoutsuivifromsuperviseur')
                 }
             );
     }
@@ -740,5 +700,388 @@ export class SuperviseurComponent implements OnInit {
                 }
             );
     }
+
+    getNomFichier(item){
+        return item.split("#")[1] ;
+    }
+
+    showModal(content, i) {
+        this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
+        console.log( this.currentPointDocs ) ;
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
+    showModalDetail(content, item) {
+        this.reponsesPointAuProspect = JSON.parse(item.reponse) ;
+        console.log( this.reponsesPointAuProspect ) ;
+        this.modalService.open(content).result.then( (result) => {
+        }, (reason) => {} );
+    }
+
+
+
+
+
+
+
+
+
+
+    /************************************************************************************
+     *********************************   PARTIE COMMERCIAL   ****************************
+     ***********************************************************************************/
+
+    public commercialNew: any;
+    confirmpwdcom:string;
+    sortByCom = "fullname";
+    public sortOrderCom = "asc";
+    public filterQueryCom:any;
+    userexist:boolean = false;
+
+    public isEnregistrerCommercial: boolean = false;
+
+    showModalCommercial(content, commercial:any) {
+        this.commercialNew = commercial?commercial:{access:'com', type:'Nouveau commercial', prenom:'', nom:'', login:'', pwd:'', telephone:77}
+        this.showModalTop(content);
+    }
+
+    public getCommerciaux(): void {
+        this._utilService.getCommerciauxBySuperviseur()
+            .subscribe(
+                data => {
+                    this.commercials = data
+                    if(data.errorCode) this.commercials = data.message;
+                },
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+    }
+
+    enregisternouvcom(){
+        this._utilService.ajoutCommercial(this.commercialNew)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        if(data.message =='exist'){
+                            this.userexist = true;
+                        }
+                        else{
+                            this.closedModal();
+                            this.getCommerciaux();
+                        }
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('')
+            );
+    }
+
+
+
+
+    /************************************************************************************
+     ********************   PARTIE DEPOIEMENT POINTS SUIVI   ****************************
+     ***********************************************************************************/
+
+    public reponsesouscripdejaexit: boolean = false;
+    public clsentool: any = {
+        nom:'', prenom:'', telephone:'', email:'',
+        nometps:'', nomshop:'',
+        adresse:{
+            region:'--Choix région--',
+            zone:'--Choix zone--',
+            souszone:'--Choix sous zone--',
+            address:'',
+        },
+    };
+
+    public showModalTop(content) {
+        this.modalRef = this.modalService.open(content, {size: "lg"});
+    }
+    public getProspect(){
+        this._utilService.getProspectValide()
+            .subscribe(
+                data => {
+                    this.prospects = data;
+                    this.prospects = data.map(function(type){
+                        let client = JSON.parse(type.client);
+                        let commercial = JSON.parse(type.commercial);
+                        return {
+                            id:type.id,
+                            libellepoint:client.nom_point,
+                            fullname:client.prenom_gerant+" "+client.nom_gerant,
+                            telephone:client.telephone_gerant,
+                            adresse:client.adresse_point.adressepoint,
+                            email:client.email_gerant,
+                            note:type.note,
+                            id_assigner:type.id_assigner,
+                            id_commercial:type.id_commercial,
+                            dates_suivi:type.dates_suivi,
+                            reponse:type.reponse,
+                            qualification:"--Choisir une action--",
+                            client:client,
+                            zone:client.adresse_point.zonepoint,
+                            szone:client.adresse_point.souszonepoint,
+                            nomcommercial:commercial.prenom+" "+commercial.prenom
+                        }
+                    });
+                    console.log(this.prospects)
+                    //if(data.errorCode) this.prospects = data;
+                },
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+    }
+
+    public modalAjout(content,p){
+        this.reponsesouscripdejaexit = false;
+        this.iszones = false;
+        this.issouszones = false;
+
+        this.remplissage(p);
+        this.getRegionSouscritSentool();
+        this.showModalTop(content);
+    }
+
+    remplissage(p){
+        var full=p.fullname.split(' ');
+        var ng=full.length;
+        var prenom=full[0];
+        for(var i=1;i<=ng-2;i++){
+            prenom+=" "+full[i];
+        }
+        this.prenom=prenom;
+        this.nom=full[ng-1];
+        this.email=p.email;
+        this.tel=p.telephone;
+        this.adresse=p.adresse;
+        this.entreprise=p.libellepoint;
+        this.zne=p.zone;
+        this.szone=p.szone;
+    }
+
+    validernewclientsentool(form:NgForm){
+        let cli=form.value;
+        this.clsentool.nom=cli.nomSouscritSentool;
+        this.clsentool.prenom=cli.prenomSouscritSentool;
+        this.clsentool.email=cli.emailSouscritSentool;
+        this.clsentool.telephone=cli.telSouscritSentool;
+        this.clsentool.nometps= cli.entrepriseSouscritSentool;
+        this.clsentool.nomshop= cli.boutiqueSouscritSentool;
+        this.clsentool.adresse.region=cli.regionSouscritSentool;
+        this.clsentool.adresse.zone=cli.zneSouscritSentool;
+        this.clsentool.adresse.souszone=cli.szoneSouscritSentool;
+        this.clsentool.adresse.address=cli.adresseSouscritSentool;
+        console.log(this.clsentool);
+        this._apiplatform.souscrireSentool(this.clientsentool)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        if(data.message =='dejainscrit'){
+                            this.reponsesouscripdejaexit = true;
+                        }
+                        else{
+                            this.closedModal();
+                        }
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );
+    }
+
+    getRegionSouscritSentool(){
+        this._utilService.getRegion()
+            .subscribe(
+                data => {
+                    this.regions = data;
+                },
+                error => alert(error),
+                () => console.log('getRegion')
+            );
+    }
+    selectRegionSouscritSentool(){
+        this.iszones = false;
+        this.zne = '--Choix zone--';
+        this.szone = '--Choix sous zone--';
+        this._utilService.getZoneByRegion(this.region)
+            .subscribe(
+                data => {
+                    this.zones = data;
+                    this.iszones = true;
+                },
+                error => alert(error),
+                () => console.log('getZoneByRegion')
+            );
+    }
+    selectZoneSouscritSentool(){
+        this.issouszones = false;
+        this._utilService.getSouszoneByZoneByRegion({region:this.region, zone: this.zne})
+            .subscribe(
+                data => {
+                    this.souszones = data;
+                    this.issouszones = true;
+                },
+                error => alert(error),
+                () => console.log('getSouszoneByZoneByRegion')
+            );
+    }
+
+
+
+    /************************************************************************************
+     ********************   PARTIE PORTEFUILLE   ****************************
+     ***********************************************************************************/
+
+    public sortOrderCli = "desc";
+    public filterQueryCli:any;
+    public clients:any=[];
+
+    public getClient(){
+        this._utilService.getClients()
+            .subscribe(
+                data => {
+                    this.clients = data.message.map(function(type){
+                        let client = JSON.parse(type.adresse);
+                        console.log(type.date_ajout);
+                        return {
+                            adresse:client.address,
+                            gerant:type.gerant+" "+type.gerantnom,
+                            date_ajout:type.date_ajout,
+                            tel:type.tel,
+                            nom_point:type.nom_point,
+                            commercial:type.commercial,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log(this.clients)
+            );
+    }
+
+
+
+    /**********************************************************************************
+    ****************************     PARTIE SUIVI POINTS   ****************************
+    ***********************************************************************************/
+
+    public doughnutChartLabelsPPV: string[] = ['Faible', 'Passable', 'Assez-bien', 'Bien'];
+    public doughnutChartDataPPV: number[] = [150, 100, 50, 25];
+    public colorsEmptyObject: Array<Color> = [{}];
+    public datasetsPPV: any[];
+    public typeperformancePPV:string = " dans la journée";
+    public checkPerformancePPV:any = {journee: true, semaine: false, mois: false};
+    public performancesadminpdv:any;
+    public performancesadminpdvbyadmin:any;
+    public typedateperformancesadminpdv:string;
+    public lotperformancesadminpdv:string;
+    public rowsOnPagePPV = 12;
+    public sortByPPV = "recette";
+    public sortOrderPPV = "desc";
+
+    public chartClickedPPV(e:any):void {
+        if (e.active[0]){
+            this.estdetailPerformancePPV(e.active[0]._model.label);
+        }
+    }
+    public showModalPPV(content) {
+        this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
+    }
+    public performancessupperviseurclasserbydate(type:string):void {
+        this.performancesadminpdv = undefined;
+        this._apiplatform.getperformancessupperviseurclasserbydate(type)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.datasetsPPV = [{
+                            data: data.message.nbrepoints,
+                            backgroundColor: ["red", "yellow", "orange", "green"]
+                        }];
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydate')
+                }
+            );
+    }
+    public estcheckPerformancePPV(type: string){
+        if(type == 'journee'){
+            this.checkPerformancePPV.journee = true;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.typeperformancePPV = "dans la journée";
+        }
+        else if(type == 'semaine'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = true;
+            this.checkPerformancePPV.mois = false;
+            this.typeperformancePPV = "dans la semaine";
+        }
+        else if(type == 'mois'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = true;
+            this.typeperformancePPV = "dans le mois";
+        }
+        this.typedateperformancesadminpdv = type;
+        this.performancessupperviseurclasserbydate(type);
+    }
+    public estdetailPerformancePPV(lot:string){
+        let type:string="";
+        if (this.checkPerformancePPV.journee) {
+            type = "journee";
+        }
+        if (this.checkPerformancePPV.semaine) {
+            type = "semaine";
+        }
+        if (this.checkPerformancePPV.mois) {
+            type = "mois";
+        }
+        console.log(type+' '+lot);
+        this.typedateperformancesadminpdv = type;
+        this.lotperformancesadminpdv = lot;
+        this._apiplatform.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
+            .subscribe(
+                data => {
+                    console.log(data)
+                    if(data.errorCode){
+                        this.performancesadminpdv = data.message;
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydatebylot')
+                }
+            );
+    }
+    public detailperformancesadminclasserbydateandlot(adminpdv: any, content){
+        console.log(adminpdv);
+        this.performancesadminpdvbyadmin = undefined;
+        this._apiplatform.getperformancessupperviseurclasserbydatebySup({adminpdv:adminpdv, typedate:this.typedateperformancesadminpdv})
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.performancesadminpdvbyadmin = data.message;
+                        console.log(this.performancesadminpdvbyadmin);
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydatebySup')
+                }
+            );
+       this.showModalPPV(content);
+    }
+
+
+
 
 }

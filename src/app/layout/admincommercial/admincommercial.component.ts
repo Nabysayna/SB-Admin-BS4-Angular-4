@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {Router} from "@angular/router";
+import {NewclientService} from "../../services/newclient.service";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-admincommercial',
   templateUrl: './admincommercial.component.html',
   styleUrls: ['./admincommercial.component.scss'],
-  providers:[UtilService, AssignationSuiviService],
+  providers:[UtilService, AssignationSuiviService, NewclientService],
 
 })
 
@@ -16,45 +18,14 @@ export class AdmincommercialComponent implements OnInit {
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
 
-    public filtreRegion:string = "--Choix région--";
-    public filtreZone:string = "--Choix zone--";
-    public filtreSousZone:string = "--Choix sous zone--";
-    public choixsuperviseur:string = "--Choix superviseur--"
-    public objetifsuperviseur:number = 0;
-
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    public rowsOnPage = 5;
-    public sortBy = "note";
-    public sortOrder = "desc";
-    public sortByWordLength = (a: any) => { return a.adresse.length; }
-
-    public rowsOnPageCom = 10;
-    sortByCom = "fullname";
-    public sortOrderCom = "asc";
-    filterQueryCommercial:any;
-
-    public rowsOnPageNewPoint = 10;
-    public sortByNewPoint = "date_ajout";
-    public sortOrderNewPoint = "desc";
-    public filterQueryNewPoint:any;
-    public filterQueryDeploye:any;
-
-    public commerciaux:any[] = [];
-    public listenewpoints:any[] = [];
-    public listepointsdepoye:any[] = [];
-
-    public regions:any[] = [];
-    public zones:any[] = [];
-    public souszones:any[] = [];
-    public superviseurs:any[] = [];
-    public optionassignations:any[] = [];
-
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
+    public modalRef: NgbModalRef;
 
-    constructor(public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) { }
+    constructor(private modalService: NgbModal, public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private _newclientService:NewclientService) { }
 
   	ngOnInit() {
         this.getRegionsSuperviseurs();
@@ -106,24 +77,6 @@ export class AdmincommercialComponent implements OnInit {
 
     public toInt(num: string) { return +num; }
 
-    public getComSuperviseurs(): void {
-        this._utilService.getComSuperviseurs()
-            .subscribe(
-                data => {
-                    console.log(data);
-                    if(data.errorCode){
-                        this.superviseurs = data.message.superviseurs;
-                        this.commerciaux = data.message.commerciaux;
-                    }
-                    else{
-                        this.router.navigate(['/login']);
-                    }
-                },
-                error => alert(error),
-                () => console.log('getComSuperviseurs')
-            );
-    }
-
     public getRegionsSuperviseurs(): void {
         this._utilService.getRegionsSuperviseurs()
             .subscribe(
@@ -155,9 +108,39 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
+
+    public showModal(content) {
+        this.modalRef = this.modalService.open(content, {size: "lg"});
+    }
+
+    public closedModal(){
+        this.modalRef.close('Close click');
+    }
+
+    /************************************************************************************
+     ********************   PARTIE ASSIGNATIONS   ****************************
+     ***********************************************************************************/
+
+    public regions:any[] = [];
+    public zones:any[] = [];
+    public souszones:any[] = [];
+    public superviseurs:any[] = [];
+    public optionassignations:any[] = [];
+
+    public filtreRegion:string = "--Choix région--";
+    public filtreZone:string = "--Choix zone--";
+    public filtreSousZone:string = "--Choix sous zone--";
+    public choixsuperviseur:string = "--Choix superviseur--"
+    public objetifsuperviseur:number = 0;
+    public rowsOnPage = 5;
+    public sortBy = "note";
+    public sortOrder = "desc";
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
+
+
     public selectZone(){
         this.optionassignations = [];
-        this._utilService.getSouszoneByZone(this.filtreZone.toString())
+        this._utilService.getSouszoneByZoneByRegion({region: this.filtreRegion.toString(), zone: this.filtreZone.toString()})
             .subscribe(
                 data => this.souszones = data,
                 error => alert(error),
@@ -166,7 +149,7 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     public selectSouszone(){
-        this._utilService.getPointBySouszone(this.filtreSousZone)
+        this._newclientService.getPointBySouszoneByZone({zone:this.filtreZone, souszone:this.filtreSousZone})
             .subscribe(
                 data => {
                     console.log(data);
@@ -242,6 +225,45 @@ export class AdmincommercialComponent implements OnInit {
         }
     }
 
+    /************************************************************************************
+     ********************   PARTIE AFFECTATIONS   ****************************
+     ***********************************************************************************/
+    public rowsOnPageCom = 10;
+    sortByCom = "fullname";
+    public sortOrderCom = "asc";
+    filterQueryCommercial:any;
+
+    public commerciaux:any[] = [];
+
+    public superviseurNew: any;
+    confirmpwdsup:string;
+    userexist:boolean = false;
+
+    showModalSuperviseur(content) {
+        this.userexist = false;
+        this.superviseurNew = {access:'sup', prenom:'', nom:'', login:'', pwd:'', telephone:77};
+        this.showModal(content);
+    }
+
+
+    public getComSuperviseurs(): void {
+        this._utilService.getComSuperviseurs()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.superviseurs = data.message.superviseurs;
+                        this.commerciaux = data.message.commerciaux;
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('getComSuperviseurs')
+            );
+    }
+
     reaffectercommercial(item){
         console.log(item);
         this._utilService.affectationCommercial(item)
@@ -254,9 +276,44 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
+    enregisternouvsup(){
+        this._utilService.ajoutSuperviseur(this.superviseurNew)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        if(data.message =='exist'){
+                            this.userexist = true;
+                        }
+                        else{
+                            this.closedModal();
+                            this.getComSuperviseurs();
+                        }
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => console.log('')
+            );
+    }
 
 
 
+
+
+    /************************************************************************************
+     ********************   PARTIE NEW POINT ET SOUSCRIT   ****************************
+     ***********************************************************************************/
+
+    public rowsOnPageNewPoint = 10;
+    public sortByNewPoint = "date_ajout";
+    public sortOrderNewPoint = "desc";
+    public filterQueryNewPoint:any;
+    public filterQueryDeploye:any;
+
+    public listenewpoints:any[] = [];
+    public listepointsdepoye:any[] = [];
 
     public getNouveauxpoints(): void {
         this._utilService.getNouveauxpoints()
@@ -301,6 +358,13 @@ export class AdmincommercialComponent implements OnInit {
                 () => console.log('getPointsdeploye')
             );
     }
+
+
+
+    /************************************************************************************
+     ********************   PARTIE ETAT DEPOSIT   ****************************
+     ***********************************************************************************/
+
 
 
 

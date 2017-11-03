@@ -10,9 +10,11 @@ import {Observable} from 'rxjs/Observable';
 export class UtilService {
 
 
-    private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4-1/index.php";
-   // private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+
+    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+
     private headers = new Headers();
     private basetoken:any;
 
@@ -63,6 +65,13 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getSouszoneByZoneByRegion(data:any){
+        let url = this.link+"/util/souszonebyzonebyregion";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
 
     getSouszoneByZone(zone:string){
         let url = this.link+"/util/souszone";
@@ -119,6 +128,7 @@ export class UtilService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res =>res.json());
     }
+
     getProspectValide(){
         let url = this.link+"/client/getprospects";
            let datas = JSON.stringify({token:this.basetoken});
@@ -126,6 +136,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     getClients(){
         let url = this.link+"/client/getclient";
            let datas = JSON.stringify({token:this.basetoken});
@@ -190,6 +201,12 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getRegion(){
+        let url = this.link+"/util/region";
+        return this._http.get(url)
+            .map(res => res.json());
+    }
+
     getRegionActivite(){
         let url = this.link+"/util/region-activite";
         return this._http.get(url)
@@ -204,6 +221,14 @@ export class UtilService {
 
     ajoutCommercial(data:any){
         let url = this.link+"/user/ajoutcommercial";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    ajoutSuperviseur(data:any){
+        let url = this.link+"/user/ajoutsuperviseur";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

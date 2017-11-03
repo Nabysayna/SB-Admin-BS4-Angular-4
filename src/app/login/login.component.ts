@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit {
         else if ( access.match(8) ){
             this.router.navigate(['/managerstock']);
         }
+        else if ( access.match(9) ){
+            this.router.navigate(['/marketingcom']);
+        }
         else if ( access.match(3) ){
             this.router.navigate(['/admincom']);
         }

@@ -3,14 +3,18 @@
 <div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi assignation</button>
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Extraction</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Clients valider</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
+<<<<<<< HEAD
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
+=======
+        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Suivi Points Sentool</button>
+>>>>>>> 3868ea5f8edada44a4ca2cae80b9a421299aca91
     </div>
     <hr>
 </div>
@@ -310,7 +314,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="commercials" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                <table class="table table-hover" [mfData]="commercials | dataFilterListeCom: filterQueryCom" #mfCom="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
@@ -318,13 +322,13 @@
                         <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
                     </tr>
                     <tr>
-                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
+                        <th colspan="2"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCom"/></th>
                         <th>Total : {{commercials.length}}</th>
-                        <th colspan="2" style="text-align: right"><button type="button"  (click)="showModalCommercial(contentAjoutCommercial,false)" class="btn btn-warning"> ajouter commercial </button></th>
+                        <th colspan="1" style="text-align: right"><button type="button"  (click)="showModalCommercial(contentAjoutCommercial,false)" class="btn btn-warning"> ajouter commercial </button></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mf.data; let i = index ">
+                    <tr *ngFor="let item of mfCom.data; let i = index ">
                         <td>{{item.fullname}}</td>
                         <td>{{item.telephone}}</td>
                         <td>{{item.email}}</td>
@@ -332,7 +336,7 @@
                     </tbody>
                     <tfoot>
                     <tr class="text-center center-block">
-                        <td colspan="8" class="text-center center-block">
+                        <td colspan="3" class="text-center center-block">
                             <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
                         </td>
                     </tr>
@@ -342,6 +346,7 @@
         </div>
     </div>
 </div>
+
 <div class="container-fluid" *ngIf="menuHead.menuHead7">
 	<table class="table table-striped table-codensed">
                     <tr>
@@ -360,16 +365,22 @@
 	                   <td>{{p.telephone}}</td>
 	                   <td>{{p.adresse}}</td>
 	                   <td>{{p.nomcommercial}}</td>
-	                   <td><input type="button" (click)="rep1= false; ajout(contentnewclient,p)" value="action" class="btn btn-primary" /></td>
+	                   <td><input type="button" (click)="rep1= false; modalAjout(contentnewclient,p)" value="action" class="btn btn-primary" /></td>
 
 	               </tr>
 
 	</table>
 
 </div>
+
 <div class="container-fluid" *ngIf="menuHead.menuHead8" >
-	<table class="table table-striped table-codensed">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row table-responsive">
+                <table class="table table-hover" [mfData]="clients | dataFilterListeCli: filterQueryCli" #mfCli="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCli" [(mfSortOrder)]="sortOrderCli">
+                    <thead>
                     <tr>
+<<<<<<< HEAD
 						<th>#</th>
                         <th>Nom Point</th>
                         <th>Gérant(e)</th>
@@ -383,10 +394,113 @@
 	                   <td>{{p.tel}}</td>
 	                   <td>{{p.adresse}}</td>
 	               </tr>
+=======
+                        <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="commercial">Commercial</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCli"/></th>
+                        <th>Total : {{clients.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let p of mfCli.data; let i = index ">
+                        <td>{{p.date_ajout}}</td>
+                        <td>{{p.nom_point}}</td>
+                        <td>{{p.gerant}}</td>
+                        <td>{{p.tel}}</td>
+                        <td>{{p.adresse}}</td>
+                        <td>{{p.commercial}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="6" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+>>>>>>> 3868ea5f8edada44a4ca2cae80b9a421299aca91
 
-	</table>
+<div class="container-fluid" *ngIf="menuHead.menuHead9" >
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('journee')">La journée</label>&nbsp;
+                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('semaine')">La semaine</label>&nbsp;
+                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('mois')">Le mois</label>
+                        <h5><i class="fa fa-pie-chart"></i>Performances des points par lot {{ typeperformancePPV }}.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150px" baseChart
+                        [labels]="doughnutChartLabelsPPV"
+                        [datasets]="datasetsPPV"
+                        [colors]="colorsEmptyObject"
+                        [chartType]="'doughnut'"
+                        (chartClick)="chartClickedPPV($event)"
+                    ></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6" *ngIf="performancesadminpdv">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Détail par {{typedateperformancesadminpdv}}/{{lotperformancesadminpdv}}.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive" [mfData]="performancesadminpdv" #mfppv="mfDataTable"
+                           [mfRowsOnPage]="rowsOnPagePPV" [(mfSortBy)]="sortByPPV" [(mfSortOrder)]="sortOrderPPV">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><mfDefaultSorter by="adminpdv">Superviseur pdv</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone">Telephone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="recette">Recette</mfDefaultSorter></th>
+                            <th>Option</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQuery"/></label></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let admin of mfppv.data; let i = index">
+                            <td>{{ i + 1  }}</td>
+                            <td>{{admin.adminpdv}}</td>
+                            <td>{{admin.telephone}}</td>
+                            <td>{{admin.recette}}</td>
+                            <td><button (click)="detailperformancesadminclasserbydateandlot(admin,contentSuiviPointsperformanceByLot)">Détail</button></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
+<<<<<<< HEAD
 <div class="container-fluid" *ngIf="menuHead.menuHead9" >
 	<table class="table table-striped table-codensed">
                     <tr>
@@ -409,59 +523,88 @@
 	</table>
 	<input type="button" class="btn btn-danger" value="arreter le son" (click)="arreterson()" />
 </div>
+=======
+>>>>>>> 3868ea5f8edada44a4ca2cae80b9a421299aca91
 
 <ng-template #contentnewclient let-c="close" >
 	<div class="modal-header">
-		<p>nouveau client sentool</p>
+		<h3>Souscrire à SenTool</h3>
 	</div>
- <div class="modal-body">
-  <form #for="ngForm" name="form" method="post">
-	  <div>
-		 <div class="form-inline">
-		    <input name="entreprise" [(ngModel)]="entreprise" type="text" value="" style="margin-right:5px" placeholder="nom de l'entreprise" class="form-control" required />
-		    <input type="text" name="boutique" [(ngModel)]="boutique" placeholder="nom de la boutique en ligne" class="form-control" required />
-		 </div>
-	  </div><br>
-	  <div>
-		  <div class="form-group form-inline">
-			  <input type="text" name="prenom" [(ngModel)]="prenom" style="margin-right:5px" placeholder="prenom client" class="form-control" required />
-			  <input type="text" name="nom" [(ngModel)]="nom" placeholder="nom client" class="form-control" />
-		  </div><br>
-		  <div class="form-group form-inline">
-			  <input type="email" name="email" [(ngModel)]="email" style="margin-right:5px" placeholder="email gerant" class="form-control" required />
-			  <input type="text" name="tel" [(ngModel)]="tel" placeholder="telephone gerant" class="form-control" required />
-		  </div><br>
-	  </div>
-	   <div class="row" >
-                       <div class="form-group col-sm-4">
-                          <label for="regionSentool">Région</label>
-                          <input type="text" name="region" [(ngModel)]="region" class="form-control input-sm" id="regionSentool" required />
-                      </div>
-                      <div class="form-group col-sm-4">
-                          <label for="zoneSentool">Zones</label>
-                          <input type="text" name="zne" [(ngModel)]="zne" class="form-control input-sm" id="zoneSentool" required />
-                      </div>
-                      <div class="form-group col-sm-4">
-                          <label for="souszoneSentool">Sous zones</label>
-                          <input type="text" name="szone" [(ngModel)]="szone" class="form-control input-sm" id="souszoneSentool" required />
-
-                      </div>
-         </div>
-      <div class="row">
-        <div class="form-group col-sm-10">
-			 <label>adresse exacte</label>
-			 <input name="adresse" [(ngModel)]="adresse" type="text" class="form-control" placeholder="adresse exacte" />
-        </div>
-	  </div>
-	  <input *ngIf="!rep1" type="button" [disabled]="!for.valid" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
-   </form>
-     <h5 *ngIf="rep1" class="alert alert-success text-center" style="text-align: center">Enregistrement Reussi</h5>
+    <div class="modal-body">
+      <form #for="ngForm" name="form" method="post">
+          <div class="row">
+              <div class="form-group col-sm-6">
+                  <label for="entrepriseSouscritSentool">Nom de l'entreprise</label>
+                  <input type="text" class="form-control" id="entrepriseSouscritSentool" name="entrepriseSouscritSentool" [(ngModel)]="entreprise" placeholder="entrer le nom de l'entreprise">
+              </div>
+              <div class="form-group col-sm-6">
+                  <label for="boutiqueSouscritSentool">Nom de la boutique en ligne</label>
+                  <input type="text" class="form-control" id="boutiqueSouscritSentool" name="boutiqueSouscritSentool" [(ngModel)]="boutique" placeholder="entrer le nom de la boutique en ligne">
+              </div>
+          </div>
+          <div class="row">
+              <div class="form-group col-sm-6">
+                  <label for="prenomSouscritSentool">Prénom du client</label>
+                  <input type="text" class="form-control" id="prenomSouscritSentool" name="prenomSouscritSentool" [(ngModel)]="prenom" placeholder="entrer le prénom du client">
+              </div>
+              <div class="form-group col-sm-6">
+                  <label for="nomSouscritSentool">Nom du client</label>
+                  <input type="text" class="form-control" id="nomSouscritSentool" name="nomSouscritSentool" [(ngModel)]="nom" placeholder="entrer le nom du client">
+              </div>
+          </div>
+          <div class="row">
+              <div class="form-group col-sm-6">
+                  <label for="emailSouscritSentool">Email du client</label>
+                  <input type="email" class="form-control" id="emailSouscritSentool" name="emailSouscritSentool" [(ngModel)]="email" placeholder="entrer le login du compte">
+              </div>
+              <div class="form-group col-sm-6">
+                  <label for="telSouscritSentool">Téléphone du client</label>
+                  <input type="number" class="form-control" id="telSouscritSentool" name="telSouscritSentool" [(ngModel)]="tel" placeholder="entrer le téléphone pour les accès">
+              </div>
+          </div>
+          <div class="form-group row">
+              <label for="regionSouscritSentool" class="col-sm-3 col-form-label">Région</label>
+              <div class="col-sm-9">
+                  <select class="form-control input-sm" id="regionSouscritSentool" name="regionSouscritSentool" [(ngModel)]="region" (change)="selectRegionSouscritSentool()">
+                      <option selected>--Choix région--</option>
+                      <option *ngFor="let region of regions">{{region.nom}}</option>
+                  </select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="iszones && region!='--Choix région--'">
+              <label for="zneSouscritSentool" class="col-sm-3 col-form-label">Zones</label>
+              <div class="col-sm-9">
+                  <select class="form-control input-sm" id="zneSouscritSentool" name="zneSouscritSentool" [(ngModel)]="zne" (change)="selectZoneSouscritSentool()">
+                      <option>--Choix zone--</option>
+                      <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+                  </select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="issouszones && zne!='--Choix zone--'">
+              <label for="szoneSouscritSentool" class="col-sm-3 col-form-label">Sous zones</label>
+              <div class="col-sm-9">
+                  <select class="form-control input-sm" id="szoneSouscritSentool" name="szoneSouscritSentool" [(ngModel)]="szone">
+                      <option>--Choix sous zone--</option>
+                      <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+                  </select>
+              </div>
+          </div>
+          <div class="form-group row" *ngIf="issouszones && szone!='--Choix sous zone--'">
+              <label for="adresseSouscritSentool" class="col-sm-3 col-form-label">Adresse exacte</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" id="adresseSouscritSentool" name="adresseSouscritSentool" [(ngModel)]="adresse" placeholder="Adresse exacte" rows="3"></textarea>
+              </div>
+          </div>
+          <div *ngIf="reponsesouscripdejaexit" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+              <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
+          </div>
+          <div style="text-align: center; margin: 0 auto; margin-top: 2rem">
+              <input *ngIf="!rep1" type="button" [disabled]="!for.valid" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
+          </div>
+       </form>
 	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-danger" (click)="c('Close click')">fermer</button>
-	</div>
-
 </ng-template>
+
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
         <h4 class="modal-title"> Extraction</h4>
@@ -537,9 +680,93 @@
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
-        <app-formuserbbs [commercial]="commercial"></app-formuserbbs>
+        <div class="row" *ngIf="commercialNew">
+            <h2 style="text-align: center; margin: 0 auto"> {{ commercialNew.type}} </h2>
+        </div>
+        <div class="row" style="padding-bottom: 2rem">
+            <div class="col-sm-12">
+                <hr>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Prénom</label>
+                        <input type="text" [(ngModel)]="commercialNew.prenom"  name="prenomcom" id="prenomcom" class="form-control"  placeholder="prénom commercial" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Nom</label>
+                        <input type="text" [(ngModel)]="commercialNew.nom" name="nomcom" id="nomcom" class="form-control" placeholder="nom commercial" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Téléphone</label>
+                        <input type="number" [(ngModel)]="commercialNew.telephone" name="telephonecom" id="telephonecom" class="form-control" placeholder="téléphone commercial" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Email</label>
+                        <input type="email" [(ngModel)]="commercialNew.email" name="emailcom" id="emailcom" class="form-control" placeholder="email commercial" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Mot de passe</label>
+                        <input type="password" [(ngModel)]="commercialNew.pwd" name="pwdcom" id="pwdcom" class="form-control" placeholder="Mot de passe" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Confirm mot de passe</label>
+                        <input type="password" [(ngModel)]="confirmpwdcom" name="confirpwdcom" id="confirpwdcom" class="form-control" placeholder="Confirm mot de passe" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center; margin: 0 auto;">
+            <div class="row" style="text-align: center; margin: 0 auto;">
+                <div *ngIf="userexist" style="text-align: center; margin: 0 auto">
+                    <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
+                </div>
+                <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-success btn-sm" (click)="enregisternouvsup()" [disabled]="!superviseurNew.prenom || !superviseurNew.telephone || !superviseurNew.email || !superviseurNew.pwd || superviseurNew.pwd!=confirmpwdsup"> Enregistrer </button>
+            </div>
+            <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-success" (click)="enregisternouvcom()" [disabled]="!commercialNew.prenom || !commercialNew.telephone || !commercialNew.email || !commercialNew.pwd || commercialNew.pwd!=confirmpwdcom"> Enregistrer </button>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click'); getCommerciaux()">Fermer</button>
+</ng-template>
+
+<ng-template #contentSuiviPointsperformanceByLot let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="performancesadminpdvbyadmin">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Détail par caissier</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <table class="table table-responsive">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Caissier</th>
+                                <th>Telephone</th>
+                                <th>Operateur</th>
+                                <th>Traitement</th>
+                                <th>Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let caissier of performancesadminpdvbyadmin; let i = index ">
+                                <td>{{i + 1}}</td>
+                                <th>{{caissier.fullname}}</th>
+                                <th>{{caissier.telephone}}</th>
+                                <td>{{caissier.operateur}}</td>
+                                <td>{{caissier.traitement}}</td>
+                                <td>{{caissier.montanttotal}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>
