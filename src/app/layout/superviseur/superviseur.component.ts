@@ -613,6 +613,7 @@ export class SuperviseurComponent implements OnInit {
     public clsentool: any = {
         nom:'', prenom:'', telephone:'', email:'',
         nometps:'', nomshop:'',
+        type:'superviseur', idcommercial:0,
         adresse:{
             region:'--Choix région--',
             zone:'--Choix zone--',
@@ -663,7 +664,7 @@ export class SuperviseurComponent implements OnInit {
         this.reponsesouscripdejaexit = false;
         this.iszones = false;
         this.issouszones = false;
-
+        this.clsentool.idcommercial = p.id_commercial;
         this.remplissage(p);
         this.getRegionSouscritSentool();
         this.showModalTop(content);
@@ -698,21 +699,14 @@ export class SuperviseurComponent implements OnInit {
         this.clsentool.adresse.zone=cli.zneSouscritSentool;
         this.clsentool.adresse.souszone=cli.szoneSouscritSentool;
         this.clsentool.adresse.address=cli.adresseSouscritSentool;
-        console.log(this.clsentool);
-        this._apiplatform.souscrireSentool(this.clientsentool)
+        this._apiplatform.souscrireSentool(this.clsentool)
             .subscribe(
                 data => {
                     if(data.errorCode){
-                        if(data.message =='dejainscrit'){
-                            this.reponsesouscripdejaexit = true;
-                        }
-                        else{
-                            this.closedModal();
-                        }
+                        if(data.message =='dejainscrit'){ this.reponsesouscripdejaexit = true; }
+                        else { this.closedModal(); }
                     }
-                    else{
-                        this.router.navigate(['/login']);
-                    }
+                    else { this.router.navigate(['/login']); }
                 },
                 error => alert(error),
                 () => console.log('souscrireSentool')
@@ -772,7 +766,6 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     this.clients = data.message.map(function(type){
                         let client = JSON.parse(type.adresse);
-                        console.log(type.date_ajout);
                         return {
                             adresse:client.address,
                             gerant:type.gerant+" "+type.gerantnom,
