@@ -2,15 +2,15 @@
 <audio id="audio" *ngIf="audio"  src="assets/son.mp3"  autoplay="autoplay"></audio>
 <div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi assignation</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Extraction</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi assignation</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Extraction</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
     </div>
     <hr>
 </div>
@@ -234,10 +234,12 @@
             <div class="card">
                 <div class="card-header card-primary">
                     <div class="panel panel-heading">
-                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('journee')">La journée</label>&nbsp;
-                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('semaine')">La semaine</label>&nbsp;
-                        <label class="btn btn-danger" (click)="estcheckPerformancePPV('mois')">Le mois</label>
-                        <h5><i class="fa fa-pie-chart"></i>Performances des points par lot {{ typeperformancePPV }}.</h5>
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('journee')">La journée</label>&nbsp;
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('semaine')">La semaine</label>&nbsp;
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('mois')">Le mois</label>
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('annee')">L'année</label>
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('tout')">Tout</label>
+                        <h6><i class="fa fa-pie-chart"></i>Performances des points par lot {{ typeperformancePPV }}.</h6>
                     </div>
                 </div>
                 <div class="card-body">
@@ -265,9 +267,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th><mfDefaultSorter by="adminpdv">Superviseur</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="name_adminpdv">Superviseur</mfDefaultSorter></th>
                             <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                            <th><mfDefaultSorter by="recette">Recette</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="nbreoperation">No Opéra</mfDefaultSorter></th>
                             <th>Option</th>
                         </tr>
                         <tr>
@@ -277,10 +279,10 @@
                         <tbody>
                         <tr *ngFor="let admin of mfppv.data; let i = index">
                             <td>{{ i + 1  }}</td>
-                            <td>{{admin.adminpdv}}</td>
+                            <td>{{admin.name_adminpdv}}</td>
                             <td>{{admin.telephone}}</td>
-                            <td>{{admin.recette}}</td>
-                            <td><button (click)="detailperformancesadminclasserbydateandlot(admin,contentSuiviPointsperformanceByLot)">Détail</button></td>
+                            <td>{{admin.nbreoperation}}</td>
+                            <td><button class="btn btn-sm btn-warning" (click)="detailperformancesadminclasserbydateandlot(admin,contentSuiviPointsperformanceByLot)">Détail</button></td>
                         </tr>
                         </tbody>
                         <tfoot>

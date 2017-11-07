@@ -309,88 +309,6 @@ export class SuperviseurComponent implements OnInit {
     }
 
     public toInt(num: string) { return +num; }
-    /*public getCommerciaux(): void {
-        this._utilService.getCommerciauxBySuperviseur()
-            .subscribe(
-                data => {
-                    this.commercials = data
-                    if(data.errorCode) this.commercials = data.message;
-                },
-                error => alert(error),
-                () => console.log(this.commercials)
-            );
-    }*/
-    /*public getProspect(){
-       this._utilService.getProspectValide()
-            .subscribe(
-                data => {
-                    this.prospects = data;
-                    console.log(this.prospects);
-                    this.prospects = data.map(function(type){
-						let client = JSON.parse(type.client);
-						let commercial = JSON.parse(type.commercial);
-						return {
-                                    id:type.id,
-                                    libellepoint:client.nom_point,
-                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
-                                    telephone:client.telephone_gerant,
-                                    adresse:client.adresse_point.adressepoint,
-                                    email:client.email_gerant,
-                                    note:type.note,
-                                    id_assigner:type.id_assigner,
-                                    id_commercial:type.id_commercial,
-                                    dates_suivi:type.dates_suivi,
-                                    reponse:type.reponse,
-                                    qualification:"--Choisir une action--",
-                                   // client:client,
-                                    region:client.region,
-                                    zone:client.adresse_point.zonepoint,
-                                    szone:client.adresse_point.souszonepoint,
-                                    nomcommercial:commercial.prenom+" "+commercial.prenom
-                                }
-                    });
-
-            this.datasetsPPV = [{
-                data: this.doughnutChartDataPPV,
-                backgroundColor: ["red", "yellow", "orange", "green"]
-            }];
-            this.datasetsAP = [{
-                data: this.doughnutChartDataAP,
-                backgroundColor: ["blue", "red", "orange", "green"]
-            }];
-
-            this.estcheckPerformancePPV('journee');
-            this.etatDepositAP();
-        }
-
-    }
-*/
-
-    /*public getClient(){
-        this._utilService.getClients()
-            .subscribe(
-                data => {
-                    this.clients = data;
-                    console.log(this.clients);
-                    this.clients = data.map(function (type, data) {
-
-                        // let tel = data.json.tel;
-                        //let nom = data.json.nom_point;
-                        // let gerant = data.json.gerant;
-                        let client = JSON.parse(type.adresse);
-                        return {
-                            adresse: client.adress,
-                            gerant: type.gerant + " " + type.gerantnom,
-                            tel: type.tel,
-                            nom_point: type.nom_point,
-
-
-                        }
-
-                    });
-                });
-    }
-*/
     public closedModal(){
         this.modalRef.close('Close click');
     }
@@ -915,7 +833,7 @@ export class SuperviseurComponent implements OnInit {
     public colorsEmptyObject: Array<Color> = [{}];
     public datasetsPPV: any[];
     public typeperformancePPV:string = " dans la journée";
-    public checkPerformancePPV:any = {journee: true, semaine: false, mois: false};
+    public checkPerformancePPV:any = {journee: true, semaine: false, mois: false, annee: false, tout: false};
     public performancesadminpdv:any;
     public performancesadminpdvbyadmin:any;
     public typedateperformancesadminpdv:string;
@@ -957,19 +875,41 @@ export class SuperviseurComponent implements OnInit {
             this.checkPerformancePPV.journee = true;
             this.checkPerformancePPV.semaine = false;
             this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
             this.typeperformancePPV = "dans la journée";
         }
         else if(type == 'semaine'){
             this.checkPerformancePPV.journee = false;
             this.checkPerformancePPV.semaine = true;
             this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
             this.typeperformancePPV = "dans la semaine";
         }
         else if(type == 'mois'){
             this.checkPerformancePPV.journee = false;
             this.checkPerformancePPV.semaine = false;
             this.checkPerformancePPV.mois = true;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
             this.typeperformancePPV = "dans le mois";
+        }
+        else if(type == 'annee'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = true;
+            this.checkPerformancePPV.tout = false;
+            this.typeperformancePPV = "dans l'année";
+        }
+        else if(type == 'tout'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = true;
+            this.typeperformancePPV = "dans l'ensemble";
         }
         this.typedateperformancesadminpdv = type;
         this.performancessupperviseurclasserbydate(type);
@@ -984,6 +924,12 @@ export class SuperviseurComponent implements OnInit {
         }
         if (this.checkPerformancePPV.mois) {
             type = "mois";
+        }
+        if (this.checkPerformancePPV.annee) {
+            type = "annee";
+        }
+        if (this.checkPerformancePPV.tout) {
+            type = "tout";
         }
         console.log(type+' '+lot);
         this.typedateperformancesadminpdv = type;
@@ -1008,6 +954,7 @@ export class SuperviseurComponent implements OnInit {
         this._apiplatform.getperformancessupperviseurclasserbydatebySup({adminpdv:adminpdv, typedate:this.typedateperformancesadminpdv})
             .subscribe(
                 data => {
+                    console.log(data);
                     if(data.errorCode){
                         this.performancesadminpdvbyadmin = data.message;
                         console.log(this.performancesadminpdvbyadmin);
