@@ -112,12 +112,14 @@ export class SuperviseurComponent implements OnInit {
 
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
 
+
     public modalRef: NgbModalRef;
 
     constructor(public router: Router, private _apiplatform: ApiPlatformService, private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {this.reponse1=false;}
 
     ngOnInit() {
         this.getAssignationsBySuperviseur();
+        //setInterval(()=>this.alertdeposit(),50000);
     }
 
     public menuHeadClick(option: number){
@@ -239,16 +241,18 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
-            this._assignationsuiviService.listsuiviforsuperviseur()
-                .subscribe(
-                    data => {
-                        this.datasuivivalider = this.datasuivi.filter(opt => opt)
-                    },
-                    error => alert(error),
-                    () => {
-                        console.log(this.datasuivi);
-                    }
-                );
+
+            this.datasetsPPV = [{
+                data: this.doughnutChartDataPPV,
+                backgroundColor: ["red", "yellow", "orange", "green"]
+            }];
+            this.datasetsAP = [{
+                data: this.doughnutChartDataAP,
+                backgroundColor: ["blue", "red", "orange", "green"]
+            }];
+
+            this.estcheckPerformancePPV('journee');
+            this.etatDepositAP();
         }
         if(option == 6){
             this.menuHead.menuHead1 = false;
@@ -298,6 +302,54 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = true;
 
+            this.getdeposit();
+
+
+        }
+    }
+
+    public toInt(num: string) { return +num; }
+    /*public getCommerciaux(): void {
+        this._utilService.getCommerciauxBySuperviseur()
+            .subscribe(
+                data => {
+                    this.commercials = data
+                    if(data.errorCode) this.commercials = data.message;
+                },
+                error => alert(error),
+                () => console.log(this.commercials)
+            );
+    }*/
+    /*public getProspect(){
+       this._utilService.getProspectValide()
+            .subscribe(
+                data => {
+                    this.prospects = data;
+                    console.log(this.prospects);
+                    this.prospects = data.map(function(type){
+						let client = JSON.parse(type.client);
+						let commercial = JSON.parse(type.commercial);
+						return {
+                                    id:type.id,
+                                    libellepoint:client.nom_point,
+                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
+                                    telephone:client.telephone_gerant,
+                                    adresse:client.adresse_point.adressepoint,
+                                    email:client.email_gerant,
+                                    note:type.note,
+                                    id_assigner:type.id_assigner,
+                                    id_commercial:type.id_commercial,
+                                    dates_suivi:type.dates_suivi,
+                                    reponse:type.reponse,
+                                    qualification:"--Choisir une action--",
+                                   // client:client,
+                                    region:client.region,
+                                    zone:client.adresse_point.zonepoint,
+                                    szone:client.adresse_point.souszonepoint,
+                                    nomcommercial:commercial.prenom+" "+commercial.prenom
+                                }
+                    });
+
             this.datasetsPPV = [{
                 data: this.doughnutChartDataPPV,
                 backgroundColor: ["red", "yellow", "orange", "green"]
@@ -312,12 +364,36 @@ export class SuperviseurComponent implements OnInit {
         }
 
     }
+*/
+
+    /*public getClient(){
+        this._utilService.getClients()
+            .subscribe(
+                data => {
+                    this.clients = data;
+                    console.log(this.clients);
+                    this.clients = data.map(function (type, data) {
+
+                        // let tel = data.json.tel;
+                        //let nom = data.json.nom_point;
+                        // let gerant = data.json.gerant;
+                        let client = JSON.parse(type.adresse);
+                        return {
+                            adresse: client.adress,
+                            gerant: type.gerant + " " + type.gerantnom,
+                            tel: type.tel,
+                            nom_point: type.nom_point,
 
 
+                        }
+
+                    });
+                });
+    }
+*/
     public closedModal(){
         this.modalRef.close('Close click');
     }
-    public toInt(num: string) { return +num; }
 
     SelectRegion(){
         this.clientsentool.adresse.zone = '--Choix zone--';
@@ -343,6 +419,52 @@ export class SuperviseurComponent implements OnInit {
          this.tel='';
 
   }
+/*
+  remplissage(p){
+        var full=p.fullname.split(' ');
+        var ng=full.length;
+        var prenom=full[0];
+        for(var i=1;i<=ng-2;i++){
+           prenom+=" "+full[i];
+        }
+        this.prenom=prenom;
+        this.nom=full[ng-1];
+        this.email=p.email;
+        this.tel=p.telephone;
+        this.adresse=p.adresse;
+        this.entreprise=p.libellepoint;
+        this.zne=p.zone;
+        this.szone=p.szone;
+        this.region=p.region;
+  }
+  validernewclientsentool(form:NgForm){
+       var cli=form.value;
+       this.clsentool.nom=cli.nom;
+       this.clsentool.prenom=cli.prenom;
+       this.clsentool.email=cli.email;
+       this.clsentool.telephone=cli.tel;
+       this.clsentool.nometps= cli.entreprise;
+       this.clsentool.nomshop= cli.boutique;
+       this.clsentool.adresse.region=cli.region;
+       this.clsentool.adresse.zone=cli.zne;
+       this.clsentool.adresse.souszone=cli.szone;
+       this.clsentool.adresse.address=cli.adresse;
+        this._apiplatform.souscrireSentool(this.clsentool)
+            .subscribe(
+                data => {
+                    //console.log(data);
+                    if(data.message && data.message =='dejainscrit'){
+                        console.log('deja incrit');
+                    }
+                    else{
+                        this.rep1=true;
+                    }
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );
+    }
+*/
 
     getgerant(p){
         //return p.split("#")[0] ;
@@ -547,12 +669,6 @@ export class SuperviseurComponent implements OnInit {
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }
-
-
-
-
-
-
 
 
 
@@ -958,6 +1074,76 @@ export class SuperviseurComponent implements OnInit {
             this.detailEtatDepositAP(this.lotetatdeposit);
         }
     }
+
+
+
+    /************************************************************************************
+     *********************************   PARTIE DEPOSIT   ****************************
+     ***********************************************************************************/
+
+    public deposits=[];
+    public audio=false;
+    getdeposit(){
+        this.deposits=[
+            {'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'},
+            {'entreprise':'bbs','superviseur':'khady','commercial':'magor','montant':'1000000'}
+        ];
+        /*this._utilService.getlistsDepositcc()
+            .subscribe(
+                data => {
+                    this.deposits=data;
+                    if(data==''){
+                    }
+                    else{
+                        this.deposits=data;
+                    }
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );*/
+    }
+    arreterson(){
+        //this.audio=false;
+    }
+    alertdeposit(){
+        /*this._utilService.alertdepositcc()
+            .subscribe(
+                data => {
+
+                    if(data.reponse=="ok"){
+                        this.audio=true;
+                    }
+
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );*/
+
+    }
+    validerDepositcc(){
+        /*this._utilService.validerDepositcc()
+            .subscribe(
+                data => {
+                    this.deposits=data;
+                    // var plays=document.querySelector("#audio");
+                    //plays.play();
+                    if(data==''){
+                    }
+                    else{
+                        this.deposits=data;
+                    }
+                },
+                error => alert(error),
+                () => console.log('souscrireSentool')
+            );*/
+    }
+    tocurrency(number){
+        return Number(number).toLocaleString();
+
+    }
+
+
+
 
 
 
