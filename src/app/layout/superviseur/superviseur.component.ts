@@ -1084,6 +1084,7 @@ export class SuperviseurComponent implements OnInit {
     public deposits=[];
     public audio=false;
     getdeposit(){
+        this.audio=true;
         this.deposits=[
             {'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'},
             {'entreprise':'bbs','superviseur':'khady','commercial':'magor','montant':'1000000'}
@@ -1121,6 +1122,7 @@ export class SuperviseurComponent implements OnInit {
 
     }
     validerDepositcc(){
+
         /*this._utilService.validerDepositcc()
             .subscribe(
                 data => {
