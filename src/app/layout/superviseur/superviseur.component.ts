@@ -303,8 +303,6 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead9 = true;
 
             this.getdeposit();
-
-
         }
     }
 
@@ -337,52 +335,6 @@ export class SuperviseurComponent implements OnInit {
          this.tel='';
 
   }
-/*
-  remplissage(p){
-        var full=p.fullname.split(' ');
-        var ng=full.length;
-        var prenom=full[0];
-        for(var i=1;i<=ng-2;i++){
-           prenom+=" "+full[i];
-        }
-        this.prenom=prenom;
-        this.nom=full[ng-1];
-        this.email=p.email;
-        this.tel=p.telephone;
-        this.adresse=p.adresse;
-        this.entreprise=p.libellepoint;
-        this.zne=p.zone;
-        this.szone=p.szone;
-        this.region=p.region;
-  }
-  validernewclientsentool(form:NgForm){
-       var cli=form.value;
-       this.clsentool.nom=cli.nom;
-       this.clsentool.prenom=cli.prenom;
-       this.clsentool.email=cli.email;
-       this.clsentool.telephone=cli.tel;
-       this.clsentool.nometps= cli.entreprise;
-       this.clsentool.nomshop= cli.boutique;
-       this.clsentool.adresse.region=cli.region;
-       this.clsentool.adresse.zone=cli.zne;
-       this.clsentool.adresse.souszone=cli.szone;
-       this.clsentool.adresse.address=cli.adresse;
-        this._apiplatform.souscrireSentool(this.clsentool)
-            .subscribe(
-                data => {
-                    //console.log(data);
-                    if(data.message && data.message =='dejainscrit'){
-                        console.log('deja incrit');
-                    }
-                    else{
-                        this.rep1=true;
-                    }
-                },
-                error => alert(error),
-                () => console.log('souscrireSentool')
-            );
-    }
-*/
 
     getgerant(p){
         //return p.split("#")[0] ;
@@ -829,7 +781,7 @@ export class SuperviseurComponent implements OnInit {
     ***********************************************************************************/
 
     public doughnutChartLabelsPPV: string[] = ['Faible', 'Passable', 'Assez-bien', 'Bien'];
-    public doughnutChartDataPPV: number[] = [150, 100, 50, 25];
+    public doughnutChartDataPPV: number[] = [0, 0, 0, 0];
     public colorsEmptyObject: Array<Color> = [{}];
     public datasetsPPV: any[];
     public typeperformancePPV:string = " dans la journée";
@@ -951,13 +903,20 @@ export class SuperviseurComponent implements OnInit {
     public detailperformancesadminclasserbydateandlot(adminpdv: any, content){
         console.log(adminpdv);
         this.performancesadminpdvbyadmin = undefined;
-        this._apiplatform.getperformancessupperviseurclasserbydatebySup({adminpdv:adminpdv, typedate:this.typedateperformancesadminpdv})
+        this._apiplatform.getperformancessupperviseurclasserbydatebySup({idadminpdv:adminpdv.dependsOn, typedate:this.typedateperformancesadminpdv})
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
-                        this.performancesadminpdvbyadmin = data.message;
-                        console.log(this.performancesadminpdvbyadmin);
+                        this.performancesadminpdvbyadmin = data.message.map(function (op) {
+                            return {
+                                dateoperation: op.dateoperation.date.split('.')[0],
+                                name_caissier: op.name_caissier,
+                                montanttotal: op.montanttotal,
+                                operateur: op.operateur,
+                                telephone: op.telephone,
+                                traitement: op.traitement,
+                            }
+                        });
                     }
                 },
                 error => alert(error),
