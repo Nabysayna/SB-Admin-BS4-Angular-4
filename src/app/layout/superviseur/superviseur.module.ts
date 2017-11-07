@@ -20,6 +20,8 @@ import {FormuserbbsComponent} from "../formuserbbs/formuserbbs.component";
 import {DataFilterListeComPipe} from "./data-filter-list-com.pipe";
 import {DataFilterListeCliPipe} from "./data-filter-list-portefeuille.pipe";
 import {DataFilterSuiviAssignComPipe} from "./data-filter-suiviassigncom.pipe";
+import {DataFilterSuivipdvperformanceparsupPipe} from "./data-filter-suivipdvperformanceparsup.pipe";
+import {DataFilterSuivipdvetatdepositparsupPipe} from "./data-filter-suivipdvetatdepositparsup.pipe";
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import {DataFilterSuiviAssignComPipe} from "./data-filter-suiviassigncom.pipe";
         DataFilterListeComPipe,
         DataFilterListeCliPipe,
         DataFilterSuiviAssignComPipe,
+        DataFilterSuivipdvperformanceparsupPipe,
+        DataFilterSuivipdvetatdepositparsupPipe,
 
     ]
 })

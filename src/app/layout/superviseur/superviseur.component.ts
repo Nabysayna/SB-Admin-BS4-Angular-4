@@ -302,7 +302,13 @@ export class SuperviseurComponent implements OnInit {
                 data: this.doughnutChartDataPPV,
                 backgroundColor: ["red", "yellow", "orange", "green"]
             }];
+            this.datasetsAP = [{
+                data: this.doughnutChartDataAP,
+                backgroundColor: ["blue", "red", "orange", "green"]
+            }];
+
             this.estcheckPerformancePPV('journee');
+            this.etatDepositAP();
         }
 
     }
@@ -474,6 +480,7 @@ export class SuperviseurComponent implements OnInit {
         console.log(this.selectedOptions);
     }
 
+
     /************************************************************************************
      *********************************   PARTIE SUIVI ASSIGNATION  et RELANCE ****************************
      ***********************************************************************************/
@@ -606,7 +613,7 @@ export class SuperviseurComponent implements OnInit {
 
 
     /************************************************************************************
-     ********************   PARTIE DEPOIEMENT POINTS SUIVI   ****************************
+     ********************   PARTIE DEPLOIEMENT POINTS SUIVI   ****************************
      ***********************************************************************************/
 
     public reponsesouscripdejaexit: boolean = false;
@@ -800,6 +807,7 @@ export class SuperviseurComponent implements OnInit {
     public rowsOnPagePPV = 12;
     public sortByPPV = "recette";
     public sortOrderPPV = "desc";
+    public filterQueryPPV:any;
 
     public chartClickedPPV(e:any):void {
         if (e.active[0]){
@@ -823,7 +831,8 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
-                    console.log('getperformancessupperviseurclasserbydate')
+                    console.log('getperformancessupperviseurclasserbydate');
+                    console.log('------------------------------------');
                 }
             );
     }
@@ -896,6 +905,59 @@ export class SuperviseurComponent implements OnInit {
        this.showModalPPV(content);
     }
 
+
+    public doughnutChartLabelsAP: string[] = ['Pas deposit', 'Faible', 'Passable', 'Bien'];
+    public doughnutChartDataAP: number[] = [150, 100, 50, 25];
+    public datasetsAP: any[];
+    public etatdepositlot:any;
+    public lotetatdeposit:any;
+    public rowsOnPageAP = 12;
+    public sortByAP = "depositactuel";
+    public sortOrderAP = "desc";
+    public filterQueryAP:any;
+
+    public etatDepositAP(){
+        this._apiplatform.getEtatdepositbylotbysup()
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.datasetsAP = [{
+                            data: data.message.nbrepoints,
+                            backgroundColor: ["blue", "red", "orange", "green"]
+                        }];
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getEtatdepositbylotbysup');
+                }
+            );
+
+    }
+    public detailEtatDepositAP(lot:string){
+        console.log(lot);
+        this.etatdepositlot = undefined;
+        this._apiplatform.getDetailEtatdepositbylotbysup({lot:lot})
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.etatdepositlot = data.message;
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getDetailEtatdepositbylotbysup');
+                }
+            )
+
+    }
+    public chartClickedAP(e:any):void {
+        if (e.active[0]){
+            this.lotetatdeposit = e.active[0]._model.label;
+            this.detailEtatDepositAP(this.lotetatdeposit);
+        }
+    }
 
 
 

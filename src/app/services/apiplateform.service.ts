@@ -84,6 +84,22 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
+    getEtatdepositbylotbysup(){
+        let url = this.link+"/apiplatform/etatdepositbylotbysup";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getDetailEtatdepositbylotbysup(data:any){
+        let url = this.link+"/apiplatform/detailetatdepositbylotbysup";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 
 }

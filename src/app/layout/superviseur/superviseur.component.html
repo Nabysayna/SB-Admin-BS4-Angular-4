@@ -8,7 +8,7 @@
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Clients valider</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Suivi Points Sentool</button>
     </div>
     <hr>
@@ -438,22 +438,22 @@
             <div class="card">
                 <div class="card-header card-primary">
                     <div class="panel panel-heading">
-                        <h5>Détail par {{typedateperformancesadminpdv}}/{{lotperformancesadminpdv}}.</h5>
+                        <h5>Détail performance par {{typedateperformancesadminpdv}}/{{lotperformancesadminpdv}}.</h5>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-responsive" [mfData]="performancesadminpdv" #mfppv="mfDataTable"
+                    <table class="table table-responsive" [mfData]="performancesadminpdv | dataFilterSuivipdvperformanceparsup: filterQueryPPV" #mfppv="mfDataTable"
                            [mfRowsOnPage]="rowsOnPagePPV" [(mfSortBy)]="sortByPPV" [(mfSortOrder)]="sortOrderPPV">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th><mfDefaultSorter by="adminpdv">Superviseur pdv</mfDefaultSorter></th>
-                            <th><mfDefaultSorter by="telephone">Telephone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="adminpdv">Superviseur</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                             <th><mfDefaultSorter by="recette">Recette</mfDefaultSorter></th>
                             <th>Option</th>
                         </tr>
                         <tr>
-                            <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQuery"/></label></th>
+                            <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQueryPPV"/></label></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -463,6 +463,70 @@
                             <td>{{admin.telephone}}</td>
                             <td>{{admin.recette}}</td>
                             <td><button (click)="detailperformancesadminclasserbydateandlot(admin,contentSuiviPointsperformanceByLot)">Détail</button></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 2rem">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5><i class="fa fa-pie-chart"></i>Etat déposit des points par lot.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150px" baseChart
+                            [labels]="doughnutChartLabelsAP"
+                            [datasets]="datasetsAP"
+                            [colors]="colorsEmptyObject"
+                            [chartType]="'doughnut'"
+                            (chartClick)="chartClickedAP($event)"
+                    ></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6" *ngIf="etatdepositlot">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Détail état déposit par Lot/{{lotetatdeposit}}.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive" [mfData]="etatdepositlot | dataFilterSuivipdvetatdepositparsup: filterQueryAP" #mfppv="mfDataTable"
+                           [mfRowsOnPage]="rowsOnPageAP" [(mfSortBy)]="sortByAP" [(mfSortOrder)]="sortOrderAP">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><mfDefaultSorter by="name_adminpdv">Superviseur</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="cautiondebase">Déposit initial</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="caution">Déposit actuel</mfDefaultSorter></th>
+                        </tr>
+                        <tr>
+                            <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQueryAP"/></label></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let admin of mfppv.data; let i = index">
+                            <td>{{ i + 1  }}</td>
+                            <td>{{admin.name_adminpdv}}</td>
+                            <td>{{admin.telephone}}</td>
+                            <td>{{admin.cautiondebase}}</td>
+                            <td>{{admin.caution}}</td>
                         </tr>
                         </tbody>
                         <tfoot>
