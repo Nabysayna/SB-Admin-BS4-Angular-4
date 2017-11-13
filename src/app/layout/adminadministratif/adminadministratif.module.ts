@@ -6,6 +6,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminadministratifComponent } from './adminadministratif.component';
 import { AdminadministratifRoutingModule } from './adminadministratif-routing.module';
 import { PageHeaderModule } from './../../shared';
+import { DataTableModule } from "angular2-datatable";
+
+import {DataFilterCommercialAdminAdminPipe} from "./filterdata-commercialAdminAdmin.pipe";
+import {DataFilterNewPointAdminAdminPipe} from "./filterdata-newpointAdminAdmin.pipe";
+import {DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe} from "./filterdata-reclamationsnonresoluAdminAdmin.pipe";
+
 
 
 
@@ -16,9 +22,17 @@ import { PageHeaderModule } from './../../shared';
         AdminadministratifRoutingModule,
         PageHeaderModule,
         NgbModule.forRoot(),
+
+        DataTableModule,
+        NgbModule.forRoot(),
     ],
     declarations: [
     	AdminadministratifComponent,
+
+        DataFilterCommercialAdminAdminPipe,
+        DataFilterNewPointAdminAdminPipe,
+
+        DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe
     ]
 })
 

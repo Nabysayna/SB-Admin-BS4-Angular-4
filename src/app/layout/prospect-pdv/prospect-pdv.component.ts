@@ -35,7 +35,6 @@ export class ProspectPdvComponent implements OnInit {
     public adresse_point:any;
     public adresse_proprietaire:any;
     public zonesactivites:{activites:any[],zones:any[]};
-    public regionsactivites:{activites:any[],regions:any[]};
     public isSelect=true;
     public souszonespoints:any[];
     public souszonespropietaires:any[];
@@ -72,37 +71,65 @@ export class ProspectPdvComponent implements OnInit {
     constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http, public router: Router) { }
 
     ngOnInit() {
-        this.point = JSON.parse(this.infoprospect.point);
-        this._utilService.getZoneActivite()
+        console.log(this.infoprospect);
+        this._utilService.getRegion()
             .subscribe(
-                data => this.zonesactivites = data,
+                data => this.regions = data,
                 error => alert(error),
                 () => {
-                    this._utilService.getAllDataPoint(this.infoprospect.id_point)
+                    this._utilService.getZoneActivite()
                         .subscribe(
                             data => {
-                                this.alldatapoint = data;
-                                this.avoter(this.alldatapoint.avis-1);
-                                this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
-                                this.adresse_proprietaire = JSON.parse(this.alldatapoint.adresse_proprietaire);
-                                let letactivites = JSON.parse(this.alldatapoint.activites);
-                                this.optionsActivite = this.zonesactivites.activites.map(function(type) {
-                                    if (letactivites.includes(type.activite)){
-                                        return {name:type.activite, value:type.id, checked:true};
-                                    }
-                                    else{
-                                        return {name:type.activite, value:type.id, checked:false};
-                                    }
-                                });
-                                console.log(this.adresse_point)
+                                this.zonesactivites = data;
                             },
                             error => alert(error),
                             () => {
-                                this.selectZonePoint();
-                                this.selectZoneProprietaire();
-                                this.adresse_point.geospatialpoint = {latitude:0, longitude:0};
+                                this._utilService.getAllDataPoint(this.infoprospect.id_point)
+                                    .subscribe(
+                                        data => {
+                                            console.log(data);
+
+                                            this.alldatapoint = data;
+                                            this.avoter(this.alldatapoint.avis-1);
+                                            this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
+                                            this.adresse_proprietaire = JSON.parse(this.alldatapoint.adresse_proprietaire);
+                                            let letactivites = JSON.parse(this.alldatapoint.activites);
+                                            this.optionsActivite = this.zonesactivites.activites.map(function(type) {
+                                                if (letactivites.includes(type.activite)){
+                                                    return {name:type.activite, value:type.id, checked:true};
+                                                }
+                                                else{
+                                                    return {name:type.activite, value:type.id, checked:false};
+                                                }
+                                            });
+                                            console.log(this.adresse_point);
+                                            this.adresse_point = {
+                                                regionpoint:this.adresse_point.regionpoint?this.adresse_point.regionpoint:'Dakar',
+                                                zonepoint:this.adresse_point.zonepoint?this.adresse_point.zonepoint:'Dakar',
+                                                souszonepoint:this.adresse_point.souszonepoint?this.adresse_point.souszonepoint:'Dakar',
+                                                adressepoint:this.adresse_point.adressepoint?this.adresse_point.adressepoint:'',
+                                                codepostalpoint:this.adresse_point.codepostalpoint?this.adresse_point.codepostalpoint:0,
+                                                geospatialpoint:this.adresse_point.geospatialpoint?this.adresse_point.geospatialpoint:{latitude:0, longitude:0}
+                                            }
+                                            console.log(this.adresse_point);
+
+
+                                        },
+                                        error => alert(error),
+                                        () => {
+                                            this._utilService.getZoneByRegion(this.adresse_point.regionpoint)
+                                                .subscribe(
+                                                    data => this.zonespoints = data,
+                                                    error => alert(error),
+                                                    () => {
+                                                        this.selectZonePoint();
+                                                    }
+                                                );
+                                        }
+                                    );
                             }
                         );
+
                 }
             );
 
@@ -119,17 +146,6 @@ export class ProspectPdvComponent implements OnInit {
             );
     }
 
-    getRegionActivite(){
-        this._utilService.getRegionActivite()
-            .subscribe(
-                data => {
-                    this.regionsactivites = data;
-                },
-                error => alert(error),
-                () => console.log(this.regionsactivites)
-            );
-    }
-
     public getAllServices(){
         this._utilService.getServices()
             .subscribe(
@@ -141,6 +157,30 @@ export class ProspectPdvComponent implements OnInit {
                             this.reponsesProspect.push("") ;
                         }
                       }
+            );
+    }
+
+    public regions:any[];
+    public zonespoints:any[];
+    getRegion(){
+        this._utilService.getRegion()
+            .subscribe(
+                data => {
+                    this.regions = data;
+                },
+                error => alert(error),
+                () => console.log(this.regions)
+            );
+    }
+    selectRegionPoint(){
+        this.adresse_point.zonepoint = '--Choix zone--';
+        this.adresse_point.souszonepoint = '--Choix sous zone--';
+        this.souszonespoints= [];
+        this._utilService.getZoneByRegion(this.adresse_point.regionpoint)
+            .subscribe(
+                data => this.zonespoints = data,
+                error => alert(error),
+                () => console.log(this.zonespoints)
             );
     }
 

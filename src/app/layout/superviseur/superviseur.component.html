@@ -9,8 +9,8 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>-->
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>-->
     </div>
     <hr>
 </div>
@@ -126,7 +126,7 @@
                         <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
                         <th>Consultation</th>
                         <th>Qualification</th>
-                        <th>Action</th>
+                        <th colspan="2">Action</th>
                     </tr>
                     <tr>
                         <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
@@ -142,11 +142,18 @@
                         <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
                         <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
                         <td>
-                            <select class="form-control input-sm" [(ngModel)]="item.qualification">
+                            <select class="form-control input-sm" [(ngModel)]="item.qualification" (change)="choixqualification(item)">
                                 <option>--Choisir une action--</option>
                                 <option>Valider</option>
                                 <option>A relancer</option>
                                 <option>Abandonner</option>
+                            </select>
+                        </td>
+                        <td *ngIf="item.ischoixvalide">
+                            <select style="width:8rem;" class="form-control input-sm" [(ngModel)]="item.choixsouscrit"  (change)="choixsouscription(item)">
+                                <option>SenT-Wafa</option>
+                                <option>SenTool</option>
+                                <option>Wafa</option>
                             </select>
                         </td>
                         <td>
@@ -186,7 +193,7 @@
                         <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
                         <th>Consultation</th>
                         <th>Qualification</th>
-                        <th>Action</th>
+                        <th colspan="2">Action</th>
                     </tr>
                     <tr>
                         <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
@@ -202,11 +209,18 @@
                         <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
                         <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
                         <td>
-                            <select class="form-control input-sm" [(ngModel)]="item.qualification">
+                            <select class="form-control input-sm" [(ngModel)]="item.qualification" (change)="choixqualification(item)">
                                 <option>--Choisir une action--</option>
                                 <option>Valider</option>
                                 <option>A relancer</option>
                                 <option>Abandonner</option>
+                            </select>
+                        </td>
+                        <td *ngIf="item.ischoixvalide">
+                            <select style="width:8rem;" class="form-control input-sm" [(ngModel)]="item.choixsouscrit"  (change)="choixsouscription(item)">
+                                <option>SenT-Wafa</option>
+                                <option>SenTool</option>
+                                <option>Wafa</option>
                             </select>
                         </td>
                         <td>
@@ -455,7 +469,7 @@
                     <tfoot>
                     <tr class="text-center center-block">
                         <td colspan="6" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>

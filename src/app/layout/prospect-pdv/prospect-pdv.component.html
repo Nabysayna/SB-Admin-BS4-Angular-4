@@ -28,28 +28,28 @@
       </div>
     </div>
     <div class="row">
-        <!--<div class="form-group col-md-3">
-            <label>Région point</label>
-            <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint">
-                <option>&#45;&#45;Choix région&#45;&#45;</option>
-                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
-            </select>
-        </div>-->
-        <div class="form-group col-md-3">
-            <label>Zone point</label>
-            <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint">
-                <option>--Choix zone--</option>
-                <option  *ngFor="let zone of zonesactivites.zones">{{zone.nom}}</option>
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-        <label>Sous zone point</label>
-        <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
-            <option>--Choix sous zone--</option>
-            <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
-        </select>
+      <div class="form-group col-sm-3" *ngIf="regions">
+          <label>Region point</label>
+          <select class="form-control input-sm" [(ngModel)]="adresse_point.regionpoint" (change)="selectRegionPoint()">
+              <option>--Choix région--</option>
+              <option  *ngFor="let region of regions">{{region.nom}}</option>
+          </select>
       </div>
-      <div class="form-group col-md-3">
+      <div class="form-group col-sm-3" *ngIf="zonespoints">
+          <label>Zone point</label>
+          <select class="form-control input-sm" [(ngModel)]="adresse_point.zonepoint" (change)="selectZonePoint()">
+              <option>--Choix zone--</option>
+              <option  *ngFor="let zone of zonespoints">{{zone.nom}}</option>
+          </select>
+      </div>
+      <div class="form-group col-sm-3">
+          <label>Sous zone point</label>
+          <select class="form-control input-sm" [(ngModel)]="adresse_point.souszonepoint">
+              <option>--Choix sous zone--</option>
+              <option  *ngFor="let souszone of souszonespoints">{{souszone.nom}}</option>
+          </select>
+      </div>
+      <div class="form-group col-sm-3">
         <label>Code postale</label>
         <input type="number" [(ngModel)]="adresse_point.codepostalpoint"   name="codepostalpoint" id="codepostalpoint" class="form-control"  placeholder="code postal point">
       </div>
@@ -188,7 +188,8 @@
 
 <div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem" *ngIf="!isEnregistrerProspect">
   <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()" [disabled]="reponsesProspect.length == 0  || !uploadfinished">Valider les nouvelles données</button>
+    <button type="button" class="btn btn-warning" (click)="enregistrerProspect()"
+            [disabled]="reponsesProspect.length == 0 || !uploadfinished || !adresse_point.adressepoint || adresse_point.souszonepoint=='--Choix sous zone--' || adresse_point.zonepoint=='--Choix zone--' || adresse_point.regionpoint=='--Choix région--'">Valider les nouvelles données</button>
   </div>
 </div>
 

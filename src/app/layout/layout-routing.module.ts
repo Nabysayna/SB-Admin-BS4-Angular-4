@@ -16,6 +16,9 @@ const routes: Routes = [
 
             { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },
+
+            { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
+
             { path: 'manager', loadChildren: './manageradmin/manageradmin.module#ManageradminModule' },
             { path: 'managerstock', loadChildren: './managerstock/managerstock.module#ManagerstockModule' },
             { path: 'marketingcom', loadChildren: './marketingcom/marketingcom.module#MarketingcomModule' },

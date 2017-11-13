@@ -12,8 +12,8 @@ export class UtilService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers = new Headers();
     private basetoken:any;
@@ -144,6 +144,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     getlistsDeposit(){
         let url = this.link+"/client/getlistDeposit";
            let datas = JSON.stringify({token:this.basetoken});
@@ -151,6 +152,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     validerDepositcc(){
         let url = this.link+"/client/validerDepositcc";
            let datas = JSON.stringify({token:this.basetoken});
@@ -158,6 +160,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     alertdepositcc(){
          let url = this.link+"/client/alertdepositcc";
            let datas = JSON.stringify({token:this.basetoken});
@@ -165,6 +168,7 @@ export class UtilService {
         return this._http.post(url, param ,{headers:this.headers})
             .map(res => res.json());
     }
+
     getlistsDepositcc(){
         let url = this.link+"/client/getlistDepositcc";
            let datas = JSON.stringify({token:this.basetoken});
@@ -267,6 +271,22 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getAdminCCSuiviPoints(){
+        let url = this.link+"/client/getadminccsuivipoints";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getEncienpoints(){
+        let url = this.link+"/client/getencienpoints";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getPointsdeploye(){
         let url = this.link+"/client/getpointsdeploye";
         let datas = JSON.stringify({token:this.basetoken});
@@ -285,6 +305,22 @@ export class UtilService {
 
     getComSuperviseurs(){
         let url = this.link+"/util/commercial-superviseur";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getPointssouscritBBS(){
+        let url = this.link+"/client/getpointssouscritbbs";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getAdmincomsuiviPP(){
+        let url = this.link+"/client/getadmincomsuivipp";
         let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

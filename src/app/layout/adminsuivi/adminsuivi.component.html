@@ -29,8 +29,8 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-            	<table class="table table-hover" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <div class="row">
+            	<table class="table table-hover table-responsive table-sm" [mfData]="datasuperviseur | zonesAdminFilter: filtreZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 			        <thead>
 			            <tr>
 			                <th><mfDefaultSorter by="dateassignation">Date assignation</mfDefaultSorter></th>
@@ -60,7 +60,7 @@
 			        <tfoot>
 			            <tr class="text-center center-block">
 			                <td colspan="8" class="text-center center-block">
-			                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+			                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
 			                </td>
 			            </tr>
 			        </tfoot>
@@ -99,8 +99,8 @@
 
 	<div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-		    	<table class="table table-hover" [mfData]="datacommercial | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <div class="row">
+		    	<table class="table table-hover table-responsive table-sm" [mfData]="datacommercial | zonesAdminFilter: filtreZone | souszonesAdminFilter: filtreSousZone | dataAdminFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
 			    	<thead>
 				        <tr>
 				            <th><mfDefaultSorter by="dateassignation">Date</mfDefaultSorter></th>
@@ -126,7 +126,7 @@
 			        <tfoot>
 				        <tr class="text-center center-block">
 				            <td colspan="8" class="text-center center-block">
-				                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+				                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
 				            </td>
 				        </tr>
 			        </tfoot>
@@ -136,37 +136,59 @@
 	</div>
 </div>
 
-<div class="row" style="padding-bottom: 2rem" *ngIf="sousmenuHead.menuHead3">
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
-        <div class="card mb-12">
-            <div class="card-header">
-                Performance globale
+<div class="container-fluid" *ngIf="sousmenuHead.menuHead3">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5><i class="fa fa-pie-chart"></i>Performance globale.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" ></canvas>
+                </div>
             </div>
-            <div class="card-block">
-                <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" >
-                </canvas>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance CC.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" ></canvas>
+                </div>
             </div>
         </div>
     </div>
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
-        <div class="card">
-            <div class="card-header">
-                Performance des superviseurs
-            </div>
-            <div class="card-block">
-                <canvas baseChart [datasets]="barChartDataSuperviseur" [labels]="barChartLabelsSuperviseur" [options]="barChartOptions" [legend]="true" [chartType]="'bar'">
-                </canvas>
+
+    <div class="row" style="margin-top: 2rem"  *ngIf="data">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5><i class="fa fa-pie-chart"></i>Etat déposit des points par lot.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartDataSuperviseur" [labels]="barChartLabelsSuperviseur" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="page-header col-xs-12 col-sm-12" style="padding-bottom: 2rem" *ngIf="data">
-        <div class="card">
-            <div class="card-header">
-                Performance des commerciaux
-            </div>
-            <div class="card-block">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="true" [chartType]="'bar'">
-                </canvas>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance Commerciaux.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
             </div>
         </div>
     </div>

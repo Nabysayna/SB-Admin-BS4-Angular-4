@@ -96,7 +96,6 @@ export class SuperviseurComponent implements OnInit {
         reponsesProspect : [],
         piecesFournies : []
     };
-
     zone:any[];
     souszone:any[];
     public clientsentool: any = {
@@ -111,7 +110,6 @@ export class SuperviseurComponent implements OnInit {
     };
 
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
-
 
     public modalRef: NgbModalRef;
 
@@ -168,6 +166,8 @@ export class SuperviseurComponent implements OnInit {
                                     dates_suivi:type.dates_suivi,
                                     reponse:type.reponse,
                                     qualification:"--Choisir une action--",
+                                    ischoixvalide:false,
+                                    choixsouscrit:"SenTool",
                                     client:client
                                 }
                             }
@@ -219,6 +219,8 @@ export class SuperviseurComponent implements OnInit {
                                     dates_suivi:type.dates_suivi,
                                     reponse:type.reponse,
                                     qualification:"--Choisir une action--",
+                                    ischoixvalide:false,
+                                    choixsouscrit:"SenTool",
                                     client:client
                                 }
                             }
@@ -341,10 +343,11 @@ export class SuperviseurComponent implements OnInit {
         return p.nom_point;
     }
 
-
     getLibellePiece(item){
         return item.split("#")[0] ;
     }
+
+
 
 
     /************************************************************************************
@@ -473,9 +476,21 @@ export class SuperviseurComponent implements OnInit {
     }
 
 
+
+
     /************************************************************************************
      *********************************   PARTIE SUIVI ASSIGNATION  et RELANCE ****************************
      ***********************************************************************************/
+
+    choixqualification(item: any){
+        console.log('-----------');
+        if(item.qualification == "Valider") item.ischoixvalide = true
+        else item.ischoixvalide = false;
+    }
+
+    choixsouscription(item: string){
+        console.log('choixsouscription');
+    }
 
     validersuivisuperviseur(suivi:any){
         let suivisuperviseur = {
@@ -484,6 +499,8 @@ export class SuperviseurComponent implements OnInit {
             reponse:suivi.reponse,
             qualification:suivi.qualification,
             id_assigner:suivi.id_assigner,
+            choixsouscrit: suivi.choixsouscrit,
+            client:suivi.client,
             id_commercial:suivi.id_commercial,
         };
         this.datasuivi = this.datasuivi.filter(opt => opt!=suivi);
@@ -506,6 +523,8 @@ export class SuperviseurComponent implements OnInit {
             reponse:suivi.reponse,
             qualification:suivi.qualification,
             id_assigner:suivi.id_assigner,
+            client:suivi.client,
+            choixsouscrit: suivi.choixsouscrit,
             id_commercial:suivi.id_commercial,
         };
         this.datasuiviarelancer = this.datasuiviarelancer.filter(opt => opt!=suivi);
@@ -742,6 +761,7 @@ export class SuperviseurComponent implements OnInit {
                 () => console.log('getSouszoneByZoneByRegion')
             );
     }
+
 
 
 

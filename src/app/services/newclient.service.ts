@@ -12,8 +12,8 @@ export class NewclientService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers = new Headers();
     private basetoken:any;
@@ -52,5 +52,30 @@ export class NewclientService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
+
+    validerSouscritSentool(data:any){
+        let url = this.link+"/client/validersouscritsentool";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validerSouscritSentoolAndWafacash(data:any){
+        let url = this.link+"/client/validersouscritsentoolandwafacash";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validerSouscritWafacash(data:any){
+        let url = this.link+"/client/validersouscritwafacash";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 }

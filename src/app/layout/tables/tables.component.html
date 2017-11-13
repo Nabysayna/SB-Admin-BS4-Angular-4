@@ -37,8 +37,8 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
 
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="data | regionsFilter: filtreRegion | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="data | regionsFilter: filtreRegion | zonesFilter: filtreZone | souszonesFilter: filtreSousZone | dataFilter: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="dateajout">Date assignation</mfDefaultSorter></th>
@@ -64,9 +64,9 @@
                         <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}</td>
                         <td>{{item.commentaire?item.commentaire:'---'}}</td>
                         <td >
-                            <button type="button" class="btn btn-primary" (click)="open(content, item)">Voir Map</button>
+                            <button type="button" class="btn btn-primary btn-sm" (click)="open(content, item)">Voir Map</button>
                         </td>
-                        <td><button type="button" class="btn btn-primary" (click)="open(contentProspect, item)">Prospecter</button></td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="open(contentProspect, item)">Prospecter</button></td>
                     </tr>
                     </tbody>
                     <tfoot>

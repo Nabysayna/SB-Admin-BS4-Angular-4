@@ -1,12 +1,13 @@
 <h3 class="page-header"><u>Administrateur commercial</u></h3>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
   	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-		<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Affectation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Les nouveaux points</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Les points souscris à Sentool</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Etat deposits points Sentool</button>-->
+		<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi points</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Suivi assignations</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi com</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Affectation</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Les nouveaux points</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Points souscris à Sentool</button>
 	</div>
     <hr>
 </div>
@@ -46,14 +47,14 @@
             <input type="number" class="form-control input-sm"  [(ngModel)]="objetifsuperviseur" name="objetifsuperviseur" />
         </div>
 	</div>
-    <div *ngIf="isEnregistrerAssignation" class="row col-sm-12 text-center center-block">
+    <div *ngIf="isEnregistrerAssignation" class="row text-center center-block">
         <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
             <strong>Success!</strong> Assignation avec success.
         </ngb-alert>
     </div>
-    <div class="row col-sm-12 text-center center-block" style="padding-bottom: 1rem">
+    <div class="row text-center center-block" style="padding-bottom: 1rem">
     	<button type="button"
-                class="btn btn-warning  input-sm"
+                class="btn btn-warning btn-sm"
                 (click)="assignersuperviseur()"
                 style="margin-left: auto; margin-right: auto;"
                 [disabled]="
@@ -66,53 +67,103 @@
                 ">Assigner</button>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-		        <table class="table table-hover" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-	                <thead>
-	                    <tr>
-	                        <th>#</th>
-	                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-	                        <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
-	                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-	                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-	                        <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
-	                        <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
-	                    </tr>
-	                </thead>
-	                <tbody>
-	                    <tr *ngFor="let item of mf.data; let i = index ">
-	                        <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
-	                        <td>{{item.libellepoint}}</td>
-	                        <td>{{item.fullname}}</td>
-	                        <td>{{item.telephone}}</td>
-	                        <td>{{item.adresse}}</td>
-	                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
-	                        <td><textarea  class="form-control" type="text" name="commentaire-{{i}}" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
-	                    </tr>
-	                </tbody>
-	                <tfoot>
-	                    <tr class="text-center center-block">
-	                        <td colspan="8" class="text-center center-block">
-	                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-	                        </td>
-	                    </tr>
-	                </tfoot>
-                </table>
-            </div>
-        </div>
+        <table class="table table-hover table-responsive table-sm" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of mf.data; let i = index "[ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0)?'red':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'orange'}">
+                    <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
+                    <td>{{item.libellepoint}}</td>
+                    <td>{{item.fullname}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.adresse}}</td>
+                    <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                    <td><textarea  class="form-control" type="text" name="commentaire-{{i}}" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="text-center center-block">
+                    <td colspan="8" class="text-center center-block">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
 	</div>
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
-	<app-adminsuivi></app-adminsuivi>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance globale.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" ></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance Points.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartDataPP" [colors]="colorsEmptyObject" [labels]="doughnutChartLabelsPP" [chartType]="'doughnut'" ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 2rem"  *ngIf="data">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance CC.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartDataSuperviseur" [labels]="barChartLabelsSuperviseur" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance Commerciaux.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="commerciaux | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="commerciaux | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
@@ -143,7 +194,7 @@
                     <tfoot>
                     <tr class="text-center center-block">
                         <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>
@@ -156,36 +207,36 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead4" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="listenewpoints | dataFilterNewPoint: filterQueryNewPoint" #mfNewPoint="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listeadminccsuivipoints | dataFilterNewPoint: filterQueryNewPoint" #mfadminsuivipoints="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
-                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_commercial">Commercial ajouté</mfDefaultSorter></th>
+                        <th colspan="3" style="margin: 0 auto; text-align: center">Action</th>
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryNewPoint"/></th>
-                        <th>Total : {{listenewpoints.length}}</th>
+                        <th>Total : {{listeadminccsuivipoints.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mfNewPoint.data; let i = index ">
-                        <td>{{item.date_ajout}}</td>
+                    <tr *ngFor="let item of mfadminsuivipoints.data; let i = index ">
                         <td>{{item.nom_point}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>
                         <td>{{item.adresse_point}}</td>
-                        <td>{{item.fullname_commercial}}</td>
+                        <td><button style="background-color: orange" class="btn btn-sm" (click)="validresouscritsentool(item)" *ngIf="item.infosup.service_sentool==0"><i class="fa fa-check"></i> Sentool</button></td>
+                        <td><button style="background-color: yellow" class="btn btn-sm" (click)="validresouscritwafacash(item)" *ngIf="item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Wafacash</button></td>
+                        <td><button style="background-color: green" class="btn btn-sm" (click)="validresouscritsentoolandwafacash(item)" *ngIf="item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Sen & Wafa</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
                     <tr class="text-center center-block">
                         <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>
@@ -198,38 +249,34 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead5" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="listepointsdepoye | dataFilterNewPoint: filterQueryDeploye" #mfPointDeploye="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsouscrits | dataFilterNewPoint: filterQueryDeploye" #mfPointsouscrits="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
-                        <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="nom_point">Nom Boutique</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_commercial">Commercial déployé</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="souscription">Souscription</mfDefaultSorter></th>
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryDeploye"/></th>
-                        <th>Total : {{listepointsdepoye.length}}</th>
+                        <th>Total : {{listepointsouscrits.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mfPointDeploye.data; let i = index ">
-                        <td>{{item.date_ajout}}</td>
-                        <td>{{item.nom_point}}</td>
+                    <tr *ngFor="let item of mfPointsouscrits.data; let i = index " [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0 && item.infosup.en_suivi==1)?'red':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
                         <td>{{item.nom_point}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>
                         <td>{{item.adresse_point}}</td>
-                        <td>{{item.fullname_commercial}}</td>
+                        <td>{{item.souscription}}</td>
                     </tr>
                     </tbody>
                     <tfoot>
                     <tr class="text-center center-block">
                         <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>
@@ -240,10 +287,14 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead6" >
+    <app-adminsuivi></app-adminsuivi>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead7" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="listepointsdepoye | dataFilterNewPoint: filterQueryDeploye" #mfPointDeploye="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsdepoye | dataFilterNewPoint: filterQueryDeploye" #mfPointDeploye="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
@@ -273,7 +324,7 @@
                     <tfoot>
                     <tr class="text-center center-block">
                         <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>
@@ -332,6 +383,3 @@
         </div>
     </div>
 </ng-template>
-
-
-

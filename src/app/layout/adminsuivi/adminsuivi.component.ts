@@ -116,28 +116,6 @@ export class AdminsuiviComponent implements OnInit {
                             error => alert(error),
                             () => {
                                 console.log('cool');
-/*
-                                this._assignationsuiviService.getSuperviseursForPerformancetest()
-                                    .subscribe(
-                                        data => {
-                                            console.log(data.message);
-
-                                            let dataobjectiffixe:number[] = data.message.map(function(type) {
-                                                return type.objectif;
-                                            });
-                                            let dataobjectifatteint:number[] = data.message.map(function(type) {
-                                                return type.atteint;
-                                            });
-
-                                            console.log(dataobjectiffixe);
-                                            console.log('--------------------------');
-                                            console.log(dataobjectifatteint);
-
-                                        },
-                                        error => alert(error),
-                                        () => console.log('dans cool')
-                                    );
-*/
                             }
                         );
                 }

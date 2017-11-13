@@ -73,7 +73,7 @@ export class ModifPdvComponent implements OnInit {
                                 console.log(this.alldatapoint.nom_point);
                                 this.avoter(this.alldatapoint.avis-1);
                                 this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
-                                this.adresse_point.regionpoint = JSON.parse(this.alldatapoint.adresse_point).regionpoint?JSON.parse(this.alldatapoint.adresse_point).regionpoint:'';
+                                this.adresse_point.regionpoint = JSON.parse(this.alldatapoint.adresse_point).regionpoint?JSON.parse(this.alldatapoint.adresse_point).regionpoint:'Dakar';
                                 this.adresse_point.zonepoint = JSON.parse(this.alldatapoint.adresse_point).zonepoint;
                                 this.adresse_point.souszonepoint = JSON.parse(this.alldatapoint.adresse_point).souszonepoint;
                                 this.adresse_point.codepostalpoint = JSON.parse(this.alldatapoint.adresse_point).codepostalpoint;

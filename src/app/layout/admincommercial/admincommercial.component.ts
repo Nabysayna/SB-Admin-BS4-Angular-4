@@ -4,6 +4,7 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 import {Router} from "@angular/router";
 import {NewclientService} from "../../services/newclient.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
+import {Color} from "ng2-charts";
 
 @Component({
   selector: 'app-admincommercial',
@@ -21,7 +22,7 @@ export class AdmincommercialComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false};
 
     public modalRef: NgbModalRef;
 
@@ -38,7 +39,15 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.getRegionsSuperviseurs();
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+
+            this.filtreRegion = "--Choix région--";
+            this.filtreZone = "";
+            this.filtreSousZone = "-";
+            this.choixsuperviseur = "--Choix superviseur--";
+            this.objetifsuperviseur = 0;
+            this.selectSouszone()
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -46,6 +55,10 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+
+            this.getCommerciauxForPerformance();
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
@@ -53,6 +66,8 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = true;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
             this.getComSuperviseurs();
         }
         if(option == 4){
@@ -61,7 +76,9 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = true;
             this.menuHead.menuHead5 = false;
-            this.getNouveauxpoints();
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.getAdminCCSuiviPoints();
 
         }
         if(option == 5){
@@ -70,10 +87,30 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.getPointssouscritBBS();
+        }
+        if(option == 6){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = true;
+            this.menuHead.menuHead7 = false;
+        }
+        if(option == 7){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = true;
             this.getPointsdeploye();
         }
-
-  	}
+    }
 
     public toInt(num: string) { return +num; }
 
@@ -108,7 +145,6 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
 
-
     public showModal(content) {
         this.modalRef = this.modalService.open(content, {size: "lg"});
     }
@@ -116,6 +152,7 @@ export class AdmincommercialComponent implements OnInit {
     public closedModal(){
         this.modalRef.close('Close click');
     }
+
 
     /************************************************************************************
      ********************   PARTIE ASSIGNATIONS   ****************************
@@ -139,6 +176,7 @@ export class AdmincommercialComponent implements OnInit {
 
 
     public selectZone(){
+        this.isEnregistrerAssignation = false;
         this.optionassignations = [];
         this._utilService.getSouszoneByZoneByRegion({region: this.filtreRegion.toString(), zone: this.filtreZone.toString()})
             .subscribe(
@@ -159,6 +197,7 @@ export class AdmincommercialComponent implements OnInit {
                             libellepoint:type.libellepoint,
                             prenom:type.prenom,
                             nom:type.nom,
+                            infosup:JSON.parse(type.infosup),
                             fullname:type.fullname,
                             telephone:type.telephone,
                             adresse:type.adresse,
@@ -216,8 +255,12 @@ export class AdmincommercialComponent implements OnInit {
                     data => {
                         console.log(data);
                         this.isEnregistrerAssignation = true;
-                        this.filtreZone = "--Choix zone--";
-                        this.selectZone();
+                        this.filtreRegion = "--Choix région--";
+                        this.filtreZone = "";
+                        this.filtreSousZone = "-";
+                        this.choixsuperviseur = "--Choix superviseur--";
+                        this.objetifsuperviseur = 0;
+                        this.selectSouszone()
                     },
                     error => alert(error),
                     () => console.log('assignationsuperviseur')
@@ -225,9 +268,11 @@ export class AdmincommercialComponent implements OnInit {
         }
     }
 
+
     /************************************************************************************
      ********************   PARTIE AFFECTATIONS   ****************************
      ***********************************************************************************/
+
     public rowsOnPageCom = 10;
     sortByCom = "fullname";
     public sortOrderCom = "asc";
@@ -244,7 +289,6 @@ export class AdmincommercialComponent implements OnInit {
         this.superviseurNew = {access:'sup', prenom:'', nom:'', login:'', pwd:'', telephone:77};
         this.showModal(content);
     }
-
 
     public getComSuperviseurs(): void {
         this._utilService.getComSuperviseurs()
@@ -295,6 +339,108 @@ export class AdmincommercialComponent implements OnInit {
                 },
                 error => alert(error),
                 () => console.log('')
+            );
+    }
+
+
+
+    /************************************************************************************
+     *************************************   SUIVI POINTS   ****************************
+     ***********************************************************************************/
+
+
+    public listeadminccsuivipoints:any[] = [];
+    public getAdminCCSuiviPoints(): void {
+        this._utilService.getAdminCCSuiviPoints()
+            .subscribe(
+                data => {
+                    this.listeadminccsuivipoints = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adresse_point);
+                        return {
+                            id:type.id,
+                            date_ajout:type.date_ajout,
+                            nom_point:type.nom_point,
+                            fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
+                            telephone_gerant:type.telephone_gerant,
+                            infosup:JSON.parse(type.infosup),
+                            adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log('getAdminCCSuiviPoints')
+            );
+    }
+
+    validresouscritsentool(point: any){
+        console.log(point);
+        this._newclientService.validerSouscritSentool(point)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
+                },
+                error => alert(error),
+                () => console.log('validerSouscritSentool')
+            );
+    }
+    validresouscritwafacash(point: any){
+        console.log(point);
+        this._newclientService.validerSouscritWafacash(point)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
+                },
+                error => alert(error),
+                () => console.log('validerSouscritWafacash')
+            );
+    }
+    validresouscritsentoolandwafacash(point: any){
+        console.log(point);
+        this._newclientService.validerSouscritSentoolAndWafacash(point)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
+                },
+                error => alert(error),
+                () => console.log('validerSouscritWafacash')
+            );
+    }
+
+
+
+
+    /************************************************************************************
+     **********************************   POINTS SOUSCRITS   ****************************
+     ***********************************************************************************/
+
+
+    public listepointsouscrits:any[] = [];
+    public getPointssouscritBBS(): void {
+        this._utilService.getPointssouscritBBS()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.listepointsouscrits = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adresse_point);
+                        return {
+                            id:type.id,
+                            date_ajout:type.date_ajout,
+                            nom_point:type.nom_point,
+                            infosup:JSON.parse(type.infosup),
+                            fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
+                            telephone_gerant:type.telephone_gerant,
+                            adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
+                            souscription: (JSON.parse(type.infosup).service_sentool==1 && JSON.parse(type.infosup).service_wafacash==0)?'SenTool':(JSON.parse(type.infosup).service_sentool==0 && JSON.parse(type.infosup).service_wafacash==1)?'WafaCash':(JSON.parse(type.infosup).service_sentool==1 && JSON.parse(type.infosup).service_wafacash==1)?'SenTool & WafaCash':'Abandonné',
+                            fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
+                        }
+                    });
+                    console.log(this.listepointsouscrits);
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
             );
     }
 
@@ -361,9 +507,118 @@ export class AdmincommercialComponent implements OnInit {
 
 
 
+
     /************************************************************************************
-     ********************   PARTIE ETAT DEPOSIT   ****************************
+     **********************************   PARTIE SUIVI COM   ****************************
      ***********************************************************************************/
+
+    public data:any[];
+    public barChartOptions: any = { scaleShowVerticalLines: false, responsive: true };
+    public barChartData: any[] = [];
+    public barChartLabels: string[] = [];
+    public barChartDataSuperviseur: any[] = [];
+    public barChartLabelsSuperviseur: string[] = [];
+    public doughnutChartLabels: string[] = ['Objetifs non atteint', 'Objectifs Atteint'];
+    public doughnutChartData: number[] = [50, 50];
+    getCommerciauxForPerformance() {
+        this._assignationsuiviService.getCommerciauxForPerformance()
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        console.log(data.message);
+
+                        let dataobjectiffixe:number[] = data.message.map(function(type) {
+                            return type.objectif;
+                        });
+                        let dataobjectifatteint:number[] = data.message.map(function(type) {
+                            return type.atteint;
+                        });
+                        this.barChartData = [
+                            { data: dataobjectiffixe, label: 'Objectifs fixés' },
+                            { data: dataobjectifatteint, label: 'Objectifs atteints' }
+                        ];
+                        this.barChartLabels = data.message.map(function(type) {
+                            return type.fullname_commercial;
+                        });
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this._assignationsuiviService.getSuperviseursForPerformancetest()
+                        .subscribe(
+                            data => {
+                                console.log(data.message);
+                                this.data = data.message;
+                                if(data.errorCode){
+
+                                    let supervisorDataAll = this.data;
+                                    console.log(supervisorDataAll);
+
+                                    let dataobjectiffixe:number[] = data.message.map(function(type) {
+                                        return type.objectif;
+                                    });
+                                    let dataobjectifatteint:number[] = data.message.map(function(type) {
+                                        return type.atteint;
+                                    });
+                                    this.barChartDataSuperviseur = [
+                                        { data: dataobjectiffixe, label: 'Objectifs fixés' },
+                                        { data: dataobjectifatteint, label: 'Objectifs atteints' }
+                                    ];
+                                    this.barChartLabelsSuperviseur = data.message.map(function(type) {
+                                        return type.prenom+' '+type.nom;
+                                    });
+
+
+
+                                    let compteuratteint = 0;
+                                    let compteurtotalobjectif = 0;
+                                    for(let element of data.message){
+                                        compteurtotalobjectif = compteurtotalobjectif  + Number(element.objectif);
+                                        compteuratteint = compteuratteint +Number(element.atteint);
+                                    }
+                                    this.doughnutChartData = [compteurtotalobjectif - compteuratteint, compteuratteint];
+                                }
+                                else{
+                                    this.router.navigate(['/login']);
+                                }
+                            },
+                            error => alert(error),
+                            () => {
+                                this.getAdmincomsuiviPP();
+                            }
+                        );
+                }
+            );
+    }
+
+    public doughnutChartLabelsPP: string[] = ['Aucun', 'SenTool', 'Wafa', 'BBS'];
+    public doughnutChartDataPP: number[] = [1, 3, 2, 4];
+    public colorsEmptyObject: Array<Color> = [{ backgroundColor: ["blue", "orange", "yellow", "green"] }];
+
+
+    getAdmincomsuiviPP() {
+        this._utilService.getAdmincomsuiviPP()
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.doughnutChartDataPP = [
+                            data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==0).length,
+                            data.message.filter(opt => opt.service_sentool==1 && opt.service_wafacash==0).length,
+                            data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==1).length,
+                            data.message.filter(opt => opt.service_sentool==1 && opt.service_wafacash==1).length
+                        ];
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => { }
+            );
+    }
 
 
 

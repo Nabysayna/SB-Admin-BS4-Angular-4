@@ -3,8 +3,8 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-12">
-            <div class="row table-responsive">
-                <table class="table table-hover" [mfData]="points | dataFilterContact: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="points | dataFilterContact: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>

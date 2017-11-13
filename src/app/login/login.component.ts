@@ -48,26 +48,26 @@ export class LoginComponent implements OnInit {
         if ( !access){
             this.fakevalues = false;
         }
+        else if ( access.match(9) ){
+            this.router.navigate(['/marketingcom']);
+        }
+        else if ( access.match(8) ){
+            this.router.navigate(['/managerstock']);
+        }
+        else if ( access.match(6) ){
+            this.router.navigate(['/administratif']);
+        }
         else if ( access.match(5) ){
             this.router.navigate(['/dashboard']);
         }
         else if ( access.match(4) ){
             this.router.navigate(['/superviseur']);
         }
-        else if ( access.match(6) ){
-            this.router.navigate(['/administratif']);
+        else if ( access.match(3) ){
+            this.router.navigate(['/admincom']);
         }
         else if ( access.match(2) ){
             this.router.navigate(['/adminadministratif']);
-        }
-        else if ( access.match(8) ){
-            this.router.navigate(['/managerstock']);
-        }
-        else if ( access.match(9) ){
-            this.router.navigate(['/marketingcom']);
-        }
-        else if ( access.match(3) ){
-            this.router.navigate(['/admincom']);
         }
         else if ( access.match(1) ){
             this.router.navigate(['/manager']);
