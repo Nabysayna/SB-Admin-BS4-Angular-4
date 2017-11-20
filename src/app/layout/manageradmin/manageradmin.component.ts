@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {Router} from "@angular/router";
+import {Color} from "ng2-charts";
 
 @Component({
   selector: 'app-admincommercial',
@@ -35,7 +36,7 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this.getDashboardNbres();
         this.killsetinterval = setInterval(() => {
             this.getDashboardNbres();
-        }, 30000);
+        }, 60000);
 
     }
 
@@ -73,9 +74,19 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                     }
                 },
                 error => alert(error),
-                () => console.log('getDashboardNbres')
+                () => {
+                    this.getAdmincomsuiviPP();
+                }
             );
     }
+
+
+
+
+
+    /************************************************************************************
+     **********************************   PARTIE AFFECTATION COMMERCIAL   ****************************
+     ***********************************************************************************/
 
     public getComSuperviseurs(): void {
         this._utilService.getComSuperviseurs()
@@ -122,5 +133,42 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                 () => console.log('affectationCommercial')
             );
     }
+
+
+
+
+    /************************************************************************************
+     **********************************   PARTIE SUIVI COM   ****************************
+     ***********************************************************************************/
+
+    public doughnutChartLabelsPP: string[] = ['Aucun', 'SenTool', 'Wafa', 'BBS'];
+    public doughnutChartDataPP: number[] = [1, 3, 2, 4];
+    public colorsEmptyObject: Array<Color> = [{ backgroundColor: ["blue", "orange", "yellow", "green"] }];
+
+
+    getAdmincomsuiviPP() {
+        this._utilService.getAdmincomsuiviPP()
+            .subscribe(
+                data => {
+                    console.log(data.message);
+                    if(data.errorCode){
+                        this.doughnutChartDataPP = [
+                            data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==0).length,
+                            data.message.filter(opt => opt.service_sentool==1 && opt.service_wafacash==0).length,
+                            data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==1).length,
+                            data.message.filter(opt => opt.service_sentool==1 && opt.service_wafacash==1).length
+                        ];
+                    }
+                    else{
+                        this.router.navigate(['/login']);
+                    }
+                },
+                error => alert(error),
+                () => { }
+            );
+    }
+
+
+
 
 }

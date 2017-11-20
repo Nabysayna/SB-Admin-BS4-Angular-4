@@ -31,7 +31,8 @@ export class SuperviseurComponent implements OnInit {
    public email='';
    public region='';
    public szone='';
-   public tel='';
+    public tel='';
+    public id_client_sentool=-1;
    public adresse='';
    public entreprise='';
    public boutique='';
@@ -335,6 +336,7 @@ export class SuperviseurComponent implements OnInit {
          this.boutique='';
          this.adresse='';
          this.tel='';
+         this.id_client_sentool=-1;
 
   }
 
@@ -623,9 +625,9 @@ export class SuperviseurComponent implements OnInit {
 
     public reponsesouscripdejaexit: boolean = false;
     public clsentool: any = {
-        nom:'', prenom:'', telephone:'', email:'',
-        nometps:'', nomshop:'',
-        type:'superviseur', idcommercial:0,
+        nom:'', prenom:'', telephone:'',
+        email:'', nometps:'', nomshop:'',
+        type:'superviseur', idcommercial:0, id_client_sentool:-1,
         adresse:{
             region:'--Choix région--',
             zone:'--Choix zone--',
@@ -654,7 +656,9 @@ export class SuperviseurComponent implements OnInit {
                             email:client.email_gerant,
                             note:type.note,
                             id_assigner:type.id_assigner,
+                            id_client:type.id_client,
                             id_commercial:type.id_commercial,
+                            id_client_sentool:type.id_client,
                             dates_suivi:type.dates_suivi,
                             reponse:type.reponse,
                             qualification:"--Choisir une action--",
@@ -693,6 +697,7 @@ export class SuperviseurComponent implements OnInit {
         this.nom=full[ng-1];
         this.email=p.email;
         this.tel=p.telephone;
+        this.id_client_sentool=p.id_client_sentool;
         this.adresse=p.adresse;
         this.entreprise=p.libellepoint;
         this.zne=p.zone;
@@ -705,6 +710,7 @@ export class SuperviseurComponent implements OnInit {
         this.clsentool.prenom=cli.prenomSouscritSentool;
         this.clsentool.email=cli.emailSouscritSentool;
         this.clsentool.telephone=cli.telSouscritSentool;
+        this.clsentool.id_client_sentool=cli.id_client_sentool;
         this.clsentool.nometps= cli.entrepriseSouscritSentool;
         this.clsentool.nomshop= cli.boutiqueSouscritSentool;
         this.clsentool.adresse.region=cli.regionSouscritSentool;
@@ -716,7 +722,10 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     if(data.errorCode){
                         if(data.message =='dejainscrit'){ this.reponsesouscripdejaexit = true; }
-                        else { this.closedModal(); }
+                        else {
+                            this.closedModal();
+                            this.getProspect();
+                        }
                     }
                     else { this.router.navigate(['/login']); }
                 },
@@ -777,15 +786,18 @@ export class SuperviseurComponent implements OnInit {
         this._utilService.getClients()
             .subscribe(
                 data => {
+                    console.log(data);
                     this.clients = data.message.map(function(type){
                         let client = JSON.parse(type.adresse);
                         return {
-                            adresse:client.address,
-                            gerant:type.gerant+" "+type.gerantnom,
+                            adresse:client.adressepoint +", "+client.regionpoint,
+                            gerant:type.gerant,
                             date_ajout:type.date_ajout,
                             tel:type.tel,
+                            id_client_sentool:type.id_client_sentool,
                             nom_point:type.nom_point,
                             commercial:type.commercial,
+                            infosup:JSON.parse(type.infosup),
                         }
                     });
                 },
@@ -984,7 +996,15 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     console.log(data);
                     if(data.errorCode){
-                        this.etatdepositlot = data.message;
+                        this.etatdepositlot = data.message.map(function (opt) {
+                            return {
+                                caution:opt.caution,
+                                cautiondebase:opt.cautiondebase,
+                                telephone:opt.telephone,
+                                date_last_modif:opt.date_last_modif.date.split(' ')[0],
+                                name_adminpdv:opt.name_adminpdv,
+                            }
+                        });
                     }
                 },
                 error => alert(error),

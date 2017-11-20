@@ -13,7 +13,7 @@
             <div class="card text-white bg-info">
                 <div class="card-body">
                     <h4 class="card-title">{{dashboardNbres.nbrenewpts}}</h4>
-                    <p class="card-text">Nouveaux points.</p>
+                    <p class="card-text">Points.</p>
                 </div>
             </div>
         </div>
@@ -42,6 +42,22 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Etat Points.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartDataPP" [colors]="colorsEmptyObject" [labels]="doughnutChartLabelsPP" [chartType]="'doughnut'" ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead3" >

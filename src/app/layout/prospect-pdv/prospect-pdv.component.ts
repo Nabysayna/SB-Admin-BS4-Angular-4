@@ -71,7 +71,6 @@ export class ProspectPdvComponent implements OnInit {
     constructor(private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private http: Http, public router: Router) { }
 
     ngOnInit() {
-        console.log(this.infoprospect);
         this._utilService.getRegion()
             .subscribe(
                 data => this.regions = data,
@@ -87,8 +86,6 @@ export class ProspectPdvComponent implements OnInit {
                                 this._utilService.getAllDataPoint(this.infoprospect.id_point)
                                     .subscribe(
                                         data => {
-                                            console.log(data);
-
                                             this.alldatapoint = data;
                                             this.avoter(this.alldatapoint.avis-1);
                                             this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
@@ -102,25 +99,22 @@ export class ProspectPdvComponent implements OnInit {
                                                     return {name:type.activite, value:type.id, checked:false};
                                                 }
                                             });
-                                            console.log(this.adresse_point);
                                             this.adresse_point = {
-                                                regionpoint:this.adresse_point.regionpoint?this.adresse_point.regionpoint:'Dakar',
-                                                zonepoint:this.adresse_point.zonepoint?this.adresse_point.zonepoint:'Dakar',
-                                                souszonepoint:this.adresse_point.souszonepoint?this.adresse_point.souszonepoint:'Dakar',
-                                                adressepoint:this.adresse_point.adressepoint?this.adresse_point.adressepoint:'',
+                                                regionpoint:this.adresse_point.regionpoint?this.adresse_point.regionpoint:'',
+                                                zonepoint:this.adresse_point.zonepoint?this.adresse_point.zonepoint:undefined,
+                                                souszonepoint:this.adresse_point.souszonepoint?this.adresse_point.souszonepoint:undefined,
+                                                adressepoint:this.adresse_point.adressepoint?this.adresse_point.adressepoint:undefined,
                                                 codepostalpoint:this.adresse_point.codepostalpoint?this.adresse_point.codepostalpoint:0,
                                                 geospatialpoint:this.adresse_point.geospatialpoint?this.adresse_point.geospatialpoint:{latitude:0, longitude:0}
                                             }
                                             console.log(this.adresse_point);
-
-
                                         },
                                         error => alert(error),
                                         () => {
                                             this._utilService.getZoneByRegion(this.adresse_point.regionpoint)
                                                 .subscribe(
                                                     data => this.zonespoints = data,
-                                                    error => alert(error),
+                                                    error => console.log(error),
                                                     () => {
                                                         this.selectZonePoint();
                                                     }
@@ -291,9 +285,7 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
           let headers = new Headers();
 
           headers.append('Accept', 'application/json');
-          let options = new RequestOptions({
-                              headers: headers
-                            });
+          let options = new RequestOptions({ headers: headers });
 
           this.http.post(`${this.apiEndPoint}`, formData, options)
               .map(res => res.json())

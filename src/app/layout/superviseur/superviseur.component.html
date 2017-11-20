@@ -8,7 +8,7 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Deploiement</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Points à déployé</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>-->
     </div>
@@ -347,8 +347,9 @@
                             <th>#</th>
                             <th><mfDefaultSorter by="name_adminpdv">Superviseur</mfDefaultSorter></th>
                             <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                            <th><mfDefaultSorter by="cautiondebase">Déposit initial</mfDefaultSorter></th>
-                            <th><mfDefaultSorter by="caution">Déposit actuel</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="cautiondebase">Dépot initial</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="date_last_modif">Date dépot</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="caution">Dépot actuel</mfDefaultSorter></th>
                         </tr>
                         <tr>
                             <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQueryAP"/></label></th>
@@ -358,9 +359,10 @@
                         <tr *ngFor="let admin of mfppv.data; let i = index">
                             <td>{{ i + 1  }}</td>
                             <td>{{admin.name_adminpdv}}</td>
-                            <td>{{admin.telephone}}</td>
-                            <td>{{admin.cautiondebase}}</td>
-                            <td>{{admin.caution}}</td>
+                            <td style="text-align: center">{{admin.telephone}}</td>
+                            <td style="text-align: center">{{admin.cautiondebase}}</td>
+                            <td>{{admin.date_last_modif}}</td>
+                            <td style="text-align: center">{{tocurrency(admin.caution)}}</td>
                         </tr>
                         </tbody>
                         <tfoot>
@@ -425,7 +427,7 @@
                         <th>commercial</th>
                         <th>Action</th>
                     </tr>
-	               <tr *ngFor="let p of prospects let i=index">
+	               <tr *ngFor="let p of prospects; let i=index">
 					   <th>{{i+1}}</th>
 	                   <td>{{p.libellepoint}}</td>
 	                   <td>{{p.fullname}}</td>
@@ -441,7 +443,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row">
-                <table class="table table-hover table-responsive table-sm" [mfData]="clients | dataFilterListeCli: filterQueryCli" #mfCli="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCli" [(mfSortOrder)]="sortOrderCli">
+                <table class="table table-hover table-responsive table-sm" [mfData]="clients | dataFilterListePostefeuille: filterQueryCli" #mfCli="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCli" [(mfSortOrder)]="sortOrderCli">
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
@@ -457,7 +459,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let p of mfCli.data; let i = index ">
+                    <tr *ngFor="let p of mfCli.data; let i = index "  [ngStyle]="{'color': 'white', 'background-color': (p.infosup.service_sentool==0 && p.infosup.service_wafacash==0)?'blue':(p.infosup.service_sentool==1 && p.infosup.service_wafacash==0)?'orange':(p.infosup.service_sentool==0 && p.infosup.service_wafacash==1)?'yellow':'green'}">
                         <td>{{p.date_ajout}}</td>
                         <td>{{p.nom_point}}</td>
                         <td>{{p.gerant}}</td>
@@ -512,31 +514,32 @@
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="entrepriseSouscritSentool">Nom de l'entreprise</label>
-                  <input type="text" class="form-control" id="entrepriseSouscritSentool" name="entrepriseSouscritSentool" [(ngModel)]="entreprise" placeholder="entrer le nom de l'entreprise">
+                  <input type="text" class="form-control" id="entrepriseSouscritSentool" name="entrepriseSouscritSentool" [(ngModel)]="entreprise" placeholder="entrer le nom de l'entreprise" required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="boutiqueSouscritSentool">Nom de la boutique en ligne</label>
-                  <input type="text" class="form-control" id="boutiqueSouscritSentool" name="boutiqueSouscritSentool" [(ngModel)]="boutique" placeholder="entrer le nom de la boutique en ligne">
+                  <input type="text" class="form-control" id="boutiqueSouscritSentool" name="boutiqueSouscritSentool" [(ngModel)]="boutique" placeholder="entrer le nom de la boutique en ligne"  required>
               </div>
           </div>
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="prenomSouscritSentool">Prénom du client</label>
-                  <input type="text" class="form-control" id="prenomSouscritSentool" name="prenomSouscritSentool" [(ngModel)]="prenom" placeholder="entrer le prénom du client">
+                  <input type="text" class="form-control" id="prenomSouscritSentool" name="prenomSouscritSentool" [(ngModel)]="prenom" placeholder="entrer le prénom du client"  required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="nomSouscritSentool">Nom du client</label>
-                  <input type="text" class="form-control" id="nomSouscritSentool" name="nomSouscritSentool" [(ngModel)]="nom" placeholder="entrer le nom du client">
+                  <input type="text" class="form-control" id="nomSouscritSentool" name="nomSouscritSentool" [(ngModel)]="nom" placeholder="entrer le nom du client"  required>
               </div>
           </div>
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="emailSouscritSentool">Email du client</label>
-                  <input type="email" class="form-control" id="emailSouscritSentool" name="emailSouscritSentool" [(ngModel)]="email" placeholder="entrer le login du compte">
+                  <input type="email" class="form-control" id="emailSouscritSentool" name="emailSouscritSentool" [(ngModel)]="email" placeholder="entrer le login du compte"  required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="telSouscritSentool">Téléphone du client</label>
-                  <input type="number" class="form-control" id="telSouscritSentool" name="telSouscritSentool" [(ngModel)]="tel" placeholder="entrer le téléphone pour les accès">
+                  <input type="number" class="form-control" id="telSouscritSentool" name="telSouscritSentool" [(ngModel)]="tel" placeholder="entrer le téléphone pour les accès"  required>
+                  <input type="number" id="id_client_sentool" name="id_client_sentool" [(ngModel)]="id_client_sentool" min="0" style="display: none">
               </div>
           </div>
           <div class="form-group row">
@@ -569,14 +572,14 @@
           <div class="form-group row" *ngIf="issouszones && szone!='--Choix sous zone--'">
               <label for="adresseSouscritSentool" class="col-sm-3 col-form-label">Adresse exacte</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="adresseSouscritSentool" name="adresseSouscritSentool" [(ngModel)]="adresse" placeholder="Adresse exacte" rows="3"></textarea>
+                  <textarea class="form-control" id="adresseSouscritSentool" name="adresseSouscritSentool" [(ngModel)]="adresse" placeholder="Adresse exacte" rows="3"  required></textarea>
               </div>
           </div>
           <div *ngIf="reponsesouscripdejaexit" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
               <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
           </div>
           <div style="text-align: center; margin: 0 auto; margin-top: 2rem">
-              <input *ngIf="!rep1" type="button" [disabled]="!for.valid" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
+              <input *ngIf="!rep1" type="button" [disabled]="!for.valid || !iszones || region=='--Choix région--' || zne=='--Choix zone--' || szone=='--Choix sous zone--'" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
           </div>
        </form>
 	</div>

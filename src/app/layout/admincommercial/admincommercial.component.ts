@@ -603,6 +603,7 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getAdmincomsuiviPP()
             .subscribe(
                 data => {
+                    console.log(data.message);
                     if(data.errorCode){
                         this.doughnutChartDataPP = [
                             data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==0).length,

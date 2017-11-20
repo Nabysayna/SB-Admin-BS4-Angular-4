@@ -80,7 +80,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of mf.data; let i = index "[ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0)?'red':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'orange'}">
+                <tr *ngFor="let item of mf.data; let i = index " [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0)?'red':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'orange'}">
                     <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
                     <td>{{item.libellepoint}}</td>
                     <td>{{item.fullname}}</td>
@@ -120,7 +120,7 @@
             <div class="card">
                 <div class="card-header card-primary">
                     <div class="panel panel-heading">
-                        <h5>Performance Points.</h5>
+                        <h5>Etat Points.</h5>
                     </div>
                 </div>
                 <div class="card-body">

@@ -22,6 +22,7 @@ const routes: Routes = [
             { path: 'manager', loadChildren: './manageradmin/manageradmin.module#ManageradminModule' },
             { path: 'managerstock', loadChildren: './managerstock/managerstock.module#ManagerstockModule' },
             { path: 'marketingcom', loadChildren: './marketingcom/marketingcom.module#MarketingcomModule' },
+            { path: 'comptable', loadChildren: './comptable/comptable.module#ComptableModule' },
         ]
     }
 ];

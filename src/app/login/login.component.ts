@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
                 }
             },
             error => alert(error),
-            () => console.log(sessionStorage.getItem('currentUser'))
+            () => console.log('access')
         );
 
     }
@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit {
     public accesslevel(access: any){
         if ( !access){
             this.fakevalues = false;
+        }
+        else if ( access.match(10) ){
+            this.router.navigate(['/comptable']);
         }
         else if ( access.match(9) ){
             this.router.navigate(['/marketingcom']);
@@ -74,7 +77,7 @@ export class LoginComponent implements OnInit {
         }
         else {
             this.fakevalues = false;
-            console.log(typeof access);
+            //console.log(typeof access);
         }
     }
 

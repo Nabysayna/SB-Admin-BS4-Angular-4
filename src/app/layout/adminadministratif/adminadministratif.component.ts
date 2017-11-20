@@ -13,12 +13,12 @@ import {ApiPlatformService} from "../../services/apiplateform.service";
 
 export class AdminadministratifComponent implements OnInit {
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
+    public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false};
 
     constructor(public router: Router, private _utilService:UtilService,  private _apiPlatformService:ApiPlatformService, private _newclientService:NewclientService) { }
 
     ngOnInit() {
-        this.getEncienpoints();
+        this.getNouveauxpoints();
     }
 
     public menuHeadClick(option: number){

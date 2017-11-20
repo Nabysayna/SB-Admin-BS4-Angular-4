@@ -189,7 +189,7 @@
 <div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem" *ngIf="!isEnregistrerProspect">
   <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
     <button type="button" class="btn btn-warning" (click)="enregistrerProspect()"
-            [disabled]="reponsesProspect.length == 0 || !uploadfinished || !adresse_point.adressepoint || adresse_point.souszonepoint=='--Choix sous zone--' || adresse_point.zonepoint=='--Choix zone--' || adresse_point.regionpoint=='--Choix région--'">Valider les nouvelles données</button>
+            [disabled]="reponsesProspect.length == 0 || !uploadfinished || !alldatapoint.prenom_gerant || !alldatapoint.telephone_gerant || !alldatapoint.email_gerant || adresse_point.regionpoint=='--Choix région--' || adresse_point.zonepoint=='--Choix zone--' || adresse_point.souszonepoint=='--Choix sous zone--' || !adresse_point.adressepoint">Valider les nouvelles données</button>
   </div>
 </div>
 
