@@ -115,7 +115,6 @@ export class SuperviseurComponent implements OnInit {
 
     ngOnInit() {
         this.getAssignationsBySuperviseur();
-        //setInterval(()=>this.alertdeposit(),50000);
     }
 
     public menuHeadClick(option: number){
@@ -154,10 +153,10 @@ export class SuperviseurComponent implements OnInit {
                             if (!type.qualification){
                                 return {
                                     id:type.id,
-                                    libellepoint:client.nom_point,
-                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
-                                    telephone:client.telephone_gerant,
-                                    adresse:client.adresse_point.adressepoint!=undefined?client.adresse_point.adressepoint+" "+client.adresse_point.souszonepoint+" "+client.adresse_point.zonepoint:JSON.parse(client.adresse_point).adressepoint+" "+JSON.parse(client.adresse_point).souszonepoint+" "+JSON.parse(client.adresse_point).zonepoint,
+                                    libellepoint:type.p_nom_point,
+                                    fullname:type.p_prenom+" "+type.p_nom,
+                                    telephone:type.p_telephone,
+                                    adresse:JSON.parse(type.p_adresse_point).adressepoint+", "+JSON.parse(type.p_adresse_point).souszonepoint+", "+JSON.parse(type.p_adresse_point).zonepoint,
                                     note:type.note,
                                     id_assigner:type.id_assigner,
                                     id_commercial:type.id_commercial,
@@ -207,10 +206,10 @@ export class SuperviseurComponent implements OnInit {
                             if (type.qualification){
                                 return {
                                     id:type.id,
-                                    libellepoint:client.nom_point,
-                                    fullname:client.prenom_gerant+" "+client.nom_gerant,
-                                    telephone:client.telephone_gerant,
-                                    adresse:client.adresse_point.adressepoint!=undefined?client.adresse_point.adressepoint+" "+client.adresse_point.souszonepoint+" "+client.adresse_point.zonepoint:JSON.parse(client.adresse_point).adressepoint+" "+JSON.parse(client.adresse_point).souszonepoint+" "+JSON.parse(client.adresse_point).zonepoint,
+                                    libellepoint:type.p_nom_point,
+                                    fullname:type.p_prenom+" "+type.p_nom,
+                                    telephone:type.p_telephone,
+                                    adresse:JSON.parse(type.p_adresse_point).adressepoint+", "+JSON.parse(type.p_adresse_point).souszonepoint+", "+JSON.parse(type.p_adresse_point).zonepoint,
                                     note:type.note,
                                     id_assigner:type.id_assigner,
                                     id_commercial:type.id_commercial,
@@ -365,11 +364,13 @@ export class SuperviseurComponent implements OnInit {
                             libellepoint:JSON.parse(type.client).libellepoint,
                             prenom:JSON.parse(type.client).prenom,
                             nom:JSON.parse(type.client).nom,
-                            fullname:JSON.parse(type.client).fullname,
-                            telephone:JSON.parse(type.client).telephone,
-                            adresse:JSON.parse(type.client).adresse?JSON.parse(type.client).adresse:'-',
+                            fullname:type.p_prenom+" "+type.p_nom,
+                            telephone:type.p_telephone,
+                            adresse:JSON.parse(type.p_adresse_point).adressepoint?JSON.parse(type.p_adresse_point).adressepoint:'-',
                             note:JSON.parse(type.client).note,
-                            region:type.region?type.region:'Dakar', zone:type.zone, sous_zone:type.sous_zone,
+                            region:JSON.parse(type.p_adresse_point).regionpoint?JSON.parse(type.p_adresse_point).regionpoint:'Dakar',
+                            zone:JSON.parse(type.p_adresse_point).zonepoint,
+                            sous_zone:JSON.parse(type.p_adresse_point).souszonepoint,
                             commentaire:type.commentaire,
                             infosup:JSON.parse(type.infosup),
                             value:type.id, checked:false
@@ -616,6 +617,8 @@ export class SuperviseurComponent implements OnInit {
 
 
 
+
+
     /************************************************************************************
      ********************   PARTIE DEPLOIEMENT POINTS SUIVI   ****************************
      ***********************************************************************************/
@@ -696,10 +699,7 @@ export class SuperviseurComponent implements OnInit {
     }
 
     validernewclientsentool(){
-
-        console.log(this.clsentool);
-
-        /*this._apiplatform.souscrireSentool(this.clsentool)
+        this._apiplatform.souscrireSentool(this.clsentool)
             .subscribe(
                 data => {
                     if(data.errorCode){
@@ -713,7 +713,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => console.log('souscrireSentool')
-            );*/
+            );
     }
 
     getRegionSouscritSentool(){
@@ -756,6 +756,8 @@ export class SuperviseurComponent implements OnInit {
 
 
 
+
+
     /************************************************************************************
      ********************   PARTIE PORTEFUILLE   ****************************
      ***********************************************************************************/
@@ -787,6 +789,10 @@ export class SuperviseurComponent implements OnInit {
                 () => console.log(this.clients)
             );
     }
+
+
+
+
 
 
 

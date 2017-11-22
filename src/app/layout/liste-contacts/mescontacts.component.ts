@@ -59,7 +59,7 @@ export class MesContactsComponent implements OnInit {
                             prenom_gerant: type.prenom_gerant,
                             nom_gerant: type.nom_gerant,
                             telephone_gerant: type.telephone_gerant,
-                            email_gerant: type.email_gerant,
+                            email_gerant: type.email_gerant?type.email_gerant:'-',
 
                             prenom_proprietaire: type.prenom_proprietaire,
                             nom_proprietaire: type.prenom_proprietaire,

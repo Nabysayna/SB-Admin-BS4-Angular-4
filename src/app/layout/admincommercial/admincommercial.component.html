@@ -67,12 +67,12 @@
                 ">Assigner</button>
     </div>
     <div class="row">
-        <table class="table table-hover table-responsive table-sm" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+        <table class="table table-hover table-responsive" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
             <thead>
                 <tr>
                     <th>#</th>
                     <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-                    <th><mfDefaultSorter by="fullname">Gérant(e)</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="fullname">Client</mfDefaultSorter></th>
                     <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                     <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
                     <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
@@ -254,7 +254,7 @@
                     <thead>
                     <tr>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="souscription">Souscription</mfDefaultSorter></th>

@@ -61,8 +61,6 @@
       </fieldset>
       <fieldset class="form-group  col-md-6">
         <label>Cordonnées geospatiales du point</label>
-          <!--<input type="number" [(ngModel)]="adresse_point.geospatialpoint.latitude"   name="latitudepoint" id="latitudepoint" class="form-control"  placeholder={{infoprospect.latitude}}>
-          <input type="number" [(ngModel)]="adresse_point.geospatialpoint.longitude"   name="longitudepoint" id="longitudepoint" class="form-control"  placeholder={{infoprospect.longitude}}>-->
           <div class="row">
               <button (click)="coordonneesgeospatiales()" *ngIf="adresse_point.geospatialpoint.latitude==0" type="button" class="btn btn-primary btn-circle">
                   <i class="fa fa-search"></i>Coordonnées Géospatiales du point
@@ -189,7 +187,15 @@
 <div class="row center-block" style="padding-top: 2rem; padding-bottom: 1rem" *ngIf="!isEnregistrerProspect">
   <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
     <button type="button" class="btn btn-warning" (click)="enregistrerProspect()"
-            [disabled]="reponsesProspect.length == 0 || !uploadfinished || !alldatapoint.prenom_gerant || !alldatapoint.telephone_gerant || !alldatapoint.email_gerant || adresse_point.regionpoint=='--Choix région--' || adresse_point.zonepoint=='--Choix zone--' || adresse_point.souszonepoint=='--Choix sous zone--' || !adresse_point.adressepoint">Valider les nouvelles données</button>
+            [disabled]="
+                reponsesProspect.length == 0 ||
+                !uploadfinished ||
+                !alldatapoint.prenom_gerant ||
+                !alldatapoint.telephone_gerant ||
+                !alldatapoint.email_gerant ||
+                !alldatapoint.telephone_proprietaire ||
+                !alldatapoint.email_proprietaire ||
+                adresse_point.regionpoint=='--Choix région--' || adresse_point.zonepoint=='--Choix zone--' || adresse_point.souszonepoint=='--Choix sous zone--' || !adresse_point.adressepoint">Valider les nouvelles données</button>
   </div>
 </div>
 
