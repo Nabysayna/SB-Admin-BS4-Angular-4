@@ -318,6 +318,13 @@
                 <div class="card-header card-primary">
                     <div class="panel panel-heading">
                         <h5><i class="fa fa-pie-chart"></i>Etat déposit des points par lot.</h5>
+                        <div>
+                            <span style="background-color: red; color: black; text-align: center"> déposit &lsaquo; 25% </span>&nbsp;
+                            <span style="background-color: orange; color: black; text-align: center"> 25% déposit 50% </span>&nbsp;
+                            <span style="background-color: green; color: black; text-align: center"> déposit &rsaquo; 50% </span>
+                            <br/>
+                        </div>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -360,9 +367,9 @@
                             <td>{{ i + 1  }}</td>
                             <td>{{admin.name_adminpdv}}</td>
                             <td style="text-align: center">{{admin.telephone}}</td>
-                            <td style="text-align: center">{{admin.cautiondebase}}</td>
-                            <td>{{admin.date_last_modif}}</td>
-                            <td style="text-align: center">{{tocurrency(admin.caution)}}</td>
+                            <td style="text-align: right;">{{tocurrency(admin.cautiondebase)}}</td>
+                            <td style="text-align: center;">{{admin.date_last_modif}}</td>
+                            <td style="text-align: right;">{{tocurrency(admin.caution)}}</td>
                         </tr>
                         </tbody>
                         <tfoot>
@@ -421,7 +428,7 @@
                     <tr>
 						<th>#</th>
                         <th>Nom Point</th>
-                        <th>Gérant(e)</th>
+                        <th>Proprietaire</th>
                         <th>Téléphone</th>
                         <th>Adresse</th>
                         <th>commercial</th>
@@ -429,11 +436,11 @@
                     </tr>
 	               <tr *ngFor="let p of prospects; let i=index">
 					   <th>{{i+1}}</th>
-	                   <td>{{p.libellepoint}}</td>
-	                   <td>{{p.fullname}}</td>
+	                   <td>{{p.nom_point}}</td>
+                       <td>{{p.p_prenom}} {{p.p_nom}}</td>
 	                   <td>{{p.telephone}}</td>
-	                   <td>{{p.adresse}}</td>
-	                   <td>{{p.nomcommercial}}</td>
+	                   <td>{{p.adresse_point.adressepoint}}, {{p.adresse_point.souszonepoint}}, {{p.adresse_point.zonepoint}}, {{p.adresse_point.regionpoint}}</td>
+	                   <td>{{p.commercial}}</td>
 	                   <td><input type="button" (click)="rep1= false; modalAjout(contentnewclient,p)" value="action" class="btn btn-primary" /></td>
 	               </tr>
 	</table>
@@ -457,9 +464,20 @@
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCli"/></th>
                         <th>Total : {{clients.length}}</th>
                     </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let p of mfCli.data; let i = index "  [ngStyle]="{'color': 'white', 'background-color': (p.infosup.service_sentool==0 && p.infosup.service_wafacash==0)?'blue':(p.infosup.service_sentool==1 && p.infosup.service_wafacash==0)?'orange':(p.infosup.service_sentool==0 && p.infosup.service_wafacash==1)?'yellow':'green'}">
+                    <tr *ngFor="let p of mfCli.data; let i = index "  [ngStyle]="{'color': 'black', 'background-color': (p.infosup.service_sentool==0 && p.infosup.service_wafacash==0)?'blue':(p.infosup.service_sentool==1 && p.infosup.service_wafacash==0)?'orange':(p.infosup.service_sentool==0 && p.infosup.service_wafacash==1)?'yellow':'green'}">
                         <td>{{p.date_ajout}}</td>
                         <td>{{p.nom_point}}</td>
                         <td>{{p.gerant}}</td>
@@ -514,72 +532,71 @@
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="entrepriseSouscritSentool">Nom de l'entreprise</label>
-                  <input type="text" class="form-control" id="entrepriseSouscritSentool" name="entrepriseSouscritSentool" [(ngModel)]="entreprise" placeholder="entrer le nom de l'entreprise" required>
+                  <input type="text" class="form-control" id="entrepriseSouscritSentool" name="entrepriseSouscritSentool" [(ngModel)]="clsentool.nometps" placeholder="entrer le nom de l'entreprise" required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="boutiqueSouscritSentool">Nom de la boutique en ligne</label>
-                  <input type="text" class="form-control" id="boutiqueSouscritSentool" name="boutiqueSouscritSentool" [(ngModel)]="boutique" placeholder="entrer le nom de la boutique en ligne"  required>
+                  <input type="text" class="form-control" id="boutiqueSouscritSentool" name="boutiqueSouscritSentool" [(ngModel)]="clsentool.nomshop" placeholder="entrer le nom de la boutique en ligne"  required>
               </div>
           </div>
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="prenomSouscritSentool">Prénom du client</label>
-                  <input type="text" class="form-control" id="prenomSouscritSentool" name="prenomSouscritSentool" [(ngModel)]="prenom" placeholder="entrer le prénom du client"  required>
+                  <input type="text" class="form-control" id="prenomSouscritSentool" name="prenomSouscritSentool" [(ngModel)]="clsentool.prenom" placeholder="entrer le prénom du client"  required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="nomSouscritSentool">Nom du client</label>
-                  <input type="text" class="form-control" id="nomSouscritSentool" name="nomSouscritSentool" [(ngModel)]="nom" placeholder="entrer le nom du client"  required>
+                  <input type="text" class="form-control" id="nomSouscritSentool" name="nomSouscritSentool" [(ngModel)]="clsentool.nom" placeholder="entrer le nom du client"  required>
               </div>
           </div>
           <div class="row">
               <div class="form-group col-sm-6">
                   <label for="emailSouscritSentool">Email du client</label>
-                  <input type="email" class="form-control" id="emailSouscritSentool" name="emailSouscritSentool" [(ngModel)]="email" placeholder="entrer le login du compte"  required>
+                  <input type="email" class="form-control" id="emailSouscritSentool" name="emailSouscritSentool" [(ngModel)]="clsentool.email" placeholder="entrer le login du compte"  required>
               </div>
               <div class="form-group col-sm-6">
                   <label for="telSouscritSentool">Téléphone du client</label>
-                  <input type="number" class="form-control" id="telSouscritSentool" name="telSouscritSentool" [(ngModel)]="tel" placeholder="entrer le téléphone pour les accès"  required>
-                  <input type="number" id="id_client_sentool" name="id_client_sentool" [(ngModel)]="id_client_sentool" min="0" style="display: none">
+                  <input type="number" class="form-control" id="telSouscritSentool" name="telSouscritSentool" [(ngModel)]="clsentool.telephone" placeholder="entrer le téléphone pour les accès"  required>
               </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row" *ngIf="!(regions.length==0)">
               <label for="regionSouscritSentool" class="col-sm-3 col-form-label">Région</label>
               <div class="col-sm-9">
-                  <select class="form-control input-sm" id="regionSouscritSentool" name="regionSouscritSentool" [(ngModel)]="region" (change)="selectRegionSouscritSentool()">
+                  <select class="form-control input-sm" id="regionSouscritSentool" name="regionSouscritSentool" [(ngModel)]="clsentool.adresse.region" (change)="selectRegionSouscritSentool()">
                       <option selected>--Choix région--</option>
                       <option *ngFor="let region of regions">{{region.nom}}</option>
                   </select>
               </div>
           </div>
-          <div class="form-group row" *ngIf="iszones && region!='--Choix région--'">
+          <div class="form-group row" *ngIf="iszones && clsentool.adresse.region!='--Choix région--'">
               <label for="zneSouscritSentool" class="col-sm-3 col-form-label">Zones</label>
               <div class="col-sm-9">
-                  <select class="form-control input-sm" id="zneSouscritSentool" name="zneSouscritSentool" [(ngModel)]="zne" (change)="selectZoneSouscritSentool()">
+                  <select class="form-control input-sm" id="zneSouscritSentool" name="zneSouscritSentool" [(ngModel)]="clsentool.adresse.zone" (change)="selectZoneSouscritSentool()">
                       <option>--Choix zone--</option>
                       <option  *ngFor="let zone of zones">{{zone.nom}}</option>
                   </select>
               </div>
           </div>
-          <div class="form-group row" *ngIf="issouszones && zne!='--Choix zone--'">
+          <div class="form-group row" *ngIf="issouszones && clsentool.adresse.zone!='--Choix zone--'">
               <label for="szoneSouscritSentool" class="col-sm-3 col-form-label">Sous zones</label>
               <div class="col-sm-9">
-                  <select class="form-control input-sm" id="szoneSouscritSentool" name="szoneSouscritSentool" [(ngModel)]="szone">
+                  <select class="form-control input-sm" id="szoneSouscritSentool" name="szoneSouscritSentool" [(ngModel)]="clsentool.adresse.souszone">
                       <option>--Choix sous zone--</option>
                       <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
                   </select>
               </div>
           </div>
-          <div class="form-group row" *ngIf="issouszones && szone!='--Choix sous zone--'">
+          <div class="form-group row" *ngIf="issouszones && clsentool.adresse.souszone!='--Choix sous zone--'">
               <label for="adresseSouscritSentool" class="col-sm-3 col-form-label">Adresse exacte</label>
               <div class="col-sm-9">
-                  <textarea class="form-control" id="adresseSouscritSentool" name="adresseSouscritSentool" [(ngModel)]="adresse" placeholder="Adresse exacte" rows="3"  required></textarea>
+                  <textarea class="form-control" id="adresseSouscritSentool" name="adresseSouscritSentool" [(ngModel)]="clsentool.adresse.address" placeholder="Adresse exacte" rows="3"  required></textarea>
               </div>
           </div>
           <div *ngIf="reponsesouscripdejaexit" class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
               <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
           </div>
           <div style="text-align: center; margin: 0 auto; margin-top: 2rem">
-              <input *ngIf="!rep1" type="button" [disabled]="!for.valid || !iszones || region=='--Choix région--' || zne=='--Choix zone--' || szone=='--Choix sous zone--'" (click)="validernewclientsentool(for)"  value="valider" class="btn btn-success" />
+              <input *ngIf="!rep1" type="button" [disabled]="!for.valid || !iszones || clsentool.adresse.region=='--Choix région--' || clsentool.adresse.zone=='--Choix zone--' || clsentool.adresse.souszone=='--Choix sous zone--'" (click)="validernewclientsentool()"  value="valider" class="btn btn-success" />
           </div>
        </form>
 	</div>

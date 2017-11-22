@@ -20,9 +20,20 @@
                         <th colspan="5">Recherche: <input class="form-control" [(ngModel)]="filterQuery"/></th>
                         <th>Total : {{points.length}}</th>
                     </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mf.data; let i = index ">
+                    <tr *ngFor="let item of mf.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==1 && item.infosup.service_wafacash==1)?'green':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'green':'blue'}">
                         <td>{{item.date_ajout}}</td>
                         <td>{{item.libellepoint}}</td>
                         <td>{{item.fullname_proprietaire}}</td>
@@ -30,7 +41,7 @@
                         <td>{{item.telephone_gerant}}</td>
                         <td>{{item.email_gerant}}</td>
                         <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}, {{item.region}}</td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalModifPoint(contentModifPoint, item)">Modifier</button></td>
+                        <td><button *ngIf="item.infosup.service_sentool ==0 && item.infosup.service_wafacash==0"  type="button" class="btn btn-primary btn-sm" (click)="showModalModifPoint(contentModifPoint, item)">Modifier</button></td>
                     </tr>
                     </tbody>
                     <tfoot>

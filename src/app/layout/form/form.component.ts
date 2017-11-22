@@ -242,9 +242,9 @@ export class FormComponent implements OnInit {
         );
     }
 
-  apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
+    apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
 
-  fileChange(event) {
+    fileChange(event) {
       let fileList: FileList = event.target.files;
       if(fileList.length > 0) {
           let file: File = fileList[0];
@@ -270,7 +270,7 @@ export class FormComponent implements OnInit {
                   error => console.log(error)
               )
       }
-  }
+    }
 
 
 

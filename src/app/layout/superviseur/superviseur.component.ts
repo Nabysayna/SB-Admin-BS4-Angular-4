@@ -18,25 +18,24 @@ export class SuperviseurComponent implements OnInit {
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
     public rep1:any;
-    public rep2:any;
     public filterQuery:string = "";
     public filtreRegion:string = "--Choix région--";
     public filtreZone:string = "--Choix zone--";
     public filtreSousZone:string = "--Choix sous zone--";
     public choixcommercial:string = "--Choix commercial--";
     public objetifcommercial:number = 0;
-    reponse1:boolean;
+    public reponse1:boolean;
     public prenom='';
-   public nom='';
-   public email='';
-   public region='';
-   public szone='';
+    public nom='';
+    public email='';
+    public region='';
+    public szone='';
     public tel='';
     public id_client_sentool=-1;
-   public adresse='';
-   public entreprise='';
-   public boutique='';
-   public zne='';
+    public adresse='';
+    public entreprise='';
+    public boutique='';
+    public zne='';
     currentPointDocs : any ;
     reponsesPointAuProspect : any ;
 
@@ -46,7 +45,6 @@ export class SuperviseurComponent implements OnInit {
     rowsOnPage = 12;
     sortBy = "note";
     public sortOrder = "desc";
-    public sortByWordLength = (a: any) => { return a.adresse.length; }
 
     public regions:any[] = [];
     public zones:any[] = [];
@@ -60,7 +58,6 @@ export class SuperviseurComponent implements OnInit {
     public optionassignations:any[] = [];
     public datasuivi:any[] = [];
     public datasuiviarelancer:any[] = [];
-    public datasuivivalider:any[] = [];
     client: any = {
         nomboutique:'',
         nompoint:'',
@@ -636,88 +633,73 @@ export class SuperviseurComponent implements OnInit {
         },
     };
 
-    public showModalTop(content) {
-        this.modalRef = this.modalService.open(content, {size: "lg"});
-    }
+    public showModalTop(content) { this.modalRef = this.modalService.open(content, {size: "lg"}); }
     public getProspect(){
         this._utilService.getProspectValide()
             .subscribe(
                 data => {
+                    console.log(data);
                     this.prospects = data;
                     this.prospects = data.map(function(type){
-                        let client = JSON.parse(type.client);
-                        let commercial = JSON.parse(type.commercial);
                         return {
                             id:type.id,
-                            libellepoint:client.nom_point,
-                            fullname:client.prenom_gerant+" "+client.nom_gerant,
-                            telephone:client.telephone_gerant,
-                            adresse:client.adresse_point.adressepoint,
-                            email:client.email_gerant,
-                            note:type.note,
-                            id_assigner:type.id_assigner,
-                            id_client:type.id_client,
+                            nom_point:type.nom_point,
+                            commercial:JSON.parse(type.commercial).prenom+" "+JSON.parse(type.commercial).nom,
+                            p_prenom:type.p_prenom,
+                            p_nom:type.p_nom,
+                            email:type.email,
                             id_commercial:type.id_commercial,
-                            id_client_sentool:type.id_client,
-                            dates_suivi:type.dates_suivi,
-                            reponse:type.reponse,
-                            qualification:"--Choisir une action--",
-                            client:client,
-                            zone:client.adresse_point.zonepoint,
-                            szone:client.adresse_point.souszonepoint,
-                            nomcommercial:commercial.prenom+" "+commercial.prenom
+                            telephone:type.telephone,
+                            adresse_point:JSON.parse(type.adresse_point),
                         }
                     });
-                    console.log(this.prospects)
-                    //if(data.errorCode) this.prospects = data;
+                    this.getRegionSouscritSentool();
                 },
                 error => alert(error),
-                () => console.log(this.commercials)
+                () => console.log('getProspectValide')
             );
     }
 
     public modalAjout(content,p){
         this.reponsesouscripdejaexit = false;
+
         this.iszones = false;
         this.issouszones = false;
+        this.clsentool.nom = p.p_nom;
+        this.clsentool.prenom = p.p_prenom;
+        this.clsentool.telephone = p.telephone;
+        this.clsentool.email = p.email;
+        this.clsentool.nometps = p.nom_point;
+        this.clsentool.nomshop = p.nom_point;
         this.clsentool.idcommercial = p.id_commercial;
-        this.remplissage(p);
-        this.getRegionSouscritSentool();
+        this.clsentool.id_client_sentool = p.id;
+        this.clsentool.adresse.region = p.adresse_point.regionpoint?p.adresse_point.regionpoint:'--Choix région--';
+        this.clsentool.adresse.zone = p.adresse_point.zonepoint;
+        this.clsentool.adresse.souszone = p.adresse_point.souszonepoint;
+        this.clsentool.adresse.address = p.adresse_point.adressepoint;
+
+        this._utilService.getZoneByRegion(this.clsentool.adresse.region)
+            .subscribe(
+                data => {
+                    this.zones = data;
+                    if(this.zones.length!=0) this.iszones = true;
+                },
+                error => alert(error),
+                () => {
+
+                }
+            );
+        this.selectZoneSouscritSentool();
+
+
         this.showModalTop(content);
     }
 
-    remplissage(p){
-        var full=p.fullname.split(' ');
-        var ng=full.length;
-        var prenom=full[0];
-        for(var i=1;i<=ng-2;i++){
-            prenom+=" "+full[i];
-        }
-        this.prenom=prenom;
-        this.nom=full[ng-1];
-        this.email=p.email;
-        this.tel=p.telephone;
-        this.id_client_sentool=p.id_client_sentool;
-        this.adresse=p.adresse;
-        this.entreprise=p.libellepoint;
-        this.zne=p.zone;
-        this.szone=p.szone;
-    }
+    validernewclientsentool(){
 
-    validernewclientsentool(form:NgForm){
-        let cli=form.value;
-        this.clsentool.nom=cli.nomSouscritSentool;
-        this.clsentool.prenom=cli.prenomSouscritSentool;
-        this.clsentool.email=cli.emailSouscritSentool;
-        this.clsentool.telephone=cli.telSouscritSentool;
-        this.clsentool.id_client_sentool=cli.id_client_sentool;
-        this.clsentool.nometps= cli.entrepriseSouscritSentool;
-        this.clsentool.nomshop= cli.boutiqueSouscritSentool;
-        this.clsentool.adresse.region=cli.regionSouscritSentool;
-        this.clsentool.adresse.zone=cli.zneSouscritSentool;
-        this.clsentool.adresse.souszone=cli.szoneSouscritSentool;
-        this.clsentool.adresse.address=cli.adresseSouscritSentool;
-        this._apiplatform.souscrireSentool(this.clsentool)
+        console.log(this.clsentool);
+
+        /*this._apiplatform.souscrireSentool(this.clsentool)
             .subscribe(
                 data => {
                     if(data.errorCode){
@@ -731,7 +713,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => console.log('souscrireSentool')
-            );
+            );*/
     }
 
     getRegionSouscritSentool(){
@@ -746,9 +728,9 @@ export class SuperviseurComponent implements OnInit {
     }
     selectRegionSouscritSentool(){
         this.iszones = false;
-        this.zne = '--Choix zone--';
-        this.szone = '--Choix sous zone--';
-        this._utilService.getZoneByRegion(this.region)
+        this.clsentool.adresse.zone = '--Choix zone--';
+        this.clsentool.adresse.souszone = '--Choix sous zone--';
+        this._utilService.getZoneByRegion(this.clsentool.adresse.region)
             .subscribe(
                 data => {
                     this.zones = data;
@@ -760,7 +742,7 @@ export class SuperviseurComponent implements OnInit {
     }
     selectZoneSouscritSentool(){
         this.issouszones = false;
-        this._utilService.getSouszoneByZoneByRegion({region:this.region, zone: this.zne})
+        this._utilService.getSouszoneByZoneByRegion({region:this.clsentool.adresse.region, zone: this.clsentool.adresse.zone})
             .subscribe(
                 data => {
                     this.souszones = data;

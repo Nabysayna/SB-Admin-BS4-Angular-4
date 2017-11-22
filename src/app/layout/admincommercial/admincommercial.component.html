@@ -263,9 +263,20 @@
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryDeploye"/></th>
                         <th>Total : {{listepointsouscrits.length}}</th>
                     </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: red;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mfPointsouscrits.data; let i = index " [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0 && item.infosup.en_suivi==1)?'red':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
+                    <tr *ngFor="let item of mfPointsouscrits.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0 && item.infosup.en_suivi==1)?'red':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
                         <td>{{item.nom_point}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>

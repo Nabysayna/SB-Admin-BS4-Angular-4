@@ -42,6 +42,7 @@ export class MesContactsComponent implements OnInit {
                         let adresse = JSON.parse(type.adresse_point)
                         return {
                             id: type.id,
+                            infosup: JSON.parse(type.infosup),
                             libellepoint: type.nom_point,
                             fullname_gerant: type.prenom_gerant +' '+ type.nom_gerant,
                             fullname_proprietaire: type.prenom_proprietaire +' '+ type.nom_proprietaire,

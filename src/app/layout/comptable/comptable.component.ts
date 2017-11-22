@@ -27,6 +27,10 @@ export class ComptableComponent implements OnInit {
         clearInterval(this.killsetinterval);
     }
 
+    tocurrency(number){
+        return Number(number).toLocaleString();
+    }
+
 
 
     public menuHeadClick(option: number){
