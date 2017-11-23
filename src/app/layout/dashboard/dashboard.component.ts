@@ -10,6 +10,7 @@ import { routerTransition } from '../../router.animations';
 export class DashboardComponent implements OnInit {
     public alerts: Array<any> = [];
     public sliders: Array<any> = [];
+    public tmpsouscrit: boolean = false;
 
     constructor() {
         this.sliders.push({
@@ -44,6 +45,10 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        let username = JSON.parse(sessionStorage.getItem('currentUser')).username;
+        if(username=='commercial@bbstvnet.com' || username=='ndiayesokhna@bbstvnet.com' || username=='awacamara@bbstvnet.com' || username=='seck.mbore@bbstvnet.com' || username=='ndeye.bousso-com@bbstvnet.com'){
+            this.tmpsouscrit = true;
+        }
     }
 
     public closeAlert(alert: any) {

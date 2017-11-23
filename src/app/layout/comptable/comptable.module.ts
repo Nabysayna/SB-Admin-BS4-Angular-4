@@ -8,6 +8,7 @@ import { ComptableRoutingModule } from './comptable-routing.module';
 import { PageHeaderModule } from './../../shared';
  import {DataTableModule} from "angular2-datatable";
  import {DataFilterComptableBilanPipe} from "./filterdata-comptable-getbilan.pipe";
+ import {DataFilterComptableEtatPipe} from "./filterdata-comptable-getetat.pipe";
 
 
 
@@ -24,6 +25,7 @@ import { PageHeaderModule } from './../../shared';
     declarations: [
         ComptableComponent,
         DataFilterComptableBilanPipe,
+        DataFilterComptableEtatPipe,
     ]
 })
 export class ComptableModule { }

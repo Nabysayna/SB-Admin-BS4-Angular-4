@@ -11,8 +11,8 @@ export class ApiPlatformService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers = new Headers();
     private basetoken:any;
@@ -104,6 +104,14 @@ export class ApiPlatformService {
 
     getListBilanDeposit(){
         let url = this.link+"/apiplatform/getalldeposit";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getEtatDeposit(){
+        let url = this.link+"/apiplatform/getetatdeposit";
         let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

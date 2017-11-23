@@ -17,10 +17,10 @@ export class ComptableComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService){}
 
     ngOnInit() {
-        this.getListBilanDeposit();
-        this.killsetinterval = setInterval(() => {
-            this.getListBilanDeposit();
-        }, 20000);
+        this.getEtatDeposit();
+        //this.killsetinterval = setInterval(() => {
+          //  this.getEtatDeposit();
+        //}, 20000);
     }
 
     ngOnDestroy() {
@@ -40,7 +40,7 @@ export class ComptableComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.getListBilanDeposit();
+            this.getEtatDeposit();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -48,6 +48,8 @@ export class ComptableComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.getListBilanDeposit();
+
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
@@ -77,7 +79,39 @@ export class ComptableComponent implements OnInit {
 
 
     /************************************************************************************
-     **********************************   PARTIE BILAN DEPOSIT   ****************************
+     **********************************   PARTIE ETAT DEPOSIT   ****************************
+     ***********************************************************************************/
+
+    public rowsOnPageEtatDeposit = 10;
+    public sortByEtatDeposit = "date_update";
+    public sortOrderEtatDeposit = "desc";
+    public filterQueryEtatDeposit:any;
+    public listeetatdeposit:any[] = [];
+    public getEtatDeposit(): void {
+        this._apiPlatformService.getEtatDeposit()
+            .subscribe(
+                data => {
+                    console.log(data.message);
+                    this.listeetatdeposit = data.message.map(function (type) {
+                        return {
+                            date_update:type.updater.date.split('.')[0],
+                            montantactuel:type.caution,
+                            last_deposit:type.cautiondebase,
+                            superviseur:type.superviseur,
+                            telephone:type.telephone,
+                            point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log('getListBilanDeposit')
+            );
+    }
+
+
+
+    /************************************************************************************
+     **********************************   PARTIE HISTORIQUE DEPOSIT   ****************************
      ***********************************************************************************/
 
     public rowsOnPageBilanDeposit = 10;
