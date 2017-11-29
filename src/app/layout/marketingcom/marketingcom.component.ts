@@ -190,7 +190,7 @@ export class MarketingcomComponent implements OnInit {
         this._apiPlatformService.validModifyAdressePoint(this.pointsdepoye)
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => console.log('validModifyAdressePoint')
@@ -201,11 +201,10 @@ export class MarketingcomComponent implements OnInit {
     }
 
     validresolutionreclamation(reclamation){
-        console.log(reclamation);
         this._apiPlatformService.validReclamationsNonResolu(reclamation)
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => console.log('validReclamationsNonResolu')

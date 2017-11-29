@@ -107,7 +107,7 @@ export class ProspectPdvComponent implements OnInit {
                                                 codepostalpoint:this.adresse_point.codepostalpoint?this.adresse_point.codepostalpoint:0,
                                                 geospatialpoint:this.adresse_point.geospatialpoint?this.adresse_point.geospatialpoint:{latitude:0, longitude:0}
                                             }
-                                            console.log(this.adresse_point);
+                                            //console.log(this.adresse_point);
                                         },
                                         error => alert(error),
                                         () => {
@@ -136,7 +136,7 @@ export class ProspectPdvComponent implements OnInit {
                     this.zonesactivites = data;
                 },
                 error => alert(error),
-                () => console.log(this.zonesactivites)
+                () => console.log('')
             );
     }
 
@@ -163,7 +163,7 @@ export class ProspectPdvComponent implements OnInit {
                     this.regions = data;
                 },
                 error => alert(error),
-                () => console.log(this.regions)
+                () => console.log('')
             );
     }
     selectRegionPoint(){
@@ -174,7 +174,7 @@ export class ProspectPdvComponent implements OnInit {
             .subscribe(
                 data => this.zonespoints = data,
                 error => alert(error),
-                () => console.log(this.zonespoints)
+                () => console.log('')
             );
     }
 
@@ -183,7 +183,7 @@ export class ProspectPdvComponent implements OnInit {
             .subscribe(
                 data => this.souszonespoints = data,
                 error => alert(error),
-                () => console.log(this.souszonespoints)
+                () => console.log('')
             );
     }
 
@@ -192,7 +192,7 @@ export class ProspectPdvComponent implements OnInit {
             .subscribe(
                 data => this.souszonespropietaires = data,
                 error => alert(error),
-                () => console.log(this.souszonespropietaires)
+                () => console.log('')
             );
     }
 
@@ -201,8 +201,8 @@ export class ProspectPdvComponent implements OnInit {
             navigator.geolocation.getCurrentPosition(position => {
                 this.adresse_point.geospatialpoint.longitude = position.coords.longitude;
                 this.adresse_point.geospatialpoint.latitude = position.coords.latitude;
-                console.log('test 1');
-                console.log(this.adresse_point.geospatialpoint);
+                //console.log('test 1');
+                //console.log(this.adresse_point.geospatialpoint);
             });
         }
     }
@@ -240,7 +240,7 @@ export class ProspectPdvComponent implements OnInit {
     };
 
     public updateCheckedoptionsActivite(): void{
-        console.log(this.selectedoptionsActivite);
+        //console.log(this.selectedoptionsActivite);
         let activites = this.zonesactivites.activites;
         this.alldatapoint.activites = this.selectedoptionsActivite.map(function(option) {
           return activites[Number(option)-1].activite;
@@ -260,11 +260,11 @@ export class ProspectPdvComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-        console.log(this.prospection);
+        //console.log(this.prospection);
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
                     this.isEnregistrerProspect = true;
                     this.router.navigate(['/dashboard']);
                 },
@@ -291,7 +291,8 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
               .map(res => res.json())
               .catch(error => Observable.throw(error))
               .subscribe(
-                  data => { console.log("Retour uploader "+data.generatedName) ;
+                  data => {
+                      //console.log("Retour uploader "+data.generatedName) ;
                            let newData = data;
                            this.uploadFile = newData;
                            this.newImage = this.uploadFile.generatedName ;

@@ -70,7 +70,6 @@ export class ModifPdvComponent implements OnInit {
                         .subscribe(
                             data => {
                                 this.alldatapoint = data;
-                                console.log(this.alldatapoint.nom_point);
                                 this.avoter(this.alldatapoint.avis-1);
                                 this.adresse_point = JSON.parse(this.alldatapoint.adresse_point);
                                 this.adresse_point.regionpoint = JSON.parse(this.alldatapoint.adresse_point).regionpoint?JSON.parse(this.alldatapoint.adresse_point).regionpoint:'Dakar';
@@ -121,7 +120,7 @@ export class ModifPdvComponent implements OnInit {
             .subscribe(
                 data => this.zonespoints = data,
                 error => alert(error),
-                () => console.log(this.zonespoints)
+                () => console.log('')
             );
     }
 
@@ -130,13 +129,12 @@ export class ModifPdvComponent implements OnInit {
             .subscribe(
                 data => this.souszonespoints = data,
                 error => alert(error),
-                () => console.log(this.souszonespoints)
+                () => console.log('')
             );
     }
 
     coordonneesgeospatiales(){
         if(navigator.geolocation){
-            console.log("YES!") ;
             let geospatialpoint = {latitude:0,longitude:0};
             navigator.geolocation.getCurrentPosition(function(position){
                 geospatialpoint.longitude = position.coords.longitude;
@@ -178,7 +176,6 @@ export class ModifPdvComponent implements OnInit {
     };
 
     public updateCheckedoptionsActivite(): void{
-        console.log(this.selectedoptionsActivite);
         let activites = this.regionszonesactivites.activites;
         this.alldatapoint.activites = this.selectedoptionsActivite.map(function(option) {
             return activites[Number(option)-1].activite;
@@ -193,7 +190,6 @@ export class ModifPdvComponent implements OnInit {
         this._utilService.modifPoint(this.alldatapoint)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.isEnregistrerProspect = true;
                 },
                 error => alert(error),
@@ -222,7 +218,7 @@ export class ModifPdvComponent implements OnInit {
                 .map(res => res.json())
                 .catch(error => Observable.throw(error))
                 .subscribe(
-                    data => { console.log("Retour uploader "+data.generatedName) ;
+                    data => {
                         let newData = data;
                         this.uploadFile = newData;
                         this.newImage = this.uploadFile.generatedName ;

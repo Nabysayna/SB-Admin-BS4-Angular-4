@@ -169,8 +169,8 @@
                         <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
-                        <th> Superviseur affecté </th>
-                        <th>Action</th>
+                        <th><mfDefaultSorter by="fullname_depends">CC affecté</mfDefaultSorter></th>
+                        <th colspan="2" style="text-align: center">Action</th>
                     </tr>
                     <tr>
                         <th colspan="3"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
@@ -183,6 +183,7 @@
                         <td>{{item.fullname}}</td>
                         <td>{{item.telephone}}</td>
                         <td>{{item.email}}</td>
+                        <td>{{item.fullname_depends}}</td>
                         <td>
                             <select name="sselectcommercial-{{i}}"  id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur">
                                 <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
@@ -205,7 +206,7 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead4" >
-    <div class="row">
+    <!--<div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row">
                 <table class="table table-hover table-responsive table-sm" [mfData]="listeadminccsuivipoints | dataFilterNewPoint: filterQueryNewPoint" #mfadminsuivipoints="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
@@ -243,7 +244,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead5" >
@@ -253,10 +254,12 @@
                 <table class="table table-hover table-responsive table-sm" [mfData]="listepointsouscrits | dataFilterNewPoint: filterQueryDeploye" #mfPointsouscrits="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
                     <thead>
                     <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date création</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Créé par</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="souscription">Souscription</mfDefaultSorter></th>
                     </tr>
                     <tr>
@@ -277,10 +280,12 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let item of mfPointsouscrits.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0 && item.infosup.en_suivi==1)?'red':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
+                        <td>{{item.date_ajout}}</td>
                         <td>{{item.nom_point}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>
                         <td>{{item.adresse_point}}</td>
+                        <td>{{item.fullname_commercial}}</td>
                         <td>{{item.souscription}}</td>
                     </tr>
                     </tbody>
@@ -310,7 +315,7 @@
                     <tr>
                         <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="nom_point">Nom Boutique</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_boutique">Nom Boutique</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
@@ -325,7 +330,7 @@
                     <tr *ngFor="let item of mfPointDeploye.data; let i = index ">
                         <td>{{item.date_ajout}}</td>
                         <td>{{item.nom_point}}</td>
-                        <td>{{item.nom_point}}</td>
+                        <td>{{item.nom_boutique}}</td>
                         <td>{{item.fullname_gerant}}</td>
                         <td>{{item.telephone_gerant}}</td>
                         <td>{{item.adresse_point}}</td>

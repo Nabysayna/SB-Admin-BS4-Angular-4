@@ -314,6 +314,7 @@ export class AdmincommercialComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
+                    this.getComSuperviseurs();
                 },
                 error => alert(error),
                 () => console.log('affectationCommercial')
@@ -492,6 +493,7 @@ export class AdmincommercialComponent implements OnInit {
                         return {
                             date_ajout: type.date_ajout,
                             nom_point: type.nomentreprise,
+                            nom_boutique: type.nomboutique,
                             fullname_gerant: type.prenom + " " + type.nom,
                             telephone_gerant: type.telephone,
                             adresse_point: adresse_point.adresse?adresse_point.adresse+',':'' + " " + adresse_point.souszone + ", " + adresse_point.zone,

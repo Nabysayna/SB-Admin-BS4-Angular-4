@@ -22,6 +22,7 @@ import {DataFilterListeCliPipe} from "./data-filter-list-portefeuille.pipe";
 import {DataFilterSuiviAssignComPipe} from "./data-filter-suiviassigncom.pipe";
 import {DataFilterSuivipdvperformanceparsupPipe} from "./data-filter-suivipdvperformanceparsup.pipe";
 import {DataFilterSuivipdvetatdepositparsupPipe} from "./data-filter-suivipdvetatdepositparsup.pipe";
+import {DataFilterPointSentoolByCCPipe} from "./data-filter-point-sentool-cc.pipe";
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import {DataFilterSuivipdvetatdepositparsupPipe} from "./data-filter-suivipdveta
         DataFilterSuiviAssignComPipe,
         DataFilterSuivipdvperformanceparsupPipe,
         DataFilterSuivipdvetatdepositparsupPipe,
+        DataFilterPointSentoolByCCPipe,
 
     ]
 })

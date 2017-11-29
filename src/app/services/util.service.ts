@@ -296,6 +296,14 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getPointsdeployeByCC(){
+        let url = this.link+"/client/getpointsdeployebycc";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getDashboardNbres(){
         let url = this.link+"/util/dashboardnbres";
         let datas = JSON.stringify({token:this.basetoken});

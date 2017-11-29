@@ -40,7 +40,7 @@ export class TablesComponent implements OnInit {
         this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
                     this.data = data.message.map(function(type) {
                         return {
                             id:type.id,
@@ -109,7 +109,7 @@ export class TablesComponent implements OnInit {
                     this.zones.push(this.data[i].zone);
             }
         }
-        console.log(this.zones);
+        //console.log(this.zones);
     }
 
     sousZonesOfCurrentZone(){
