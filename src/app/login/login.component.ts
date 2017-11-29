@@ -48,6 +48,9 @@ export class LoginComponent implements OnInit {
         if ( !access){
             this.fakevalues = false;
         }
+        else if ( access.match(11) ){
+            this.router.navigate(['/adminsupport']);
+        }
         else if ( access.match(10) ){
             this.router.navigate(['/comptable']);
         }

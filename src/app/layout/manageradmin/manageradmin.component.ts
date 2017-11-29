@@ -67,7 +67,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
 
                     if(data.errorCode){
                         this.dashboardNbres = data.message;
-                        console.log(this.dashboardNbres);
                     }
                     else{
                         this.router.navigate(['/login']);
@@ -92,7 +91,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this._utilService.getComSuperviseurs()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
                         this.superviseurs = data.message.superviseurs;
                         this.commerciaux = data.message.commerciaux;
@@ -110,7 +108,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this._utilService.getRegionsSuperviseurs()
             .subscribe(
                 data => {
-                    console.log(data)
                     this.superviseurs = data.superviseurs
                 },
                 error => alert(error),
@@ -119,15 +116,14 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
     }
 
     choixsuperviseurforcommercial(id_superviseur){
-        console.log(id_superviseur);
+        //console.log(id_superviseur);
     }
 
     reaffectercommercial(item){
-        console.log(item);
         this._utilService.affectationCommercial(item)
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => console.log('affectationCommercial')
@@ -150,7 +146,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this._utilService.getAdmincomsuiviPP()
             .subscribe(
                 data => {
-                    console.log(data.message);
                     if(data.errorCode){
                         this.doughnutChartDataPP = [
                             data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==0).length,

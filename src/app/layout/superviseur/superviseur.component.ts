@@ -187,6 +187,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
+            this.getPointsdeployeByCC();
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -226,7 +227,7 @@ export class SuperviseurComponent implements OnInit {
                     },
                     error => alert(error),
                     () => {
-                        console.log(this.datasuivi);
+                        console.log('');
                     }
                 );
         }
@@ -264,7 +265,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
             this.getCommerciaux();
-            console.log(this.commercials);
+            console.log('');
         }
         if(option == 7){
             this.menuHead.menuHead1 = false;
@@ -317,7 +318,7 @@ export class SuperviseurComponent implements OnInit {
             .subscribe(
                 data => this.zones = data,
                 error => alert(error),
-                () => console.log(this.zones)
+                () => console.log('')
             );
     }
 
@@ -357,7 +358,7 @@ export class SuperviseurComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log('--------')
-                    console.log(data)
+                    //console.log(data)
                     this.data = data.map(function(type) {
                         return {
                             id:type.id,
@@ -379,7 +380,7 @@ export class SuperviseurComponent implements OnInit {
                     for (let i = 0; i < this.data.length; i++) {
                         if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
-                    console.log(this.regions);
+                    //console.log(this.regions);
                 },
                 error => alert(error),
                 () => {
@@ -395,7 +396,7 @@ export class SuperviseurComponent implements OnInit {
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixcommercial == "--Choix commercial--" ||
             this.objetifcommercial == 0 ){
-            console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixcommercial+'-'+this.objetifcommercial);
+            //console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixcommercial+'-'+this.objetifcommercial);
             this.readyforassination = false;
         }
         else {
@@ -415,11 +416,11 @@ export class SuperviseurComponent implements OnInit {
                     commentaireforcommercial:''
                 }
             };
-            console.log(assignations);
+            //console.log(assignations);
             this._assignationsuiviService.assignationcommercial(assignations)
                 .subscribe(
                     data => {
-                        console.log(data);
+                        //console.log(data);
                         this.isEnregistrerAssignation = true;
                         this.regions = [];
                         this.filtreRegion = "--Choix région--";
@@ -438,7 +439,7 @@ export class SuperviseurComponent implements OnInit {
     public selectRegion() {
         this.filtreSousZone = "--Choix sous zone--";
         this.optionassignations = [];
-        console.log(this.filtreRegion);
+        //console.log(this.filtreRegion);
         this.zones =  [] ;
         for (let i = 0; i < this.data.length; i++) {
             if( this.data[i].region==this.filtreRegion ){
@@ -446,7 +447,7 @@ export class SuperviseurComponent implements OnInit {
                     this.zones.push(this.data[i].zone);
             }
         }
-        console.log(this.zones);
+        //console.log(this.zones);
     }
     public selectZone() {
         this.optionassignations = [];
@@ -472,7 +473,7 @@ export class SuperviseurComponent implements OnInit {
             .map(opt => opt.value);
     };
     public updateCheckedOptions(): void{
-        console.log(this.selectedOptions);
+        //console.log(this.selectedOptions);
     }
 
 
@@ -507,7 +508,7 @@ export class SuperviseurComponent implements OnInit {
         this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)
             .subscribe(
                 data => {
-                    console.log(data)
+                    console.log('')
                 },
                 error => alert(error),
                 () => {
@@ -532,7 +533,7 @@ export class SuperviseurComponent implements OnInit {
         this._assignationsuiviService.ajoutsuivifromsuperviseur(suivisuperviseur)
             .subscribe(
                 data => {
-                    console.log(data)
+                    console.log('')
                 },
                 error => alert(error),
                 () => {
@@ -547,14 +548,14 @@ export class SuperviseurComponent implements OnInit {
 
     showModal(content, i) {
         this.currentPointDocs = JSON.parse(this.datasuivi[i].client.fichiers) ;
-        console.log( this.currentPointDocs ) ;
+        //console.log( this.currentPointDocs ) ;
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }
 
     showModalDetail(content, item) {
         this.reponsesPointAuProspect = JSON.parse(item.reponse) ;
-        console.log( this.reponsesPointAuProspect ) ;
+        //console.log( this.reponsesPointAuProspect ) ;
         this.modalService.open(content).result.then( (result) => {
         }, (reason) => {} );
     }
@@ -588,7 +589,7 @@ export class SuperviseurComponent implements OnInit {
                     if(data.errorCode) this.commercials = data.message;
                 },
                 error => alert(error),
-                () => console.log(this.commercials)
+                () => console.log('')
             );
     }
 
@@ -641,7 +642,7 @@ export class SuperviseurComponent implements OnInit {
         this._utilService.getProspectValide()
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
                     this.prospects = data;
                     this.prospects = data.map(function(type){
                         return {
@@ -770,7 +771,7 @@ export class SuperviseurComponent implements OnInit {
         this._utilService.getClients()
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
                     this.clients = data.message.map(function(type){
                         let client = JSON.parse(type.adresse);
                         return {
@@ -786,7 +787,7 @@ export class SuperviseurComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log(this.clients)
+                () => console.log('')
             );
     }
 
@@ -903,13 +904,13 @@ export class SuperviseurComponent implements OnInit {
         if (this.checkPerformancePPV.tout) {
             type = "tout";
         }
-        console.log(type+' '+lot);
+        //console.log(type+' '+lot);
         this.typedateperformancesadminpdv = type;
         this.lotperformancesadminpdv = lot;
         this._apiplatform.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
             .subscribe(
                 data => {
-                    console.log(data)
+                    //console.log(data)
                     if(data.errorCode){
                         this.performancesadminpdv = data.message;
                     }
@@ -921,7 +922,7 @@ export class SuperviseurComponent implements OnInit {
             );
     }
     public detailperformancesadminclasserbydateandlot(adminpdv: any, content){
-        console.log(adminpdv);
+        //console.log(adminpdv);
         this.performancesadminpdvbyadmin = undefined;
         this._apiplatform.getperformancessupperviseurclasserbydatebySup({idadminpdv:adminpdv.dependsOn, typedate:this.typedateperformancesadminpdv})
             .subscribe(
@@ -946,7 +947,6 @@ export class SuperviseurComponent implements OnInit {
             );
        this.showModalPPV(content);
     }
-
 
     public doughnutChartLabelsAP: string[] = ['Pas deposit', 'Faible', 'Passable', 'Bien'];
     public doughnutChartDataAP: number[] = [150, 100, 50, 25];
@@ -977,12 +977,12 @@ export class SuperviseurComponent implements OnInit {
 
     }
     public detailEtatDepositAP(lot:string){
-        console.log(lot);
+        //console.log(lot);
         this.etatdepositlot = undefined;
         this._apiplatform.getDetailEtatdepositbylotbysup({lot:lot})
             .subscribe(
                 data => {
-                    console.log(data);
+                    //console.log(data);
                     if(data.errorCode){
                         this.etatdepositlot = data.message.map(function (opt) {
                             return {
@@ -1011,6 +1011,43 @@ export class SuperviseurComponent implements OnInit {
 
 
 
+
+    /***************************************************************************************
+     *********************************   PARTIE POINT SENTOOL   ****************************
+     **************************************************************************************/
+
+    public rowsOnPageSentoolByCC = 10;
+    public sortBySentoolByCC = "date_ajout";
+    public filterQuerySentoolByCC:any;
+    public sortOrderSentoolByCC = "desc";
+    public listepointsdepoyebycc:any[] = [];
+
+    public getPointsdeployeByCC(): void {
+        this._utilService.getPointsdeployeByCC()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.listepointsdepoyebycc = data.message.map(function (type) {
+                        let adresse_point = JSON.parse(type.adressecomplet);
+                        return {
+                            date_ajout: type.date_ajout,
+                            nom_point: type.nomentreprise,
+                            nom_boutique: type.nomboutique,
+                            fullname: type.prenom + " " + type.nom,
+                            telephone: type.telephone,
+                            adresse: adresse_point.adresse?adresse_point.adresse+',':'' + " " + adresse_point.souszone + ", " + adresse_point.zone,
+                            fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
+                        }
+                    });
+                    console.log('');
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
+    }
+
+
+
     /************************************************************************************
      *********************************   PARTIE DEPOSIT   ****************************
      ***********************************************************************************/
@@ -1024,54 +1061,54 @@ export class SuperviseurComponent implements OnInit {
             {'entreprise':'bbs','superviseur':'khady','commercial':'magor','montant':'1000000'}
         ];
         /*this._utilService.getlistsDepositcc()
-            .subscribe(
-                data => {
-                    this.deposits=data;
-                    if(data==''){
-                    }
-                    else{
-                        this.deposits=data;
-                    }
-                },
-                error => alert(error),
-                () => console.log('souscrireSentool')
-            );*/
+         .subscribe(
+         data => {
+         this.deposits=data;
+         if(data==''){
+         }
+         else{
+         this.deposits=data;
+         }
+         },
+         error => alert(error),
+         () => console.log('souscrireSentool')
+         );*/
     }
     arreterson(){
         //this.audio=false;
     }
     alertdeposit(){
         /*this._utilService.alertdepositcc()
-            .subscribe(
-                data => {
+         .subscribe(
+         data => {
 
-                    if(data.reponse=="ok"){
-                        this.audio=true;
-                    }
+         if(data.reponse=="ok"){
+         this.audio=true;
+         }
 
-                },
-                error => alert(error),
-                () => console.log('souscrireSentool')
-            );*/
+         },
+         error => alert(error),
+         () => console.log('souscrireSentool')
+         );*/
 
     }
     validerDepositcc(){
 
         /*this._utilService.validerDepositcc()
-            .subscribe(
-                data => {
-                    this.deposits=data;
-                    // var plays=document.querySelector("#audio");
-                    //plays.play();
-                    if(data==''){
-                    }
-                    else{
-                        this.deposits=data;
-                    }
-                },
-                error => alert(error),
-                () => console.log('souscrireSentool')
-            );*/
+         .subscribe(
+         data => {
+         this.deposits=data;
+         // var plays=document.querySelector("#audio");
+         //plays.play();
+         if(data==''){
+         }
+         else{
+         this.deposits=data;
+         }
+         },
+         error => alert(error),
+         () => console.log('souscrireSentool')
+         );*/
     }
     tocurrency(number){
         return Number(number).toLocaleString();

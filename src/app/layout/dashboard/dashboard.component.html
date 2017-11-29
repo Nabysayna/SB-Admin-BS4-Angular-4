@@ -1,6 +1,6 @@
 <div [@routerTransition]>
     <h2 class="text-muted">BBS CRM Plateforme <small></small></h2>
-    <div class="row"   *ngIf="!tmpsouscrit">
+    <div class="row" >
         <div class="col-4">
             <a [routerLink]="['/mescontacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Mes Contacts' }}
@@ -41,7 +41,7 @@
             </ngb-carousel>
         </div>
     </div>
-    <div class="row"  *ngIf="tmpsouscrit">
+    <div class="row"  *ngIf="tmpsouscrit=='_1_2'">
         <div class="col-3">
             <a [routerLink]="['/mescontacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Mes Contacts' }}
