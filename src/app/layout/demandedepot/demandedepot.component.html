@@ -1,0 +1,38 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Demande de depot'" [icon]="'fa-table'"></app-page-header>
+
+    <div class="row" style="padding-bottom: 2rem">
+        <div class="col-xs-12 col-sm-12">
+
+            <div class="row">
+                <table class="table table-hover table-responsive">
+                    <tr>
+                        <th>#</th>
+                        <th>Date demande</th>
+                        <th>Entreprise</th>
+                        <th>Superviseur</th>
+                        <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Montant depot</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                    <tr *ngFor="let p of listedeposits; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.etatdemande==0)?'red':(p.etatdemande==1)?'orange':'green'}">
+                        <th>{{i+1}}</th>
+                        <td>{{p.datedemande}}</td>
+                        <td>{{p.infosup}}</td>
+                        <td>{{p.initiateur}}</td>
+                        <td>{{p.telephone}}</td>
+                        <td>{{p.adressecomplet}}</td>
+                        <td>{{p.montantdemande}}</td>
+                        <td>
+                            <button *ngIf="p.etatdemande==0" type="button" name="confirmerAffectationDepotCom-{{i}}" id="confirmerAffectationDepotCom-{{i}}" class="btn btn-primary" (click)="confirmerAffectationDepotCom(p)">Confirmer départ</button>
+                            <button *ngIf="p.etatdemande==1" type="button" name="validerRecuDepotCom-{{i}}" id="validerRecuDepotCom-{{i}}" class="btn btn-primary" (click)="validerRecuDepotCom(p)">Valider reception dépot</button>
+                            <strong *ngIf="p.etatdemande>1" >Dépot effectué</strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

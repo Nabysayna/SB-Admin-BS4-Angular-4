@@ -1,17 +1,16 @@
 /**
- * Created by PC on 22/08/2017.
+ * Created by PC on 21/08/2017.
  */
 import { Injectable }    from '@angular/core';
-import { Http, Response, Headers } from "@angular/http";
-import {Observable} from 'rxjs/Observable';
-
+import {Http, Response, Headers} from "@angular/http";
 
 
 @Injectable()
-export class NewclientService {
+export class SuivipositionnementService {
 
 
-       //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
+
+    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
     private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
@@ -25,54 +24,56 @@ export class NewclientService {
         this.basetoken = JSON.parse(sessionStorage.getItem('currentUser')).basetoken;
     }
 
-    getZoneActivite(){
-        let url = this.link+"/util/zone-activite";
-        return this._http.get(url)
+    getComSuperviseurs(){
+        let url = this.link+"/util/commercial-superviseur";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 
-    insertPoint(data:any){
-        let url = this.link+"/client/insertpoint";
+    getDemandeDepotForCC(){
+        let url = this.link+"/apifromsentool/listedemndedepositforcc";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getDemandeDepotForCom(){
+        let url = this.link+"/apifromsentool/listedemndedepositforcom";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    affecterComForDepotForCC(data){
+        let url = this.link+"/apifromsentool/affectercomfordepositforcc";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 
-    modifPoint(data:any){
-        let url = this.link+"/suivi/modifpointandajoutsuivi";
+    confirmerAffectationDepotCom(data){
+        let url = this.link+"/apifromsentool/confirmeraffectationdepotcom";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 
-    getPointBySouszoneByZone(data:any){
-        let url = this.link+"/client/pointbysouszonebyzone";
-        let datas = JSON.stringify(data);
-        let params = 'params='+datas;
-        return this._http.post(url, params, {headers:this.headers})
-            .map(res => res.json());
-    }
-
-    validerSouscritSentool(data:any){
-        let url = this.link+"/client/validersouscritsentool";
+    validerRecuDepotCom(data){
+        let url = this.link+"/apifromsentool/validerrecudepotcom";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
 
-    validerSouscritSentoolAndWafacash(data:any){
-        let url = this.link+"/client/validersouscritsentoolandwafacash";
-        let datas = JSON.stringify({token:this.basetoken, data:data});
-        let params = 'params='+datas;
-        return this._http.post(url, params, {headers:this.headers})
-            .map(res => res.json());
-    }
-
-    validerSouscritWafacash(data:any){
-        let url = this.link+"/client/validersouscritwafacash";
+    validerComForDepotCC(data){
+        let url = this.link+"/apifromsentool/validercomfordepotcc";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

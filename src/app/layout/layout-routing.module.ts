@@ -12,7 +12,7 @@ const routes: Routes = [
 
             { path: 'forms', loadChildren: './form/form.module#FormModule' },
             { path: 'formsentool', loadChildren: './formclientsentool/formclientsentool.module#FormclientsentoolModule' },
-            { path: 'deposit', loadChildren: './deposit/deposit.module#depositModule' },
+            { path: 'demandedepot', loadChildren: './demandedepot/demandedepot.module#DemandedepotsModule' },
 
             { path: 'superviseur', loadChildren: './superviseur/superviseur.module#SuperviseurModule' },
             { path: 'admincom', loadChildren: './admincommercial/admincommercial.module#AdmincommercialModule' },

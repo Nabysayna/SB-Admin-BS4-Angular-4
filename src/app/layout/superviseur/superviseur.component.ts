@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
 import { NgForm } from '@angular/forms';
@@ -6,12 +6,13 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 import {ApiPlatformService} from "../../services/apiplateform.service";
 import {Color} from "ng2-charts";
 import {Router} from "@angular/router";
+import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 
 @Component({
     selector: 'app-superviseur',
     templateUrl: './superviseur.component.html',
     styleUrls: ['./superviseur.component.scss'],
-    providers:[UtilService, AssignationSuiviService,ApiPlatformService],
+    providers:[UtilService, AssignationSuiviService,ApiPlatformService, SuivipositionnementService],
 })
 export class SuperviseurComponent implements OnInit {
     public form:any;
@@ -110,14 +111,28 @@ export class SuperviseurComponent implements OnInit {
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:false};
 
     public modalRef: NgbModalRef;
+    killsetinterval:any;
 
-    constructor(public router: Router, private _apiplatform: ApiPlatformService, private modalService: NgbModal, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService) {this.reponse1=false;}
+    constructor(
+        public router: Router,
+        private _apiplatform: ApiPlatformService,
+        private modalService: NgbModal,
+        private _utilService:UtilService,
+        private _assignationsuiviService:AssignationSuiviService,
+        private _suivipositionnementService:SuivipositionnementService
+    ) {this.reponse1=false;}
 
     ngOnInit() {
         this.getAssignationsBySuperviseur();
     }
 
+    ngOnDestroy() {
+        clearInterval(this.killsetinterval);
+    }
+
+
     public menuHeadClick(option: number){
+        clearInterval(this.killsetinterval);
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
@@ -302,7 +317,11 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = true;
 
-            this.getdeposit();
+            this.getDemandeDepotForCC();
+            this.killsetinterval = setInterval(() => {
+                this.getDemandeDepotForCC();
+                console.log('step');
+            }, 60000);
         }
     }
 
@@ -587,6 +606,7 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     this.commercials = data
                     if(data.errorCode) this.commercials = data.message;
+                    console.log(this.commercials);
                 },
                 error => alert(error),
                 () => console.log('')
@@ -1052,15 +1072,93 @@ export class SuperviseurComponent implements OnInit {
      *********************************   PARTIE DEPOSIT   ****************************
      ***********************************************************************************/
 
-    public deposits=[];
+    public listedeposits:any[] = [];
     public audio=false;
+
+    getDemandeDepotForCC(){
+        console.log('test');
+        this._suivipositionnementService.getDemandeDepotForCC()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode==0){
+                        this.listedeposits = data.message.map(function(type){
+                            return {
+                                id_accepteur: -1,
+                                niveau_avancement: (type.etatdemande==0 && type.accepteur=='attente')?-4:(type.etatdemande==0 && type.accepteur!='attente')?-3:type.etatdemande==1?-2:type.etatdemande==2?-1:0,
+                                datedemande: type.datedemande,
+                                adressecomplet: JSON.parse(type.initiateur.adresse).address+", "+JSON.parse(type.initiateur.adresse).souszone+", "+JSON.parse(type.initiateur.adresse).zone,
+                                montantdemande: type.montantdemande,
+                                telephone: type.initiateur.telephone,
+                                initiateur: type.initiateur.prenom+' '+type.initiateur.nom,
+                                accepteur: type.accepteur=='attente'?type.accepteur:JSON.parse(type.accepteur).prenom+" "+JSON.parse(type.accepteur).nom,
+                                infosup: type.infosup,
+                                etatdemande: type.etatdemande,
+                                tokencc: type.tokencc,
+                            }
+                        });
+                        this.getCommerciaux();
+                    }
+                },
+                error => alert(error),
+                () => console.log(this.listedeposits)
+            );
+    }
+
+    affecterComForDepot(item){
+        console.log(item);
+        clearInterval(this.killsetinterval);
+        let dataaffecte = {
+            accepteur: this.commercials.find(opt => opt.id= item.id_accepteur),
+            datedemande: item.datedemande,
+            montantdemande: item.montantdemande,
+            tokencc: item.tokencc,
+        };
+        this._suivipositionnementService.affecterComForDepotForCC(dataaffecte)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.getDemandeDepotForCC();
+                },
+                error => alert(error),
+                () => {
+                    this.killsetinterval = setInterval(() => {
+                        this.getDemandeDepotForCC();
+                        console.log('step');
+                    }, 60000);
+                }
+            );
+    }
+
+    validerComForDepotCC(item){
+        console.log('validerComForDepotCC');
+        console.log('--------------------');
+        clearInterval(this.killsetinterval);
+        this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc})
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.getDemandeDepotForCC();
+                },
+                error => alert(error),
+                () => {
+                    this.killsetinterval = setInterval(() => {
+                        this.getDemandeDepotForCC();
+                        console.log('step');
+                    }, 60000);
+                }
+            );
+    }
+
+
     getdeposit(){
-        this.audio=true;
-        this.deposits=[
+
+        //this.audio=true;
+        /*this.deposits=[
             {'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'},
             {'entreprise':'bbs','superviseur':'khady','commercial':'magor','montant':'1000000'}
         ];
-        /*this._utilService.getlistsDepositcc()
+        this._utilService.getlistsDepositcc()
          .subscribe(
          data => {
          this.deposits=data;
