@@ -1073,7 +1073,11 @@ export class SuperviseurComponent implements OnInit {
      ***********************************************************************************/
 
     public listedeposits:any[] = [];
-    public audio=false;
+    public listedepositsvalide:any[] = [];
+    public listedepositsencours:any[] = [];
+    public showModalVoirplusdedemande(content) {
+        this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
+    }
 
     getDemandeDepotForCC(){
         console.log('test');
@@ -1090,6 +1094,7 @@ export class SuperviseurComponent implements OnInit {
                                 adressecomplet: JSON.parse(type.initiateur.adresse).address+", "+JSON.parse(type.initiateur.adresse).souszone+", "+JSON.parse(type.initiateur.adresse).zone,
                                 montantdemande: type.montantdemande,
                                 telephone: type.initiateur.telephone,
+                                point: type.initiateur,
                                 initiateur: type.initiateur.prenom+' '+type.initiateur.nom,
                                 accepteur: type.accepteur=='attente'?type.accepteur:JSON.parse(type.accepteur).prenom+" "+JSON.parse(type.accepteur).nom,
                                 infosup: type.infosup,
@@ -1097,11 +1102,13 @@ export class SuperviseurComponent implements OnInit {
                                 tokencc: type.tokencc,
                             }
                         });
+                        this.listedepositsencours = this.listedeposits.filter(opt => opt.etatdemande!=3);
+                        this.listedepositsvalide = this.listedeposits.filter(opt => opt.etatdemande==3);
                         this.getCommerciaux();
                     }
                 },
                 error => alert(error),
-                () => console.log(this.listedeposits)
+                () => console.log(this.listedepositsencours)
             );
     }
 
@@ -1132,12 +1139,13 @@ export class SuperviseurComponent implements OnInit {
 
     validerComForDepotCC(item){
         console.log('validerComForDepotCC');
-        console.log('--------------------');
+
         clearInterval(this.killsetinterval);
-        this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc})
+        this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
             .subscribe(
                 data => {
                     console.log(data);
+                    console.log('--------------------');
                     this.getDemandeDepotForCC();
                 },
                 error => alert(error),
@@ -1151,63 +1159,6 @@ export class SuperviseurComponent implements OnInit {
     }
 
 
-    getdeposit(){
-
-        //this.audio=true;
-        /*this.deposits=[
-            {'entreprise':'al makhtoum','superviseur':'maguette','commercial':'naby','montant':'1000000'},
-            {'entreprise':'bbs','superviseur':'khady','commercial':'magor','montant':'1000000'}
-        ];
-        this._utilService.getlistsDepositcc()
-         .subscribe(
-         data => {
-         this.deposits=data;
-         if(data==''){
-         }
-         else{
-         this.deposits=data;
-         }
-         },
-         error => alert(error),
-         () => console.log('souscrireSentool')
-         );*/
-    }
-    arreterson(){
-        //this.audio=false;
-    }
-    alertdeposit(){
-        /*this._utilService.alertdepositcc()
-         .subscribe(
-         data => {
-
-         if(data.reponse=="ok"){
-         this.audio=true;
-         }
-
-         },
-         error => alert(error),
-         () => console.log('souscrireSentool')
-         );*/
-
-    }
-    validerDepositcc(){
-
-        /*this._utilService.validerDepositcc()
-         .subscribe(
-         data => {
-         this.deposits=data;
-         // var plays=document.querySelector("#audio");
-         //plays.play();
-         if(data==''){
-         }
-         else{
-         this.deposits=data;
-         }
-         },
-         error => alert(error),
-         () => console.log('souscrireSentool')
-         );*/
-    }
     tocurrency(number){
         return Number(number).toLocaleString();
 
