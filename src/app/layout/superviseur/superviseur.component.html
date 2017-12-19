@@ -540,59 +540,80 @@
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead9" >
-    <table class="table table-hover table-responsive">
-        <tr>
-            <th>Date demande</th>
-            <th>Entreprise</th>
-            <th>Superviseur</th>
-            <th>Téléphone</th>
-            <th>Adresse</th>
-            <th>Montant depot</th>
-            <th>Commercial envoyé</th>
-            <th style="text-align: center">Action</th>
-        </tr>
-        <tr *ngFor="let p of listedepositsencours; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
-            <td>{{p.datedemande}}</td>
-            <td>{{p.infosup}}</td>
-            <td>{{p.initiateur}}</td>
-            <td>{{p.telephone}}</td>
-            <td>{{p.adressecomplet}}</td>
-            <td style="text-align: right;">{{tocurrency(p.montantdemande)}}</td>
-            <td style="width: 200px">
-                <span *ngIf="p.niveau_avancement==-4">
-                    <select name="sselectcommercial-{{i}}" id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="p.id_accepteur">
-                        <option [attr.value]="-1">--Choix un commercial--</option>
-                        <option  *ngFor="let commercial of commercials" [attr.value]="commercial.id">{{commercial.fullname}}</option>
-                    </select>
-                </span>
-                <span *ngIf="p.niveau_avancement!=-4">
-                    {{p.accepteur}}
-                </span>
-            </td>
-            <td>
-                <span *ngIf="p.niveau_avancement==-4">
+    <div class="row" style="display: block; margin: 0 auto; text-align: center" *ngIf="mescredits.length!=0">
+        <span style="margin-left: 1rem; margin-right: 1rem; font-size:larger">
+            <strong>Etat actuel caisse :</strong> {{ tocurrency(mescredits['0'].montant_total) }}FCFA.
+        </span>
+        <span style="margin-left: 1rem; margin-right: 1rem; font-size:larger">
+            <strong>Dernier creditation :</strong> {{tocurrency(mescredits['0'].montant_acrredite)}}FCFA, <strong>le </strong> {{mescredits['0'].dateacrredit}}.
+        </span>
+        <span style="margin-left: 1rem; margin-right: 1rem; font-size:larger">
+            <button type="button" class="btn btn-primary" (click)="showModalVoirDetailCredit(contentVoirDetailCredit)" title="Voir détail">Voir détail</button>
+        </span>
+    </div>
+    <div class="alert alert-danger" *ngIf="errovalidation" role="alert" style="margin-bottom: 1rem; margin-top: 1rem">
+        Caisse insuffisant pour ce positionnement
+    </div>
+    <div class="row" style="margin-top: 2rem">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive">
+                    <tr>
+                        <th>Date demande</th>
+                        <th>Entreprise</th>
+                        <th>Superviseur</th>
+                        <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Montant depot</th>
+                        <th>Commercial envoyé</th>
+                        <th style="text-align: center">Action</th>
+                    </tr>
+                    <tr *ngFor="let p of listedepositsencours; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
+                        <td>{{p.datedemande}}</td>
+                        <td>{{p.infosup}}</td>
+                        <td>{{p.initiateur}}</td>
+                        <td>{{p.telephone}}</td>
+                        <td>{{p.adressecomplet}}</td>
+                        <td style="text-align: right;">{{tocurrency(p.montantdemande)}}</td>
+                        <td style="width: 200px">
+                            <span *ngIf="p.niveau_avancement==-4">
+                                <select name="sselectcommercial-{{i}}" id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="p.id_accepteur">
+                                    <option [attr.value]="-1">--Choix un commercial--</option>
+                                    <option  *ngFor="let commercial of commercials" [attr.value]="commercial.id">{{commercial.fullname}}</option>
+                                </select>
+                            </span>
+                            <span *ngIf="p.niveau_avancement!=-4">
+                                {{p.accepteur}}
+                            </span>
+                        </td>
+                        <td>
+                            <span *ngIf="p.niveau_avancement==-4">
                     <button type="button" name="valideraffectation-{{i}}" id="valideraffectation-{{i}}" class="btn btn-primary" [disabled]="p.id_accepteur<1" (click)="affecterComForDepot(p)">envoyer</button>
                 </span>
-                <span *ngIf="p.niveau_avancement==-3">
+                            <span *ngIf="p.niveau_avancement==-3">
                     Ettente confirmation
                 </span>
-                <span *ngIf="p.niveau_avancement==-2">
+                            <span *ngIf="p.niveau_avancement==-2">
                     En cours de recuperation
                 </span>
-                <span *ngIf="p.niveau_avancement==-1">
-                    <button type="button" name="validerrecudepot-{{i}}" id="validerrecudepot-{{i}}" class="btn btn-primary" (click)="validerComForDepotCC(p)">valider depot</button>
+                            <span *ngIf="p.niveau_avancement==-1">
+                    <button type="button" name="validerrecudepot-{{i}}" id="validerrecudepot-{{i}}" class="btn btn-primary" (click)="errovalidation=false; validerComForDepotCC(p)">valider depot</button>
                 </span>
-                <span *ngIf="p.niveau_avancement==0">
-                    Depot Effectué
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="8" style="text-align: center; margin-top: 1rem">
-                <u *ngIf="listedepositsvalide.length!=0" style="cursor: pointer" (click)="showModalVoirplusdedemande(contentVoirplusdedemande)" title="Voir plus de depot">Voir dépots validé</u>
-            </td>
-        </tr>
-    </table>
+                            <span *ngIf="p.niveau_avancement==0">
+                                Depot Effectué
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: center; margin-top: 1rem">
+                            <u *ngIf="listedepositsvalide.length!=0" style="cursor: pointer" (click)="showModalVoirplusdedemande(contentVoirplusdedemande)" title="Voir plus de depot">Voir dépots validé</u>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -845,7 +866,7 @@
 <ng-template #contentVoirplusdedemande let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Détail par caissier</h4>
+            <h4 class="modal-title pull-left">Détail positionnement</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -875,6 +896,35 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentVoirDetailCredit let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Détail Caisse</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body"  *ngIf="mescredits.length">
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date derniere creditation</th>
+                        <th>Montant credité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of mescredits; let i = index " style="text-align: center">
+                        <th>{{i+1}}</th>
+                        <th>{{item.dateacrredit}}</th>
+                        <th style="text-align: right">{{tocurrency(item.montant_acrredite)}}</th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </ng-template>

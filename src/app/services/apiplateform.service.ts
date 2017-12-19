@@ -122,6 +122,16 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
+    getListStatusDeposition(){
+        let url = this.link+"/apifromsentool/getstatuspositionnement";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+
+
 
 
 }

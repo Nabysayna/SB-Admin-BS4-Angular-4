@@ -11,6 +11,9 @@ import { DataTableModule } from "angular2-datatable";
 import {DataFilterCommercialAdminAdminPipe} from "./filterdata-commercialAdminAdmin.pipe";
 import {DataFilterNewPointAdminAdminPipe} from "./filterdata-newpointAdminAdmin.pipe";
 import {DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe} from "./filterdata-reclamationsnonresoluAdminAdmin.pipe";
+import {DataFilterAdminadministratifBilanPipe} from "./filterdata-adminadministratif-getbilan.pipe";
+import {DataFilterAdminadministratifEtatPipe} from "./filterdata-adminadministratif-getetat.pipe";
+import {DataFilterAdminadministratifSuivipositionnementPipe} from "./filterdata-adminadministratif-getsuivipositionnement.pipe";
 
 
 
@@ -32,7 +35,11 @@ import {DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe} from "./filter
         DataFilterCommercialAdminAdminPipe,
         DataFilterNewPointAdminAdminPipe,
 
-        DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe
+        DataFilterfilterQueryReclamationsnonresoluAdminAdminPipe,
+
+        DataFilterAdminadministratifBilanPipe,
+        DataFilterAdminadministratifEtatPipe,
+        DataFilterAdminadministratifSuivipositionnementPipe,
     ]
 })
 

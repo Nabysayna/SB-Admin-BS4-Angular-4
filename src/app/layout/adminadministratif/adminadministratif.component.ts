@@ -1,33 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {Router} from "@angular/router";
 import {NewclientService} from "../../services/newclient.service";
 import {ApiPlatformService} from "../../services/apiplateform.service";
+import {NgbModalRef, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 
 @Component({
   selector: 'app-adminadministratif',
   templateUrl: './adminadministratif.component.html',
   styleUrls: ['./adminadministratif.component.scss'],
-    providers:[UtilService, NewclientService, ApiPlatformService],
+    providers:[UtilService, NewclientService, ApiPlatformService, SuivipositionnementService],
 })
 
 export class AdminadministratifComponent implements OnInit {
 
-    public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false};
+    public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
 
-    constructor(public router: Router, private _utilService:UtilService,  private _apiPlatformService:ApiPlatformService, private _newclientService:NewclientService) { }
+    public killsetinterval:any;
+
+
+    constructor(private _suivipositionnementService:SuivipositionnementService, private modalService: NgbModal, public router: Router, private _utilService:UtilService,  private _apiPlatformService:ApiPlatformService, private _newclientService:NewclientService) { }
 
     ngOnInit() {
         this.getNouveauxpoints();
     }
 
+    ngOnDestroy() {
+        clearInterval(this.killsetinterval);
+    }
+
+
     public menuHeadClick(option: number){
+        clearInterval(this.killsetinterval);
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this.getEncienpoints();
         }
         if(option == 2){
@@ -36,15 +50,21 @@ export class AdminadministratifComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this.getNouveauxpoints();
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this.getPointssouscritBBS();
-
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
@@ -52,8 +72,50 @@ export class AdminadministratifComponent implements OnInit {
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
             this.getReclamationsNonResolu();
         }
+        if(option == 6){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = true;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
+            this.getEtatDeposit();
+        }
+        if(option == 7){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = true;
+            this.menuHead.menuHead8 = false;
+            this.getListBilanDeposit();
+        }
+        if(option == 8){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = true;
+            this.getListStatusDeposition();
+
+            this.killsetinterval = setInterval(() => {
+                this.getListStatusDeposition();
+                console.log('step');
+            }, 60000);
+        }
+
     }
 
 
@@ -266,6 +328,176 @@ export class AdminadministratifComponent implements OnInit {
     }
 
 
+
+
+    /************************************************************************************
+     **********************************   PARTIE ETAT DEPOSIT   COMPTABLE****************************
+     ***********************************************************************************/
+
+    public rowsOnPageEtatDeposit = 10;
+    public sortByEtatDeposit = "date_update";
+    public sortOrderEtatDeposit = "desc";
+    public filterQueryEtatDeposit:any;
+    public listeetatdeposit:any[] = [];
+    public getEtatDeposit(): void {
+        this._apiPlatformService.getEtatDeposit()
+            .subscribe(
+                data => {
+                    console.log(data.message);
+                    this.listeetatdeposit = data.message.map(function (type) {
+                        return {
+                            date_update:type.updater.date.split('.')[0],
+                            montantactuel:type.caution,
+                            last_deposit:type.cautiondebase,
+                            superviseur:type.superviseur,
+                            telephone:type.telephone,
+                            point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log('getListBilanDeposit')
+            );
+    }
+
+
+
+    /************************************************************************************
+     **********************************   PARTIE HISTORIQUE DEPOSIT    COMPTABLE ****************************
+     ***********************************************************************************/
+
+
+    tocurrency(number){
+        return Number(number).toLocaleString();
+    }
+
+    public rowsOnPageBilanDeposit = 10;
+    public sortByBilanDeposit = "date_update";
+    public sortOrderBilanDeposit = "desc";
+    public filterQueryBilanDeposit:any;
+    public listebilandeposit:any[] = [];
+    public getListBilanDeposit(): void {
+        this._apiPlatformService.getListBilanDeposit()
+            .subscribe(
+                data => {
+                    this.listebilandeposit = data.message.map(function (type) {
+                        return {
+                            date_update:type.daterenflu.date.split('.')[0],
+                            maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
+                            montant:JSON.parse(type.infotrace).montant,
+                            superviseur:type.superviseur,
+                            telephone:type.telephone,
+                            point: JSON.parse(type.infopoint).nometps,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log('getListBilanDeposit')
+            );
+    }
+
+
+
+
+    /************************************************************************************
+     **********************************   PARTIE STATUS POSITIONNEMENT ****************************
+     ***********************************************************************************/
+
+
+    public rowsOnPageStatusDeposition = 25;
+    public sortByStatusDeposition = "dateeffectif";
+    public sortOrderStatusDeposition = "desc";
+    public filterQueryStatusDeposition:any;
+    public listestatusdeposition:any[] = [];
+    public statusdoneeposition:any;
+    montantpayement:number;
+    modepayement:number;
+    montantversement:number;
+
+    public modalRef: NgbModalRef;
+
+    public closedModal(){
+        this.modalRef.close('Close click');
+    }
+    showModalPayementDepot(content, item) {
+        this.modepayement = undefined;
+        this.montantpayement = undefined;
+        this.statusdoneeposition = item;
+        this.modalRef = this.modalService.open(content);
+    }
+    showModalVersementDepot(content, item) {
+        this.montantversement = undefined;
+        this.statusdoneeposition = item;
+        this.modalRef = this.modalService.open(content);
+    }
+
+
+    public getListStatusDeposition(): void {
+        this._apiPlatformService.getListStatusDeposition()
+            .subscribe(
+                data => {
+                    console.log(data)
+                    this.listestatusdeposition = data.message.map(function (type) {
+                        let pointObjet = JSON.parse(type.point);
+                        return {
+                            id: type.id,
+                            dateeffectif: type.dateeffectif,
+                            recouvre_by: type.recouvre_by,
+                            positionne_by: type.positionne_by,
+                            montant: type.montant,
+                            point: pointObjet.prenom+" "+pointObjet.nom,
+                            telephone: pointObjet.telephone,
+                            adresse: JSON.parse(pointObjet.adresse).address+", "+JSON.parse(pointObjet.adresse).souszone+", "+JSON.parse(pointObjet.adresse).zone,
+                            etatposit: type.etatpositionnement==0?'KO':'OK',
+                            etatpayement: type.etatpayement==0?0:"".concat(type.etatpayement," par ", type.modepayement),
+                            etatversement: type.etatversement,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => console.log("getListStatusDeposition")
+            );
+    }
+
+    public validePayementDepot(){
+        this._suivipositionnementService.validePayementDepot({id:this.statusdoneeposition.id, montantpayement:this.montantpayement, modepayement:this.modepayement})
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.getListStatusDeposition();
+                        this.closedModal();
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.killsetinterval = setInterval(() => {
+                        this.getListStatusDeposition();
+                        console.log('step');
+                    }, 60000);
+                }
+            );
+    }
+
+    public valideVersementDepot(){
+        this._suivipositionnementService.valideVersementDepot({id:this.statusdoneeposition.id, montantversement:this.montantversement})
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.getListStatusDeposition();
+                        this.closedModal();
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.killsetinterval = setInterval(() => {
+                        this.getListStatusDeposition();
+                        console.log('step');
+                    }, 60000);
+                }
+            );
+    }
 
 
 }

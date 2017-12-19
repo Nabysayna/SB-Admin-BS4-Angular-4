@@ -307,6 +307,9 @@ export class SuperviseurComponent implements OnInit {
             this.getClient();
         }
         if(option == 9){
+            this.errovalidation = false;
+            this.getDemandeDepotForCC();
+            console.log('step - 2');
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
@@ -317,11 +320,12 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = true;
 
-            this.getDemandeDepotForCC();
+            this.listcreditsuperviseur();
             this.killsetinterval = setInterval(() => {
                 this.getDemandeDepotForCC();
-                console.log('step');
-            }, 60000);
+                console.log('step - 1');
+
+            }, 10000);
         }
     }
 
@@ -1075,16 +1079,20 @@ export class SuperviseurComponent implements OnInit {
     public listedeposits:any[] = [];
     public listedepositsvalide:any[] = [];
     public listedepositsencours:any[] = [];
+    public mescredits:any[] = [];
+    public errovalidation:boolean = false;
     public showModalVoirplusdedemande(content) {
         this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
     }
 
+    public showModalVoirDetailCredit(content) {
+        this.modalService.open(content).result.then( (result) => { }, (reason) => {} );
+    }
+
     getDemandeDepotForCC(){
-        console.log('test');
         this._suivipositionnementService.getDemandeDepotForCC()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode==0){
                         this.listedeposits = data.message.map(function(type){
                             return {
@@ -1113,7 +1121,6 @@ export class SuperviseurComponent implements OnInit {
     }
 
     affecterComForDepot(item){
-        console.log(item);
         clearInterval(this.killsetinterval);
         let dataaffecte = {
             accepteur: this.commercials.find(opt => opt.id= item.id_accepteur),
@@ -1124,7 +1131,6 @@ export class SuperviseurComponent implements OnInit {
         this._suivipositionnementService.affecterComForDepotForCC(dataaffecte)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.getDemandeDepotForCC();
                 },
                 error => alert(error),
@@ -1144,9 +1150,16 @@ export class SuperviseurComponent implements OnInit {
         this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
             .subscribe(
                 data => {
-                    console.log(data);
-                    console.log('--------------------');
-                    this.getDemandeDepotForCC();
+                    if(data.errorCode){
+                        if(data.messageError=='ok'){
+                            this.listcreditsuperviseur();
+                            console.log('--------------------');
+                            this.getDemandeDepotForCC();
+                        }
+                        else{
+                            this.errovalidation = true;
+                        }
+                    }
                 },
                 error => alert(error),
                 () => {
@@ -1158,14 +1171,22 @@ export class SuperviseurComponent implements OnInit {
             );
     }
 
-
     tocurrency(number){
         return Number(number).toLocaleString();
-
     }
 
-
-
+    listcreditsuperviseur(){
+        this._suivipositionnementService.listcreditsuperviseur()
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.mescredits = data.message;
+                    }
+                },
+                error => alert(error),
+                () => console.log('listcreditsuperviseur')
+            );
+    }
 
 
 

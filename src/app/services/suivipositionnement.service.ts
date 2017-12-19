@@ -48,6 +48,14 @@ export class SuivipositionnementService {
             .map(res => res.json());
     }
 
+    listcreditsuperviseur(){
+        let url = this.link+"/apifromsentool/listcreditsuperviseur";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     affecterComForDepotForCC(data){
         let url = this.link+"/apifromsentool/affectercomfordepositforcc";
         let datas = JSON.stringify({token:this.basetoken, data:data});
@@ -74,6 +82,22 @@ export class SuivipositionnementService {
 
     validerComForDepotCC(data){
         let url = this.link+"/apifromsentool/validercomfordepotcc";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validePayementDepot(data){
+        let url = this.link+"/apifromsentool/validepayementdepot";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    valideVersementDepot(data){
+        let url = this.link+"/apifromsentool/valideversementdepot";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
