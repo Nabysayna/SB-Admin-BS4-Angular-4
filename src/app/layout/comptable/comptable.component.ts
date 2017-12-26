@@ -12,7 +12,7 @@ import {ApiPlatformService} from "../../services/apiplateform.service";
 export class ComptableComponent implements OnInit {
 
     public killsetinterval:any;
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
+    public menuHead = {menuHead1:true, menuHead2:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService){}
 
@@ -37,40 +37,13 @@ export class ComptableComponent implements OnInit {
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
             this.getEtatDeposit();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
             this.getListBilanDeposit();
 
-        }
-        if(option == 3){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = true;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
-        }
-        if(option == 4){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = true;
-            this.menuHead.menuHead5 = false;
-        }
-        if(option == 5){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = true;
         }
     }
 
@@ -135,7 +108,7 @@ export class ComptableComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log('getListBilanDeposit')
+                () => console.log(this.listebilandeposit)
             );
     }
 

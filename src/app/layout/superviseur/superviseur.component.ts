@@ -1150,11 +1150,10 @@ export class SuperviseurComponent implements OnInit {
         this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
             .subscribe(
                 data => {
+                    console.log(data);
                     if(data.errorCode){
                         if(data.messageError=='ok'){
                             this.listcreditsuperviseur();
-                            console.log('--------------------');
-                            this.getDemandeDepotForCC();
                         }
                         else{
                             this.errovalidation = true;
@@ -1163,6 +1162,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
+                    this.getDemandeDepotForCC();
                     this.killsetinterval = setInterval(() => {
                         this.getDemandeDepotForCC();
                         console.log('step');

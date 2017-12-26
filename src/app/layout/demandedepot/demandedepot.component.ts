@@ -29,7 +29,7 @@ export class DemandedepotComponent implements OnInit {
         this.killsetinterval = setInterval(() => {
             this.getDemandeDepotForCom();
             console.log('step');
-        }, 60000);
+        }, 10000);
     }
 
 
@@ -78,14 +78,14 @@ export class DemandedepotComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
-                    this.getDemandeDepotForCom();
                 },
                 error => alert(error),
                 () => {
+                    this.getDemandeDepotForCom();
                     this.killsetinterval = setInterval(() => {
                         this.getDemandeDepotForCom();
                         console.log('step');
-                    }, 60000);
+                    }, 10000);
                 }
             );
     }
@@ -98,14 +98,14 @@ export class DemandedepotComponent implements OnInit {
             .subscribe(
                 data => {
                     console.log(data);
-                    this.getDemandeDepotForCom();
                 },
                 error => alert(error),
                 () => {
+                    this.getDemandeDepotForCom();
                     this.killsetinterval = setInterval(() => {
                         this.getDemandeDepotForCom();
                         console.log('step');
-                    }, 60000);
+                    }, 10000);
                 }
             );
     }
