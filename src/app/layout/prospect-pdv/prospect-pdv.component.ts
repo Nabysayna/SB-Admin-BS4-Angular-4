@@ -201,8 +201,6 @@ export class ProspectPdvComponent implements OnInit {
             navigator.geolocation.getCurrentPosition(position => {
                 this.adresse_point.geospatialpoint.longitude = position.coords.longitude;
                 this.adresse_point.geospatialpoint.latitude = position.coords.latitude;
-                //console.log('test 1');
-                //console.log(this.adresse_point.geospatialpoint);
             });
         }
     }
@@ -240,7 +238,6 @@ export class ProspectPdvComponent implements OnInit {
     };
 
     public updateCheckedoptionsActivite(): void{
-        //console.log(this.selectedoptionsActivite);
         let activites = this.zonesactivites.activites;
         this.alldatapoint.activites = this.selectedoptionsActivite.map(function(option) {
           return activites[Number(option)-1].activite;

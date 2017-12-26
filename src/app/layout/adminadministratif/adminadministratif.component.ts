@@ -113,7 +113,7 @@ export class AdminadministratifComponent implements OnInit {
             this.killsetinterval = setInterval(() => {
                 this.getListStatusDeposition();
                 console.log('step');
-            }, 60000);
+            }, 10000);
         }
 
     }
@@ -142,7 +142,6 @@ export class AdminadministratifComponent implements OnInit {
                             adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint
                         }
                     });
-                    console.log(this.listencienpoints);
                 },
                 error => alert(error),
                 () => console.log('getEncienpoints')
@@ -150,11 +149,9 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     validresouscritsentool(point: any, type:string){
-        console.log(point);
         this._newclientService.validerSouscritSentool(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     if(type == 'ancien'){
                         this.getEncienpoints();
                     }
@@ -168,11 +165,9 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     validresouscritwafacash(point: any, type:string){
-        console.log(point);
         this._newclientService.validerSouscritWafacash(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     if(type == 'ancien'){
                         this.getEncienpoints();
                     }
@@ -186,11 +181,9 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     validresouscritsentoolandwafacash(point: any, type:string){
-        console.log(point);
         this._newclientService.validerSouscritSentoolAndWafacash(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     if(type == 'ancien'){
                         this.getEncienpoints();
                     }
@@ -231,7 +224,6 @@ export class AdminadministratifComponent implements OnInit {
                             adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
                         }
                     });
-                    console.log(this.listenewpoints);
                 },
                 error => alert(error),
                 () => console.log('getNouveauxpoints')
@@ -267,7 +259,6 @@ export class AdminadministratifComponent implements OnInit {
                             souscription: (JSON.parse(type.infosup).service_sentool==1 && JSON.parse(type.infosup).service_wafacash==0)?'SenTool':(JSON.parse(type.infosup).service_sentool==0 && JSON.parse(type.infosup).service_wafacash==1)?'WafaCash':'SenTool & WafaCash',
                         }
                     });
-                    console.log(this.listepointsouscritbbs);
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
@@ -286,7 +277,6 @@ export class AdminadministratifComponent implements OnInit {
     public sortByReclamationsnonresolu = "date_reclamation";
     public sortOrderReclamationsnonresolu = "asc";
     public filterQueryReclamationsnonresolu:any;
-
     public listereclamationsnonresolu:any[] = [];
 
     public getReclamationsNonResolu(): void {
@@ -306,7 +296,6 @@ export class AdminadministratifComponent implements OnInit {
                                 message: type.message,
                             }
                         });
-                        console.log(this.listereclamationsnonresolu);
                     }
                 },
                 error => alert(error),
@@ -315,11 +304,10 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     validresolutionreclamation(reclamation){
-        console.log(reclamation);
         this._apiPlatformService.validReclamationsNonResolu(reclamation)
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => console.log('validReclamationsNonResolu')
@@ -343,7 +331,6 @@ export class AdminadministratifComponent implements OnInit {
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
-                    console.log(data.message);
                     this.listeetatdeposit = data.message.map(function (type) {
                         return {
                             date_update:type.updater.date.split('.')[0],
@@ -431,12 +418,10 @@ export class AdminadministratifComponent implements OnInit {
         this.modalRef = this.modalService.open(content);
     }
 
-
     public getListStatusDeposition(): void {
         this._apiPlatformService.getListStatusDeposition()
             .subscribe(
                 data => {
-                    console.log(data)
                     this.listestatusdeposition = data.message.map(function (type) {
                         let pointObjet = JSON.parse(type.point);
                         return {
@@ -463,18 +448,17 @@ export class AdminadministratifComponent implements OnInit {
         this._suivipositionnementService.validePayementDepot({id:this.statusdoneeposition.id, montantpayement:this.montantpayement, modepayement:this.modepayement})
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
-                        this.getListStatusDeposition();
                         this.closedModal();
                     }
                 },
                 error => alert(error),
                 () => {
+                    this.getListStatusDeposition();
                     this.killsetinterval = setInterval(() => {
                         this.getListStatusDeposition();
                         console.log('step');
-                    }, 60000);
+                    }, 10000);
                 }
             );
     }
@@ -483,18 +467,17 @@ export class AdminadministratifComponent implements OnInit {
         this._suivipositionnementService.valideVersementDepot({id:this.statusdoneeposition.id, montantversement:this.montantversement})
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
-                        this.getListStatusDeposition();
                         this.closedModal();
                     }
                 },
                 error => alert(error),
                 () => {
+                    this.getListStatusDeposition();
                     this.killsetinterval = setInterval(() => {
                         this.getListStatusDeposition();
                         console.log('step');
-                    }, 60000);
+                    }, 10000);
                 }
             );
     }

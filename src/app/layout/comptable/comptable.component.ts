@@ -18,9 +18,9 @@ export class ComptableComponent implements OnInit {
 
     ngOnInit() {
         this.getEtatDeposit();
-        //this.killsetinterval = setInterval(() => {
-          //  this.getEtatDeposit();
-        //}, 20000);
+        this.killsetinterval = setInterval(() => {
+            this.getEtatDeposit();
+        }, 10000);
     }
 
     ngOnDestroy() {
@@ -34,10 +34,14 @@ export class ComptableComponent implements OnInit {
 
 
     public menuHeadClick(option: number){
+        clearInterval(this.killsetinterval);
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.getEtatDeposit();
+            this.killsetinterval = setInterval(() => {
+                this.getEtatDeposit();
+            }, 10000);
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -64,7 +68,6 @@ export class ComptableComponent implements OnInit {
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
-                    console.log(data.message);
                     this.listeetatdeposit = data.message.map(function (type) {
                         return {
                             date_update:type.updater.date.split('.')[0],
@@ -77,7 +80,7 @@ export class ComptableComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log('getListBilanDeposit')
+                () => console.log('getEtatDeposit')
             );
     }
 
@@ -108,7 +111,7 @@ export class ComptableComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log(this.listebilandeposit)
+                () => console.log('listebilandeposit')
             );
     }
 

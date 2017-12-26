@@ -95,14 +95,13 @@ export class FormComponent implements OnInit {
         this._utilService.getRegionActivite()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.regionsactivites = data;
                     this.options = this.regionsactivites.activites.map(function(type) {
                         return {name:type.activite, value:type.id, checked:false};
                     });
                 },
                 error => alert(error),
-                () => console.log(this.regionsactivites)
+                () => console.log('')
             );
     }
 
@@ -113,7 +112,7 @@ export class FormComponent implements OnInit {
             .subscribe(
                 data => this.zonespoints = data,
                 error => alert(error),
-                () => console.log(this.zonespoints)
+                () => console.log('')
             );
     }
 
@@ -124,7 +123,7 @@ export class FormComponent implements OnInit {
             .subscribe(
                 data => this.zonespropietaires = data,
                 error => alert(error),
-                () => console.log(this.zonespropietaires)
+                () => console.log('')
             );
     }
 
@@ -133,7 +132,7 @@ export class FormComponent implements OnInit {
             .subscribe(
                 data => this.souszonespoints = data,
                 error => alert(error),
-                () => console.log(this.souszonespoints)
+                () => console.log('')
             );
     }
 
@@ -142,7 +141,7 @@ export class FormComponent implements OnInit {
             .subscribe(
                 data => this.souszonespropietaires = data,
                 error => alert(error),
-                () => console.log(this.souszonespropietaires)
+                () => console.log('')
             );
     }
 
@@ -191,15 +190,12 @@ export class FormComponent implements OnInit {
             navigator.geolocation.getCurrentPosition(position => {
                 this.client.adressecompletpoint.geospatialpoint.longitude = position.coords.longitude;
                 this.client.adressecompletpoint.geospatialpoint.latitude = position.coords.latitude;
-                console.log('test 1');
-                console.log(this.client.adressecompletpoint.geospatialpoint);
             });
         }
     }
 
     coordonneesgeospatialesproprietaire(){
         if(navigator.geolocation){
-            console.log("YES!") ;
             let geospatialproprietaire = {latitude:0,longitude:0};
             navigator.geolocation.getCurrentPosition(function(position){
                 geospatialproprietaire.longitude = position.coords.longitude;
@@ -220,7 +216,6 @@ export class FormComponent implements OnInit {
         this.client.typeactivite = this.selectedOptions.map(function(option) {
             return activites[Number(option)-1].activite;
         });
-        console.log(this.client.typeactivite);
     }
 
     validernewclient(){
@@ -229,12 +224,10 @@ export class FormComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.client.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-        console.log(this.client);
 
         this._utilService.insertPoint(this.client)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.router.navigate(['/dashboard']);
                 },
                 error => alert(error),
@@ -242,7 +235,7 @@ export class FormComponent implements OnInit {
         );
     }
 
-    apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
+    apiEndPoint = 'https://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
 
     fileChange(event) {
       let fileList: FileList = event.target.files;

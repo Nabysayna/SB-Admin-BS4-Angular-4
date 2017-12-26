@@ -18,8 +18,6 @@ import { DataAdminFilterPipe }   from '../../pipe/data-admin-filter.pipe';
 import { ZonesAdminFilterPipe }   from '../../pipe/zones-admin-filter.pipe';
 import { SousZonesAdminFilterPipe }   from '../../pipe/souszones-admin-filter.pipe';
 
-import { AdminsuiviComponent } from '../adminsuivi/adminsuivi.component';
-
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import {DataFilterCommercialPipe} from "./filterdata-commercial.pipe";
@@ -49,7 +47,6 @@ import {DataFilterNewPointPipe} from "./filterdata-newpoint.pipe";
     	DataAdminFilterPipe,
     	ZonesAdminFilterPipe,
         SousZonesAdminFilterPipe,
-    	AdminsuiviComponent,
 
         DataFilterCommercialPipe,
         DataFilterNewPointPipe,

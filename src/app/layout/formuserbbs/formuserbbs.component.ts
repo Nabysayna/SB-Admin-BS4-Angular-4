@@ -22,15 +22,12 @@ export class FormuserbbsComponent implements OnInit {
     constructor(private _utilService:UtilService) { }
 
     ngOnInit() {
-        console.log(this.commercial);
     }
 
     enregisternouvcom(){
-        console.log(this.commercial);
         this._utilService.ajoutCommercial(this.commercial)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.isEnregistrerCommercial = true;
                 },
                 error => alert(error),

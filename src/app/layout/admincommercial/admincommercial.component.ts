@@ -22,7 +22,7 @@ export class AdmincommercialComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false,menuHead5:false, menuHead7:false};
 
     public modalRef: NgbModalRef;
 
@@ -37,9 +37,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
 
             this.filtreRegion = "--Choix région--";
@@ -53,9 +51,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
 
             this.getCommerciauxForPerformance();
@@ -64,49 +60,23 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
-            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.getComSuperviseurs();
-        }
-        if(option == 4){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = true;
-            this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = false;
-            this.menuHead.menuHead7 = false;
-            this.getAdminCCSuiviPoints();
-
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
-            this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.getPointssouscritBBS();
-        }
-        if(option == 6){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = true;
-            this.menuHead.menuHead7 = false;
         }
         if(option == 7){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
-            this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.getPointsdeploye();
         }
@@ -118,7 +88,6 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getRegionsSuperviseurs()
             .subscribe(
                 data => {
-                    console.log(data)
                     this.superviseurs = data.superviseurs
                     this.regions = data.regions
                 },
@@ -128,7 +97,6 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     choixsuperviseurforcommercial(id_superviseur){
-        console.log(id_superviseur);
     }
 
     public selectRegion(){
@@ -137,11 +105,10 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getZoneByRegion(this.filtreRegion.toString())
             .subscribe(
                 data => {
-                    console.log(data);
                     this.zones = data
                 },
                 error => alert(error),
-                () => console.log(this.zones)
+                () => console.log('')
             );
     }
 
@@ -182,7 +149,7 @@ export class AdmincommercialComponent implements OnInit {
             .subscribe(
                 data => this.souszones = data,
                 error => alert(error),
-                () => console.log(this.souszones)
+                () => console.log('')
             );
     }
 
@@ -190,7 +157,6 @@ export class AdmincommercialComponent implements OnInit {
         this._newclientService.getPointBySouszoneByZone({zone:this.filtreZone, souszone:this.filtreSousZone})
             .subscribe(
                 data => {
-                    console.log(data);
                     this.optionassignations = data.map(function(type) {
                         return {
                             id:type.id,
@@ -209,7 +175,7 @@ export class AdmincommercialComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log(this.optionassignations)
+                () => console.log('')
             );
     }
 
@@ -226,7 +192,6 @@ export class AdmincommercialComponent implements OnInit {
             this.filtreSousZone == "--Choix sous zone--" ||
             this.choixsuperviseur == "--Choix superviseur--" ||
             this.objetifsuperviseur == 0 ){
-            console.log(this.filtreZone+'-'+this.filtreSousZone+'-'+this.choixsuperviseur+'-'+this.objetifsuperviseur);
             this.readyforassination = false;
         }
         else {
@@ -253,7 +218,6 @@ export class AdmincommercialComponent implements OnInit {
             this._assignationsuiviService.assignationsuperviseur(assignations)
                 .subscribe(
                     data => {
-                        console.log(data);
                         this.isEnregistrerAssignation = true;
                         this.filtreRegion = "--Choix région--";
                         this.filtreZone = "";
@@ -294,7 +258,6 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getComSuperviseurs()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
                         this.superviseurs = data.message.superviseurs;
                         this.commerciaux = data.message.commerciaux;
@@ -309,11 +272,9 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     reaffectercommercial(item){
-        console.log(item);
         this._utilService.affectationCommercial(item)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.getComSuperviseurs();
                 },
                 error => alert(error),
@@ -374,11 +335,9 @@ export class AdmincommercialComponent implements OnInit {
     }
 
     validresouscritsentool(point: any){
-        console.log(point);
         this._newclientService.validerSouscritSentool(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
                 },
                 error => alert(error),
@@ -386,11 +345,9 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
     validresouscritwafacash(point: any){
-        console.log(point);
         this._newclientService.validerSouscritWafacash(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
                 },
                 error => alert(error),
@@ -398,11 +355,9 @@ export class AdmincommercialComponent implements OnInit {
             );
     }
     validresouscritsentoolandwafacash(point: any){
-        console.log(point);
         this._newclientService.validerSouscritSentoolAndWafacash(point)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listeadminccsuivipoints = this.listeadminccsuivipoints.filter( opt => opt.id!=point.id );
                 },
                 error => alert(error),
@@ -423,7 +378,6 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getPointssouscritBBS()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listepointsouscrits = data.message.map(function (type) {
                         let adresse_point = JSON.parse(type.adresse_point);
                         return {
@@ -438,7 +392,6 @@ export class AdmincommercialComponent implements OnInit {
                             fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
                         }
                     });
-                    console.log(this.listepointsouscrits);
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
@@ -477,7 +430,6 @@ export class AdmincommercialComponent implements OnInit {
                             fullname_commercial:type.prenom_commercial+" "+type.nom_commercial
                         }
                     });
-                    console.log(this.listenewpoints);
                 },
                 error => alert(error),
                 () => console.log('getNouveauxpoints')
@@ -500,7 +452,6 @@ export class AdmincommercialComponent implements OnInit {
                             fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
                         }
                     });
-                    console.log(this.listepointsdepoye);
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
@@ -527,8 +478,6 @@ export class AdmincommercialComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode){
-                        console.log(data.message);
-
                         let dataobjectiffixe:number[] = data.message.map(function(type) {
                             return type.objectif;
                         });
@@ -552,7 +501,6 @@ export class AdmincommercialComponent implements OnInit {
                     this._assignationsuiviService.getSuperviseursForPerformancetest()
                         .subscribe(
                             data => {
-                                console.log(data.message);
                                 this.data = data.message;
                                 if(data.errorCode){
 
@@ -605,7 +553,6 @@ export class AdmincommercialComponent implements OnInit {
         this._utilService.getAdmincomsuiviPP()
             .subscribe(
                 data => {
-                    console.log(data.message);
                     if(data.errorCode){
                         this.doughnutChartDataPP = [
                             data.message.filter(opt => opt.service_sentool==0 && opt.service_wafacash==0).length,

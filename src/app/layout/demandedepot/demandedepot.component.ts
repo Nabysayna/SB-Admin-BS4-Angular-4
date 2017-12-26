@@ -49,7 +49,6 @@ export class DemandedepotComponent implements OnInit {
         this._suivipositionnementService.getDemandeDepotForCom()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode==0){
                         this.listedeposits = data.message.map(function(type){
                             return {
@@ -66,18 +65,16 @@ export class DemandedepotComponent implements OnInit {
                     }
                 },
                 error => alert(error),
-                () => console.log(this.listedeposits)
+                () => console.log('')
             );
     }
 
     validerRecuDepotCom(item){
-        console.log('validerRecuDepotCom');
-        console.log('--------------------------');
         clearInterval(this.killsetinterval);
         this._suivipositionnementService.validerRecuDepotCom({montantdemande: item.montantdemande, tokencom: item.tokencom})
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => {
@@ -91,13 +88,11 @@ export class DemandedepotComponent implements OnInit {
     }
 
     confirmerAffectationDepotCom(item){
-        console.log('confirmerAffectationDepotCom');
-        console.log('--------------------------');
         clearInterval(this.killsetinterval);
         this._suivipositionnementService.confirmerAffectationDepotCom({datedemande: item.datedemande, montantdemande: item.montantdemande, tokencom: item.tokencom})
             .subscribe(
                 data => {
-                    console.log(data);
+                    console.log('');
                 },
                 error => alert(error),
                 () => {

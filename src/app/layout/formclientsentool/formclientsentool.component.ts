@@ -42,11 +42,10 @@ export class FormclientsentoolComponent implements OnInit {
         this._utilService.getRegionActivite()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.regionsactivites = data;
                 },
                 error => alert(error),
-                () => console.log(this.regionsactivites)
+                () => console.log('')
             );
     }
 
@@ -57,7 +56,7 @@ export class FormclientsentoolComponent implements OnInit {
             .subscribe(
                 data => this.zones = data,
                 error => alert(error),
-                () => console.log(this.zones)
+                () => console.log('')
             );
     }
 
@@ -66,7 +65,7 @@ export class FormclientsentoolComponent implements OnInit {
             .subscribe(
                 data => this.souszones = data,
                 error => alert(error),
-                () => console.log(this.souszones)
+                () => console.log('')
             );
     }
 
