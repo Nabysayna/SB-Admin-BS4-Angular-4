@@ -1,3 +1,5 @@
+
+
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22,6 +24,8 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.ngOnInit = function () {
         this.currentUsername = JSON.parse(sessionStorage.getItem('currentUser')).username;
         console.log(this.currentUsername);
+        console.log('salut');
+        console.log('Start 1');
     };
     HeaderComponent.prototype.toggleSidebar = function () {
         var dom = document.querySelector('body');
@@ -37,6 +41,8 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.changeLang = function (language) {
         this.translate.use(language);
     };
+
+
     return HeaderComponent;
 }());
 HeaderComponent = __decorate([
@@ -46,4 +52,7 @@ HeaderComponent = __decorate([
         styleUrls: ['./header.component.scss']
     })
 ], HeaderComponent);
+
 exports.HeaderComponent = HeaderComponent;
+
+

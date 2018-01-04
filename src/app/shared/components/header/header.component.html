@@ -4,6 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="javascript:void(0)">Plateforme de suivi</a>
+
         <div class="collapse navbar-collapse">
 
             <ul class="navbar-nav ml-auto mt-2 mt-md-0">
@@ -74,5 +75,60 @@
                 </li>
             </ul>
         </div>
+        <button type="button" class="btn btn-primary" id="chatHoveredButton" (click)="chatShow()">Chat</button>
     </nav>
+</div>
+<div class="container ">
+    <div class="row  hidden-sm hidden-xs chat-window col-xs-5 col-md-3 chat-visible" id="chat_window" style="margin-left:10px;">
+        <div class="col-xs-12 col-md-12">
+            <div class="panel panel-default chat-visible">
+                <div class="panel-heading top-bar">
+                    <div class="col-md-8 col-xs-8">
+                        <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span>Chat - BBS</h3>
+                    </div>
+                    <div class="col-md-4 col-xs-4" style="text-align: right;">
+                        <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
+                        <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+                    </div>
+                </div>
+
+                <div class="panel-body msg_container_base" id="panel-body" *ngIf="msgsRe">
+                    <div class="" *ngFor="let msg of msgsRe">
+                        <div class="row msg_container base_receive" *ngIf="msg.type=='message'">
+                           <div class="col-md-2 col-xs-2 avatar">
+                               <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                           </div>
+                           <div class="col-md-10 col-xs-10">
+                               <div class="messages msg_receive">
+                                   <time datetime="2009-11-13T20:00">{{ msg.date_message }}</time>
+                                   <p>{{ msg.message }}</p>
+                               </div>
+                            </div>
+                       </div>
+                        <div class="row msg_container base_sent" *ngIf="msg.type=='type'">
+                            <div class="col-xs-10 col-md-10">
+                               <div class="messages msg_sent">
+                                    <p>{{ msg.message }}</p>
+                                   <time datetime="2009-11-13T20:00">{{ msg.date_message }}</time>
+                               </div>
+                            </div>
+                            <div class="col-md-2 col-xs-2 avatar">
+                                 <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input [(ngModel)]="msg" (keypress)="sendMsgPress($event.keyCode)" name="input" type="text" class="form-control input-sm chat_input" placeholder="Ecrivez votre message ici..." />
+                        <span class="input-group-btn">
+                        <button class="btn btn-primary btn-sm" (click)="sendMsg()">Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>

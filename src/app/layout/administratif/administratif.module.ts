@@ -6,12 +6,7 @@ import { FormsModule }   from '@angular/forms';
 import { AdministratifComponent } from './administratif.component';
 import { AdministratifRoutingModule } from './administratif-routing.module';
 
-
-
 import { PageHeaderModule } from './../../shared';
-
-
-
 
 @NgModule({
     imports: [
@@ -25,6 +20,5 @@ import { PageHeaderModule } from './../../shared';
         AdministratifComponent,
     ]
 })
-
 
 export class AdministratifModule { }
