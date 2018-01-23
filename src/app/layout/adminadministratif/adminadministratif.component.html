@@ -1,15 +1,18 @@
-<h3 class="page-header"><u>Administrateur administration</u></h3>
+<div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+    <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+</div>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
 <!--    <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Anciens points</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Status points</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Points souscrits</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Réclamations</button>
-
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Modify Point crm incomplet</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Réclamations</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Etat Déposit</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Historique deposit</button>
-
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Status Positionnement</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Etat positionnement</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/adminadministratif', 'cartoadministratif']">Cartographie</button>
     </div>
     <hr>
 </div>
@@ -122,7 +125,7 @@
                     </tr>
                     <tr>
                         <th colspan="8">
-                            <div style="color: black; text-align: center;">
+                            <div style="color: black; text-align: center; font-size: larger;">
                                 <!--<span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;-->
                                 <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
                                 <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
@@ -146,6 +149,63 @@
                     <tr class="text-center center-block">
                         <td colspan="8" class="text-center center-block">
                             <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead4" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="points | dataFilterAdminadministratifPDVCRMINCOM: filterQueryPDVCRMINCOM" #mfPDVCRMINCOM="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_proprietaire">Propriétaire</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email_gerant">email</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5">Recherche: <input class="form-control" [(ngModel)]="filterQueryPDVCRMINCOM"/></th>
+                        <th>Total : {{points.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfPDVCRMINCOM.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==1 && item.infosup.service_wafacash==1)?'green':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'green':'blue'}">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.libellepoint}}</td>
+                        <td>{{item.fullname_proprietaire}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.email_gerant}}</td>
+                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}, {{item.region}}</td>
+                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalModifPoint(contentModifPoint, item)">Modifier</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
                         </td>
                     </tr>
                     </tfoot>
@@ -259,6 +319,22 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead7" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
+            <div class=" row" style="margin-bottom: 2rem; margin-left: 3rem; margin-right: 3rem">
+                <div class="col-sm-6">
+                    <label class="label-control" for="datejour">Date par jour:</label>
+                    <div class="row">
+                        <input type="date" id="datejour" name="datejour" [(ngModel)]="selectionjour" style="margin-right: 1rem"/>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiquejourDepositCaution()" [disabled]="selectionjour==undefined" >Chercher</button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="label-control">Date par intervalle:</label>
+                    <div class="row">
+                        <input type="date" name="intervalledateinit" [(ngModel)]="selectionintervalledateinit"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinal" [(ngModel)]="selectionintervalleddatefinal"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiqueintervalleDepositCaution()" [disabled]="selectionintervalledateinit>selectionintervalleddatefinal || selectionintervalledateinit==undefined || selectionintervalleddatefinal==undefined " >Chercher</button>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <table class="table table-hover table-responsive" [mfData]="listebilandeposit | dataFilterAdminadministratifBilan: filterQueryBilanDeposit" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageBilanDeposit" [(mfSortBy)]="sortByBilanDeposit" [(mfSortOrder)]="sortOrderBilanDeposit">
                     <thead>
@@ -273,7 +349,8 @@
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanDeposit"/></th>
-                        <th>Total : {{listebilandeposit.length}}</th>
+                        <th>Nombre Total : {{listebilandeposit.length}} Déposits</th>
+                        <th>Montant Total : {{totaldeposit}} FCFA.</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -299,7 +376,6 @@
         </div>
     </div>
 </div>
-
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead8" >
     <div class="row">
@@ -397,3 +473,15 @@
         </div>
     </div>
 </ng-template>
+<ng-template #contentModifPoint let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <app-modif-pdv-incomplet [infoprospect]="point"></app-modif-pdv-incomplet>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click'); getPointsInfosIncomplets();">Fermer</button>
+    </div>
+</ng-template>
+

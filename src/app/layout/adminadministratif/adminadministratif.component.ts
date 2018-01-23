@@ -15,6 +15,7 @@ import {SuivipositionnementService} from "../../services/suivipositionnement.ser
 
 export class AdminadministratifComponent implements OnInit {
 
+    public loading_data:boolean = true;
     public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
 
     public killsetinterval:any;
@@ -23,15 +24,18 @@ export class AdminadministratifComponent implements OnInit {
     constructor(private _suivipositionnementService:SuivipositionnementService, private modalService: NgbModal, public router: Router, private _utilService:UtilService,  private _apiPlatformService:ApiPlatformService, private _newclientService:NewclientService) { }
 
     ngOnInit() {
+        this.loading_data = true;
         this.getNouveauxpoints();
     }
 
     ngOnDestroy() {
+
         clearInterval(this.killsetinterval);
     }
 
 
     public menuHeadClick(option: number){
+        this.loading_data = true;
         clearInterval(this.killsetinterval);
         if(option == 1){
             this.menuHead.menuHead1 = true;
@@ -66,6 +70,17 @@ export class AdminadministratifComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.getPointssouscritBBS();
         }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
+            this.getPointsInfosIncomplets();
+        }
         if(option == 5){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
@@ -97,7 +112,7 @@ export class AdminadministratifComponent implements OnInit {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
-            this.getListBilanDeposit();
+            this.histDepositCautionInit();
         }
         if(option == 8){
             this.menuHead.menuHead1 = false;
@@ -224,6 +239,7 @@ export class AdminadministratifComponent implements OnInit {
                             adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint,
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getNouveauxpoints')
@@ -259,6 +275,7 @@ export class AdminadministratifComponent implements OnInit {
                             souscription: (JSON.parse(type.infosup).service_sentool==1 && JSON.parse(type.infosup).service_wafacash==0)?'SenTool':(JSON.parse(type.infosup).service_sentool==0 && JSON.parse(type.infosup).service_wafacash==1)?'WafaCash':'SenTool & WafaCash',
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
@@ -296,6 +313,7 @@ export class AdminadministratifComponent implements OnInit {
                                 message: type.message,
                             }
                         });
+                        this.loading_data = false;
                     }
                 },
                 error => alert(error),
@@ -341,6 +359,7 @@ export class AdminadministratifComponent implements OnInit {
                             point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getListBilanDeposit')
@@ -363,8 +382,16 @@ export class AdminadministratifComponent implements OnInit {
     public sortOrderBilanDeposit = "desc";
     public filterQueryBilanDeposit:any;
     public listebilandeposit:any[] = [];
-    public getListBilanDeposit(): void {
-        this._apiPlatformService.getListBilanDeposit()
+    public totaldeposit:number = 0;
+
+    public selectionjour:string;
+    public selectionintervalledateinit:string;
+    public selectionintervalleddatefinal:string;
+
+    historiquejourDepositCaution(){
+        this.selectionintervalledateinit = undefined;
+        this.selectionintervalleddatefinal = undefined;
+        this._apiPlatformService.getListBilanDepositByDate({type: 'jour', infotype:this.selectionjour})
             .subscribe(
                 data => {
                     this.listebilandeposit = data.message.map(function (type) {
@@ -379,10 +406,69 @@ export class AdminadministratifComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log('getListBilanDeposit')
+                () => {
+                    this.listebilandeposit.forEach(type => {
+                        this.totaldeposit += Number(type.montant);
+                    });
+                    this.loading_data = false;
+                }
             );
     }
 
+    historiqueintervalleDepositCaution(){
+        this.selectionjour = undefined;
+        this._apiPlatformService.getListBilanDepositByDate({type: 'intervalle', infotype:this.selectionintervalledateinit+" "+this.selectionintervalleddatefinal})
+            .subscribe(
+                data => {
+                    this.listebilandeposit = data.message.map(function (type) {
+                        return {
+                            date_update:type.daterenflu.date.split('.')[0],
+                            maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
+                            montant:JSON.parse(type.infotrace).montant,
+                            superviseur:type.superviseur,
+                            telephone:type.telephone,
+                            point: JSON.parse(type.infopoint).nometps,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => {
+                    this.listebilandeposit.forEach(type => {
+                        this.totaldeposit += Number(type.montant);
+                    });
+                    this.loading_data = false;
+                }
+            );
+    }
+
+    histDepositCautionInit(){
+        this.selectionintervalledateinit = undefined;
+        this.selectionintervalleddatefinal = undefined;
+        let datenow = ((new Date()).toJSON()).split("T",2)[0];
+        this.selectionjour = datenow;
+        this._apiPlatformService.getListBilanDepositByDate({type: 'jour', infotype:this.selectionjour})
+            .subscribe(
+                data => {
+                    this.listebilandeposit = data.message.map(function (type) {
+                        return {
+                            date_update:type.daterenflu.date.split('.')[0],
+                            maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
+                            montant:JSON.parse(type.infotrace).montant,
+                            superviseur:type.superviseur,
+                            telephone:type.telephone,
+                            point: JSON.parse(type.infopoint).nometps,
+                        }
+                    });
+                },
+                error => alert(error),
+                () => {
+                    this.listebilandeposit.forEach(type => {
+                        this.totaldeposit += Number(type.montant);
+                    });
+                    this.loading_data = false;
+                }
+            );
+    }
 
 
 
@@ -438,6 +524,7 @@ export class AdminadministratifComponent implements OnInit {
                             etatversement: type.etatversement,
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log("getListStatusDeposition")
@@ -480,6 +567,76 @@ export class AdminadministratifComponent implements OnInit {
                     }, 10000);
                 }
             );
+    }
+
+
+    /***************************************************************************************
+     ********************   PARTIE Modify Point crm incomplet   ****************************
+     **************************************************************************************/
+
+    public filterQueryPDVCRMINCOM:any;
+    public rowsOnPage = 10;
+    public sortBy = "date_ajout";
+    public sortOrder = "desc";
+    public sortByWordLength = (a: any) => { return a.adresse.length; }
+
+    public points:any[] = [];
+    public point:any;
+
+    getPointsInfosIncomplets(){
+        this._utilService.getPointsInfosIncomplets()
+            .subscribe(
+                data => {
+
+                    this.points = data.message.filter(opt => !JSON.parse(opt.adresse_point).regionpoint || opt.adresse_point.match('--Choix') || opt.adresse_point.match('autre') || opt.adresse_point.match('Autre')).map(function(type) {
+                        let adresse = JSON.parse(type.adresse_point);
+                        return {
+                            id: type.id,
+                            infosup: JSON.parse(type.infosup),
+                            libellepoint: type.nom_point.trim()?type.nom_point.trim():'__',
+                            fullname_gerant: type.prenom_gerant +' '+ type.nom_gerant,
+                            fullname_proprietaire: type.prenom_proprietaire +' '+ type.nom_proprietaire,
+
+                            region:adresse.regionpoint?adresse.regionpoint:'__',
+                            zone:adresse.zonepoint?adresse.zonepoint:'__',
+                            sous_zone:adresse.souszonepoint?adresse.souszonepoint:'__',
+                            adresse: adresse.adressepoint?adresse.adressepoint:'__',
+
+                            activites: JSON.parse(type.activites),
+                            services: JSON.parse(type.services),
+                            fichiers: JSON.parse(type.fichiers),
+                            note: type.avis,
+
+                            prenom_gerant: type.prenom_gerant,
+                            nom_gerant: type.nom_gerant,
+                            telephone_gerant: type.telephone_gerant,
+                            email_gerant: type.email_gerant?type.email_gerant:'__',
+
+                            prenom_proprietaire: type.prenom_proprietaire,
+                            nom_proprietaire: type.prenom_proprietaire,
+                            telephone_proprietaire:type.telephone_gerant,
+
+                            id_gerant_point:type.id_gerant_point,
+                            id_proprietaire_point:type.id_proprietaire_point,
+                            id_commercial:type.id_commercial,
+
+                            date_ajout:type.date_ajout,
+                        };
+                    });
+                },
+                error => alert(error),
+                () => {
+                    console.log('');
+                }
+            );
+    }
+
+    public toInt(num: string) { return +num; }
+
+    showModalModifPoint(content, point) {
+        this.point = point;
+        this.modalService.open(content, {size: 'lg'}).result.then( (result) => {
+        }, (reason) => {} );
     }
 
 

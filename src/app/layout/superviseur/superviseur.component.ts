@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
-import { NgForm } from '@angular/forms';
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {ApiPlatformService} from "../../services/apiplateform.service";
 import {Color} from "ng2-charts";
@@ -15,6 +14,8 @@ import {SuivipositionnementService} from "../../services/suivipositionnement.ser
     providers:[UtilService, AssignationSuiviService,ApiPlatformService, SuivipositionnementService],
 })
 export class SuperviseurComponent implements OnInit {
+    public loading_data:boolean = true;
+
     public form:any;
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
@@ -119,10 +120,12 @@ export class SuperviseurComponent implements OnInit {
         private modalService: NgbModal,
         private _utilService:UtilService,
         private _assignationsuiviService:AssignationSuiviService,
-        private _suivipositionnementService:SuivipositionnementService
+        private _apiPlatformService:ApiPlatformService,
+        private _suivipositionnementService:SuivipositionnementService,
     ) {this.reponse1=false;}
 
     ngOnInit() {
+        this.loading_data = true;
         this.getAssignationsBySuperviseur();
     }
 
@@ -132,6 +135,7 @@ export class SuperviseurComponent implements OnInit {
 
 
     public menuHeadClick(option: number){
+        this.loading_data = true;
         clearInterval(this.killsetinterval);
         if(option == 1){
             this.menuHead.menuHead1 = true;
@@ -187,6 +191,7 @@ export class SuperviseurComponent implements OnInit {
                     },
                     error => alert(error),
                     () => {
+                        this.loading_data = false;
                         console.log('listsuiviforsuperviseur');
                     }
                 );
@@ -201,7 +206,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
-            this.getPointsdeployeByCC();
+            this.getReclamationsNonResolu();
         }
         if(option == 4){
             this.menuHead.menuHead1 = false;
@@ -213,37 +218,7 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
-            this._assignationsuiviService.listsuiviforsuperviseur()
-                .subscribe(
-                    data => {
-                        this.datasuiviarelancer = data.map(function(type) {
-                            let client = JSON.parse(type.client);
-                            if (type.qualification){
-                                return {
-                                    id:type.id,
-                                    libellepoint:type.p_nom_point,
-                                    fullname:type.p_prenom+" "+type.p_nom,
-                                    telephone:type.p_telephone,
-                                    adresse:JSON.parse(type.p_adresse_point).adressepoint+", "+JSON.parse(type.p_adresse_point).souszonepoint+", "+JSON.parse(type.p_adresse_point).zonepoint,
-                                    note:type.note,
-                                    id_assigner:type.id_assigner,
-                                    id_commercial:type.id_commercial,
-                                    dates_suivi:type.dates_suivi,
-                                    reponse:type.reponse,
-                                    qualification:"--Choisir une action--",
-                                    ischoixvalide:false,
-                                    choixsouscrit:"SenTool",
-                                    client:client
-                                }
-                            }
-                        });
-                        this.datasuiviarelancer = this.datasuiviarelancer.filter(opt => opt)
-                    },
-                    error => alert(error),
-                    () => {
-                        console.log('');
-                    }
-                );
+            //this.getListPointsbysuperviseur();
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
@@ -402,6 +377,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
+                    this.loading_data = false;
                     console.log('getAssignationsBySuperviseur');
                 }
             );
@@ -597,6 +573,8 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     this.commercials = data
                     if(data.errorCode) this.commercials = data.message;
+                    this.loading_data = false;
+
                 },
                 error => alert(error),
                 () => console.log('')
@@ -664,6 +642,8 @@ export class SuperviseurComponent implements OnInit {
                             adresse_point:JSON.parse(type.adresse_point),
                         }
                     });
+                    this.loading_data = false;
+
                     this.getRegionSouscritSentool();
                 },
                 error => alert(error),
@@ -788,6 +768,8 @@ export class SuperviseurComponent implements OnInit {
                             infosup:JSON.parse(type.infosup),
                         }
                     });
+                    this.loading_data = false;
+
                 },
                 error => alert(error),
                 () => console.log('')
@@ -912,6 +894,8 @@ export class SuperviseurComponent implements OnInit {
                     //console.log(data)
                     if(data.errorCode){
                         this.performancesadminpdv = data.message;
+                        this.loading_data = false;
+
                     }
                 },
                 error => alert(error),
@@ -936,6 +920,8 @@ export class SuperviseurComponent implements OnInit {
                                 traitement: op.traitement,
                             }
                         });
+                        this.loading_data = false;
+
                     }
                 },
                 error => alert(error),
@@ -969,6 +955,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
+                    this.loading_data = false;
                     console.log('getEtatdepositbylotbysup');
                 }
             );
@@ -993,6 +980,7 @@ export class SuperviseurComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
+                    this.loading_data = false;
                     console.log('getDetailEtatdepositbylotbysup');
                 }
             )
@@ -1034,12 +1022,66 @@ export class SuperviseurComponent implements OnInit {
                             fullname_commercial: type.prenom_commercial + " " + type.nom_commercial
                         }
                     });
+                    this.loading_data = false;
                     console.log('');
                 },
                 error => alert(error),
                 () => console.log('getPointsdeploye')
             );
     }
+
+
+
+
+    /***************************************************************************************
+     *********************************   PARTIE RECLAMATIONS NON RESOLUES   ****************************
+     **************************************************************************************/
+
+    public rowsOnPageReclamationsnonresolu = 10;
+    public sortByReclamationsnonresolu = "date_reclamation";
+    public sortOrderReclamationsnonresolu = "asc";
+    public filterQueryReclamationsnonresolu:any;
+    public listereclamationsnonresolu:any[] = [];
+
+    public getReclamationsNonResolu(): void {
+        this._apiPlatformService.getReclamationsNonResoluBySuperviseur()
+            .subscribe(
+                data => {
+                    if(data.errorCode==0){
+                        console.log(data.message);
+                        this.listereclamationsnonresolu = data.message.map(function (type) {
+                            return {
+                                id_reclamation: type.id,
+                                date_reclamation: type.dateajout.date.split('.')[0],
+                                nom_point: JSON.parse(type.infosup).nometps,
+                                name_caissier: type.name_caissier,
+                                telephone: type.telephone.split('221')[1],
+                                nomservice: type.nomservice,
+                                sujet: type.sujet,
+                                message: type.message,
+                            }
+                        });
+                        this.loading_data = false;
+                    }
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
+    }
+
+    validresolutionreclamation(reclamation){
+        this._apiPlatformService.validReclamationsNonResolu(reclamation)
+            .subscribe(
+                data => {
+                    console.log('');
+                },
+                error => alert(error),
+                () => console.log('validReclamationsNonResolu')
+            );
+        this.listereclamationsnonresolu = this.listereclamationsnonresolu.filter( opt => opt.id_reclamation!=reclamation.id_reclamation );
+    }
+
+
 
 
 
@@ -1084,6 +1126,7 @@ export class SuperviseurComponent implements OnInit {
                         this.listedepositsencours = this.listedeposits.filter(opt => opt.etatdemande!=3);
                         this.listedepositsvalide = this.listedeposits.filter(opt => opt.etatdemande==3);
                         this.getCommerciaux();
+                        this.loading_data = false;
                     }
                 },
                 error => alert(error),
@@ -1092,53 +1135,69 @@ export class SuperviseurComponent implements OnInit {
     }
 
     affecterComForDepot(item){
+        console.log(item)
         clearInterval(this.killsetinterval);
-        let dataaffecte = {
-            accepteur: this.commercials.find(opt => opt.id= item.id_accepteur),
-            datedemande: item.datedemande,
-            montantdemande: item.montantdemande,
-            tokencc: item.tokencc,
-        };
-        this._suivipositionnementService.affecterComForDepotForCC(dataaffecte)
-            .subscribe(
-                data => {
-                    this.getDemandeDepotForCC();
-                },
-                error => alert(error),
-                () => {
-                    this.killsetinterval = setInterval(() => {
+        if(confirm("Confirmer l'affectation")){
+            console.log("je confirme")
+            this.loading_data = true;
+            let dataaffecte = {
+                accepteur: this.commercials.find(opt => opt.id= item.id_accepteur),
+                datedemande: item.datedemande,
+                montantdemande: item.montantdemande,
+                tokencc: item.tokencc,
+            };
+            this._suivipositionnementService.affecterComForDepotForCC(dataaffecte)
+                .subscribe(
+                    data => {
                         this.getDemandeDepotForCC();
-                        console.log('step');
-                    }, 10000);
-                }
-            );
+                    },
+                    error => alert(error),
+                    () => {
+                        this.killsetinterval = setInterval(() => {
+                            this.getDemandeDepotForCC();
+                            console.log('step');
+                        }, 10000);
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
     }
 
     validerComForDepotCC(item){
         console.log('validerComForDepotCC');
 
         clearInterval(this.killsetinterval);
-        this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
-            .subscribe(
-                data => {
-                    if(data.errorCode){
-                        if(data.messageError=='ok'){
-                            this.listcreditsuperviseur();
+        if(confirm("Confirmer la validation du dépot")){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
+                .subscribe(
+                    data => {
+                        if(data.errorCode){
+                            if(data.messageError=='ok'){
+                                this.listcreditsuperviseur();
+                            }
+                            else{
+                                this.errovalidation = true;
+                            }
                         }
-                        else{
-                            this.errovalidation = true;
-                        }
-                    }
-                },
-                error => alert(error),
-                () => {
-                    this.getDemandeDepotForCC();
-                    this.killsetinterval = setInterval(() => {
+                    },
+                    error => alert(error),
+                    () => {
                         this.getDemandeDepotForCC();
-                        console.log('step');
-                    }, 10000);
-                }
-            );
+                        this.killsetinterval = setInterval(() => {
+                            this.getDemandeDepotForCC();
+                            console.log('step');
+                        }, 10000);
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
+
     }
 
     tocurrency(number){
@@ -1151,12 +1210,47 @@ export class SuperviseurComponent implements OnInit {
                 data => {
                     if(data.errorCode){
                         this.mescredits = data.message;
+                        this.loading_data = false;
                     }
                 },
                 error => alert(error),
                 () => console.log('listcreditsuperviseur')
             );
     }
+
+
+    /************************************************************************************
+     *********************************   PARTIE SUIVI ONE POINT   ****************************
+     ***********************************************************************************/
+
+    public listepointsbycc:any[] = [];
+
+    getListPointsbysuperviseur(){
+        this._apiPlatformService.getListPointsbysuperviseur()
+            .subscribe(
+                data => {
+                    console.log(data);
+                    if(data.errorCode){
+                        this.listepointsbycc = data.message.map(function(type){
+                            return {
+                                date_ajout: type.date_last_modif.date.split('.')[0],
+                                nom_point: JSON.parse(type.infosup).nometps,
+                                gerant: type.name_adminpdv,
+                                tel: type.telephone,
+                                adresse: JSON.parse(type.adresse).address,
+                                commercial: 'ds',
+                                id_point: type.id_point,
+                            }
+                        });
+                        this.loading_data = false;
+                    }
+
+                },
+                error => alert(error),
+                () => console.log('')
+            );
+    }
+
 
 
 

@@ -12,6 +12,7 @@ import { PageHeaderModule } from './../../shared';
 
 import {DataFilterCommercialPipe} from "./filterdata-commercial.pipe";
 import {DataFilterNewPointPipe} from "./filterdata-newpoint.pipe";
+import {DataFilterPointManagerPipe} from "./filterdata-pointManager.pipe";
 
 
 
@@ -30,6 +31,7 @@ import {DataFilterNewPointPipe} from "./filterdata-newpoint.pipe";
 
         DataFilterCommercialPipe,
         DataFilterNewPointPipe,
+        DataFilterPointManagerPipe,
     ]
 })
 

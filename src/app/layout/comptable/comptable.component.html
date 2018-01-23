@@ -65,6 +65,22 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
+            <div class=" row" style="margin-bottom: 2rem; margin-left: 3rem; margin-right: 3rem">
+                <div class="col-sm-6">
+                    <label class="label-control" for="datejour">Date par jour:</label>
+                    <div class="row">
+                        <input type="date" id="datejour" name="datejour" [(ngModel)]="selectionjour" style="margin-right: 1rem"/>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiquejourDepositCaution()" [disabled]="selectionjour==undefined" >Chercher</button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="label-control">Date par intervalle:</label>
+                    <div class="row">
+                        <input type="date" name="intervalledateinit" [(ngModel)]="selectionintervalledateinit"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinal" [(ngModel)]="selectionintervalleddatefinal"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiqueintervalleDepositCaution()" [disabled]="selectionintervalledateinit>selectionintervalleddatefinal || selectionintervalledateinit==undefined || selectionintervalleddatefinal==undefined " >Chercher</button>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <table class="table table-hover table-responsive" [mfData]="listebilandeposit | dataFilterComptableBilan: filterQueryBilanDeposit" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageBilanDeposit" [(mfSortBy)]="sortByBilanDeposit" [(mfSortOrder)]="sortOrderBilanDeposit">
                     <thead>
@@ -79,7 +95,8 @@
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanDeposit"/></th>
-                        <th>Total : {{listebilandeposit.length}}</th>
+                        <th>Nombre Total : {{listebilandeposit.length}} Déposits</th>
+                        <th>Montant Total : {{totaldeposit}} FCFA.</th>
                     </tr>
                     </thead>
                     <tbody>

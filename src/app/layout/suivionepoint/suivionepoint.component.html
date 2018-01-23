@@ -1,0 +1,249 @@
+<div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+    <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+</div>
+<div  class="container-fluid" *ngIf="menuHead.menuHead1" >
+    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsbycc  | dataFilterListesuivipoint: filterQuerypointsbycc" #mfCliTraiterPoint="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBypointsbycc" [(mfSortOrder)]="sortOrderpointsbycc">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="caution">Caution</mfDefaultSorter></th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuerypointsbycc"/></th>
+                        <th>{{categorie}} : {{listepointsbycc.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <button type="button" (click)="getCategorie('Tous')" class="btn btn-dark btn-sm"> Tous </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Pas de depot')" class="btn btn-info btn-sm" style="background-color: blue;"> Pas de depot </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Faible')" class="btn btn-info btn-sm" style="background-color: red;"> Faible </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Passable')" class="btn btn-info btn-sm" style="background-color: orange;"> Passable </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Bien')" class="btn btn-info btn-sm" style="background-color: green;"> Bien </button>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': p.cautiondebase==0?'blue':((100*p.caution)/p.cautiondebase)<25?'red':((100*p.caution)/p.cautiondebase)>=25 && ((100*p.caution)/p.cautiondebase)<=50?'orange':'green'}">
+                        <td>{{p.date_ajout}}</td>
+                        <td>{{p.nom_point}}</td>
+                        <td>{{p.gerant}}</td>
+                        <td>{{p.tel}}</td>
+                        <td>{{p.adresse}}</td>
+                        <td>{{p.cautiondebase}}</td>
+                        <td>{{p.caution}}</td>
+                        <td><button type="button" *ngIf="p.categorie!='pas'" class="btn btn-info btn-sm" (click)="suivrepoint(p)">SUIVRE</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="6" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="pointcc=null; menuHeadClick(1)">Retour à la liste des points</button>
+    <hr>
+    <div class="row" *ngIf="datapointrecup">
+        <div class="card" style="width: 100%">
+            <h3 class="card-header card-success">
+                Info Entreprise
+            </h3>
+        </div>
+        <div class="card" style="width: 31%; margin-left: 1%; margin-right: 1%">
+            <div class="card-header card-primary">
+                Entreprise
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nom de l'entreprise: {{pointcc.info_point.nometps}}</li>
+                <li class="list-group-item">Nom boutique:  {{pointcc.info_point.nomshop}}</li>
+                <li class="list-group-item">Adresse:  {{pointcc.adressecomplet.address}}
+                    <br>{{pointcc.adressecomplet.souszone}}
+                    <br>{{pointcc.adressecomplet.region}}, {{pointcc.adressecomplet.zone}}.
+                </li>
+                <li class="list-group-item">Date creation: {{pointcc.date_ajout}}</li>
+            </ul>
+        </div>
+        <div class="card" style="width: 30%; margin-right: 1%">
+            <div class="card-header card-primary">
+                Proprietaire
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Nom : {{pointcc.gerant}}, {{pointcc.tel}}</li>
+                <li class="list-group-item">Email: {{pointcc.email}}</li>
+                <li class="list-group-item">Derniere connexion: {{datapointrecup.infopoint.last_connection_sup}}</li>
+                <li class="list-group-item">Commercial: {{datapointrecup.infocom.prenom}} {{datapointrecup.infocom.nom}}</li>
+                <li class="list-group-item">Chargé commercial: {{datapointrecup.infocc.prenom}} {{datapointrecup.infocc.nom}}</li>
+            </ul>
+        </div>
+        <div class="card" style="width: 35%">
+            <div class="card-header card-primary">
+                Déposit
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <canvas baseChart #baseChart2="base-chart"
+                            [datasets]="barChartData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [legend]="barChartLegend"
+                            [chartType]="barChartType" ></canvas>
+                </li>
+                <li class="list-group-item">Total Dépot: {{tocurrency(pointcc.cautiondebase)}} FCFA, <span (click)="showModalVoirTousLesDepots(contentVoirTousLesDepots)" style="margin-left: 1rem; cursor: pointer; color: blue; text-decoration: underline dotted blue; text-align: center">tous les depots</span></li>
+                <li class="list-group-item">Etat actuel Caution:  {{tocurrency(pointcc.caution)}} FCFA</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" *ngIf="datapointrecup" style="margin-top: 2rem">
+        <div class="card" style="width: 100%">
+            <h5 class="card-header card-success">
+                <span style="margin-right: 2rem">Recherche </span>
+                <input type="date" [(ngModel)]="suivionepointSelectionintervalledateinit" style="margin-right: 0.5rem"/> à <input type="date" [(ngModel)]="suivionepointSelectionintervalledatefinal"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                <button type="button" class="btn btn-primary btn-sm" (click)="suivionepointIntervalle()" [disabled]="suivionepointSelectionintervalledateinit>suivionepointSelectionintervalledatefinal || suivionepointSelectionintervalledateinit==undefined || suivionepointSelectionintervalledatefinal==undefined " ><i class="fa fa-search" aria-hidden="true"></i></button>
+            </h5>
+        </div>
+        <div class="card" style="width: 30%;">
+            <a style="cursor: pointer" [ngClass]="{'list-group-item': true, 'list-group-item-action': true, 'active': id_gerant_selectionne==-1}" (click)="suivionepointSelectionGerant(-1)">
+                All ({{touslesgerants.length}} Gérants)
+            </a>
+            <li *ngFor="let item of touslesgerants; let i = index " [ngClass]="{'list-group-item': true, 'list-group-item-action': true, 'active': id_gerant_selectionne==item.id_gerant}">
+                <a style="cursor: pointer" (click)="suivionepointSelectionGerant(item.id_gerant)">
+                    Gérant: {{item.nom_gerant}}, {{item.telephone}}
+                    <br>Last connection: {{item.last_connection}}.
+                </a>
+            </li>
+        </div>
+        <div class="card" style="margin-left:1%; width: 69%;">
+            <div style="width: 100%" style="margin-top: 1rem">
+                <h4 class="card-header card-success">
+                    Montant des Transactions par jour
+                </h4>
+                <div *ngIf="touslesjours.length!=0 && lineChartData.length!=0 && lineChartLabels.length!=0">
+                    <canvas baseChart height="100" #baseChart1="base-chart"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType" ></canvas>
+                </div>
+            </div>
+            <div style="width: 100%;" style="margin-top: 1rem">
+                <h4 class="card-header card-success">
+                    Détail des transaction des gérant
+                </h4>
+                <div>
+                    <table width="100%" class="table table-responsive table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Total Entrée</th>
+                            <th>Total Sortie</th>
+                            <th>Total commissions</th>
+                            <th>Option</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let bilan of bilantouslescommissionsbyGerant; let i = index">
+                            <td>{{bilan.service}}</td>
+                            <td>{{tocurrency(bilan.cashin)}}</td>
+                            <td>{{tocurrency(bilan.cashout)}}</td>
+                            <td>{{tocurrency(bilan.commission)}}</td>
+                            <td><span style="cursor: pointer; color: blue; text-decoration: underline dotted blue; text-align: center" (click)="showModalVoirDetailtouslescommissionsbyGerant(contentVoirDetailTransact, i)">Voir détail</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<ng-template #contentVoirTousLesDepots let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Nombre de dépot: <strong>{{affichelesdepots.jours.length}}</strong></h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date dépot</th>
+                    <th style="text-align: right">Montant dépot</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of affichelesdepots.jours; let i = index " style="text-align: center">
+                    <th>{{i+1}}</th>
+                    <th>{{item}}</th>
+                    <th style="text-align: right">{{tocurrency(affichelesdepots.montant[i])}}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentVoirDetailTransact let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Detail transaction: <strong>{{touslescommissionsbyGerantbyservice.length}}</strong></h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date opération</th>
+                    <th>Service</th>
+                    <th>Produit</th>
+                    <th>Montant</th>
+                    <th>Commission</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of touslescommissionsbyGerantbyservice; let i = index " style="text-align: center">
+                    <th>{{i+1}}</th>
+                    <th>{{item.dateop}}</th>
+                    <th>{{item.service}}</th>
+                    <th>{{item.produit}}</th>
+                    <th style="text-align: right">{{tocurrency(item.montant)}}</th>
+                    <th style="text-align: right">{{tocurrency(item.commission)}}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-template>

@@ -1,15 +1,18 @@
-<h3 class="page-header"><u>Superviseur</u></h3>
+<div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+    <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+</div>
 <audio id="audio" *ngIf="audio"  src="assets/son.mp3"  autoplay="autoplay"></audio>
 <div class="row" style="padding-top: 1rem ; margin-bottom: 3rem" >
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi assignation</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Clients à relancer</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">A déployé</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">New Réclamations</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/superviseur', 'suivionepoint']">Suivi Points</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">A déployé</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Points Sentool</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
     </div>
     <hr>
@@ -179,94 +182,32 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12">
             <div class="row">
-                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsdepoyebycc | dataFilterSentoolByCC: filterQuerySentoolByCC" #mfPointSentoolByCC="mfDataTable" [mfRowsOnPage]="rowsOnPageSentoolByCC" [(mfSortBy)]="sortBySentoolByCC" [(mfSortOrder)]="sortOrderSentoolByCC">
+                <table class="table table-hover table-responsive" [mfData]="listereclamationsnonresolu" #mfreclamationsnonresolu="mfDataTable" [mfRowsOnPage]="rowsOnPageReclamationsnonresolu" [(mfSortBy)]="sortByReclamationsnonresolu" [(mfSortOrder)]="sortOrderReclamationsnonresolu">
                     <thead>
                     <tr>
-                        <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date_reclamation">Date réclamation</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="nom_boutique">Nom Boutique</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="name_caissier">Gérant(e)</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_commercial">Commercial déployé</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nomservice">Type service</mfDefaultSorter></th>
+                        <th colspan="2" style="text-align: center">Action</th>
                     </tr>
                     <tr>
-                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuerySentoolByCC"/></th>
-                        <th>Total : {{listepointsdepoyebycc.length}}</th>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryReclamationsnonresolu"/></th>
+                        <th>Total : {{listereclamationsnonresolu.length}}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of mfPointSentoolByCC.data; let i = index ">
-                        <td>{{item.date_ajout}}</td>
+                    <tr *ngFor="let item of mfreclamationsnonresolu.data; let i = index ">
+                        <td>{{item.date_reclamation}}</td>
                         <td>{{item.nom_point}}</td>
-                        <td>{{item.nom_boutique}}</td>
-                        <td>{{item.fullname}}</td>
+                        <td>{{item.name_caissier}}</td>
                         <td>{{item.telephone}}</td>
-                        <td>{{item.adresse}}</td>
-                        <td>{{item.fullname_commercial}}</td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr class="text-center center-block">
-                        <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        <td>{{item.nomservice}}</td>
+                        <td style="margin: 0 auto; text-align: center">
+                            <button type="button" class="btn btn-outline-warning btn-sm" ngbPopover="{{item.message}}" triggers="mouseenter:mouseleave" popoverTitle="Sujet: {{item.sujet}}">Voir réclamation</button>
                         </td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div  class="container-fluid" *ngIf="menuHead.menuHead4" >
-    <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <div class="row">
-                <table class="table table-hover table-responsive table-sm" [mfData]="datasuiviarelancer | dataFilterSuiviClient: filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-                    <thead>
-                    <tr>
-                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname">Client</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="note">Note commercial</mfDefaultSorter></th>
-                        <th>Consultation</th>
-                        <th>Qualification</th>
-                        <th colspan="2">Action</th>
-                    </tr>
-                    <tr>
-                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuery"/></th>
-                        <th>Total : {{datasuiviarelancer.length}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of mf.data; let i = index ">
-                        <td>{{item.libellepoint}}</td>
-                        <td>{{item.fullname}}</td>
-                        <td>{{item.telephone}}</td>
-                        <td>{{item.adresse}}</td>
-                        <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalDetail(contentSuivisuperviseurDetait,item)">Détail Prospect</button></td>
-                        <td>
-                            <select class="form-control input-sm" [(ngModel)]="item.qualification" (change)="choixqualification(item)">
-                                <option>--Choisir une action--</option>
-                                <option>Valider</option>
-                                <option>A relancer</option>
-                                <option>Abandonner</option>
-                            </select>
-                        </td>
-                        <td *ngIf="item.ischoixvalide">
-                            <select style="width:8rem;" class="form-control input-sm" [(ngModel)]="item.choixsouscrit"  (change)="choixsouscription(item)">
-                                <option>SenT-Wafa</option>
-                                <option>SenTool</option>
-                                <option>Wafa</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm" (click)="validersuiviarelancersuperviseur(item)"
-                                    [disabled]="item.qualification == '--Choisir une action--'">valider suivi</button>
-                        </td>
+                        <td><button class="btn btn-success btn-sm" (click)="validresolutionreclamation(item)">Résoudre</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -280,6 +221,60 @@
             </div>
         </div>
     </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead4" >
+    <app-suivionepoint></app-suivionepoint>
+    <!--<div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsbycc  | dataFilterListePostefeuille: filterQueryCli" #mfCliTraiterPoint="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortByCli" [(mfSortOrder)]="sortOrderCli">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="commercial">Commercial</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCli"/></th>
+                        <th>Total : {{listepointsbycc.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" >
+                        <td>{{p.date_ajout}}</td>
+                        <td>{{p.nom_point}}</td>
+                        <td>{{p.gerant}}</td>
+                        <td>{{p.tel}}</td>
+                        <td>{{p.adresse}}</td>
+                        <td>{{p.commercial}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="text-center center-block">
+                            <td colspan="6" class="text-center center-block">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>-->
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead5" >

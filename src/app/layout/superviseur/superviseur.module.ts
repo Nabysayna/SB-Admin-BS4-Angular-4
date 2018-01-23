@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ChartsModule as Ng2Charts } from 'ng2-charts';
 
+
 import { ProgressionbyModule } from '../progressionby/progressionby.module';
 import { RatingbyoptionModule } from '../ratingbyoption/ratingbyoption.module';
 
@@ -23,6 +24,8 @@ import {DataFilterSuiviAssignComPipe} from "./data-filter-suiviassigncom.pipe";
 import {DataFilterSuivipdvperformanceparsupPipe} from "./data-filter-suivipdvperformanceparsup.pipe";
 import {DataFilterSuivipdvetatdepositparsupPipe} from "./data-filter-suivipdvetatdepositparsup.pipe";
 import {DataFilterPointSentoolByCCPipe} from "./data-filter-point-sentool-cc.pipe";
+import {SuivionepointComponent} from "../suivionepoint/suivionepoint.component";
+import {DataFilterListesuivipointPipe} from "../suivionepoint/data-filter-list-suivipoint.pipe";
 
 
 @NgModule({
@@ -49,6 +52,8 @@ import {DataFilterPointSentoolByCCPipe} from "./data-filter-point-sentool-cc.pip
         DataFilterSuivipdvperformanceparsupPipe,
         DataFilterSuivipdvetatdepositparsupPipe,
         DataFilterPointSentoolByCCPipe,
+        DataFilterListesuivipointPipe,
+        SuivionepointComponent
 
     ]
 })

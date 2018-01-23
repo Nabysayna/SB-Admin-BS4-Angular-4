@@ -33,7 +33,7 @@ export class MarketingcomComponent implements OnInit {
 
     public modalRef: NgbModalRef;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService){}
 
@@ -46,38 +46,18 @@ export class MarketingcomComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
             this.getPointsdeployeModifyAdresse();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
             this.getReclamationsNonResolu();
         }
         if(option == 3){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = false;
-        }
-        if(option == 4){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = true;
-            this.menuHead.menuHead5 = false;
-        }
-        if(option == 5){
-            this.menuHead.menuHead1 = false;
-            this.menuHead.menuHead2 = false;
-            this.menuHead.menuHead3 = false;
-            this.menuHead.menuHead4 = false;
-            this.menuHead.menuHead5 = true;
         }
     }
 
@@ -187,17 +167,20 @@ export class MarketingcomComponent implements OnInit {
     }
 
     validmodifyadressepoints(){
+        console.log(this.pointsdepoye);
         this._apiPlatformService.validModifyAdressePoint(this.pointsdepoye)
             .subscribe(
                 data => {
-                    console.log('');
+                    console.log(data);
+                    this.closedModal();
                 },
                 error => alert(error),
-                () => console.log('validModifyAdressePoint')
+                () => {
+                    this.listepointsdepoye = this.listepointsdepoye.filter( opt => !(opt.telephone_gerant==this.pointsdepoye.telephone_gerant && opt.login==this.pointsdepoye.login) );
+                    this.pointsdepoye = undefined;
+                }
             );
-        this.closedModal();
-        this.listepointsdepoye = this.listepointsdepoye.filter( opt => !(opt.telephone_gerant==this.pointsdepoye.telephone_gerant && opt.login==this.pointsdepoye.login) );
-        this.pointsdepoye = undefined;
+
     }
 
     validresolutionreclamation(reclamation){
