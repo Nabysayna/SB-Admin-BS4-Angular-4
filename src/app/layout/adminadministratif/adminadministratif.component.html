@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h3 class="page-header"><u>Administrateur administration</u></h3>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
@@ -196,3 +197,404 @@
     </div>
 </div>
 
+=======
+<h3 class="page-header"><u>Administrateur administration</u></h3>
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+<!--    <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Anciens points</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Status points</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Points souscrits</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Réclamations</button>
+
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Etat Déposit</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Historique deposit</button>
+
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Status Positionnement</button>
+    </div>
+    <hr>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead1" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listencienpoints | dataFilterNewPointAdminAdmin: filterQueryNewPoint" #mfNewPoint="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point" style="margin: 0 auto; text-align: center">Adresse</mfDefaultSorter></th>
+                        <th colspan="3" style="margin: 0 auto; text-align: center">Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryNewPoint"/></th>
+                        <th>Total : {{listencienpoints.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfNewPoint.data; let i = index ">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td><button style="background-color: orange" class="btn btn-sm" (click)="validresouscritsentool(item,'ancien')" *ngIf="item.infosup.service_sentool==0"><i class="fa fa-check"></i> Sentool</button></td>
+                        <td><button style="background-color: yellow" class="btn btn-sm" (click)="validresouscritwafacash(item,'ancien')" *ngIf="item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Wafacash</button></td>
+                        <td><button style="background-color: green" class="btn btn-sm" (click)="validresouscritsentoolandwafacash(item,'ancien')" *ngIf="item.infosup.service_sentool==0 && item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Sen & Wafa</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listenewpoints | dataFilterNewPointAdminAdmin: filterQueryNewPoint" #mfNewPoint="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th colspan="2" style="margin: 0 auto; text-align: center">Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryNewPoint"/></th>
+                        <th>Total : {{listenewpoints.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfNewPoint.data; let i = index">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td><button style="background-color: orange" class="btn btn-sm" (click)="validresouscritsentool(item,'nouveau')" *ngIf="item.infosup.service_sentool==0"><i class="fa fa-check"></i> Sentool</button></td>
+                        <td><button style="background-color: yellow" class="btn btn-sm" (click)="validresouscritwafacash(item,'nouveau')" *ngIf="item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Wafacash</button></td>
+                        <td><button style="background-color: green" class="btn btn-sm" (click)="validresouscritsentoolandwafacash(item,'nouveau')" *ngIf="item.infosup.service_sentool==0 && item.infosup.service_wafacash==0"><i class="fa fa-check"></i> Sen & Wafa</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsouscritbbs | dataFilterNewPointAdminAdmin: filterQueryPointSouscription" #mfPointSouscription="mfDataTable" [mfRowsOnPage]="rowsOnPagePointSouscription" [(mfSortBy)]="sortByPointSouscription" [(mfSortOrder)]="sortOrderPointSouscription">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="souscription">Souscription</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryPointSouscription"/></th>
+                        <th>Total : {{listepointsouscritbbs.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <!--<span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;-->
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfPointSouscription.data; let i = index" [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td>{{item.souscription}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead5" >
+    <h2>Liste des réclamations</h2>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listereclamationsnonresolu | dataFilterfilterQueryReclamationsnonresoluAdminAdmin: filterQueryReclamationsnonresolu" #mfreclamationsnonresolu="mfDataTable" [mfRowsOnPage]="rowsOnPageReclamationsnonresolu" [(mfSortBy)]="sortByReclamationsnonresolu" [(mfSortOrder)]="sortOrderReclamationsnonresolu">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_reclamation">Date réclamation</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="name_caissier">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nomservice">Type service</mfDefaultSorter></th>
+                        <th colspan="2" style="text-align: center">Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryReclamationsnonresolu"/></th>
+                        <th>Total : {{listereclamationsnonresolu.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfreclamationsnonresolu.data; let i = index ">
+                        <td>{{item.date_reclamation}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.name_caissier}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.nomservice}}</td>
+                        <td style="margin: 0 auto; text-align: center">
+                            <button type="button" class="btn btn-outline-warning btn-sm" ngbPopover="{{item.message}}" triggers="mouseenter:mouseleave" popoverTitle="Sujet: {{item.sujet}}">Voir réclamation</button>
+                        </td>
+                        <td><button class="btn btn-success btn-sm" (click)="validresolutionreclamation(item)">Résoudre</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead6" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listeetatdeposit | dataFilterAdminadministratifEtat: filterQueryEtatDeposit" #mfEtatDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageEtatDeposit" [(mfSortBy)]="sortByEtatDeposit" [(mfSortOrder)]="sortOrderEtatDeposit">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="superviseur">Superviseur</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="last_deposit">Dernier dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date_update">Date dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montantactuel">Déposit restant</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryEtatDeposit"/></th>
+                        <th>Total : {{listeetatdeposit.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="6">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue; color: black; text-align: center"> pas déposit </span>&nbsp;
+                                <span style="background-color: red; color: black; text-align: center ;"> déposit &lsaquo; 25% </span>&nbsp;
+                                <span style="background-color: orange; color: black; text-align: center;"> 25% déposit 50% </span>&nbsp;
+                                <span style="background-color: green; color: black; text-align: center"> déposit &rsaquo; 50% </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfEtatDeposit.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': item.last_deposit==0?'blue':((100*item.montantactuel)/item.last_deposit)<25?'red':((100*item.montantactuel)/item.last_deposit)>=25 && ((100*item.montantactuel)/item.last_deposit)<=50?'orange':'green'}">
+                        <td>{{i+1}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.superviseur}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td style="text-align: right">{{tocurrency(item.last_deposit)}}</td>
+                        <td>{{item.date_update}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montantactuel)}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead7" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listebilandeposit | dataFilterAdminadministratifBilan: filterQueryBilanDeposit" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageBilanDeposit" [(mfSortBy)]="sortByBilanDeposit" [(mfSortOrder)]="sortOrderBilanDeposit">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="superviseur">Superviseur</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montant">Montant dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date_update">Date dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="maj_by">Validé par</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanDeposit"/></th>
+                        <th>Total : {{listebilandeposit.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index ">
+                        <td>{{i+1}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.superviseur}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                        <td>{{item.date_update}}</td>
+                        <td>{{item.maj_by}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead8" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listestatusdeposition | dataFilterAdminadministratifSuivipositionnement: filterQueryStatusDeposition" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageStatusDeposition" [(mfSortBy)]="sortByStatusDeposition" [(mfSortOrder)]="sortOrderStatusDeposition">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="dateeffectif">Date dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="positionne_by">Positinné par</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montant">Montant dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatposit">Positionné</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatpayement">Payé</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatversement">Versé</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="recouvre_by">Recuperé par</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDeposition"/></th>
+                        <th>Total : {{listestatusdeposition.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index ">
+                        <td>{{item.dateeffectif}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.positionne_by}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                        <td>{{item.etatposit}}</td>
+                        <td style="text-align: right"><span *ngIf="item.etatpayement!=0">{{item.etatpayement}}</span><span *ngIf="item.etatpayement==0"><button (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: right"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td>{{item.recouvre_by}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Payement depot reçu</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <input type="number" min="0" class="form-control" id="montantpayement" name="montantpayement" [(ngModel)]="montantpayement" placeholder="somme payer"  required>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="modepayement" name="modepayement" [(ngModel)]="modepayement" placeholder="mode payement"  required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantpayement<1 || montantpayement==undefined || !modepayement" (click)="validePayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #contentValideVersementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Versement depot reçu</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <input type="number" min="0" class="form-control" id="montantversement" name="montantversement" [(ngModel)]="montantversement" placeholder="somme verser"  required>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-success" [disabled]="montantversement<1 || montantversement==undefined" (click)="valideVersementDepot()">Valider</button>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+>>>>>>> 7284c611c5547bd7280c333b3af5e160eec97cfe

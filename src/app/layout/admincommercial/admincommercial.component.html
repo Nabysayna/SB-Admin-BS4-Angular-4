@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h3 class="page-header"><u>Administrateur commercial</u></h3>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
   	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
@@ -399,3 +400,358 @@
         </div>
     </div>
 </ng-template>
+=======
+<h3 class="page-header"><u>Administrateur commercial</u></h3>
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+  	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+		<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi points</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi com</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Affectation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Points souscris à Sentool</button>
+	</div>
+    <hr>
+</div>
+
+<div class="container-fluid" *ngIf="menuHead.menuHead1">
+	<div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-2">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegion" (change)="selectRegion()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZone"  (change)="selectSouszone()">
+                <option>--Choix sous zone--</option>
+                <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Superviseur</label>
+            <select name="singleSelectsuperviseur"  id="singleSelectsuperviseur" class="form-control input-sm" [(ngModel)]="choixsuperviseur">
+                <option [attr.value]="'-1'">--Choix superviseur--</option>
+                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label >Objectif</label>
+            <input type="number" class="form-control input-sm"  [(ngModel)]="objetifsuperviseur" name="objetifsuperviseur" />
+        </div>
+	</div>
+    <div *ngIf="isEnregistrerAssignation" class="row text-center center-block">
+        <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
+            <strong>Success!</strong> Assignation avec success.
+        </ngb-alert>
+    </div>
+    <div class="row text-center center-block" style="padding-bottom: 1rem">
+    	<button type="button"
+                class="btn btn-warning btn-sm"
+                (click)="assignersuperviseur()"
+                style="margin-left: auto; margin-right: auto;"
+                [disabled]="
+                    filtreRegion == '--Choix région--' ||
+                    filtreZone == '--Choix zone--' ||
+                    filtreSousZone == '--Choix sous zone--' ||
+                    choixsuperviseur == '--Choix superviseur--' ||
+                    objetifsuperviseur <= 0 ||
+                    selectedOptions.length <= 0
+                ">Assigner</button>
+    </div>
+    <div class="row">
+        <table class="table table-hover table-responsive" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="fullname">Client</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="note">Note</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of mf.data; let i = index " [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0)?'red':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'orange'}">
+                    <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
+                    <td>{{item.libellepoint}}</td>
+                    <td>{{item.fullname}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.adresse}}</td>
+                    <td><app-ratingbyoption [rate]="item.note-1" [ratingstatic]="true"></app-ratingbyoption></td>
+                    <td><textarea  class="form-control" type="text" name="commentaire-{{i}}" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="text-center center-block">
+                    <td colspan="8" class="text-center center-block">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+	</div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance globale.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="'doughnut'" ></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Etat Points.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150" baseChart [data]="doughnutChartDataPP" [colors]="colorsEmptyObject" [labels]="doughnutChartLabelsPP" [chartType]="'doughnut'" ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 2rem"  *ngIf="data">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance CC.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartDataSuperviseur" [labels]="barChartLabelsSuperviseur" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Performance Commerciaux.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="commerciaux | dataFilterCommercial: filterQueryCommercial" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPageCom" [(mfSortBy)]="sortByCom" [(mfSortOrder)]="sortOrderCom">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="fullname">Commercial</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email">Email</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_depends">CC affecté</mfDefaultSorter></th>
+                        <th colspan="2" style="text-align: center">Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryCommercial"/></th>
+                        <th>Total : {{commerciaux.length}}</th>
+                        <th style="text-align: right"><button type="button"  (click)="showModalSuperviseur(contentAjoutSuperviseur)" class="btn btn-warning"> ajouter cc </button></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mf.data; let i = index ">
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.fullname_depends}}</td>
+                        <td>
+                            <select name="sselectcommercial-{{i}}"  id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="item.id_superviseur">
+                                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
+                            </select>
+                        </td>
+                        <td><button type="button" class="btn btn-primary" (click)="reaffectercommercial(item)"> reaffecter </button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead5" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsouscrits | dataFilterNewPoint: filterQueryDeploye" #mfPointsouscrits="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date création</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Créé par</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="souscription">Souscription</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryDeploye"/></th>
+                        <th>Total : {{listepointsouscrits.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: red;"> Pas encore </span>&nbsp;&nbsp;
+                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
+                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
+                                <span style="background-color: green;"> Sentool et Wafacash </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfPointsouscrits.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0 && item.infosup.en_suivi==1)?'red':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'orange':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'green'}">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td>{{item.fullname_commercial}}</td>
+                        <td>{{item.souscription}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead7" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listepointsdepoye | dataFilterNewPoint: filterQueryDeploye" #mfPointDeploye="mfDataTable" [mfRowsOnPage]="rowsOnPageNewPoint" [(mfSortBy)]="sortByNewPoint" [(mfSortOrder)]="sortOrderNewPoint">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_ajout">Date déployement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_boutique">Nom Boutique</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse_point">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="fullname_commercial">Commercial déployé</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryDeploye"/></th>
+                        <th>Total : {{listepointsdepoye.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfPointDeploye.data; let i = index ">
+                        <td>{{item.date_ajout}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.nom_boutique}}</td>
+                        <td>{{item.fullname_gerant}}</td>
+                        <td>{{item.telephone_gerant}}</td>
+                        <td>{{item.adresse_point}}</td>
+                        <td>{{item.fullname_commercial}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #contentAjoutSuperviseur let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h2 style="text-align: center; margin: 0 auto"> New CC </h2>
+        <div class="row" style="padding-bottom: 2rem">
+            <div class="col-sm-12">
+                <hr>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Prénom</label>
+                        <input type="text" [(ngModel)]="superviseurNew.prenom"  name="prenomsup" id="prenomsup" class="form-control"  placeholder="prénom superviseur" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Nom</label>
+                        <input type="text" [(ngModel)]="superviseurNew.nom" name="nomcom" id="nomcom" class="form-control" placeholder="nom superviseur" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Téléphone</label>
+                        <input type="number" [(ngModel)]="superviseurNew.telephone" name="telephonesup" id="telephonesup" class="form-control" placeholder="téléphone superviseur" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Email</label>
+                        <input type="email" [(ngModel)]="superviseurNew.email" name="emailsup" id="emailsup" class="form-control" placeholder="email superviseur" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label>Mot de passe</label>
+                        <input type="password" [(ngModel)]="superviseurNew.pwd" name="pwdsup" id="pwdsup" class="form-control" placeholder="Mot de passe" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Confirm mot de passe</label>
+                        <input type="password" [(ngModel)]="confirmpwdsup" name="confirpwdsup" id="confirpwdsup" class="form-control" placeholder="Confirm mot de passe" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="text-align: center; margin: 0 auto;">
+            <div *ngIf="userexist" style="text-align: center; margin: 0 auto">
+                <strong>Warning:</strong> <br/> Ce email existe déjà, veuillez choisir un autre!
+            </div>
+            <button  style="text-align: center; margin: 0 auto" type="button" class="btn btn-success btn-sm" (click)="enregisternouvsup()" [disabled]="!superviseurNew.prenom || !superviseurNew.telephone || !superviseurNew.email || !superviseurNew.pwd || superviseurNew.pwd!=confirmpwdsup"> Enregistrer </button>
+        </div>
+    </div>
+</ng-template>
+>>>>>>> 7284c611c5547bd7280c333b3af5e160eec97cfe

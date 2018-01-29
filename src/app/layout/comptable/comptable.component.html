@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h3 class="page-header"><u>Comptable</u></h3>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
@@ -110,3 +111,113 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead3" >
     jsdfkkl
 </div>
+=======
+<h3 class="page-header"><u>Comptable</u></h3>
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Etat Déposit</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Historique deposit</button>
+    </div>
+    <hr>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead1" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listeetatdeposit | dataFilterComptableEtat: filterQueryEtatDeposit" #mfEtatDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageEtatDeposit" [(mfSortBy)]="sortByEtatDeposit" [(mfSortOrder)]="sortOrderEtatDeposit">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="superviseur">Superviseur</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="last_deposit">Dernier dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date_update">Date dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montantactuel">Déposit restant</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryEtatDeposit"/></th>
+                        <th>Total : {{listeetatdeposit.length}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="6">
+                            <div style="color: black; text-align: center;">
+                                <span style="background-color: blue; color: black; text-align: center"> pas déposit </span>&nbsp;
+                                <span style="background-color: red; color: black; text-align: center ;"> déposit &lsaquo; 25% </span>&nbsp;
+                                <span style="background-color: orange; color: black; text-align: center;"> 25% déposit 50% </span>&nbsp;
+                                <span style="background-color: green; color: black; text-align: center"> déposit &rsaquo; 50% </span>
+                                <br/>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfEtatDeposit.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': item.last_deposit==0?'blue':((100*item.montantactuel)/item.last_deposit)<25?'red':((100*item.montantactuel)/item.last_deposit)>=25 && ((100*item.montantactuel)/item.last_deposit)<=50?'orange':'green'}">
+                        <td>{{i+1}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.superviseur}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td style="text-align: right">{{tocurrency(item.last_deposit)}}</td>
+                        <td>{{item.date_update}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montantactuel)}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listebilandeposit | dataFilterComptableBilan: filterQueryBilanDeposit" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageBilanDeposit" [(mfSortBy)]="sortByBilanDeposit" [(mfSortOrder)]="sortOrderBilanDeposit">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="superviseur">Superviseur</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montant">Montant dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="date_update">Date dépot</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="maj_by">Validé par</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanDeposit"/></th>
+                        <th>Total : {{listebilandeposit.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index ">
+                        <td>{{i+1}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.superviseur}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                        <td>{{item.date_update}}</td>
+                        <td>{{item.maj_by}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+>>>>>>> 7284c611c5547bd7280c333b3af5e160eec97cfe
