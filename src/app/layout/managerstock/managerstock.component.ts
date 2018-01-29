@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
     selector: 'app-managerstock',
@@ -12,7 +15,7 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 export class ManagerstockComponent implements OnInit {
 
     public data:any[] = [];
-
+    modalRef: BsModalRef;
     public listearticlesselectionner:any;
 
     public listarticlesvuweb = [
@@ -31,6 +34,44 @@ export class ManagerstockComponent implements OnInit {
         {id: 6, designation:'ay', description:'test 1', nomImg: 'bha.jpg'},
     ];
 
+    vitrine1 = {enVentes:null,enAttentes:null}
+    vitrine2 = {enVentes:null,enAttentes:null}
+    vitrine3 = {enVentes:null,enAttentes:null}
+    vitrine4 = {enVentes:null,enAttentes:null}
+    slide1 = {enVentes:null,enAttentes:null}
+
+    ventes = [
+        {    
+            designation: 'mangue',
+            description:'je suis une magues',
+            prix: 9000,
+            telephone: 77455455,
+            point: 'champ de mangues'
+         },
+         {    
+            designation: 'banannes',
+            description:'je suis une bannanes',
+            prix: 9000,
+            telephone: 77455455,
+            point: 'champ bannanes'
+         }
+    ];
+    attentes = [
+        {    
+            designation: 'moutton',
+            description:'je suis un mouton',
+            prix: 9000,
+            telephone: 77455455,
+            point: 'Troupeau de mouton'
+         },
+         {    
+            designation: 'chévre',
+            description:'je suis une chévre',
+            prix: 9000,
+            telephone: 77455455,
+            point: 'Troupeau de chévres'
+         }
+    ];
 
     public menustock = [true, false, false, false, false];
     public arrivals = [true, false, false];
@@ -39,13 +80,19 @@ export class ManagerstockComponent implements OnInit {
     public homme = [true, false, false];
     public elctronique = [true, false, false, false];
 
-    constructor() { }
+    constructor(private modalService: BsModalService) { }
 
     ngOnInit() {
         this.listearticlesselectionner = {
             vuweb: this.listarticlesvuweb, frompv: this.listarticlesfrompv
         };
+        
+        this.vitrine1.enVentes = this.ventes;
+        this.vitrine1.enAttentes = this.attentes;
+    }
 
+    openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template,{class: 'modal-lg'});
     }
 
     public menustockClick(option: number){

@@ -43,4 +43,7 @@ import {StockmanagingComponent} from "../stockmanaging/stockmanaging.component";
         StockmanagingComponent
     ]
 })
-export class ManagerstockModule { }
+export class ManagerstockModule { 
+    constructor() {}
+
+}

@@ -8,9 +8,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
-import { ChatService } from './shared/services/Chat.Service';
+import { ChatService } from './shared/services/chat.service';
 import { MsgComponent } from './shared/components/msg/msg.component';
-
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
@@ -28,6 +29,8 @@ export function HttpLoaderFactory(http: Http) {
         BrowserAnimationsModule,
         FormsModule,
         HttpModule,
+        ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
         AppRoutingModule,
         TranslateModule.forRoot({
             loader: {
