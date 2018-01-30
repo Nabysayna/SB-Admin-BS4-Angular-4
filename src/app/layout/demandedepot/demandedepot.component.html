@@ -1,6 +1,10 @@
 <div [@routerTransition]>
     <app-page-header [heading]="'Demande de depot'" [icon]="'fa-table'"></app-page-header>
 
+    <div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+        <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+    </div>
     <div class="row" style="padding-bottom: 2rem">
         <div class="col-xs-12 col-sm-12">
 
@@ -14,9 +18,10 @@
                         <th>Téléphone</th>
                         <th>Adresse</th>
                         <th>Montant depot</th>
+                        <th>CC en charge</th>
                         <th style="text-align: center">Action</th>
                     </tr>
-                    <tr *ngFor="let p of listedeposits; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.etatdemande==0)?'red':(p.etatdemande==1)?'orange':'green'}">
+                    <tr *ngFor="let p of listedepositsencours; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.etatdemande==0)?'red':(p.etatdemande==1)?'orange':'green'}">
                         <th>{{i+1}}</th>
                         <td>{{p.datedemande}}</td>
                         <td>{{p.infosup}}</td>
@@ -24,10 +29,16 @@
                         <td>{{p.telephone}}</td>
                         <td>{{p.adressecomplet}}</td>
                         <td>{{p.montantdemande}}</td>
+                        <td>{{p.cc}}</td>
                         <td>
                             <button *ngIf="p.etatdemande==0" type="button" name="confirmerAffectationDepotCom-{{i}}" id="confirmerAffectationDepotCom-{{i}}" class="btn btn-primary" (click)="confirmerAffectationDepotCom(p)">Confirmer départ</button>
                             <button *ngIf="p.etatdemande==1" type="button" name="validerRecuDepotCom-{{i}}" id="validerRecuDepotCom-{{i}}" class="btn btn-primary" (click)="validerRecuDepotCom(p)">Valider reception dépot</button>
                             <strong *ngIf="p.etatdemande>1" >Dépot effectué</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: center; margin-top: 1rem">
+                            <u *ngIf="listedepositsvalide.length!=0" style="cursor: pointer" (click)="showModalVoirplusdedemande(contentVoirplusdedemande)" title="Voir plus de depot">Voir dépots validé</u>
                         </td>
                     </tr>
                 </table>
@@ -36,3 +47,45 @@
     </div>
 
 </div>
+
+
+<ng-template #contentVoirplusdedemande let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Détail positionnement ({{listedepositsvalide.length}})</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <table class="table table-hover table-responsive">
+                            <tr>
+                                <th>#</th>
+                                <th>Date demande</th>
+                                <th>Entreprise</th>
+                                <th>Superviseur</th>
+                                <th>Téléphone</th>
+                                <th>Montant depot</th>
+                                <th>CC en charge</th>
+                            </tr>
+                            <tr *ngFor="let p of listedepositsvalide; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
+                                <td>{{i+1}}</td>
+                                <td>{{p.datedemande}}</td>
+                                <td>{{p.infosup}}</td>
+                                <td>{{p.initiateur}}</td>
+                                <td>{{p.telephone}}</td>
+                                <td style="text-align: right;">{{tocurrency(p.montantdemande)}}</td>
+                                <td style="width: 200px">{{p.cc}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+

@@ -3,6 +3,7 @@ import {UtilService} from "../../services/util.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ApiPlatformService} from "../../services/apiplateform.service";
 import {BaseChartDirective} from 'ng2-charts/ng2-charts';
+import {Color} from "ng2-charts";
 
 
 @Component({
@@ -14,7 +15,7 @@ import {BaseChartDirective} from 'ng2-charts/ng2-charts';
 export class SuivionepointComponent implements OnInit {
 
     public loading_data:boolean = true;
-    public menuHead = {menuHead1:true, menuHead2:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
 
     constructor(private _apiPlatformService:ApiPlatformService, private modalService: NgbModal,){}
 
@@ -38,15 +39,27 @@ export class SuivionepointComponent implements OnInit {
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
             this.getListPointsbysuperviseur();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
+            this.menuHead.menuHead3 = false;
             this.lineChartData = [];
             this.lineChartLabels = [];
 
             this.getOnePointSuivicc();
+        }
+        if(option == 3){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = true;
+            this.datasetsPPV = [{
+                data: this.doughnutChartDataPPV,
+                backgroundColor: ["red", "yellow", "orange", "green"]
+            }];
+            this.estcheckPerformancePPV('journee');
         }
     }
 
@@ -375,6 +388,161 @@ export class SuivionepointComponent implements OnInit {
         }, (reason) => {} );
     }
 
+
+    /**********************************************************************************
+     ****************************     PARTIE Performances POINTS   ****************************
+     ***********************************************************************************/
+
+    public doughnutChartLabelsPPV: string[] = ['Faible', 'Passable', 'Assez-bien', 'Bien'];
+    public doughnutChartDataPPV: number[] = [0, 0, 0, 0];
+    public colorsEmptyObject: Array<Color> = [{}];
+    public datasetsPPV: any[];
+    public typeperformancePPV:string = " dans la journée";
+    public checkPerformancePPV:any = {journee: true, semaine: false, mois: false, annee: false, tout: false};
+    public performancesadminpdv:any;
+    public performancesadminpdvbyadmin:any;
+    public typedateperformancesadminpdv:string;
+    public lotperformancesadminpdv:string;
+    public rowsOnPagePPV = 12;
+    public sortByPPV = "recette";
+    public sortOrderPPV = "desc";
+    public filterQueryPPV:any;
+
+    public chartClickedPPV(e:any):void {
+        if (e.active[0]){
+            this.loading_data = true;
+            this.estdetailPerformancePPV(e.active[0]._model.label);
+        }
+    }
+    public showModalPPV(content) {
+        this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
+    }
+    public performancessupperviseurclasserbydate(type:string):void {
+        this.performancesadminpdv = undefined;
+        this._apiPlatformService.getperformancessupperviseurclasserbydate(type)
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.datasetsPPV = [{
+                            data: data.message.nbrepoints,
+                            backgroundColor: ["red", "yellow", "orange", "green"]
+                        }];
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.loading_data = false;
+                }
+            );
+    }
+    public estcheckPerformancePPV(type: string){
+        this.loading_data = true;
+        if(type == 'journee'){
+            this.checkPerformancePPV.journee = true;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
+            this.typeperformancePPV = "dans la journée";
+        }
+        else if(type == 'semaine'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = true;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
+            this.typeperformancePPV = "dans la semaine";
+        }
+        else if(type == 'mois'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = true;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = false;
+            this.typeperformancePPV = "dans le mois";
+        }
+        else if(type == 'annee'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = true;
+            this.checkPerformancePPV.tout = false;
+            this.typeperformancePPV = "dans l'année";
+        }
+        else if(type == 'tout'){
+            this.checkPerformancePPV.journee = false;
+            this.checkPerformancePPV.semaine = false;
+            this.checkPerformancePPV.mois = false;
+            this.checkPerformancePPV.annee = false;
+            this.checkPerformancePPV.tout = true;
+            this.typeperformancePPV = "dans l'ensemble";
+        }
+        this.typedateperformancesadminpdv = type;
+        this.performancessupperviseurclasserbydate(type);
+    }
+    public estdetailPerformancePPV(lot:string){
+        let type:string="";
+        if (this.checkPerformancePPV.journee) {
+            type = "journee";
+        }
+        if (this.checkPerformancePPV.semaine) {
+            type = "semaine";
+        }
+        if (this.checkPerformancePPV.mois) {
+            type = "mois";
+        }
+        if (this.checkPerformancePPV.annee) {
+            type = "annee";
+        }
+        if (this.checkPerformancePPV.tout) {
+            type = "tout";
+        }
+        //console.log(type+' '+lot);
+        this.typedateperformancesadminpdv = type;
+        this.lotperformancesadminpdv = lot;
+        this._apiPlatformService.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
+            .subscribe(
+                data => {
+                    //console.log(data)
+                    if(data.errorCode){
+                        this.performancesadminpdv = data.message;
+                        this.loading_data = false;
+
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.loading_data = false;
+                }
+            );
+    }
+    public detailperformancesadminclasserbydateandlot(adminpdv: any, content){
+        this.performancesadminpdvbyadmin = undefined;
+        this._apiPlatformService.getperformancessupperviseurclasserbydatebySup({idadminpdv:adminpdv.dependsOn, typedate:this.typedateperformancesadminpdv})
+            .subscribe(
+                data => {
+                    if(data.errorCode){
+                        this.performancesadminpdvbyadmin = data.message.map(function (op) {
+                            return {
+                                dateoperation: op.dateoperation.date.split('.')[0],
+                                name_caissier: op.name_caissier,
+                                montanttotal: op.montanttotal,
+                                operateur: op.operateur,
+                                telephone: op.telephone,
+                                traitement: op.traitement,
+                            }
+                        });
+                        this.loading_data = false;
+
+                    }
+                },
+                error => alert(error),
+                () => {
+                    console.log('getperformancessupperviseurclasserbydatebySup')
+                }
+            );
+        this.showModalPPV(content);
+    }
 
 
 

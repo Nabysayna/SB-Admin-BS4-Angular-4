@@ -1,10 +1,14 @@
-<h3 class="page-header"><u>Administrateur commercial</u></h3>
+<div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+    <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+</div>
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
   	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
 		<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi points</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi com</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Affectation</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Déposit en cours</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Points souscris à Sentool</button>
 	</div>
     <hr>
@@ -197,6 +201,47 @@
                         </td>
                     </tr>
                     </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="menuHead.menuHead4" >
+    <div class="row" style="margin-top: 2rem">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive">
+                    <tr style="text-align: right">
+                        <th>#</th>
+                        <th>Date demande</th>
+                        <th>Entreprise</th>
+                        <th>Superviseur</th>
+                        <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Montant depot</th>
+                        <th>CC en charge</th>
+                        <th>Commercial envoyé</th>
+                        <th style="text-align: center">Etat</th>
+                    </tr>
+                    <tr *ngFor="let p of listedepositsencours; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
+                        <td>{{i + 1}}</td>
+                        <td>{{p.datedemande}}</td>
+                        <td>{{p.infosup}}</td>
+                        <td>{{p.initiateur}}</td>
+                        <td>{{p.telephone}}</td>
+                        <td>{{p.adressecomplet}}</td>
+                        <td style="text-align: right;">{{tocurrency(p.montantdemande)}}</td>
+                        <td style="width: 200px">{{p.cc}}</td>
+                        <td style="width: 200px">{{p.accepteur}}</td>
+                        <td>
+                            <span *ngIf="p.niveau_avancement==-4">Attente affectation</span>
+                            <span *ngIf="p.niveau_avancement==-3">Attente confirmation</span>
+                            <span *ngIf="p.niveau_avancement==-2">En cours de recuperation</span>
+                            <span *ngIf="p.niveau_avancement==-1">Attente validation depot</span>
+                            <span *ngIf="p.niveau_avancement==0">Depot Effectué</span>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

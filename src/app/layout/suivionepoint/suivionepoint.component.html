@@ -3,7 +3,7 @@
 "/>
 </div>
 <div  class="container-fluid" *ngIf="menuHead.menuHead1" >
-    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>
+    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button>
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -182,6 +182,79 @@
 
 </div>
 
+<div class="container-fluid" *ngIf="menuHead.menuHead3" >
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button>
+    <hr>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('journee')">La journée</label>&nbsp;
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('semaine')">La semaine</label>&nbsp;
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('mois')">Le mois</label>
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('annee')">L'année</label>
+                        <label class="btn btn-danger btn-sm" (click)="estcheckPerformancePPV('tout')">Tout</label>
+                        <h6><i class="fa fa-pie-chart"></i>Performances des points par lot {{ typeperformancePPV }}.</h6>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas height="150px" baseChart
+                            [labels]="doughnutChartLabelsPPV"
+                            [datasets]="datasetsPPV"
+                            [colors]="colorsEmptyObject"
+                            [chartType]="'doughnut'"
+                            (chartClick)="chartClickedPPV($event)"
+                    ></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6" *ngIf="performancesadminpdv">
+            <div class="card">
+                <div class="card-header card-primary">
+                    <div class="panel panel-heading">
+                        <h5>Détail performance par {{typedateperformancesadminpdv}}/{{lotperformancesadminpdv}}.</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive table-sm" [mfData]="performancesadminpdv | dataFilterSuivipdvperformanceparsup: filterQueryPPV" #mfppv="mfDataTable"
+                           [mfRowsOnPage]="rowsOnPagePPV" [(mfSortBy)]="sortByPPV" [(mfSortOrder)]="sortOrderPPV">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><mfDefaultSorter by="name_adminpdv">Superviseur</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                            <th><mfDefaultSorter by="nbreoperation">No Opéra</mfDefaultSorter></th>
+                            <th>Option</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4"><label class="label-control">Recherche: <input class="form-control" [(ngModel)]="filterQueryPPV"/></label></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let admin of mfppv.data; let i = index">
+                            <td>{{ i + 1  }}</td>
+                            <td>{{admin.name_adminpdv}}</td>
+                            <td>{{admin.telephone}}</td>
+                            <td>{{admin.nbreoperation}}</td>
+                            <td><button class="btn btn-sm btn-warning" (click)="detailperformancesadminclasserbydateandlot(admin,contentSuiviPointsperformanceByLot)">Détail</button></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <ng-template #contentVoirTousLesDepots let-c="close" let-d="dismiss" >
@@ -247,3 +320,47 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #contentSuiviPointsperformanceByLot let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="performancesadminpdvbyadmin">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Détail par caissier</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <table class="table table-responsive table-sm">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date opération</th>
+                                <th>Caissier</th>
+                                <th>Telephone</th>
+                                <th>Operateur</th>
+                                <th>Traitement</th>
+                                <th>Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let caissier of performancesadminpdvbyadmin; let i = index ">
+                                <td>{{i + 1}}</td>
+                                <th>{{caissier.dateoperation}}</th>
+                                <th>{{caissier.name_caissier}}</th>
+                                <th>{{caissier.telephone}}</th>
+                                <td>{{caissier.operateur}}</td>
+                                <td>{{caissier.traitement}}</td>
+                                <td>{{caissier.montanttotal}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+

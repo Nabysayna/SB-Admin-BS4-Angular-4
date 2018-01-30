@@ -16,6 +16,7 @@ import {AssignationSuiviService} from "../../services/assignation-suivi.service"
 })
 export class MesContactsComponent implements OnInit {
 
+    public loading_data:boolean = true;
     public filterQuery:any;
     public rowsOnPage = 10;
     public sortBy = "date_ajout";
@@ -29,6 +30,7 @@ export class MesContactsComponent implements OnInit {
     constructor(private modalService: NgbModal, private _utilService:UtilService) { }
 
     ngOnInit() {
+        this.loading_data = true;
         this.getPointByCommercial();
     }
 
@@ -74,6 +76,7 @@ export class MesContactsComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
+                    this.loading_data = false;
                     console.log('');
                 }
             );

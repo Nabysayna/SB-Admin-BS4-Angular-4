@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 import {UtilService} from "../../services/util.service";
 import {AssignationSuiviService} from "../../services/assignation-suivi.service";
 import {Router} from "@angular/router";
 import {NewclientService} from "../../services/newclient.service";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {Color} from "ng2-charts";
+import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 
 @Component({
   selector: 'app-admincommercial',
   templateUrl: './admincommercial.component.html',
   styleUrls: ['./admincommercial.component.scss'],
-  providers:[UtilService, AssignationSuiviService, NewclientService],
+  providers:[UtilService, AssignationSuiviService, NewclientService, SuivipositionnementService],
 
 })
 
-export class AdmincommercialComponent implements OnInit {
+export class AdmincommercialComponent implements OnInit, OnDestroy {
 
     public staticAlertClosed: boolean = false;
     public isEnregistrerAssignation: boolean = false;
@@ -22,21 +23,41 @@ export class AdmincommercialComponent implements OnInit {
     public readyforassination:boolean=true;
     public isclickforassination:boolean=false;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false,menuHead5:false, menuHead7:false};
+    public loading_data = true;
+    public killsetinterval:any;
+
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead7:false};
 
     public modalRef: NgbModalRef;
 
-    constructor(private modalService: NgbModal, public router: Router, private _utilService:UtilService, private _assignationsuiviService:AssignationSuiviService, private _newclientService:NewclientService) { }
+    constructor(
+        private modalService: NgbModal,
+        public router: Router,
+        private _utilService:UtilService,
+        private _assignationsuiviService:AssignationSuiviService,
+        private _suivipositionnementService:SuivipositionnementService,
+        private _newclientService:NewclientService
+    ) { }
 
   	ngOnInit() {
+        this.loading_data = true;
         this.getRegionsSuperviseurs();
     }
 
+    ngOnDestroy() {
+        clearInterval(this.killsetinterval);
+    }
+
+
+
+
     public menuHeadClick(option: number){
+        this.loading_data = true;
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead7 = false;
 
@@ -51,6 +72,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead7 = false;
 
@@ -60,14 +82,30 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead7 = false;
             this.getComSuperviseurs();
+        }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead7 = false;
+
+            this.getAllDemandeDepotEncours();
+            this.killsetinterval = setInterval(() => {
+                this.getAllDemandeDepotEncours();
+                console.log('step init');
+            }, 20000);
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = true;
             this.menuHead.menuHead7 = false;
             this.getPointssouscritBBS();
@@ -76,6 +114,7 @@ export class AdmincommercialComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.menuHead.menuHead5 = false;
             this.menuHead.menuHead7 = true;
             this.getPointsdeploye();
@@ -90,6 +129,7 @@ export class AdmincommercialComponent implements OnInit {
                 data => {
                     this.superviseurs = data.superviseurs
                     this.regions = data.regions
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getRegionsSuperviseurs')
@@ -173,6 +213,7 @@ export class AdmincommercialComponent implements OnInit {
                             checked:false
                         };
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('')
@@ -261,6 +302,7 @@ export class AdmincommercialComponent implements OnInit {
                     if(data.errorCode){
                         this.superviseurs = data.message.superviseurs;
                         this.commerciaux = data.message.commerciaux;
+                        this.loading_data = false;
                     }
                     else{
                         this.router.navigate(['/login']);
@@ -394,7 +436,7 @@ export class AdmincommercialComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log('getPointsdeploye')
+                () => this.loading_data = false
             );
     }
 
@@ -454,7 +496,7 @@ export class AdmincommercialComponent implements OnInit {
                     });
                 },
                 error => alert(error),
-                () => console.log('getPointsdeploye')
+                () => this.loading_data = false
             );
     }
 
@@ -566,8 +608,56 @@ export class AdmincommercialComponent implements OnInit {
                     }
                 },
                 error => alert(error),
-                () => { }
+                () => {
+                    this.loading_data=false;
+                }
             );
+    }
+
+
+
+
+    /************************************************************************************
+     *********************************   PARTIE DEPOSIT  EN COURS ****************************
+     ***********************************************************************************/
+
+    public listedepositsencours:any[] = [];
+
+    getAllDemandeDepotEncours(){
+        console.log('getAllDemandeDepotEncours')
+        this._suivipositionnementService.getAllDemandeDepotEncours()
+            .subscribe(
+                data => {
+                    if(data.errorCode==0){
+                        this.listedepositsencours = data.message.map(function(type){
+                            return {
+                                id_accepteur: -1,
+                                niveau_avancement: (type.etatdemande==0 && type.accepteur=='attente')?-4:(type.etatdemande==0 && type.accepteur!='attente')?-3:type.etatdemande==1?-2:type.etatdemande==2?-1:0,
+                                datedemande: type.datedemande,
+                                adressecomplet: JSON.parse(type.initiateur.adresse).address+", "+JSON.parse(type.initiateur.adresse).souszone+", "+JSON.parse(type.initiateur.adresse).zone,
+                                montantdemande: type.montantdemande,
+                                telephone: type.initiateur.telephone,
+                                point: type.initiateur,
+                                initiateur: type.initiateur.prenom+' '+type.initiateur.nom,
+                                cc: JSON.parse(type.validateur).prenom+" "+JSON.parse(type.validateur).nom,
+                                accepteur: type.accepteur=='attente'?type.accepteur:JSON.parse(type.accepteur).prenom+" "+JSON.parse(type.accepteur).nom,
+                                infosup: type.infosup,
+                                etatdemande: type.etatdemande,
+                                tokencc: type.tokencc,
+                            }
+                        });
+
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.loading_data = false;
+                }
+            );
+    }
+
+    tocurrency(number){
+        return Number(number).toLocaleString();
     }
 
 

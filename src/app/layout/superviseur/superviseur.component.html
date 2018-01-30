@@ -9,8 +9,8 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Suivi assignation</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">A déployé</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">New Réclamations</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/superviseur', 'suivionepoint']">Suivi Points</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/superviseur', 'suivionepoint']">Suivi Sentool</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead5, 'btn-success': menuHead.menuHead5}" (click)="menuHeadClick(5)" style="margin-bottom: 1rem;">Suivi Sentool</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Mes commerciaux</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Portefeuille</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Deposit</button>
@@ -554,6 +554,7 @@
             <div class="row">
                 <table class="table table-hover table-responsive">
                     <tr style="text-align: right">
+                        <th>#</th>
                         <th>Date demande</th>
                         <th>Entreprise</th>
                         <th>Superviseur</th>
@@ -564,6 +565,7 @@
                         <th style="text-align: center">Action</th>
                     </tr>
                     <tr *ngFor="let p of listedepositsencours; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
+                        <td>{{i + 1}}</td>
                         <td>{{p.datedemande}}</td>
                         <td>{{p.infosup}}</td>
                         <td>{{p.initiateur}}</td>
@@ -572,9 +574,9 @@
                         <td style="text-align: right;">{{tocurrency(p.montantdemande)}}</td>
                         <td style="width: 200px">
                             <span *ngIf="p.niveau_avancement==-4">
-                                <select name="sselectcommercial-{{i}}" id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="p.id_accepteur">
-                                    <option [attr.value]="-1">--Choix un commercial--</option>
-                                    <option  *ngFor="let commercial of commercials" [attr.value]="commercial.id">{{commercial.fullname}}</option>
+                                <select name="sselectcommercial-{{i}}" id="sselectcommercial-{{i}}" class="form-control input-sm" [(ngModel)]="p.id_accepteur" (change)="choicerecouvreur(p)">
+                                    <option [attr.value]="-1">--Choix un recouvreur--</option>
+                                    <option  *ngFor="let recouvreur of recouvreurs" [attr.value]="recouvreur.id">{{recouvreur.fullname}}</option>
                                 </select>
                             </span>
                             <span *ngIf="p.niveau_avancement!=-4">
@@ -586,7 +588,7 @@
                     <button type="button" name="valideraffectation-{{i}}" id="valideraffectation-{{i}}" class="btn btn-primary" [disabled]="p.id_accepteur<1" (click)="affecterComForDepot(p)">envoyer</button>
                 </span>
                             <span *ngIf="p.niveau_avancement==-3">
-                    Ettente confirmation
+                    Attente confirmation
                 </span>
                             <span *ngIf="p.niveau_avancement==-2">
                     En cours de recuperation
@@ -861,7 +863,7 @@
 <ng-template #contentVoirplusdedemande let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Détail positionnement</h4>
+            <h4 class="modal-title pull-left">Détail positionnement ({{listedepositsvalide.length}})</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -872,6 +874,7 @@
                     <div class="panel panel-default">
                         <table class="table table-hover table-responsive">
                             <tr>
+                                <th>#</th>
                                 <th>Date demande</th>
                                 <th>Entreprise</th>
                                 <th>Superviseur</th>
@@ -880,6 +883,7 @@
                                 <th>Commercial retiré</th>
                             </tr>
                             <tr *ngFor="let p of listedepositsvalide; let i=index" [ngStyle]="{'color': 'black', 'background-color': (p.niveau_avancement==-4)?'red':(p.niveau_avancement==-3)?'orange':(p.niveau_avancement==-2)?'blue':(p.niveau_avancement==-1)?'pink':'green'}">
+                                <td>{{i+1}}</td>
                                 <td>{{p.datedemande}}</td>
                                 <td>{{p.infosup}}</td>
                                 <td>{{p.initiateur}}</td>

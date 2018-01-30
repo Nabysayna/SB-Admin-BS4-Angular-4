@@ -40,8 +40,32 @@ export class SuivipositionnementService {
             .map(res => res.json());
     }
 
+    getDemandeDepotEncoursForCC(){
+        let url = this.link+"/apifromsentool/listedemndedepositencoursforcc";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getAllDemandeDepotEncours(){
+        let url = this.link+"/apifromsentool/listealldemndedepositencours";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getDemandeDepotForCom(){
         let url = this.link+"/apifromsentool/listedemndedepositforcom";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getDemandeDepotEncoursForCom(){
+        let url = this.link+"/apifromsentool/listedemndedepositencoursforcom";
         let datas = JSON.stringify({token:this.basetoken});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

@@ -30,6 +30,14 @@ export class UtilService {
             .map(res => res.json());
     }
 
+    getRecouvreurs(){
+        let url = this.link+"/util/getrecouvreurs";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getSuperviseurs(){
         let url = this.link+"/user/superviseur";
         return this._http.get(url)

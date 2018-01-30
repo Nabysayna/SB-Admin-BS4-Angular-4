@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
 })
 export class TablesComponent implements OnInit {
 
+    public loading_data:boolean = true;
     public filterQuery = "";
     public filtreRegion = "";
     public filtreZone = "";
@@ -37,6 +38,7 @@ export class TablesComponent implements OnInit {
 	constructor(public router: Router, private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService) {}
 
     ngOnInit(): void {
+	    this.loading_data = true;
         this._assignationsuiviService.getAssignationsByCommercial()
             .subscribe(
                 data => {
@@ -67,6 +69,7 @@ export class TablesComponent implements OnInit {
                     for (let i = 0; i < this.data.length; i++) {
                         if(!this.regions.includes(this.data[i].region)) this.regions.push(this.data[i].region);
                     }
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getAssignationsByCommercial')

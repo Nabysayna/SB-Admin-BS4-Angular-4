@@ -13,7 +13,7 @@ import {SuivipositionnementService} from "../../services/suivipositionnement.ser
     providers:[UtilService, NewclientService, ApiPlatformService, SuivipositionnementService],
 })
 
-export class AdminadministratifComponent implements OnInit {
+export class AdminadministratifComponent implements OnInit, OnDestroy {
 
     public loading_data:boolean = true;
     public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
@@ -29,7 +29,6 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     ngOnDestroy() {
-
         clearInterval(this.killsetinterval);
     }
 
@@ -520,7 +519,7 @@ export class AdminadministratifComponent implements OnInit {
                             telephone: pointObjet.telephone,
                             adresse: JSON.parse(pointObjet.adresse).address+", "+JSON.parse(pointObjet.adresse).souszone+", "+JSON.parse(pointObjet.adresse).zone,
                             etatposit: type.etatpositionnement==0?'KO':'OK',
-                            etatpayement: type.etatpayement==0?0:"".concat(type.etatpayement," par ", type.modepayement),
+                            etatpayement: type.etatpayement==0?""+0:"".concat(type.etatpayement," par ", type.modepayement),
                             etatversement: type.etatversement,
                         }
                     });
@@ -532,41 +531,59 @@ export class AdminadministratifComponent implements OnInit {
     }
 
     public validePayementDepot(){
-        this._suivipositionnementService.validePayementDepot({id:this.statusdoneeposition.id, montantpayement:this.montantpayement, modepayement:this.modepayement})
-            .subscribe(
-                data => {
-                    if(data.errorCode){
-                        this.closedModal();
-                    }
-                },
-                error => alert(error),
-                () => {
-                    this.getListStatusDeposition();
-                    this.killsetinterval = setInterval(() => {
+        clearInterval(this.killsetinterval);
+        if(confirm("Confirmer la validation du payement dépot")){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.validePayementDepot({id:this.statusdoneeposition.id, montantpayement:this.montantpayement, modepayement:this.modepayement})
+                .subscribe(
+                    data => {
+                        if(data.errorCode){
+                            this.closedModal();
+                            this.loading_data = false;
+                        }
+                    },
+                    error => alert(error),
+                    () => {
                         this.getListStatusDeposition();
-                        console.log('step');
-                    }, 10000);
-                }
-            );
+                        this.killsetinterval = setInterval(() => {
+                            this.getListStatusDeposition();
+                            console.log('step');
+                        }, 10000);
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
     }
 
     public valideVersementDepot(){
-        this._suivipositionnementService.valideVersementDepot({id:this.statusdoneeposition.id, montantversement:this.montantversement})
-            .subscribe(
-                data => {
-                    if(data.errorCode){
-                        this.closedModal();
-                    }
-                },
-                error => alert(error),
-                () => {
-                    this.getListStatusDeposition();
-                    this.killsetinterval = setInterval(() => {
+        clearInterval(this.killsetinterval);
+        if(confirm("Confirmer la validation du versement dépot")){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.valideVersementDepot({id:this.statusdoneeposition.id, montantversement:this.montantversement})
+                .subscribe(
+                    data => {
+                        if(data.errorCode){
+                            this.closedModal();
+                            this.loading_data = false;
+                        }
+                    },
+                    error => alert(error),
+                    () => {
                         this.getListStatusDeposition();
-                        console.log('step');
-                    }, 10000);
-                }
-            );
+                        this.killsetinterval = setInterval(() => {
+                            this.getListStatusDeposition();
+                            console.log('step');
+                        }, 10000);
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
     }
 
 
@@ -626,7 +643,7 @@ export class AdminadministratifComponent implements OnInit {
                 },
                 error => alert(error),
                 () => {
-                    console.log('');
+                    this.loading_data = false;
                 }
             );
     }

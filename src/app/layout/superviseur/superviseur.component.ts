@@ -120,7 +120,6 @@ export class SuperviseurComponent implements OnInit {
         private modalService: NgbModal,
         private _utilService:UtilService,
         private _assignationsuiviService:AssignationSuiviService,
-        private _apiPlatformService:ApiPlatformService,
         private _suivipositionnementService:SuivipositionnementService,
     ) {this.reponse1=false;}
 
@@ -294,12 +293,11 @@ export class SuperviseurComponent implements OnInit {
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = true;
 
-            this.listcreditsuperviseur();
             this.killsetinterval = setInterval(() => {
-                this.getDemandeDepotForCC();
-                console.log('step - 1');
+                this.getDemandeDepotEncoursForCC();
+                console.log('step - init demande depot');
 
-            }, 10000);
+            }, 20000);
         }
     }
 
@@ -378,7 +376,7 @@ export class SuperviseurComponent implements OnInit {
                 error => alert(error),
                 () => {
                     this.loading_data = false;
-                    console.log('getAssignationsBySuperviseur');
+                    this.getRecouvreurs();
                 }
             );
     }
@@ -1044,7 +1042,7 @@ export class SuperviseurComponent implements OnInit {
     public listereclamationsnonresolu:any[] = [];
 
     public getReclamationsNonResolu(): void {
-        this._apiPlatformService.getReclamationsNonResoluBySuperviseur()
+        this._apiplatform.getReclamationsNonResoluBySuperviseur()
             .subscribe(
                 data => {
                     if(data.errorCode==0){
@@ -1070,7 +1068,7 @@ export class SuperviseurComponent implements OnInit {
     }
 
     validresolutionreclamation(reclamation){
-        this._apiPlatformService.validReclamationsNonResolu(reclamation)
+        this._apiplatform.validReclamationsNonResolu(reclamation)
             .subscribe(
                 data => {
                     console.log('');
@@ -1090,10 +1088,27 @@ export class SuperviseurComponent implements OnInit {
      ***********************************************************************************/
 
     public listedeposits:any[] = [];
+    public recouvreurs:any[] = [];
     public listedepositsvalide:any[] = [];
     public listedepositsencours:any[] = [];
     public mescredits:any[] = [];
     public errovalidation:boolean = false;
+
+    public getRecouvreurs(): void {
+        this._utilService.getRecouvreurs()
+            .subscribe(
+                data => {
+                    if(data.errorCode) {
+                        this.recouvreurs = data.message;
+                    }
+                    this.loading_data = false;
+
+                },
+                error => alert(error),
+                () => console.log('')
+            );
+    }
+
     public showModalVoirplusdedemande(content) {
         this.modalService.open(content, {size: "lg"}).result.then( (result) => { }, (reason) => {} );
     }
@@ -1103,10 +1118,12 @@ export class SuperviseurComponent implements OnInit {
     }
 
     getDemandeDepotForCC(){
+        console.log('getDemandeDepotForCC')
         this._suivipositionnementService.getDemandeDepotForCC()
             .subscribe(
                 data => {
                     if(data.errorCode==0){
+                        console.log(data.message);
                         this.listedeposits = data.message.map(function(type){
                             return {
                                 id_accepteur: -1,
@@ -1125,23 +1142,61 @@ export class SuperviseurComponent implements OnInit {
                         });
                         this.listedepositsencours = this.listedeposits.filter(opt => opt.etatdemande!=3);
                         this.listedepositsvalide = this.listedeposits.filter(opt => opt.etatdemande==3);
-                        this.getCommerciaux();
                         this.loading_data = false;
                     }
                 },
                 error => alert(error),
-                () => console.log('')
+                () => {
+                    this.listcreditsuperviseur();
+                }
             );
     }
 
-    affecterComForDepot(item){
-        console.log(item)
+    getDemandeDepotEncoursForCC(){
+        console.log('getDemandeDepotEncoursForCC')
+        this._suivipositionnementService.getDemandeDepotEncoursForCC()
+            .subscribe(
+                data => {
+                    if(data.errorCode==0){
+                        console.log(data.message);
+                        this.listedeposits = data.message.map(function(type){
+                            return {
+                                id_accepteur: -1,
+                                niveau_avancement: (type.etatdemande==0 && type.accepteur=='attente')?-4:(type.etatdemande==0 && type.accepteur!='attente')?-3:type.etatdemande==1?-2:type.etatdemande==2?-1:0,
+                                datedemande: type.datedemande,
+                                adressecomplet: JSON.parse(type.initiateur.adresse).address+", "+JSON.parse(type.initiateur.adresse).souszone+", "+JSON.parse(type.initiateur.adresse).zone,
+                                montantdemande: type.montantdemande,
+                                telephone: type.initiateur.telephone,
+                                point: type.initiateur,
+                                initiateur: type.initiateur.prenom+' '+type.initiateur.nom,
+                                accepteur: type.accepteur=='attente'?type.accepteur:JSON.parse(type.accepteur).prenom+" "+JSON.parse(type.accepteur).nom,
+                                infosup: type.infosup,
+                                etatdemande: type.etatdemande,
+                                tokencc: type.tokencc,
+                            }
+                        });
+                        this.listedepositsencours = this.listedeposits.filter(opt => opt.etatdemande!=3);
+
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.loading_data = false;
+                }
+            );
+    }
+
+    choicerecouvreur(item){
         clearInterval(this.killsetinterval);
+    }
+
+    affecterComForDepot(item){
         if(confirm("Confirmer l'affectation")){
             console.log("je confirme")
             this.loading_data = true;
+            clearInterval(this.killsetinterval);
             let dataaffecte = {
-                accepteur: this.commercials.find(opt => opt.id= item.id_accepteur),
+                accepteur: this.recouvreurs.find(opt => opt.id==item.id_accepteur),
                 datedemande: item.datedemande,
                 montantdemande: item.montantdemande,
                 tokencc: item.tokencc,
@@ -1149,35 +1204,36 @@ export class SuperviseurComponent implements OnInit {
             this._suivipositionnementService.affecterComForDepotForCC(dataaffecte)
                 .subscribe(
                     data => {
-                        this.getDemandeDepotForCC();
+                        this.getDemandeDepotEncoursForCC();
                     },
                     error => alert(error),
                     () => {
                         this.killsetinterval = setInterval(() => {
-                            this.getDemandeDepotForCC();
-                            console.log('step');
-                        }, 10000);
+                            this.getDemandeDepotEncoursForCC();
+                            console.log('step affecterComForDepot');
+                        }, 20000);
                     }
                 );
         }
         else{
             console.log("Je ne confirme pas")
+            console.log(this.recouvreurs.find(opt => opt.id==item.id_accepteur));
         }
     }
 
     validerComForDepotCC(item){
         console.log('validerComForDepotCC');
-
-        clearInterval(this.killsetinterval);
         if(confirm("Confirmer la validation du dépot")){
             console.log("je confirme")
             this.loading_data = true;
+            clearInterval(this.killsetinterval);
             this._suivipositionnementService.validerComForDepotCC({montantdemande: item.montantdemande, tokencc: item.tokencc, point: item.point, agentcom: item.accepteur})
                 .subscribe(
                     data => {
                         if(data.errorCode){
                             if(data.messageError=='ok'){
-                                this.listcreditsuperviseur();
+                                this.listedepositsencours = this.listedeposits.filter(opt => opt.etatdemande!=3 && opt.tokencc!=item.tokencc);
+                                this.getDemandeDepotForCC();
                             }
                             else{
                                 this.errovalidation = true;
@@ -1186,11 +1242,10 @@ export class SuperviseurComponent implements OnInit {
                     },
                     error => alert(error),
                     () => {
-                        this.getDemandeDepotForCC();
                         this.killsetinterval = setInterval(() => {
-                            this.getDemandeDepotForCC();
-                            console.log('step');
-                        }, 10000);
+                            this.getDemandeDepotEncoursForCC();
+                            console.log('step validerComForDepotCC');
+                        }, 20000);
                     }
                 );
         }
@@ -1226,7 +1281,7 @@ export class SuperviseurComponent implements OnInit {
     public listepointsbycc:any[] = [];
 
     getListPointsbysuperviseur(){
-        this._apiPlatformService.getListPointsbysuperviseur()
+        this._apiplatform.getListPointsbysuperviseur()
             .subscribe(
                 data => {
                     console.log(data);
