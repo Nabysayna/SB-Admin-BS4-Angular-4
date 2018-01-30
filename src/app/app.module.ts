@@ -8,7 +8,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
-
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
@@ -25,6 +26,8 @@ export function HttpLoaderFactory(http: Http) {
         BrowserAnimationsModule,
         FormsModule,
         HttpModule,
+        ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
         AppRoutingModule,
         TranslateModule.forRoot({
             loader: {
