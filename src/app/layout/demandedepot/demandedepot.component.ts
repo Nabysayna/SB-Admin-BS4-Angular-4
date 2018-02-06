@@ -27,13 +27,13 @@ export class DemandedepotComponent implements OnInit {
     constructor(public router: Router, private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private _suivipositionnementService:SuivipositionnementService) {}
 
     ngOnInit(): void {
-        this.loading_data = true;
+        /*this.loading_data = true;
 
         this.getDemandeDepotForCom();
         this.killsetinterval = setInterval(() => {
             this.getDemandeDepotEncoursForCom();
             console.log('step init');
-        }, 20000);
+        }, 20000);*/
     }
 
 

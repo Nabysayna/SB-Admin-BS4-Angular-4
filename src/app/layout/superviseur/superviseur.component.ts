@@ -280,7 +280,7 @@ export class SuperviseurComponent implements OnInit {
             this.getClient();
         }
         if(option == 9){
-            this.errovalidation = false;
+            /*this.errovalidation = false;
             this.getDemandeDepotForCC();
             console.log('step - 2');
             this.menuHead.menuHead1 = false;
@@ -297,7 +297,7 @@ export class SuperviseurComponent implements OnInit {
                 this.getDemandeDepotEncoursForCC();
                 console.log('step - init demande depot');
 
-            }, 20000);
+            }, 20000);*/
         }
     }
 

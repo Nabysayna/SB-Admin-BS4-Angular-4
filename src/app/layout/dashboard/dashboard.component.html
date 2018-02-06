@@ -1,69 +1,28 @@
 <div [@routerTransition]>
     <h2 class="text-muted">BBS CRM Plateforme <small></small></h2>
     <div class="row" >
-        <div class="col-3">
+        <div class="col-4">
             <a [routerLink]="['/mescontacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Mes Contacts' }}
             </a>
         </div>
 
-        <div class="col-3">
+        <div class="col-4">
             <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Propects' }}
             </a>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Nouveau Client' }}
             </a>
         </div>
-        <div class="col-3">
+        <!--<div class="col-3">
             <a [routerLink]="['/demandedepot']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                 <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Deposit' }}
             </a>
         </div>
-
-        <div class="col-md-12">
-            <ngb-carousel>
-                <ng-template ngbSlide *ngFor="let slider of sliders">
-                    <img class="img-fluid mx-auto d-block" [src]="slider.imagePath" alt="Random first slide" width="100%">
-                    <div class="carousel-caption">
-                        <h3>{{slider.label}}</h3>
-                        <p>{{slider.text}}</p>
-                    </div>
-                </ng-template>
-            </ngb-carousel>
-        </div>
-    </div>
-    <div class="row"  *ngIf="tmpsouscrit=='_1_2'">
-        <div class="col-2">
-            <a [routerLink]="['/mescontacts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Mes Contacts' }}
-            </a>
-        </div>
-
-        <div class="col-2">
-            <a [routerLink]="['/tables']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-table"></i>&nbsp;{{ 'Propects' }}
-            </a>
-        </div>
-        <div class="col-3">
-            <a [routerLink]="['/forms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Nouveau Client' }}
-            </a>
-        </div>
-
-        <div class="col-3">
-            <a [routerLink]="['/formsentool']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'New Client à Déployé Sentool' }}
-            </a>
-        </div>
-        <div class="col-2">
-            <a [routerLink]="['/demandedepot']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-                <i class="fa fa-fw fa-edit"></i>&nbsp;{{ 'Deposit' }}
-            </a>
-        </div>
-
+-->
         <div class="col-md-12">
             <ngb-carousel>
                 <ng-template ngbSlide *ngFor="let slider of sliders">
