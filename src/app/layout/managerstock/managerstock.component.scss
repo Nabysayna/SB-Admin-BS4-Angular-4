@@ -1,0 +1,32 @@
+.appliquerTout{
+     position: fixed;
+     top:8rem;
+     left:35%;
+     width: 20rem;
+     background-color: #222;
+     color: white;
+}
+
+.appliquerTout div{
+     margin-left: 1rem;
+}
+
+.paginationVentes , .paginationAttente{
+    position: absolute;
+    top:0;
+    right: 1rem;
+
+    i{
+        cursor: pointer;
+        color: rgba(0, 0, 255, 0.61);
+        font-size:50px;
+    }
+
+    span{
+        margin-left: 1rem;
+        border: 1px solid #F100;
+    }
+    
+}
+
+

@@ -38,6 +38,7 @@
     "ionic": "^3.13.2",
     "jquery": "^3.2.1",
     "ng2-charts": "^1.6.0",
+    "ng2-loading-animate": "0.0.17",
     "ngx-bootstrap": "^2.0.2",
     "ngx-pagination": "^3.0.3",
     "plugin": "^0.3.3",
