@@ -14,13 +14,21 @@
     <div class="page-header col-sm-10 col-lg-12 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[0]">
         <div class="row" >
             <div  class="col-lg-5 col-md-5 col-sm-5" style="min-height:40rem; border-right: 1px solid rgba(24, 121, 45, 0.452); border-top: 1px solid rgba(24, 121, 45, 0.452);">
-                <h4 style="text-align:center;">En vitrine1</h4>  
+                <h4 style="text-align:center;">En Ventes</h4>  
+                <div class="paginationVentes">
+                        <span>
+                                <i (click)="ventesSuivant()" class="fa fa-angle-double-left" ></i>
+                        </span>
+                        <span>
+                                <i  (click)="ventesPrecedant()" class="fa fa-angle-double-right"></i>
+                        </span>
+                </div>
                 <div class="row" style="margin-bottom:2rem;">
                         <!-- <div class="col-lg-1 col-md-1 col-sm-1"></div> -->
                         <div *ngFor="let prod of this.vitrine1.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
                                 <h6>{{prod.designation}}</h6>
-                                <img src="./../../assets/logo.png" alt="" style="min-width:100%; min-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
-                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)">Voir</button>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)" >Voir</button>
                                         <ng-template #templateVoir>
                                         <div class="modal-header">
                                             <h4 class="modal-title pull-left">Informations du produit</h4>
@@ -31,23 +39,20 @@
                                         <div class="modal-body">
                                              <div class="row">
                                                <div class="col-lg-4 col-md-4 col-sm-4">
-                                                    <img src="./../../assets/logo.png" alt="" style="min-width:100%; min-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
                                                </div>
                                                <div class="col-lg-8 col-md-8 col-sm-8">
                                                     <div>
-                                                        <h3>désignation....... {{prod.designation}}</h3>
+                                                        <h3>Désignation....... {{prod.designation}}</h3>
                                                     </div>
                                                     <div>
-                                                            description .........{{prod.description}}
+                                                            Description .........{{prod.description}}
                                                     </div>
                                                     <div>
-                                                            Prix{{prod.prix}} .....Fcfa
+                                                            Prix............{{prod.prix}} .....Fcfa
                                                     </div>
                                                     <div>
-                                                          Point ......{{prod.point}}
-                                                    </div>
-                                                    <div>
-                                                          Téléphone .......{{prod.telephone}}
+                                                        categorie ..........{{prod.categ}}
                                                      </div>
                                                 </div>
                                              </div>
@@ -64,8 +69,16 @@
                                         <div class="modal-body">
                                                 <div class="row">
                                                         <div class="col-lg-4 col-md-4 col-sm-4">
-                                                             <img src="./../../assets/logo.png" alt="" style="min-width:100%; min-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
-                                                             <input type="file" name="image" id="" class="btn btn-info btn-sm"> 
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" id="image" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div> 
                                                         </div>
                                                         <div class="col-lg-1 col-md-1 col-sm-1"></div>
                                                         <div class="col-lg-7 col-md-7 col-sm-7">
@@ -74,7 +87,7 @@
                                                                           Désignation
                                                                         </div>
                                                                         <div class="col-6">
-                                                                              <input type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                              <input  type="text" name="designation" id="designation" value="{{prod.designation}}">
                                                                         </div>
                                                                         
                                                                    </div>
@@ -83,7 +96,7 @@
                                                                                   Déscription
                                                                            </div>
                                                                           <div class="col-6">
-                                                                               <input type="text" name="description" id="designation" value="{{prod.description}}">
+                                                                               <input  type="text" name="description" id="description" value="{{prod.description}}">
                                                                           </div>
                                                                    </div>
                                                                    <div class="row"  style="margin-top:1rem;">
@@ -91,34 +104,28 @@
                                                                                  Prix
                                                                            </div>
                                                                           <div class="col-6">
-                                                                               <input type="number" name="description" id="designation" value="{{prod.prix}}">
+                                                                               <input type="number" name="prix" id="prix" value="{{prod.prix}}">
                                                                           </div>
                                                                    </div>
+                                                                
                                                                    <div class="row"  style="margin-top:1rem;">
-                                                                          <div class="col-6">
-                                                                                 Point
-                                                                            </div>
-                                                                           <div class="col-6">
-                                                                                <input type="text" name="description" id="designation" value="{{prod.point}}" >
-                                                                           </div>
-                                                                   </div>
-                                                                   <div class="row"  style="margin-top:1rem;">
-                                                                          <div class="col-6">
-                                                                                  Téléphone
-                                                                            </div>
-                                                                           <div class="col-6">
-                                                                                <input type="number" name="description" id="designation" value="{{prod.telephone}}">
-                                                                           </div>
-                                                                    </div>
+                                                                        <div class="col-6">
+                                                                            Catégorie
+                                                                          </div>
+                                                                         <div class="col-6">
+                                                                              <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                         </div>
+                                                                  </div>
                                                               <div class="row"  style="margin-top:1rem;">
-                                                                   <button type="submit"  class="btn btn-info btn-sm">Valider</button>
+                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Valider</button>
                                                               </div>
                                                          </div>
                                                 </div>
                                         </div>
                                         </ng-template>
-                                <button type="button" class="btn btn-danger btn-sm" (click)="openModal(templateRemplacer)">Remplacer</button>
-                                        <ng-template #templateRemplacer>
+                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
+                                <button *ngIf="this.remplacerBool == true" type="button" class="btn btn-default btn-sm" (click)="annulerRemplacement($event)">Annuler</button>
+                                        <!-- <ng-template #templateRemplacer>
                                         <div class="modal-header">
                                             <h4 class="modal-title pull-left">Remplacer</h4>
                                             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -136,22 +143,30 @@
                                             <div class="row" style="margin-top:2rem;">
                                                     <div class="col-lg-8 col-md-8 col-sm-8"></div>
                                                     <div class="col-lg-4 col-md-4 col-sm-4">
-                                                            <button type="button" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;">Oui</button>
-                                                            <button type="button" class="btn  btn-sm float-right" >Annuler</button>
+                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                                            <button type="button" class="btn  btn-sm float-right" (click)="modalRef.hide()">Annuler</button>
                                                     </div>
                                             </div>
                                         </div>
-                                        </ng-template>
+                                        </ng-template> -->
                         </div>
                 </div> 
               
             </div>
             <div class="col-lg-7 col-md-7 col-sm-7">
                 <h4 style="text-align:center;">En Attentes</h4>
+                <div class="paginationAttente">
+                                <span>
+                                        <i class="fa fa-angle-double-left" (click)="attentesSuivant()" ></i>
+                                </span>
+                                <span>
+                                        <i class="fa fa-angle-double-right" (click)="attentesSuivant()"></i>
+                                </span>
+                </div>
                 <div class="row" style="margin-bottom:2rem;">
                         <div *ngFor="let prod of this.vitrine1.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
                                 <h6>{{prod.designation}}</h6>
-                                <img src="./../../assets/logo.png" alt="" style="min-width:100%; min-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
                                 <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templatePlus)">plus</button>
                                         <ng-template #templatePlus>
                                         <div class="modal-header">
@@ -162,9 +177,17 @@
                                         </div>
                                         <div class="modal-body">
                                                 <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4">
-                                                             <img src="./../../assets/logo.png" alt="" style="min-width:100%; min-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
-                                                             <input type="file" name="image" id="" class="btn btn-info btn-sm"> 
+                                                        <div class="col-lg-4 col-md-4 col-sm-4"> 
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                             <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                             <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>  
                                                         </div>
                                                         <div class="col-lg-1 col-md-1 col-sm-1"></div>
                                                         <div class="col-lg-7 col-md-7 col-sm-7">
@@ -182,7 +205,7 @@
                                                                             Déscription
                                                                      </div>
                                                                     <div class="col-6">
-                                                                         <input type="text" name="description" id="designation" value="{{prod.description}}">
+                                                                         <input type="text" name="description" id="description" value="{{prod.description}}">
                                                                     </div>
                                                              </div>
                                                              <div class="row"  style="margin-top:1rem;">
@@ -190,34 +213,26 @@
                                                                            Prix
                                                                      </div>
                                                                     <div class="col-6">
-                                                                         <input type="number" name="description" id="designation" value="{{prod.prix}}">
+                                                                         <input type="number" name="prix" id="prix" value="{{prod.prix}}">
                                                                     </div>
                                                              </div>
                                                              <div class="row"  style="margin-top:1rem;">
                                                                     <div class="col-6">
-                                                                           Point
+                                                                        Catégorie
                                                                       </div>
                                                                      <div class="col-6">
-                                                                          <input type="text" name="description" id="designation" value="{{prod.point}}" >
-                                                                     </div>
-                                                             </div>
-                                                             <div class="row"  style="margin-top:1rem;">
-                                                                    <div class="col-6">
-                                                                            Téléphone
-                                                                      </div>
-                                                                     <div class="col-6">
-                                                                          <input type="number" name="description" id="designation" value="{{prod.telephone}}">
+                                                                          <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
                                                                      </div>
                                                               </div>
                                                               <div class="row"  style="margin-top:1rem;">
-                                                                   <button type="submit"  class="btn btn-info btn-sm">Annuler</button>
-                                                                   <button type="submit"  class="btn btn-primary btn-sm" style="margin-left:1rem;">Enregistrer</button>
+                                                                   <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Enregistrer</button>
                                                               </div>
                                                          </div>
                                                 </div>
                                         </div>
                                         </ng-template>
-                                <button type="button" class="btn btn-warning btn-sm">Valider</button>
+                                <button *ngIf="this.remplacerBool == true" type="button" (click)="validerRemplacementActicle($event)" class="btn btn-warning btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "", "imgLink": "{{prod.imgLink}}"'>Valider</button>
                                         <!-- <ng-template #templateValider>
                                         <div class="modal-header">
                                             <h4 class="modal-title pull-left">Modal</h4>
@@ -239,8 +254,8 @@
                                         </div>
                                         <div class="modal-body">
                                             <p>Souhaitez vous vraiment supprimer ce produit</p>
-                                            <button type="submit"  class="btn btn-info btn-sm">Annuler</button>
-                                            <button type="submit"  class="btn btn-danger btn-sm" style="margin-left:1rem;">Oui</button>
+                                            <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Oui</button>
                                         </div>
                                         </ng-template>
                         </div>
@@ -289,4 +304,12 @@
 
     </div>
 
+</div>
+<div class="appliquerTout row" *ngIf="toutChanger==true;">
+        <div col-lg-6>
+                <button class="btn btn-default" (click)="toutAnnulerFunc()" >Tout Annuler</button>
+        </div>
+        <div col-lg-6>
+                <button class="btn btn-danger" (click)="toutChangerFunc()">Tout Appliquer</button>
+         </div>
 </div>
