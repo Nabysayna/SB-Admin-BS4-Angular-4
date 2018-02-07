@@ -6,15 +6,15 @@ import {Http, Headers} from "@angular/http";
 export class ManagerstockService {
 
    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "https://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers:Headers;
 
     ventes = [
-      {    
+      {
           id:1,
           designation: 'mangue',
           description:'je suis une magues',
@@ -23,7 +23,7 @@ export class ManagerstockService {
           point: 'champ de mangues',
           img: ''
        },
-       {    
+       {
           id:2,
           designation: 'banannes',
           description:'je suis une bannanes',
@@ -34,7 +34,7 @@ export class ManagerstockService {
        }
   ];
   attentes = [
-      {    
+      {
           id:1,
           designation: 'moutton',
           description:'je suis un mouton',
@@ -43,7 +43,7 @@ export class ManagerstockService {
           point: 'Troupeau de mouton',
           img: ''
        },
-       {  
+       {
           id:2,
           designation: 'chévre',
           description:'je suis une chévre',
@@ -53,7 +53,7 @@ export class ManagerstockService {
           img: ''
        }
   ];
-    constructor(private _http: Http) { 
+    constructor(private _http: Http) {
       this.headers = new Headers();
       this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     }
@@ -71,7 +71,7 @@ export class ManagerstockService {
         return this._http.get(url)
             .map(res => res.json());
     }
-    
+
     acticlesVitrine1(){
         let url = this.link+"/managerStock/acticlesVitrine1";
         return this._http.get(url)

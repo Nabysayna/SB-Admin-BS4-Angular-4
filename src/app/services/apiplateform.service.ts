@@ -11,8 +11,8 @@ export class ApiPlatformService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-     private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "https://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
@@ -138,17 +138,6 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
-/*
-
-    getListBilanDeposit(){
-        let url = this.link+"/apiplatform/getalldeposit";
-        let datas = JSON.stringify({token:this.basetoken});
-        let params = 'params='+datas;
-        return this._http.post(url, params, {headers:this.headers})
-            .map(res => res.json());
-    }
-*/
-
     getListBilanDepositByDate(data:any){
         let url = this.link+"/apiplatform/getlistbilandepositbydate";
         let datas = JSON.stringify({token:this.basetoken, data:data});
@@ -172,9 +161,6 @@ export class ApiPlatformService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
-
-
-
 
 
 }

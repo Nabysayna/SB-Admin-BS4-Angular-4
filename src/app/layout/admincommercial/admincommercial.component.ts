@@ -136,8 +136,7 @@ export class AdmincommercialComponent implements OnInit, OnDestroy {
             );
     }
 
-    choixsuperviseurforcommercial(id_superviseur){
-    }
+    choixsuperviseurforcommercial(id_superviseur){ }
 
     public selectRegion(){
         this.optionassignations = [];
