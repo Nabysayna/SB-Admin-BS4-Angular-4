@@ -4,97 +4,96 @@
 </div>
 <div class="row" style="padding-bottom: 1rem;padding-top: 0.5rem">
   	<div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
-		<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Article à recuperer</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Article à livrer</button>
+		<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Articles à recuperer</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Commandes à livrer</button>
 	</div>
     <hr>
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead1">
-    <div class=" row" style="margin-bottom: 1rem; margin-left: 3rem; margin-right: 3rem">
-        <div class="col-sm-6">
-            <label class="label-control" for="datejoura">Date par jour:</label>
+    <div class=" row" style="margin-bottom: 1rem; margin-left: 3rem; margin-right: 3rem; background-color: orange; padding: 1rem">
+        <div class="col-sm-5">
+            <label class="label-control" for="datejourArticleARecuperer">Date par jour:</label>
             <div class="row">
-                <input type="date" id="datejoura" name="datejoura" [(ngModel)]="selectionjourArticleARecuperer" style="margin-right: 1rem"/>
+                <input type="date" id="datejourArticleARecuperer" name="datejourArticleARecuperer" [(ngModel)]="selectionjourArticleARecuperer" style="margin-right: 1rem"/>
                 <button type="button" class="btn btn-primary btn-sm" (click)="historiquejourArticleARecuperer()" [disabled]="selectionjourArticleARecuperer==undefined" >Chercher</button>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             <label class="label-control">Date par intervalle:</label>
             <div class="row">
-                <input type="date" name="intervalledateinit" [(ngModel)]="selectionintervalledateinitArticleARecuperer"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinal" [(ngModel)]="selectionintervalleddatefinalArticleARecuperer"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                <input type="date" name="intervalledateinitArticleARecuperer" [(ngModel)]="selectionintervalledateinitArticleARecuperer"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinalArticleARecuperer" [(ngModel)]="selectionintervalleddatefinalArticleARecuperer"  style="margin-left: 0.5rem; margin-right: 1rem" />
                 <button type="button" class="btn btn-primary btn-sm" (click)="historiqueintervalleArticleARecuperer()" [disabled]="selectionintervalledateinitArticleARecuperer>selectionintervalleddatefinalArticleARecuperer || selectionintervalledateinitArticleARecuperer==undefined || selectionintervalleddatefinalArticleARecuperer==undefined">Chercher</button>
             </div>
         </div>
     </div>
-    <div class="row" style="padding-bottom: 2rem">
+    <div class="row" style="margin-bottom: 1rem; background-color: yellow; padding: 1rem">
         <div class="col-sm-2">
             <label>Région</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreRegion" (change)="selectRegion()">
+            <select class="form-control input-sm" [(ngModel)]="filtreRegionArticleARecuperer" (change)="selectRegionArticleARecuperer()">
                 <option>--Choix région--</option>
-                <option  *ngFor="let region of regions">{{region.nom}}</option>
+                <option  *ngFor="let region of regions">{{region}}</option>
             </select>
         </div>
         <div class="col-sm-2">
             <label>Zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreZone" (change)="selectZone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreZoneArticleARecuperer" (change)="selectZoneArticleARecuperer()">
                 <option>--Choix zone--</option>
-                <option  *ngFor="let zone of zones">{{zone.nom}}</option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Sous zone</label>
-            <select class="form-control input-sm" [(ngModel)]="filtreSousZone"  (change)="selectSouszone()">
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZoneArticleARecuperer"  (change)="selectSouszoneArticleARecuperer()">
                 <option>--Choix sous zone--</option>
-                <option  *ngFor="let souszone of souszones">{{souszone.nom}}</option>
+                <option  *ngFor="let souszone of souszones">{{souszone}}</option>
             </select>
         </div>
         <div class="col-sm-3">
             <label>Livreur</label>
-            <select name="singleSelectsuperviseur"  id="singleSelectsuperviseur" class="form-control input-sm" [(ngModel)]="choixsuperviseur">
+            <select name="singleSelectlivreurArticleARecuperer"  id="singleSelectlivreurArticleARecuperer" class="form-control input-sm" [(ngModel)]="choixlivreurArticleARecuperer">
                 <option [attr.value]="'-1'">--Choix livreur--</option>
-                <option  *ngFor="let superviseur of superviseurs" [attr.value]="superviseur.id">{{superviseur.prenom}} {{superviseur.nom}}</option>
+                <option  *ngFor="let livreur of livreurs" [attr.value]="livreur.id">{{livreur.fullname}}</option>
             </select>
         </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-success btn-sm" style="margin-top:2rem; margin-left: auto; margin-right: auto;"
+                    (click)="assignerlivreurArticleARecuperer()"
+                    [disabled]="choixlivreurArticleARecuperer == '--Choix livreur--' || selectedOptionsArticleARecuperer.length<=0"
+            >Assigner</button>
+        </div>
     </div>
-    <div *ngIf="isEnregistrerAssignation" class="row text-center center-block">
-        <ngb-alert [type]="'success'" *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
+    <div class="row" style="margin: 0 auto; text-align: center">
+        <ngb-alert [type]="'success'" *ngIf="staticAlertClosedArticle" (close)="staticAlertClosedArticle=false">
             <strong>Success!</strong> Assignation avec success.
         </ngb-alert>
     </div>
-    <div class="row text-center center-block" style="padding-bottom: 1rem">
-        <button type="button"
-                class="btn btn-warning btn-sm"
-                (click)="assignersuperviseur()"
-                style="margin-left: auto; margin-right: auto;"
-                [disabled]="
-                    filtreRegion == '--Choix région--' ||
-                    filtreZone == '--Choix zone--' ||
-                    filtreSousZone == '--Choix sous zone--' ||
-                    choixsuperviseur == '--Choix superviseur--' ||
-                    selectedOptions.length <= 0
-                ">Assigner</button>
-    </div>
     <div class="row">
-        <table class="table table-hover table-responsive" [mfData]="optionassignations" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+        <table class="table table-hover" [mfData]="optionassignationsArticleARecuperer" #mfArticleARecuperer="mfDataTable" [mfRowsOnPage]="rowsOnPageArticleARecuperer" [(mfSortBy)]="sortByArticleARecuperer" [(mfSortOrder)]="sortOrderArticleARecuperer">
             <thead>
             <tr>
                 <th>#</th>
-                <th><mfDefaultSorter by="libellepoint">Date ajout</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="libellepoint">Article</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="libellepoint">Qté</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                <th><mfDefaultSorter by="commentaire">Commentaire</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="datecommande">Date commande</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="designation">Article</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="qte">Qté</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="adressecomplet">Adresse</mfDefaultSorter></th>
+            </tr>
+            <tr>
+                <td *ngIf="optionassignationsArticleARecuperer.length>1">
+                    <input *ngIf="cheickallArticleARecuperer==false" title="tout coché" type="checkbox" name="cochertout" [(ngModel)]="cheickallArticleARecuperer" (change)="onchangeCheickallArticleARecuperer()"/>
+                    <input *ngIf="cheickallArticleARecuperer==true" title="tout décoché" type="checkbox" name="decochertout" [(ngModel)]="cheickallArticleARecuperer" (change)="onchangeCheickallArticleARecuperer()"/>
+                </td>
+                <th colspan="3"><input class="form-control" placeholder="Recherche" /></th>
+                <th>Total : {{optionassignationsArticleARecuperer.length}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of mf.data; let i = index " [ngStyle]="{'color': 'white', 'background-color': (item.infosup.service_sentool==0 && item.infosup.service_wafacash==0)?'red':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':'orange'}">
-                <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" /></td>
-                <td>{{item.libellepoint}}</td>
-                <td>{{item.fullname}}</td>
-                <td>{{item.telephone}}</td>
-                <td>{{item.adresse}}</td>
-                <td><textarea class="form-control" type="text" name="commentaire-{{i}}" placeholder="Notification" [(ngModel)]="item.commentaire">{{item.commentaire}}</textarea></td>
+            <tr *ngFor="let item of mfArticleARecuperer.data; let i = index ">
+                <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked" (change)="onchangeCheickoneArticleARecuperer()" /></td>
+                <td>{{item.datecommande}}</td>
+                <td>{{item.designation}}: {{item.description}}</td>
+                <td>{{item.qte}}</td>
+                <td>{{item.adressecomplet}}</td>
             </tr>
             </tbody>
             <tfoot>
@@ -109,5 +108,137 @@
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead2" >
-    ARTICLE A LIVRER
+    <div class=" row" style="margin-bottom: 1rem; margin-left: 3rem; margin-right: 3rem">
+        <div class="col-sm-5">
+            <label class="label-control" for="datejourArticleALivrer">Date par jour:</label>
+            <div class="row">
+                <input type="date" id="datejourArticleALivrer" name="datejourArticleALivrer" [(ngModel)]="selectionjourArticleALivrer" style="margin-right: 1rem"/>
+                <button type="button" class="btn btn-primary btn-sm" (click)="historiquejourArticleALivrer()" [disabled]="selectionjourArticleALivrer==undefined" >Chercher</button>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <label class="label-control">Date par intervalle:</label>
+            <div class="row">
+                <input type="date" name="intervalledateinitArticleALivrer" [(ngModel)]="selectionintervalledateinitArticleALivrer"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinalArticleALivrer" [(ngModel)]="selectionintervalleddatefinalArticleALivrer"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                <button type="button" class="btn btn-primary btn-sm" (click)="historiqueintervalleArticleALivrer()" [disabled]="selectionintervalledateinitArticleALivrer>selectionintervalleddatefinalArticleALivrer || selectionintervalledateinitArticleALivrer==undefined || selectionintervalleddatefinalArticleALivrer==undefined">Chercher</button>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 2rem">
+        <div class="col-sm-2">
+            <label>Région</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreRegionArticleALivrer" (change)="selectRegionArticleALivrer()">
+                <option>--Choix région--</option>
+                <option  *ngFor="let region of regions">{{region}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label>Zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreZoneArticleALivrer" (change)="selectZoneArticleALivrer()">
+                <option>--Choix zone--</option>
+                <option  *ngFor="let zone of zones">{{zone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Sous zone</label>
+            <select class="form-control input-sm" [(ngModel)]="filtreSousZoneArticleALivrer"  (change)="selectSouszoneArticleALivrer()">
+                <option>--Choix sous zone--</option>
+                <option  *ngFor="let souszone of souszones">{{souszone}}</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label>Livreur</label>
+            <select name="singleSelectlivreurArticleALivrer"  id="singleSelectlivreurArticleALivrer" class="form-control input-sm" [(ngModel)]="choixlivreurArticleALivrer">
+                <option [attr.value]="'-1'">--Choix livreur--</option>
+                <option  *ngFor="let livreur of livreurs" [attr.value]="livreur.id">{{livreur.fullname}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-warning btn-sm" style="margin-top:2rem; margin-left: auto; margin-right: auto;"
+                    (click)="assignerlivreurArticleALivrer()"
+                    [disabled]="choixlivreurArticleALivrer == '--Choix livreur--' || selectedOptionsArticleALivrer.length<=0"
+            >Assigner</button>
+        </div>
+    </div>
+    <div class="row" style="margin: 0 auto; text-align: center">
+        <ngb-alert [type]="'success'" *ngIf="staticAlertClosedArticle" (close)="staticAlertClosedArticle=false">
+            <strong>Success!</strong> Assignation avec success.
+        </ngb-alert>
+    </div>
+    <div class="row">
+        <table class="table table-hover" [mfData]="optionassignationsArticleALivrer" #mfArticleALivrer="mfDataTable" [mfRowsOnPage]="rowsOnPageArticleALivrer" [(mfSortBy)]="sortByArticleALivrer" [(mfSortOrder)]="sortOrderArticleALivrer">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th><mfDefaultSorter by="datecommande">Date ajout</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="attributcommande">Commande</mfDefaultSorter></th>
+                <th><mfDefaultSorter by="adressecomplet">Adresse</mfDefaultSorter></th>
+                <th>Option</th>
+            </tr>
+            <tr>
+                <td *ngIf="optionassignationsArticleALivrer.length>1">
+                    <input *ngIf="cheickallArticleALivrer==false" title="tout coché" type="checkbox" name="cochertout" [(ngModel)]="cheickallArticleALivrer" (change)="onchangeCheickallArticleALivrer()"/>
+                    <input *ngIf="cheickallArticleALivrer==true" title="tout décoché" type="checkbox" name="decochertout" [(ngModel)]="cheickallArticleALivrer" (change)="onchangeCheickallArticleALivrer()"/>
+                </td>
+                <th colspan="3"><input class="form-control" placeholder="Recherche" /></th>
+                <th>Total : {{optionassignationsArticleALivrer.length}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mfArticleALivrer.data; let i = index ">
+                <td><input type="checkbox" name="items" value="{{item.value}}" [(ngModel)]="item.checked"  (change)="onchangeCheickoneArticleALivrer()" /></td>
+                <td>{{item.datecommande}}</td>
+                <td>{{item.attributcommande}}</td>
+                <td>{{item.adressecomplet}}</td>
+                <td><button type="button" class="btn btn-primary btn-sm" (click)="open(contentCommandeAlivrer, item)">voir detail</button></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="text-center center-block">
+                <td colspan="8" class="text-center center-block">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
+
+
+
+
+<ng-template #contentCommandeAlivrer let-c="close" let-d="dismiss" >
+    <div class="modal-body">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h2 style="text-align: center; margin: 0 auto"> Detail commande</h2>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Article</th>
+                        <th>Description</th>
+                        <th>Qté</th>
+                        <th>Montant</th>
+                        <th>Adresse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of onecommandeAlivrer.articlescommande; let i = index ">
+                        <td>{{i + 1}}</td>
+                        <td>{{item.designation}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.qte}}</td>
+                        <td>{{item.montant}}</td>
+                        <td>{{item.adressecomplet}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Fermer</button>
+    </div>
+</ng-template>

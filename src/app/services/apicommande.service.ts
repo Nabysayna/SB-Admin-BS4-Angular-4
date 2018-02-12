@@ -27,6 +27,14 @@ export class ApiCommandeService {
     }
 
 
+    getListCommandeALivrerByDate(data:any){
+        let url = this.link+"/apicommande/getlistcommandealivrerbydate";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getListCommandeARecupererByDate(data:any){
         let url = this.link+"/apicommande/getlistcommandearecupererbydate";
         let datas = JSON.stringify({token:this.basetoken, data:data});
@@ -34,6 +42,15 @@ export class ApiCommandeService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
+
+    validerListCommandeAssigner(data:any){
+        let url = this.link+"/apicommande/validerlistcommandeassigner";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 
 
