@@ -96,10 +96,10 @@ export class AdmincommercialComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead7 = false;
 
             this.getAllDemandeDepotEncours();
-            this.killsetinterval = setInterval(() => {
+            /*this.killsetinterval = setInterval(() => {
                 this.getAllDemandeDepotEncours();
                 console.log('step init');
-            }, 20000);
+            }, 20000);*/
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
@@ -136,8 +136,7 @@ export class AdmincommercialComponent implements OnInit, OnDestroy {
             );
     }
 
-    choixsuperviseurforcommercial(id_superviseur){
-    }
+    choixsuperviseurforcommercial(id_superviseur){ }
 
     public selectRegion(){
         this.optionassignations = [];

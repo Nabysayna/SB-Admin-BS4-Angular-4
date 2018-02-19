@@ -30,10 +30,14 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
 
     public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
     killsetinterval:any;
+    public loading_data = true;
+
 
     constructor(public router: Router, private _utilService: UtilService, private _newclientService:NewclientService) {}
 
     ngOnInit() {
+        this.loading_data = true;
+
         this.getDashboardNbres();
         this.killsetinterval = setInterval(() => {
             this.getDashboardNbres();
@@ -178,7 +182,9 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                     }
                 },
                 error => alert(error),
-                () => { }
+                () => {
+                    this.loading_data = false;
+                }
             );
     }
 
@@ -194,6 +200,7 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
     public listpointscrm:any[] = [];
 
     public getPointscrm(): void {
+        this.loading_data = true;
         this._utilService.getPointscrm()
             .subscribe(
                 data => {
@@ -220,18 +227,19 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                     });
                 },
                 error => alert(error),
-                () => console.log('getNouveauxpoints')
+                () => this.loading_data = false
             );
     }
 
     validsuppression(point: any){
         if(confirm('confirmer suppression du point crm: '+point.nom_point)){
             console.log('ok');
+            this.loading_data = true;
             this._newclientService.validsuppression(point)
                 .subscribe(
                     data => this.getPointscrm(),
                     error => alert(error),
-                    () => console.log('validsuppression')
+                    () => this.loading_data = false
                 );
         }
         else{
@@ -247,6 +255,7 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
     public listpointssentool:any[] = [];
 
     public getPointssentool(): void {
+        this.loading_data = true;
         this._utilService.getPointssentool()
             .subscribe(
                 data => {
@@ -273,13 +282,14 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                     });
                 },
                 error => alert(error),
-                () => console.log('getNouveauxpoints')
+                () => this.loading_data = false
             );
     }
 
     validsuppressionsentool(point: any){
         if(confirm('confirmer suppression du point sentool: '+point.nom_point)){
             console.log('ok');
+            this.loading_data = true;
             this._newclientService.validsuppressionsentool(point)
              .subscribe(
              data => this.getPointssentool(),
@@ -288,7 +298,7 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
              );
         }
         else{
-            console.log('ko')
+            this.loading_data = false
         }
 
     }

@@ -235,7 +235,7 @@ export class FormComponent implements OnInit {
         );
     }
 
-    apiEndPoint = 'https://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
+    apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index.php' ;
 
     fileChange(event) {
       let fileList: FileList = event.target.files;

@@ -19,7 +19,9 @@ const routes: Routes = [
 
             { path: 'adminadministratif', loadChildren: './adminadministratif/adminadministratif.module#AdminadministratifModule' },
 
+            { path: 'livreur', loadChildren: './livreur/livreur.module#LivreurModule' },
             { path: 'manager', loadChildren: './manageradmin/manageradmin.module#ManageradminModule' },
+            { path: 'adminecom', loadChildren: './adminecommerce/adminecommerce.module#AdminecommerceModule' },
             { path: 'managerstock', loadChildren: './managerstock/managerstock.module#ManagerstockModule' },
             { path: 'marketingcom', loadChildren: './marketingcom/marketingcom.module#MarketingcomModule' },
             { path: 'comptable', loadChildren: './comptable/comptable.module#ComptableModule' },

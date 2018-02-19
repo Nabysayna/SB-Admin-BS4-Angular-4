@@ -48,6 +48,9 @@ export class LoginComponent implements OnInit {
         if ( !access){
             this.fakevalues = false;
         }
+        else if ( access.match(12) ){
+            this.router.navigate(['/livreur']);
+        }
         else if ( access.match(11) ){
             this.router.navigate(['/adminsupport']);
         }
@@ -59,6 +62,9 @@ export class LoginComponent implements OnInit {
         }
         else if ( access.match(8) ){
             this.router.navigate(['/managerstock']);
+        }
+        else if ( access.match(7) ){
+            this.router.navigate(['/adminecom']);
         }
         else if ( access.match(6) ){
             this.router.navigate(['/administratif']);
@@ -80,7 +86,6 @@ export class LoginComponent implements OnInit {
         }
         else {
             this.fakevalues = false;
-            //console.log(typeof access);
         }
     }
 

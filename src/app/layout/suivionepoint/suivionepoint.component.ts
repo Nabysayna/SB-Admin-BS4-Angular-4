@@ -168,10 +168,10 @@ export class SuivionepointComponent implements OnInit {
                                 id_gerant: type.idUser,
                                 dateop: type.dateoperation.date.split('.')[0],
                                 dateop_jour: type.dateoperation.date.split('.')[0].split(' ')[0],
-                                montant: type.montant,
-                                commission: type.commissionpdv,
-                                service: type.nomservice,
-                                produit: type.libelleoperation,
+                                montant: Number(type.montant),
+                                commission: Number(type.commissionpdv),
+                                service: type.nomservice.toLowerCase(),
+                                produit: type.libelleoperation.toLowerCase(),
                             }
                         });
                     }
@@ -196,11 +196,9 @@ export class SuivionepointComponent implements OnInit {
                 montant_depot: JSON.parse(type.infosup).montant,
             }
         });
-        console.log(this.touslesdepots)
 
         let depotjours = this.touslesdepots.map(type => type.date_depot_jour);
         depotjours.sort();
-        console.log(depotjours)
 
         let tabjours:string[] = [];
         let jour:string = depotjours[0];
@@ -249,10 +247,10 @@ export class SuivionepointComponent implements OnInit {
                                 id_gerant: type.idUser,
                                 dateop: type.dateoperation.date.split('.')[0],
                                 dateop_jour: type.dateoperation.date.split('.')[0].split(' ')[0],
-                                montant: type.montant,
-                                commission: type.commissionpdv,
-                                service: type.nomservice,
-                                produit: type.libelleoperation,
+                                montant: Number(type.montant),
+                                commission: Number(type.commissionpdv),
+                                service: type.nomservice.toLowerCase(),
+                                produit: type.libelleoperation.toLowerCase(),
                             }
                         });
                     }
@@ -316,16 +314,19 @@ export class SuivionepointComponent implements OnInit {
         let nbrebyjourtnt:number[] = [];
         let nbrebyjourpost:number[] = [];
         let nbrebyjourwizall:number[] = [];
+        let nbrebyjourtigocash:number[] = [];
         tabjours.forEach(type => {
             let nbrebyjouromSom:number = 0;
             let nbrebyjourtntSom:number = 0;
             let nbrebyjourpostSom:number = 0;
             let nbrebyjourwizallSom:number = 0;
+            let nbrebyjourtigocashSom:number = 0;
 
             this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='orangemoney'){ nbrebyjouromSom += Number(opt.montant); } }); nbrebyjourom.push( nbrebyjouromSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='TNT'){ nbrebyjourtntSom += Number(opt.montant); } }); nbrebyjourtnt.push( nbrebyjourtntSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='POSTCASH'){ nbrebyjourpostSom += Number(opt.montant); } }); nbrebyjourpost.push( nbrebyjourpostSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='WIZALL'){ nbrebyjourwizallSom += Number(opt.montant); } }); nbrebyjourwizall.push( nbrebyjourwizallSom );
+            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tnt'){ nbrebyjourtntSom += Number(opt.montant); } }); nbrebyjourtnt.push( nbrebyjourtntSom );
+            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='postcash'){ nbrebyjourpostSom += Number(opt.montant); } }); nbrebyjourpost.push( nbrebyjourpostSom );
+            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='wizall'){ nbrebyjourwizallSom += Number(opt.montant); } }); nbrebyjourwizall.push( nbrebyjourwizallSom );
+            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tigocash'){ nbrebyjourtigocashSom += Number(opt.montant); } }); nbrebyjourtigocash.push( nbrebyjourtigocashSom );
         });
 
 
@@ -333,6 +334,7 @@ export class SuivionepointComponent implements OnInit {
             {data: nbrebyjourom, label: 'OM'},
             {data: nbrebyjourtnt, label: 'TNT'},
             {data: nbrebyjourpost, label: 'POSTECASH'},
+            {data: nbrebyjourtigocash, label: 'TIGOCASH'},
             {data: nbrebyjourwizall, label: 'WIZALL'},
         ];
     }
@@ -343,43 +345,55 @@ export class SuivionepointComponent implements OnInit {
             {service:'postcash', cashin:0, cashout:0, commission:0, liste:[]},
             {service:'wizall', cashin:0, cashout:0, commission:0, liste:[]},
             {service:'orangemoney', cashin:0, cashout:0, commission:0, liste:[]},
+            {service:'tigocash', cashin:0, cashout:0, commission:0, liste:[]},
             {service:'Total', cashin:0, cashout:0, commission:0, liste:[]},
         ];
         this.touslescommissionsbyGerant.forEach(type => {
-            this.bilantouslescommissionsbyGerant[4].liste.push(type);
-            this.bilantouslescommissionsbyGerant[4].commission+=type.commission;
-            if(type.service == 'TNT'){
+            this.bilantouslescommissionsbyGerant[5].liste.push(type);
+            this.bilantouslescommissionsbyGerant[5].commission+=type.commission;
+            if(type.service == 'tnt'){
                 this.bilantouslescommissionsbyGerant[0].liste.push(type);
                 this.bilantouslescommissionsbyGerant[0].cashin+=Number(type.montant);
                 this.bilantouslescommissionsbyGerant[0].commission+=type.commission;
-                this.bilantouslescommissionsbyGerant[4].cashin+=Number(type.montant);
+                this.bilantouslescommissionsbyGerant[5].cashin+=Number(type.montant);
             }
-            if(type.service == 'POSTCASH'){
+            if(type.service == 'postcash'){
                 this.bilantouslescommissionsbyGerant[1].liste.push(type);
                 this.bilantouslescommissionsbyGerant[1].cashin+=Number(type.montant);
                 this.bilantouslescommissionsbyGerant[1].commission+=type.commission;
-                this.bilantouslescommissionsbyGerant[4].cashin+=Number(type.montant);
+                this.bilantouslescommissionsbyGerant[5].cashin+=Number(type.montant);
             }
-            if(type.service == 'WIZALL'){
+            if(type.service == 'wizall'){
                 this.bilantouslescommissionsbyGerant[2].liste.push(type);
                 this.bilantouslescommissionsbyGerant[2].cashin+=Number(type.montant);
                 this.bilantouslescommissionsbyGerant[2].commission+=type.commission;
-                this.bilantouslescommissionsbyGerant[4].cashin+=Number(type.montant);
+                this.bilantouslescommissionsbyGerant[5].cashin+=Number(type.montant);
             }
             if(type.service == 'orangemoney'){
                 if(type.produit == 'depot'){
                     this.bilantouslescommissionsbyGerant[3].cashin+=Number(type.montant);
-                    this.bilantouslescommissionsbyGerant[4].cashin+=Number(type.montant);
+                    this.bilantouslescommissionsbyGerant[5].cashin+=Number(type.montant);
                 }
                 else{
                     this.bilantouslescommissionsbyGerant[3].cashout+=Number(type.montant);
-                    this.bilantouslescommissionsbyGerant[4].cashout+=Number(type.montant);
+                    this.bilantouslescommissionsbyGerant[5].cashout+=Number(type.montant);
                 }
                 this.bilantouslescommissionsbyGerant[3].liste.push(type);
                 this.bilantouslescommissionsbyGerant[3].commission+=type.commission;
             }
+            if(type.service == 'tigocash'){
+                if(type.produit == 'depot'){
+                    this.bilantouslescommissionsbyGerant[4].cashin+=Number(type.montant);
+                    this.bilantouslescommissionsbyGerant[5].cashin+=Number(type.montant);
+                }
+                else{
+                    this.bilantouslescommissionsbyGerant[4].cashout+=Number(type.montant);
+                    this.bilantouslescommissionsbyGerant[5].cashout+=Number(type.montant);
+                }
+                this.bilantouslescommissionsbyGerant[4].liste.push(type);
+                this.bilantouslescommissionsbyGerant[4].commission+=type.commission;
+            }
         });
-        console.log(this.bilantouslescommissionsbyGerant);
     }
 
     public showModalVoirDetailtouslescommissionsbyGerant(content:any, indice:number) {
