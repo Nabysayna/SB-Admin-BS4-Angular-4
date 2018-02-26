@@ -20,8 +20,8 @@ import {
     selector: 'app-managerstock',
     templateUrl: 'managerstock.component.html',
     styleUrls: ['managerstock.component.scss'],
-     providers: [UtilService, 
-                 AssignationSuiviService, 
+     providers: [UtilService,
+                 AssignationSuiviService,
                  ManagerstockService,
                  { provide: CarouselConfig, useValue: { interval: 1500, noPause: true, showIndicators: true } }
                 ],
@@ -32,7 +32,7 @@ export class ManagerstockComponent implements OnInit {
     modalRef: BsModalRef;
     public listearticlesselectionner:any;
 
-    src = 'http://localhost/server-backend-upload/';
+    src = 'http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/';
     public percentDone:number = 0;
     progressBar:any;
 
@@ -80,28 +80,18 @@ export class ManagerstockComponent implements OnInit {
     public femme = [true, false, false];
     public homme = [true, false, false];
     public elctronique = [true, false, false, false];
-   
+
     constructor(private modalService: BsModalService,private managerservice:ManagerstockService,private http:HttpClient) {
 
     }
 
     ngOnInit() {
-       
+
         this.listearticlesselectionner = {
             vuweb: this.listarticlesvuweb, frompv: this.listarticlesfrompv
         };
 
-        this.managerservice.modifierArticles([1,1,1,1,1]).subscribe(
-            data=>{  console.log(data)}
-        );
 
-        this.managerservice.supprimerArticles([1,1,1,1,1]).subscribe(
-            data=>{  console.log(data)}
-        );
-
-        this.managerservice.remplacerArticles([1,1,1,1,1]).subscribe(
-            data=>{  console.log(data)}
-        );
 
         this.articles(this.vitrineTarget);
 
@@ -212,27 +202,41 @@ export class ManagerstockComponent implements OnInit {
     modifierArticle(event){
           let
           id,
+          obj,
+          img,
           prix,
           image,
           point,
+          table,
           categorie,
           designation,
           description;
 
           let target = event.target;
           let bodyModal = target.parentElement.parentElement.parentElement.parentElement;
+          obj = JSON.parse('{'+ target.id +'}');
+          categorie  = bodyModal.querySelector('#categorie').value;
+          obj.categorie.categorie = categorie;
+          console.log(obj);
 
-          id         = (JSON.parse('{'+ target.id +'}')).id;
-          image      = bodyModal.querySelector('#image').src;
+          id         = obj.id;
+          img      =   (bodyModal.querySelector('#image').src).split('/');
           designation= bodyModal.querySelector('#designation').value;
           description= bodyModal.querySelector('#description').value;
           prix       = bodyModal.querySelector('#prix').value;
-          categorie  = bodyModal.querySelector('#categorie').value;
+          categorie  = JSON.stringify(obj.categorie);
+          table      = obj.table;
 
+          image = img[img.length - 1];
 
-          this.modifier.push({id: id, designation: designation, description: description, prix: prix,  categorie: categorie, image: image});
+          this.modifier.push({id: id, designation: designation, description: description, prix: prix,  categorie: categorie, image: image,table: table});
           console.log('Modification------------------------------------------------------------[OK]')
           console.log(this.modifier);
+
+          if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
+               this.toutChanger = true;
+           else
+               this.toutChanger = false;
 
           this.modalRef.hide()
     }
@@ -252,8 +256,9 @@ export class ManagerstockComponent implements OnInit {
             else
                 this.toutChanger = false;
 
+           console.log(this.remplacer);
            console.log('rempacement------------------------------------------------------------[OK]');
-           this.remplacerBool = false;
+          this.remplacerBool = true;
         }
     }
 
@@ -270,11 +275,6 @@ export class ManagerstockComponent implements OnInit {
         for(let i = 0 ; i < size ; i++)
             if((((this.remplacer)[i]).vaRemplacer).id == obj.id)
                  (this.remplacer).splice(i,1);
-
-        if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
-            this.toutChanger = true;
-        else
-            this.toutChanger = false;
 
         console.log('rempacement------------------------------------------------------------[load]');
 
@@ -327,21 +327,41 @@ export class ManagerstockComponent implements OnInit {
         else
             this.toutChanger = false;
 
+        console.log(this.supprimer);
         this.modalRef.hide()
 
     }
 
     toutChangerFunc (){
         if(this.remplacer.length != 0)
-            this.managerservice.remplacerArticles(this.remplacer);
+            this.managerservice.remplacerArticles(this.remplacer).subscribe(
+              data => {
+                  if(data.response.Remplacer == 'true'){
+                         alert('Remplacer avec success');
+                         this.articles(this.vitrineTarget);
+                  }
+            });
         if(this.supprimer.length != 0)
-            this.managerservice.supprimerArticles(this.supprimer);
+            this.managerservice.supprimerArticles(this.supprimer).subscribe(
+            data => {
+                  if(data.response.Supprimer == 'true'){
+                         alert('Supprimer avec success');
+                  }
+            });
         if(this.modifier.length != 0)
-            this.managerservice.modifierArticles(this.modifier);
-        
+            this.managerservice.modifierArticles(this.modifier).subscribe(
+            data => {
+                    if(data.response.Modifier == 'true'){
+                           alert('Modifier avec success');
+                           this.articles(this.vitrineTarget);
+                    }
+            });
+
         this.remplacer = [];
         this.supprimer = [];
         this.modifier  = [];
+
+        this.toutChanger = false;
     }
 
     toutAnnulerFunc(){
@@ -350,6 +370,7 @@ export class ManagerstockComponent implements OnInit {
         this.modifier  = [];
 
         this.vitrine.enVentes = this.ventes;
+
         this.vitrine.enAttentes   = this.attentes;
 
         this.toutChanger = false;

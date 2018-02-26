@@ -7,56 +7,13 @@ import {Http, Headers} from "@angular/http";
 export class ManagerstockService {
 
    //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "https://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers:Headers;
 
-<<<<<<< HEAD
-=======
-    ventes = [
-      {
-          id:1,
-          designation: 'mangue',
-          description:'je suis une magues',
-          prix: 9000,
-          telephone: 77455455,
-          point: 'champ de mangues',
-          img: ''
-       },
-       {
-          id:2,
-          designation: 'banannes',
-          description:'je suis une bannanes',
-          prix: 9000,
-          telephone: 77455455,
-          point: 'champ bannanes',
-          img: ''
-       }
-  ];
-  attentes = [
-      {
-          id:1,
-          designation: 'moutton',
-          description:'je suis un mouton',
-          prix: 9000,
-          telephone: 77455455,
-          point: 'Troupeau de mouton',
-          img: ''
-       },
-       {
-          id:2,
-          designation: 'chévre',
-          description:'je suis une chévre',
-          prix: 9000,
-          telephone: 77455455,
-          point: 'Troupeau de chévres',
-          img: ''
-       }
-  ];
->>>>>>> a61b6326ebc98a51bb9c5b3cbbbab97bbcac5929
     constructor(private _http: Http) {
       this.headers = new Headers();
       this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -86,11 +43,8 @@ export class ManagerstockService {
                 return this.acticlesVitrine1(params);
     }
 
-<<<<<<< HEAD
     acticlesVitrine1(ids:any){
-=======
-    acticlesVitrine1(){
->>>>>>> a61b6326ebc98a51bb9c5b3cbbbab97bbcac5929
+
         let url = this.link+"/managerStock/acticlesVitrine1";
         let datas = JSON.stringify(ids);
         let params = 'params='+datas;
