@@ -258,7 +258,7 @@ export class ManagerstockComponent implements OnInit {
 
            console.log(this.remplacer);
            console.log('rempacement------------------------------------------------------------[OK]');
-          this.remplacerBool = true;
+          this.remplacerBool =  false;
         }
     }
 
