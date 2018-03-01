@@ -37,9 +37,11 @@ export class ManagerstockComponent implements OnInit {
     progressBar:any;
 
     // inbformation sur
-    modifier  = [];
+    modifier:any  = [];
     remplacer:any= [];
     supprimer:any =  [];
+    rejetter:any  = [];
+    valider:any   = [];
     remplacerBool = false;
     toutChanger = false;
     cursor ={ventes:4, attentes:0}
@@ -106,6 +108,11 @@ export class ManagerstockComponent implements OnInit {
 
     openModalSlide(template: TemplateRef<any>) {
         this.modalRef = this.modalService.show(template,{class: 'modal-lg'});
+    }
+
+    openModalRejetter(template: TemplateRef<any>){
+          this.modalRef.hide();
+          this.modalRef = this.modalService.show(template,{class: 'modal-lg'});
     }
 
     public menustockClick(option: number){
@@ -233,7 +240,7 @@ export class ManagerstockComponent implements OnInit {
           console.log('Modification------------------------------------------------------------[OK]')
           console.log(this.modifier);
 
-          if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
+          if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
                this.toutChanger = true;
            else
                this.toutChanger = false;
@@ -241,8 +248,72 @@ export class ManagerstockComponent implements OnInit {
           this.modalRef.hide()
     }
 
+    rejetterArticle(event,messageRejet){
+          let
+          id,
+          obj,
+          idUser,
+          message,
+          target,
+          designation;
+
+          target = event.target;
+
+          obj = JSON.parse('{'+ target.id +'}');
 
 
+          id       = obj.id;
+          idUser   = obj.idUser;
+          message  = messageRejet.value;
+          designation = obj.designation;
+
+          for(let i = 0 ; i < this.rejetter.length; i++){
+                if( (this.rejetter[i]).id == obj.id )
+                     (this.rejetter).splice(i,1);
+          }
+
+          this.rejetter.push({id: id, idUser: idUser,message:message ,designation:designation});
+
+          console.log(obj);
+          console.log('Rejet------------------------------------------------------------[add]')
+          console.log(this.rejetter);
+
+          if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
+               this.toutChanger = true;
+           else
+               this.toutChanger = false;
+
+          this.modalRef.hide()
+    }
+
+    validerArticle(event){
+          let
+          obj,
+          target;
+
+          target = event.target;
+
+          obj = JSON.parse('{'+ target.id +'}');
+
+          for(let i = 0 ; i < this.valider.length; i++){
+                if( (this.valider[i]).id == obj.id )
+                     (this.valider).splice(i,1);
+          }
+
+          this.valider.push(obj);
+          console.log(obj);
+          console.log('Valider article------------------------------------------------------------[add]')
+          console.log(this.valider);
+
+
+
+          if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
+               this.toutChanger = true;
+           else
+               this.toutChanger = false;
+
+          this.modalRef.hide()
+    }
 
     validerRemplacementActicle(event): void{
         if(this.remplacer != null){
@@ -251,7 +322,7 @@ export class ManagerstockComponent implements OnInit {
             (this.remplacer)[size-1].vaRemplacer = JSON.parse('{'+ target.id +'}');
            this.permuterArticle(this.vitrine.enVentes,this.vitrine.enAttentes,(this.remplacer)[size-1].aRemplacer,(this.remplacer)[size-1].vaRemplacer);
 
-           if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
+           if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
                 this.toutChanger = true;
             else
                 this.toutChanger = false;
@@ -285,7 +356,7 @@ export class ManagerstockComponent implements OnInit {
         this.remplacer.splice();
         this.remplacerBool = false;
 
-        if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
+        if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
             this.toutChanger = true;
         else
             this.toutChanger = false;
@@ -313,7 +384,7 @@ export class ManagerstockComponent implements OnInit {
             let inter =  tableauArticle1[pos1];
             tableauArticle1[pos1] = tableauArticle2[pos2];
             tableauArticle2[pos2] = inter;
-            console.log('permutation------------------------------------------------------------[OK]');
+            console.log('permutation------------------------------------------------------------[add]');
     }
 
     // Suppréssion d'articles
@@ -322,7 +393,7 @@ export class ManagerstockComponent implements OnInit {
         let obj =  JSON.parse('{'+ target.id +'}');
         this.supprimer.push(obj);
 
-        if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0)
+        if(this.remplacer.length != 0 || this.supprimer.length != 0 || this.modifier.length != 0 || this.rejetter.length != 0 || this.valider.length != 0)
             this.toutChanger = true;
         else
             this.toutChanger = false;
@@ -333,33 +404,60 @@ export class ManagerstockComponent implements OnInit {
     }
 
     toutChangerFunc (){
+       let reponse = false;
+
         if(this.remplacer.length != 0)
             this.managerservice.remplacerArticles(this.remplacer).subscribe(
               data => {
-                  if(data.response.Remplacer == 'true'){
-                         alert('Remplacer avec success');
-                         this.articles(this.vitrineTarget);
-                  }
-            });
+                    if(data.response.Remplacer == 'true'){
+                           alert('Remplacer avec success');
+                           this.articles(this.vitrineTarget);
+                    }
+
+              });
         if(this.supprimer.length != 0)
             this.managerservice.supprimerArticles(this.supprimer).subscribe(
             data => {
-                  if(data.response.Supprimer == 'true'){
-                         alert('Supprimer avec success');
-                  }
-            });
+                    if(data.response.Supprimer == 'true'){
+                           alert('Supprimer avec success');
+                           this.articles(this.vitrineTarget);
+                    }
+
+        });
         if(this.modifier.length != 0)
             this.managerservice.modifierArticles(this.modifier).subscribe(
             data => {
-                    if(data.response.Modifier == 'true'){
-                           alert('Modifier avec success');
-                           this.articles(this.vitrineTarget);
-                    }
-            });
+                      if(data.response.Modifier == 'true'){
+                             alert('Modifier avec success');
+                             this.articles(this.vitrineTarget);
+                      }
+
+        });
+
+        if(this.rejetter.length != 0)
+            this.managerservice.rejetterArticles(this.rejetter).subscribe(
+             data => {
+                      console.log(data );
+                      if(data.response.Rejetter == 'true'){
+                             alert('Rejetter avec success');
+                             this.articles(this.vitrineTarget);
+                      }
+        });
+
+        if(this.valider.length != 0)
+            this.managerservice.validerArticles(this.valider).subscribe(
+             data => {
+                      if(data.response.Valider == 'true'){
+                             alert('Valider avec success');
+                             this.articles(this.vitrineTarget);
+                      }
+        });
 
         this.remplacer = [];
         this.supprimer = [];
         this.modifier  = [];
+        this.valider   = [];
+        this.rejetter  = [];
 
         this.toutChanger = false;
     }

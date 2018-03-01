@@ -113,4 +113,21 @@ export class ManagerstockService {
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
     }
+
+    rejetterArticles(dataTable:any){
+        let url = this.link+"/managerStock/rejetterArticles";
+        let datas = JSON.stringify(dataTable);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+
+    }
+
+    validerArticles(dataTable:any){
+        let url = this.link+"/managerStock/validerArticles";
+        let datas = JSON.stringify(dataTable);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
 }
