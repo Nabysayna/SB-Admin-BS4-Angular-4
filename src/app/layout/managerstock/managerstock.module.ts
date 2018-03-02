@@ -19,7 +19,7 @@ import { DataFilterPipe }   from './data-filter.pipe';
 import { ZonesFilterPipe }   from './zones-filter.pipe';
 import { SousZonesFilterPipe }   from './souszones-filter.pipe';
 import {StockmanagingComponent} from "../stockmanaging/stockmanaging.component";
-
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 @NgModule({
     imports: [
@@ -29,6 +29,7 @@ import {StockmanagingComponent} from "../stockmanaging/stockmanaging.component";
         PageHeaderModule,
         DataTableModule,
         ProgressionbyModule,
+        CarouselModule.forRoot(),
         RatingbyoptionModule,
         NgbModule.forRoot(),
         Ng2Charts,

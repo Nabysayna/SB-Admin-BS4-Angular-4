@@ -12,7 +12,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HttpClientModule } from '@angular/common/http';
 
-
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     // for development

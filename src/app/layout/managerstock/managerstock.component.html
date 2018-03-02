@@ -4,28 +4,32 @@
         <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[1]}" (click)="menustockClick(1)">Vitrine 2</a></li>
         <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[2]}" (click)="menustockClick(2)">Vitrine 3</a></li>
         <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[3]}" (click)="menustockClick(3)">Vitrine 4</a></li>
-        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[4]}" (click)="menustockClick(4)">Vitrine 5</a></li>
-        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[4]}" (click)="menustockClick(5)">Slide 1</a></li>
-        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[4]}" (click)="menustockClick(6)">Slide 2</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[4]}" (click)="menustockClick(4)">Slide 1</a></li>
+        <li class="nav-item"><a [ngClass]="{'nav-link': true, 'active': menustock[5]}" (click)="menustockClick(5)">Slide 2</a></li>
     </ul>
  <!--  ********************************************
            Vitrine 1
  *********************************************** -->
     <div class="page-header col-sm-10 col-lg-12 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[0]">
-        <div class="row" >
+        <div class="row" *ngIf="this.vitrineTarget == 'vitrine1' ">
             <div  class="col-lg-5 col-md-5 col-sm-5" style="min-height:40rem; border-right: 1px solid rgba(24, 121, 45, 0.452); border-top: 1px solid rgba(24, 121, 45, 0.452);">
-                <h4 style="text-align:center;">En Ventes</h4>  
+                <h4 style="text-align:center;">En Lignes</h4>
+
                 <div class="paginationVentes">
                         <span>
-                                <i (click)="ventesSuivant()" class="fa fa-angle-double-left" ></i>
+                                <i (click)="ventesPrecedant()" class="fa fa-angle-double-left" ></i>
                         </span>
                         <span>
-                                <i  (click)="ventesPrecedant()" class="fa fa-angle-double-right"></i>
+                                <i  (click)="ventesSuivant()" class="fa fa-angle-double-right"></i>
                         </span>
                 </div>
+
                 <div class="row" style="margin-bottom:2rem;">
-                        <!-- <div class="col-lg-1 col-md-1 col-sm-1"></div> -->
-                        <div *ngFor="let prod of this.vitrine1.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
+                    <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                      <i class="fa fa-spinner fa-pulse"></i>
+                    </div>
+
+                        <div *ngFor="let prod of this.vitrine.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
                                 <h6>{{prod.designation}}</h6>
                                 <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
                                 <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)" >Voir</button>
@@ -78,7 +82,7 @@
                                                                                         <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                                                                 </div>
                                                                         </div>
-                                                                </div> 
+                                                                </div>
                                                         </div>
                                                         <div class="col-lg-1 col-md-1 col-sm-1"></div>
                                                         <div class="col-lg-7 col-md-7 col-sm-7">
@@ -89,7 +93,7 @@
                                                                         <div class="col-6">
                                                                               <input  type="text" name="designation" id="designation" value="{{prod.designation}}">
                                                                         </div>
-                                                                        
+
                                                                    </div>
                                                                    <div class="row"  style="margin-top:1rem;">
                                                                           <div class="col-6">
@@ -107,7 +111,7 @@
                                                                                <input type="number" name="prix" id="prix" value="{{prod.prix}}">
                                                                           </div>
                                                                    </div>
-                                                                
+
                                                                    <div class="row"  style="margin-top:1rem;">
                                                                         <div class="col-6">
                                                                             Catégorie
@@ -117,13 +121,13 @@
                                                                          </div>
                                                                   </div>
                                                               <div class="row"  style="margin-top:1rem;">
-                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Valider</button>
+                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Pageprincipale"'>Valider</button>
                                                               </div>
                                                          </div>
                                                 </div>
                                         </div>
                                         </ng-template>
-                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
+                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
                                 <button *ngIf="this.remplacerBool == true" type="button" class="btn btn-default btn-sm" (click)="annulerRemplacement($event)">Annuler</button>
                                         <!-- <ng-template #templateRemplacer>
                                         <div class="modal-header">
@@ -143,28 +147,32 @@
                                             <div class="row" style="margin-top:2rem;">
                                                     <div class="col-lg-8 col-md-8 col-sm-8"></div>
                                                     <div class="col-lg-4 col-md-4 col-sm-4">
-                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
                                                             <button type="button" class="btn  btn-sm float-right" (click)="modalRef.hide()">Annuler</button>
                                                     </div>
                                             </div>
                                         </div>
                                         </ng-template> -->
                         </div>
-                </div> 
-              
+                </div>
+
             </div>
             <div class="col-lg-7 col-md-7 col-sm-7">
                 <h4 style="text-align:center;">En Attentes</h4>
+
                 <div class="paginationAttente">
                                 <span>
-                                        <i class="fa fa-angle-double-left" (click)="attentesSuivant()" ></i>
+                                        <i class="fa fa-angle-double-left" (click)="attentesPrecedant()" ></i>
                                 </span>
                                 <span>
                                         <i class="fa fa-angle-double-right" (click)="attentesSuivant()"></i>
                                 </span>
                 </div>
                 <div class="row" style="margin-bottom:2rem;">
-                        <div *ngFor="let prod of this.vitrine1.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
+                        <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.attentes == true">
+                          <i class="fa fa-spinner fa-pulse"></i>
+                        </div>
+                        <div *ngFor="let prod of this.vitrine.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
                                 <h6>{{prod.designation}}</h6>
                                 <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
                                 <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templatePlus)">plus</button>
@@ -177,7 +185,7 @@
                                         </div>
                                         <div class="modal-body">
                                                 <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4"> 
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
                                                                 <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
                                                              <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
                                                              <div class="row" style="text-align:center">
@@ -187,7 +195,7 @@
                                                                                         <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                                                                 </div>
                                                                         </div>
-                                                                </div>  
+                                                                </div>
                                                         </div>
                                                         <div class="col-lg-1 col-md-1 col-sm-1"></div>
                                                         <div class="col-lg-7 col-md-7 col-sm-7">
@@ -198,7 +206,7 @@
                                                                   <div class="col-6">
                                                                         <input type="text" name="designation" id="designation" value="{{prod.designation}}">
                                                                   </div>
-                                                                  
+
                                                              </div>
                                                              <div class="row"  style="margin-top:1rem;">
                                                                     <div class="col-6">
@@ -226,7 +234,27 @@
                                                               </div>
                                                               <div class="row"  style="margin-top:1rem;">
                                                                    <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
-                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Enregistrer</button>
+                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Enregistrer</button>
+                                                                   <button type="submit"  (click)="validerArticle($event)" class="btn btn-warning btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"idUser": {{prod.idUser}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Valider</button>
+                                                                   <button type="submit"  (click)="openModalRejetter(templateRejetter)" class="btn btn-danger btn-sm" style="margin-left:1rem;" >Rejetter</button>
+                                                                       <ng-template #templateRejetter>
+                                                                         <div class="modal-header">
+                                                                             <h4 class="modal-title pull-left">Raison du rejet</h4>
+                                                                             <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                                             <span aria-hidden="true">&times;</span>
+                                                                             </button>
+                                                                         </div>
+                                                                         <div class="modal-body">
+                                                                             <div class="form-group">
+                                                                                  <label for="exampleFormControlTextarea1">Pourquoi le réjet  de l'article ?</label>
+                                                                                  <textarea class="form-control" id="messageRejet" rows="4" #messageRejet></textarea>
+                                                                              </div>
+                                                                              <div class="input-group">
+                                                                                   <button type="submit"  (click)="this.modalRef.hide();" class="btn btn-default btn-sm" style="margin-left:1rem;" >Annuler</button>
+                                                                                   <button type="submit"  (click)="rejetterArticle($event,messageRejet)" class="btn btn-warning btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"idUser": {{prod.idUser}} ,"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Valider</button>
+                                                                              </div>
+                                                                         </div>
+                                                                       </ng-template>
                                                               </div>
                                                          </div>
                                                 </div>
@@ -255,53 +283,1006 @@
                                         <div class="modal-body">
                                             <p>Souhaitez vous vraiment supprimer ce produit</p>
                                             <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
-                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "{{prod.categ}}", "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
                                         </div>
                                         </ng-template>
                         </div>
 
-                </div> 
-                
+                </div>
+
             </div>
         </div>
     </div>
   <!--  ********************************************
                        Vitrine 2
  *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[1]" >
+    <div class="page-header col-lg-12 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[1]" >
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[0], 'btn-success': featured[0]}" (click)="menu1stockClick(1,0)" style="margin-bottom: 1rem">Nouveautés</button>
+        <div class="row" *ngIf="this.vitrineTarget == 'vitrine2' ">
+            <div  class="col-lg-5 col-md-5 col-sm-5" style="min-height:40rem; border-right: 1px solid rgba(24, 121, 45, 0.452); border-top: 1px solid rgba(24, 121, 45, 0.452);">
+                <h4 style="text-align:center;">En Lignes</h4>
+
+                <div class="paginationVentes">
+                        <span>
+                                <i (click)="ventesPrecedant()" class="fa fa-angle-double-left" ></i>
+                        </span>
+                        <span>
+                                <i  (click)="ventesSuivant()" class="fa fa-angle-double-right"></i>
+                        </span>
+                </div>
+
+                <div class="row" style="margin-bottom:2rem;">
+                    <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                      <i class="fa fa-spinner fa-pulse"></i>
+                    </div>
+
+                        <div *ngFor="let prod of this.vitrine.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)" >Voir</button>
+                                        <ng-template #templateVoir>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Informations du produit</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                               <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                               </div>
+                                               <div class="col-lg-8 col-md-8 col-sm-8">
+                                                    <div>
+                                                        <h3>Désignation....... {{prod.designation}}</h3>
+                                                    </div>
+                                                    <div>
+                                                            Description .........{{prod.description}}
+                                                    </div>
+                                                    <div>
+                                                            Prix............{{prod.prix}} .....Fcfa
+                                                    </div>
+                                                    <div>
+                                                        categorie ..........{{prod.categ}}
+                                                     </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        </ng-template>
+                                <button type="button" class="btn btn-success btn-sm" (click)="openModal(templateModifier)">Modifier</button>
+                                        <ng-template #templateModifier>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" id="image" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                                <div class="row" style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                          Désignation
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                              <input  type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                        </div>
+
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                  Déscription
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input  type="text" name="description" id="description" value="{{prod.description}}">
+                                                                          </div>
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                 Prix
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                          </div>
+                                                                   </div>
+
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                            Catégorie
+                                                                          </div>
+                                                                         <div class="col-6">
+                                                                              <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                         </div>
+                                                                  </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Pageprincipale"'>Valider</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
+                                <button *ngIf="this.remplacerBool == true" type="button" class="btn btn-default btn-sm" (click)="annulerRemplacement($event)">Annuler</button>
+                                        <!-- <ng-template #templateRemplacer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Remplacer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                                    <i>
+                                                            <p>Souhaitez-vous vraiment remplacer le produit ? </p>
+                                                            <p>Si oui <b>cliquez</b> sur le bouton <button class="btn btn-primary btn-sm">Oui</button>  puis sur le bouton <button class="btn btn-warning btn-sm">Valider</button> du produit qui doit prendre sa place.</p>
+                                                            <p>Si non cliquez sur le bouton <button type="button" class="btn info btn-sm" >Annuler</button>.</p>
+                                                    </i>
+                                             </div>
+                                            <div class="row" style="margin-top:2rem;">
+                                                    <div class="col-lg-8 col-md-8 col-sm-8"></div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                                            <button type="button" class="btn  btn-sm float-right" (click)="modalRef.hide()">Annuler</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </ng-template> -->
+                        </div>
+                </div>
+
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <h4 style="text-align:center;">En Attentes</h4>
+
+                <div class="paginationAttente">
+                                <span>
+                                        <i class="fa fa-angle-double-left" (click)="attentesPrecedant()" ></i>
+                                </span>
+                                <span>
+                                        <i class="fa fa-angle-double-right" (click)="attentesSuivant()"></i>
+                                </span>
+                </div>
+                <div class="row" style="margin-bottom:2rem;">
+                        <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.attentes == true">
+                          <i class="fa fa-spinner fa-pulse"></i>
+                        </div>
+                        <div *ngFor="let prod of this.vitrine.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templatePlus)">plus</button>
+                                        <ng-template #templatePlus>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier/Enregistrer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                             <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                             <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                             <div class="row" style="margin-top:1rem;">
+                                                                  <div class="col-6">
+                                                                    Désignation
+                                                                  </div>
+                                                                  <div class="col-6">
+                                                                        <input type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                  </div>
+
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                            Déscription
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="text" name="description" id="description" value="{{prod.description}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                           Prix
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                        Catégorie
+                                                                      </div>
+                                                                     <div class="col-6">
+                                                                          <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                     </div>
+                                                              </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Enregistrer</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == true" type="button" (click)="validerRemplacementActicle($event)" class="btn btn-warning btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "", "imgLink": "{{prod.imgLink}}"'>Valider</button>
+                                        <!-- <ng-template #templateValider>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modal</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            This is a modal.
+                                        </div>
+                                        </ng-template> -->
+                                <button type="button" class="btn btn-danger btn-sm" (click)="openModal(templateSupprimer)">Supprimer</button>
+                                        <ng-template #templateSupprimer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Supprimer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Souhaitez vous vraiment supprimer ce produit</p>
+                                            <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                        </div>
+                                        </ng-template>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 <!--  ********************************************
            Vitrine 3
  *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[2]" >
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[0], 'btn-success': featured[0]}" (click)="menu1stockClick(2,0)" style="margin-bottom: 1rem">Meilleures vitrine1</button>
+    <div class="page-header col-sm-10 col-lg-12 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[2]" >
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !featured[0], 'btn-success': featured[0]}" (click)="menu1stockClick(2,0)" style="margin-bottom: 1rem">Meilleures Ventes</button>
+        <div class="row" *ngIf="this.vitrineTarget == 'vitrine3' ">
+            <div  class="col-lg-5 col-md-5 col-sm-5" style="min-height:40rem; border-right: 1px solid rgba(24, 121, 45, 0.452); border-top: 1px solid rgba(24, 121, 45, 0.452);">
+                <h4 style="text-align:center;">En Lignes</h4>
+
+                <div class="paginationVentes">
+                        <span>
+                                <i (click)="ventesPrecedant()" class="fa fa-angle-double-left" ></i>
+                        </span>
+                        <span>
+                                <i  (click)="ventesSuivant()" class="fa fa-angle-double-right"></i>
+                        </span>
+                </div>
+
+                <div class="row" style="margin-bottom:2rem;">
+                    <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                      <i class="fa fa-spinner fa-pulse"></i>
+                    </div>
+
+                        <div *ngFor="let prod of this.vitrine.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)" >Voir</button>
+                                        <ng-template #templateVoir>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Informations du produit</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                               <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                               </div>
+                                               <div class="col-lg-8 col-md-8 col-sm-8">
+                                                    <div>
+                                                        <h3>Désignation....... {{prod.designation}}</h3>
+                                                    </div>
+                                                    <div>
+                                                            Description .........{{prod.description}}
+                                                    </div>
+                                                    <div>
+                                                            Prix............{{prod.prix}} .....Fcfa
+                                                    </div>
+                                                    <div>
+                                                        categorie ..........{{prod.categ}}
+                                                     </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        </ng-template>
+                                <button type="button" class="btn btn-success btn-sm" (click)="openModal(templateModifier)">Modifier</button>
+                                        <ng-template #templateModifier>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" id="image" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                                <div class="row" style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                          Désignation
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                              <input  type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                        </div>
+
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                  Déscription
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input  type="text" name="description" id="description" value="{{prod.description}}">
+                                                                          </div>
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                 Prix
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                          </div>
+                                                                   </div>
+
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                            Catégorie
+                                                                          </div>
+                                                                         <div class="col-6">
+                                                                              <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                         </div>
+                                                                  </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Pageprincipale"'>Valider</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
+                                <button *ngIf="this.remplacerBool == true" type="button" class="btn btn-default btn-sm" (click)="annulerRemplacement($event)">Annuler</button>
+                                        <!-- <ng-template #templateRemplacer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Remplacer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                                    <i>
+                                                            <p>Souhaitez-vous vraiment remplacer le produit ? </p>
+                                                            <p>Si oui <b>cliquez</b> sur le bouton <button class="btn btn-primary btn-sm">Oui</button>  puis sur le bouton <button class="btn btn-warning btn-sm">Valider</button> du produit qui doit prendre sa place.</p>
+                                                            <p>Si non cliquez sur le bouton <button type="button" class="btn info btn-sm" >Annuler</button>.</p>
+                                                    </i>
+                                             </div>
+                                            <div class="row" style="margin-top:2rem;">
+                                                    <div class="col-lg-8 col-md-8 col-sm-8"></div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                                            <button type="button" class="btn  btn-sm float-right" (click)="modalRef.hide()">Annuler</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </ng-template> -->
+                        </div>
+                </div>
+
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <h4 style="text-align:center;">En Attentes</h4>
+
+                <div class="paginationAttente">
+                                <span>
+                                        <i class="fa fa-angle-double-left" (click)="attentesPrecedant()" ></i>
+                                </span>
+                                <span>
+                                        <i class="fa fa-angle-double-right" (click)="attentesSuivant()"></i>
+                                </span>
+                </div>
+                <div class="row" style="margin-bottom:2rem;">
+                        <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.attentes == true">
+                          <i class="fa fa-spinner fa-pulse"></i>
+                        </div>
+                        <div *ngFor="let prod of this.vitrine.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templatePlus)">plus</button>
+                                        <ng-template #templatePlus>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier/Enregistrer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                             <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                             <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                             <div class="row" style="margin-top:1rem;">
+                                                                  <div class="col-6">
+                                                                    Désignation
+                                                                  </div>
+                                                                  <div class="col-6">
+                                                                        <input type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                  </div>
+
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                            Déscription
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="text" name="description" id="description" value="{{prod.description}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                           Prix
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                        Catégorie
+                                                                      </div>
+                                                                     <div class="col-6">
+                                                                          <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                     </div>
+                                                              </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Enregistrer</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == true" type="button" (click)="validerRemplacementActicle($event)" class="btn btn-warning btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "", "imgLink": "{{prod.imgLink}}"'>Valider</button>
+                                        <!-- <ng-template #templateValider>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modal</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            This is a modal.
+                                        </div>
+                                        </ng-template> -->
+                                <button type="button" class="btn btn-danger btn-sm" (click)="openModal(templateSupprimer)">Supprimer</button>
+                                        <ng-template #templateSupprimer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Supprimer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Souhaitez vous vraiment supprimer ce produit</p>
+                                            <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                        </div>
+                                        </ng-template>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 <!--  ********************************************
            Vitrine 4
  *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[3]" >
+    <div class="page-header col-sm-10 col-lg-12 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[3]" >
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[0], 'btn-success': femme[0]}" (click)="menu1stockClick(3,0)" style="margin-bottom: 1rem">HABITS</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[1], 'btn-success': femme[1]}" (click)="menu1stockClick(3,1)" style="margin-bottom: 1rem">CHAUSSURES</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !femme[2], 'btn-success': femme[2]}" (click)="menu1stockClick(3,2)" style="margin-bottom: 1rem">SACS A MAIN</button>
+        <div class="row" *ngIf="this.vitrineTarget == 'vitrine4' ">
+            <div  class="col-lg-5 col-md-5 col-sm-5" style="min-height:40rem; border-right: 1px solid rgba(24, 121, 45, 0.452); border-top: 1px solid rgba(24, 121, 45, 0.452);">
+                <h4 style="text-align:center;">En Lignes</h4>
+
+                <div class="paginationVentes">
+                        <span>
+                                <i (click)="ventesPrecedant()" class="fa fa-angle-double-left" ></i>
+                        </span>
+                        <span>
+                                <i  (click)="ventesSuivant()" class="fa fa-angle-double-right"></i>
+                        </span>
+                </div>
+
+                <div class="row" style="margin-bottom:2rem;">
+                    <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                      <i class="fa fa-spinner fa-pulse"></i>
+                    </div>
+
+                        <div *ngFor="let prod of this.vitrine.enVentes" class="col-lg-6 col-md-6 col-sm-6" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templateVoir)" >Voir</button>
+                                        <ng-template #templateVoir>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Informations du produit</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                               <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%; min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                               </div>
+                                               <div class="col-lg-8 col-md-8 col-sm-8">
+                                                    <div>
+                                                        <h3>Désignation....... {{prod.designation}}</h3>
+                                                    </div>
+                                                    <div>
+                                                            Description .........{{prod.description}}
+                                                    </div>
+                                                    <div>
+                                                            Prix............{{prod.prix}} .....Fcfa
+                                                    </div>
+                                                    <div>
+                                                        categorie ..........{{prod.categ}}
+                                                     </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        </ng-template>
+                                <button type="button" class="btn btn-success btn-sm" (click)="openModal(templateModifier)">Modifier</button>
+                                        <ng-template #templateModifier>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" id="image" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                                <div class="row" style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                          Désignation
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                              <input  type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                        </div>
+
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                  Déscription
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input  type="text" name="description" id="description" value="{{prod.description}}">
+                                                                          </div>
+                                                                   </div>
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                          <div class="col-6">
+                                                                                 Prix
+                                                                           </div>
+                                                                          <div class="col-6">
+                                                                               <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                          </div>
+                                                                   </div>
+
+                                                                   <div class="row"  style="margin-top:1rem;">
+                                                                        <div class="col-6">
+                                                                            Catégorie
+                                                                          </div>
+                                                                         <div class="col-6">
+                                                                              <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                         </div>
+                                                                  </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit" (click)="modifierArticle($event)" class="btn btn-info btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Pageprincipale"'>Valider</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == false" type="button" class="btn btn-danger btn-sm" (click)="remplacerArticle($event)" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Remplacer</button>
+                                <button *ngIf="this.remplacerBool == true" type="button" class="btn btn-default btn-sm" (click)="annulerRemplacement($event)">Annuler</button>
+                                        <!-- <ng-template #templateRemplacer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Remplacer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                             <div class="row">
+                                                    <i>
+                                                            <p>Souhaitez-vous vraiment remplacer le produit ? </p>
+                                                            <p>Si oui <b>cliquez</b> sur le bouton <button class="btn btn-primary btn-sm">Oui</button>  puis sur le bouton <button class="btn btn-warning btn-sm">Valider</button> du produit qui doit prendre sa place.</p>
+                                                            <p>Si non cliquez sur le bouton <button type="button" class="btn info btn-sm" >Annuler</button>.</p>
+                                                    </i>
+                                             </div>
+                                            <div class="row" style="margin-top:2rem;">
+                                                    <div class="col-lg-8 col-md-8 col-sm-8"></div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                                            <button type="button" (click)="remplacerArticle($event)" class="btn btn-primary btn-sm float-right" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                                            <button type="button" class="btn  btn-sm float-right" (click)="modalRef.hide()">Annuler</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </ng-template> -->
+                        </div>
+                </div>
+
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7">
+                <h4 style="text-align:center;">En Attentes</h4>
+
+                <div class="paginationAttente">
+                                <span>
+                                        <i class="fa fa-angle-double-left" (click)="attentesPrecedant()" ></i>
+                                </span>
+                                <span>
+                                        <i class="fa fa-angle-double-right" (click)="attentesSuivant()"></i>
+                                </span>
+                </div>
+                <div class="row" style="margin-bottom:2rem;">
+                        <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.attentes == true">
+                          <i class="fa fa-spinner fa-pulse"></i>
+                        </div>
+                        <div *ngFor="let prod of this.vitrine.enAttentes" class="col-lg-4 col-md-4 col-sm-4" style="margin-top:1rem;">
+                                <h6>{{prod.designation}}</h6>
+                                <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="openModal(templatePlus)">plus</button>
+                                        <ng-template #templatePlus>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modifier/Enregistrer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                             <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{prod.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                             <div class="row" style="text-align:center">
+                                                                        <div class="">
+                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                             <div class="row" style="margin-top:1rem;">
+                                                                  <div class="col-6">
+                                                                    Désignation
+                                                                  </div>
+                                                                  <div class="col-6">
+                                                                        <input type="text" name="designation" id="designation" value="{{prod.designation}}">
+                                                                  </div>
+
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                            Déscription
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="text" name="description" id="description" value="{{prod.description}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                           Prix
+                                                                     </div>
+                                                                    <div class="col-6">
+                                                                         <input type="number" name="prix" id="prix" value="{{prod.prix}}">
+                                                                    </div>
+                                                             </div>
+                                                             <div class="row"  style="margin-top:1rem;">
+                                                                    <div class="col-6">
+                                                                        Catégorie
+                                                                      </div>
+                                                                     <div class="col-6">
+                                                                          <input type="text" name="categorie" id="categorie" value="{{prod.categ}}">
+                                                                     </div>
+                                                              </div>
+                                                              <div class="row"  style="margin-top:1rem;">
+                                                                   <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}","table": "Articles"'>Enregistrer</button>
+                                                              </div>
+                                                         </div>
+                                                </div>
+                                        </div>
+                                        </ng-template>
+                                <button *ngIf="this.remplacerBool == true" type="button" (click)="validerRemplacementActicle($event)" class="btn btn-warning btn-sm" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": "", "imgLink": "{{prod.imgLink}}"'>Valider</button>
+                                        <!-- <ng-template #templateValider>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Modal</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            This is a modal.
+                                        </div>
+                                        </ng-template> -->
+                                <button type="button" class="btn btn-danger btn-sm" (click)="openModal(templateSupprimer)">Supprimer</button>
+                                        <ng-template #templateSupprimer>
+                                        <div class="modal-header">
+                                            <h4 class="modal-title pull-left">Supprimer</h4>
+                                            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Souhaitez vous vraiment supprimer ce produit</p>
+                                            <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                            <button type="submit" (click)="supprimerArticle($event)" class="btn btn-danger btn-sm" style="margin-left:1rem;" id= ' "id": {{prod.id}},"designation": "{{prod.designation}}","description":"{{prod.description}}","prix":{{prod.prix}},"categorie": {{prod.categorie}}, "imgLink": "{{prod.imgLink}}"'>Oui</button>
+                                        </div>
+                                        </ng-template>
+                        </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
-<!--  ********************************************
-           Vitrine 5
- *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[4]" >
-            <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !homme[0], 'btn-success': homme[0]}" (click)="menu1stockClick(4,0)" style="margin-bottom: 1rem">EXCLUSIVITÉS</button>
-    </div>
+
     <!--  ********************************************
           Slide 1
  *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[5]">
+    <div class="page-header col-sm-10 col-lg-12 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[4]">
+
+        <div class="row" style="margin-top:2rem;" *ngIf="this.vitrineTarget == 'slide1' " >
+                 <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                        <i class="fa fa-spinner fa-pulse"></i>
+                 </div>
+                 <div class="col-lg-1 col-md-1 col-sm-2 " ></div>
+                 <div class="col-lg-7 col-md-7 col-sm-7 " style="border-right: 1px solid blue;padding-right:8%;">
+                                <carousel >
+                                                <slide style="width:100%;" *ngFor="let slid of  this.vitrine.enVentes">
+                                                   <img style="display: block; max-width:40rem;min-width:40rem; min-height:25rem; max-height:25rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="First slide" >
+                                                </slide>
+
+                                </carousel>
+                 </div>
+                 <div class="col-lg-4 col-md-4 col-sm-4">
+                         <div class="row">
+
+                                <div class="col-lg-6 col-md-6 col-sm-6" style="margin-bottom:1rem;" *ngFor="let slid of  this.vitrine.enVentes">
+                                        <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="" style="max-width:100%;min-width:100%;  min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                        <button type="button" class="btn btn-default btn-sm" (click)="openModalSlide(templateModifier)">modifier</button>
+                                                <ng-template #templateModifier>
+                                                        <div class="modal-header">
+                                                                        <h4 class="modal-title pull-left">Modification</h4>
+                                                                        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                                        <div class="row">
+                                                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                                                <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                                             <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                                             <div class="row" style="text-align:center">
+                                                                                                        <div class="">
+                                                                                                                <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                                                <div class="progress" style="margin-top:2rem;">
+                                                                                                                        <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                        <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                                                                             <div class="row" style="margin-top:1rem;">
+                                                                                                  <div class="col-6">
+                                                                                                    Désignation
+                                                                                                  </div>
+                                                                                                  <div class="col-6">
+                                                                                                        <input type="text" name="designation" id="designation" value="{{slid.designation}}">
+                                                                                                  </div>
+
+                                                                                             </div>
+                                                                                             <div class="row"  style="margin-top:1rem;">
+                                                                                                    <div class="col-6">
+                                                                                                            Déscription
+                                                                                                     </div>
+                                                                                                    <div class="col-6">
+                                                                                                         <input type="text" name="description" id="description" value="{{slid.description}}">
+                                                                                                    </div>
+                                                                                             </div>
+                                                                                             <div class="row"  style="margin-top:1rem;">
+                                                                                                    <div class="col-6">
+                                                                                                           Prix
+                                                                                                     </div>
+                                                                                                    <div class="col-6">
+                                                                                                         <input type="number" name="prix" id="prix" value="{{slid.prix}}">
+                                                                                                    </div>
+                                                                                             </div>
+                                                                                             <div class="row"  style="margin-top:1rem;">
+                                                                                                    <div class="col-6">
+                                                                                                        Catégorie
+                                                                                                      </div>
+                                                                                                     <div class="col-6">
+                                                                                                          <input type="text" name="categorie" id="categorie" value="{{slid.categ}}">
+                                                                                                     </div>
+                                                                                              </div>
+                                                                                              <div class="row"  style="margin-top:1rem;">
+                                                                                                   <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                                                   <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{slid.id}},"designation": "{{slid.designation}}","description":"{{slid.description}}","prix":{{slid.prix}},"categorie": "{{slid.categ}}", "imgLink": "{{slid.imgLink}}","table": "Pageprincipale"'>Enregistrer</button>
+                                                                                              </div>
+                                                                                         </div>
+                                                                                </div>
+                                                        </div>
+                                                </ng-template>
+                                </div>
+                         </div>
+                  </div>
+        </div>
+
 
     </div>
         <!--  ********************************************
           Slide 2
  *********************************************** -->
-    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[6]">
+    <div class="page-header  col-lg-12 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block"  style="padding-top: 1rem ; margin-bottom: 1rem" *ngIf="menustock[5]">
+                <div class="row" style="margin-top:2rem;" *ngIf="this.vitrineTarget == 'slide2' " >
+                                <div class="fa-3x col-lg-12 col-md-12 col-sm-12" *ngIf="requestInload.ventes == true">
+                                       <i class="fa fa-spinner fa-pulse"></i>
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-2 " ></div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 " style="border-right: 1px solid blue;padding-right:8%;">
+                                               <carousel >
+                                                               <slide style="width:100%;" *ngFor="let slid of  this.vitrine.enVentes">
+                                                                  <img style="display: block; max-width:40rem;min-width:40rem; min-height:25rem; max-height:25rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="First slide" >
+                                                               </slide>
 
+                                               </carousel>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="row">
+
+                                               <div class="col-lg-6 col-md-6 col-sm-6" style="margin-bottom:1rem;" *ngFor="let slid of  this.vitrine.enVentes">
+                                                       <img src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="" style="max-width:100%;min-width:100%;  min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                       <button type="button" class="btn btn-default btn-sm" (click)="openModalSlide(templateModifier)">modifier</button>
+                                                               <ng-template #templateModifier>
+                                                                       <div class="modal-header">
+                                                                                       <h4 class="modal-title pull-left">Modification</h4>
+                                                                                       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                                                                       <span aria-hidden="true">&times;</span>
+                                                                                       </button>
+                                                                       </div>
+                                                                       <div class="modal-body">
+                                                                                       <div class="row">
+                                                                                                       <div class="col-lg-4 col-md-4 col-sm-4">
+                                                                                                               <a href="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" download="" id="telecharger"><button  type="submit" class="btn btn-warning btn-sm" style="width:100%; margin-bottom:1rem;" >Télécharger</button></a>
+                                                                                                            <img id="image" src="http://51.254.200.129/backendprod/EsquisseBackEnd/server-backend-upload/uploads/{{slid.imgLink}}" alt="" style="max-width:100%;min-width:100%; min-height:10rem; max-height:10rem; border: 2px solid red; border-radius:10px; margin-bottom:3px;">
+                                                                                                            <div class="row" style="text-align:center">
+                                                                                                                       <div class="">
+                                                                                                                               <div><input type="file" name="" id="inputFile" style="margin-top:1rem; background-color:#5bc0de;" (change)="uploadFile($event)" placeholder="Uploader Image" accept=".png,.jpg"></div>
+                                                                                                                               <div class="progress" style="margin-top:2rem;">
+                                                                                                                                       <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                                                                               </div>
+                                                                                                                       </div>
+                                                                                                               </div>
+                                                                                                       </div>
+                                                                                                       <div class="col-lg-1 col-md-1 col-sm-1"></div>
+                                                                                                       <div class="col-lg-7 col-md-7 col-sm-7">
+                                                                                                            <div class="row" style="margin-top:1rem;">
+                                                                                                                 <div class="col-6">
+                                                                                                                   Désignation
+                                                                                                                 </div>
+                                                                                                                 <div class="col-6">
+                                                                                                                       <input type="text" name="designation" id="designation" value="{{slid.designation}}">
+                                                                                                                 </div>
+
+                                                                                                            </div>
+                                                                                                            <div class="row"  style="margin-top:1rem;">
+                                                                                                                   <div class="col-6">
+                                                                                                                           Déscription
+                                                                                                                    </div>
+                                                                                                                   <div class="col-6">
+                                                                                                                        <input type="text" name="description" id="description" value="{{slid.description}}">
+                                                                                                                   </div>
+                                                                                                            </div>
+                                                                                                            <div class="row"  style="margin-top:1rem;">
+                                                                                                                   <div class="col-6">
+                                                                                                                          Prix
+                                                                                                                    </div>
+                                                                                                                   <div class="col-6">
+                                                                                                                        <input type="number" name="prix" id="prix" value="{{slid.prix}}">
+                                                                                                                   </div>
+                                                                                                            </div>
+                                                                                                            <div class="row"  style="margin-top:1rem;">
+                                                                                                                   <div class="col-6">
+                                                                                                                       Catégorie
+                                                                                                                     </div>
+                                                                                                                    <div class="col-6">
+                                                                                                                         <input type="text" name="categorie" id="categorie" value="{{slid.categ}}">
+                                                                                                                    </div>
+                                                                                                             </div>
+                                                                                                             <div class="row"  style="margin-top:1rem;">
+                                                                                                                  <button type="submit"  class="btn btn-info btn-sm" (click)="modalRef.hide()">Annuler</button>
+                                                                                                                  <button type="submit"  (click)="modifierArticle($event)" class="btn btn-primary btn-sm" style="margin-left:1rem;" id= ' "id": {{slid.id}},"designation": "{{slid.designation}}","description":"{{slid.description}}","prix":{{slid.prix}},"categorie": "{{slid.categ}}", "imgLink": "{{slid.imgLink}}","table": "Pageprincipale"'>Enregistrer</button>
+                                                                                                             </div>
+                                                                                                        </div>
+                                                                                               </div>
+                                                                       </div>
+                                                               </ng-template>
+                                               </div>
+                                        </div>
+                                 </div>
+                       </div>
     </div>
 
 </div>
