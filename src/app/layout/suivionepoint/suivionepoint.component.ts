@@ -99,7 +99,7 @@ export class SuivionepointComponent implements OnInit {
                                 caution: type.caution,
                                 cautiondebase: type.cautiondebase,
                                 id_point: type.id_point,
-                                categorie: (type.cautiondebase==0)?'pas':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
+                                categorie: (type.cautiondebase==0 && type.caution==0 )?'pas':(type.cautiondebase==0 && type.caution!=0 )?'pasdepot_aveccaution':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
                             }
                         });
                         this.gardeListepointsbycc = this.listepointsbycc;
@@ -120,6 +120,10 @@ export class SuivionepointComponent implements OnInit {
         if(categorie=='Pas de depot'){
             this.categorie = 'Pas de depot';
             this.listepointsbycc = this.gardeListepointsbycc.filter(type => type.categorie=='pas');
+        }
+        if(categorie=='Pas de depot Avec caution'){
+            this.categorie = 'Pas de depot Avec caution';
+            this.listepointsbycc = this.gardeListepointsbycc.filter(type => type.categorie=='pasdepot_aveccaution');
         }
         if(categorie=='Faible'){
             this.categorie = 'Faible';
@@ -186,6 +190,7 @@ export class SuivionepointComponent implements OnInit {
         this.pointcc = pdv;
         this.menuHeadClick(2);
     }
+
 //*********** DEPOT SUIVI ONE POINT *****************
     @ViewChild("baseChart2")  chart2: BaseChartDirective;
     public suivionepointSelectionDepot(){

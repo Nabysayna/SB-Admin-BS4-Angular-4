@@ -11,11 +11,13 @@ import {ApiPlatformService} from "../../services/apiplateform.service";
 })
 export class ComptableComponent implements OnInit {
 
+    public loading_data:boolean = true;
     public menuHead = {menuHead1:true, menuHead2:false};
 
     constructor(private modalService: NgbModal, private _utilService:UtilService, private _apiPlatformService:ApiPlatformService){}
 
     ngOnInit() {
+        this.loading_data = true;
         this.getEtatDeposit();
     }
 
@@ -26,6 +28,7 @@ export class ComptableComponent implements OnInit {
     }
 
     public menuHeadClick(option: number){
+        this.loading_data = true;
         if(option == 1){
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
@@ -52,7 +55,9 @@ export class ComptableComponent implements OnInit {
     public sortOrderEtatDeposit = "desc";
     public filterQueryEtatDeposit:any;
     public listeetatdeposit:any[] = [];
+
     public getEtatDeposit(): void {
+        this.loading_data = true;
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
@@ -66,6 +71,7 @@ export class ComptableComponent implements OnInit {
                             point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getEtatDeposit')
@@ -90,6 +96,8 @@ export class ComptableComponent implements OnInit {
     public selectionintervalleddatefinal:string;
 
     historiquejourDepositCaution(){
+        this.loading_data = true;
+        this.totaldeposit = 0;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
         this._apiPlatformService.getListBilanDepositByDate({type: 'jour', infotype:this.selectionjour})
@@ -99,7 +107,7 @@ export class ComptableComponent implements OnInit {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -111,11 +119,14 @@ export class ComptableComponent implements OnInit {
                     this.listebilandeposit.forEach(type => {
                         this.totaldeposit += Number(type.montant);
                     });
+                    this.loading_data = false;
                 }
             );
     }
 
     historiqueintervalleDepositCaution(){
+        this.loading_data = true;
+        this.totaldeposit = 0;
         this.selectionjour = undefined;
         this._apiPlatformService.getListBilanDepositByDate({type: 'intervalle', infotype:this.selectionintervalledateinit+" "+this.selectionintervalleddatefinal})
             .subscribe(
@@ -124,7 +135,7 @@ export class ComptableComponent implements OnInit {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -136,11 +147,14 @@ export class ComptableComponent implements OnInit {
                     this.listebilandeposit.forEach(type => {
                         this.totaldeposit += Number(type.montant);
                     });
+                    this.loading_data = false;
                 }
             );
     }
 
     histDepositCautionInit(){
+        this.loading_data = true;
+        this.totaldeposit = 0;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
         let datenow = ((new Date()).toJSON()).split("T",2)[0];
@@ -152,7 +166,7 @@ export class ComptableComponent implements OnInit {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -164,6 +178,7 @@ export class ComptableComponent implements OnInit {
                     this.listebilandeposit.forEach(type => {
                         this.totaldeposit += Number(type.montant);
                     });
+                    this.loading_data = false;
                 }
             );
     }

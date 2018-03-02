@@ -55,6 +55,14 @@ export class NewclientService {
             .map(res => res.json());
     }
 
+    getPointByZoneByRegion(data:any){
+        let url = this.link+"/client/pointbyzonebyregion";
+        let datas = JSON.stringify(data);
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     validerSouscritSentool(data:any){
         let url = this.link+"/client/validersouscritsentool";
         let datas = JSON.stringify({token:this.basetoken, data:data});

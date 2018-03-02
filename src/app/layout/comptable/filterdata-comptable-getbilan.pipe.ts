@@ -15,7 +15,7 @@ export class DataFilterComptableBilanPipe implements PipeTransform {
                 row.point.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                 row.superviseur.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                 row.telephone.toLowerCase().indexOf(query.toLowerCase())>-1 ||
-                row.montant.toLowerCase().indexOf(query.toLowerCase())>-1 ||
+                row.montant.toLocaleString().indexOf(query.toLowerCase())>-1 ||
                 row.maj_by.toLowerCase().indexOf(query.toLowerCase())>-1
             ) });
         }

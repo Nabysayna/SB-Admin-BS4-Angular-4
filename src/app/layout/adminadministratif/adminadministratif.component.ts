@@ -141,6 +141,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
 
     public listencienpoints:any[] = [];
     public getEncienpoints(): void {
+        this.loading_data = true;
         this._utilService.getEncienpoints()
             .subscribe(
                 data => {
@@ -156,6 +157,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                             adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint
                         }
                     });
+                    this.loading_data = false;
                 },
                 error => alert(error),
                 () => console.log('getEncienpoints')
@@ -163,6 +165,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     validresouscritsentool(point: any, type:string){
+        this.loading_data = true;
         this._newclientService.validerSouscritSentool(point)
             .subscribe(
                 data => {
@@ -179,6 +182,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     validresouscritwafacash(point: any, type:string){
+        this.loading_data = true;
         this._newclientService.validerSouscritWafacash(point)
             .subscribe(
                 data => {
@@ -195,6 +199,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     validresouscritsentoolandwafacash(point: any, type:string){
+        this.loading_data = true;
         this._newclientService.validerSouscritSentoolAndWafacash(point)
             .subscribe(
                 data => {
@@ -222,7 +227,9 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public sortOrderNewPoint = "desc";
     public filterQueryNewPoint:any;
     public listenewpoints:any[] = [];
+
     public getNouveauxpoints(): void {
+        this.loading_data = true;
         this._utilService.getNouveauxpoints()
             .subscribe(
                 data => {
@@ -257,7 +264,9 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public sortOrderPointSouscription = "desc";
     public filterQueryPointSouscription:any;
     public listepointsouscritbbs:any[] = [];
+
     public getPointssouscritBBS(): void {
+        this.loading_data = true;
         this._utilService.getPointssouscritBBS()
             .subscribe(
                 data => {
@@ -296,6 +305,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public listereclamationsnonresolu:any[] = [];
 
     public getReclamationsNonResolu(): void {
+        this.loading_data = true;
         this._apiPlatformService.getReclamationsNonResolu()
             .subscribe(
                 data => {
@@ -344,15 +354,17 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public sortOrderEtatDeposit = "desc";
     public filterQueryEtatDeposit:any;
     public listeetatdeposit:any[] = [];
+
     public getEtatDeposit(): void {
+        this.loading_data = true;
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
                     this.listeetatdeposit = data.message.map(function (type) {
                         return {
                             date_update:type.updater.date.split('.')[0],
-                            montantactuel:type.caution,
-                            last_deposit:type.cautiondebase,
+                            montantactuel:Number(type.caution),
+                            last_deposit:Number(type.cautiondebase),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
@@ -388,6 +400,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public selectionintervalleddatefinal:string;
 
     historiquejourDepositCaution(){
+        this.loading_data = true;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
         this._apiPlatformService.getListBilanDepositByDate({type: 'jour', infotype:this.selectionjour})
@@ -397,7 +410,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -415,6 +428,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     historiqueintervalleDepositCaution(){
+        this.loading_data = true;
         this.selectionjour = undefined;
         this._apiPlatformService.getListBilanDepositByDate({type: 'intervalle', infotype:this.selectionintervalledateinit+" "+this.selectionintervalleddatefinal})
             .subscribe(
@@ -423,7 +437,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -441,6 +455,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     histDepositCautionInit(){
+        this.loading_data = true;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
         let datenow = ((new Date()).toJSON()).split("T",2)[0];
@@ -452,7 +467,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                         return {
                             date_update:type.daterenflu.date.split('.')[0],
                             maj_by:JSON.parse(type.updater).prenom +" "+JSON.parse(type.updater).nom,
-                            montant:JSON.parse(type.infotrace).montant,
+                            montant:Number(JSON.parse(type.infotrace).montant),
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: JSON.parse(type.infopoint).nometps,
@@ -514,7 +529,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                             dateeffectif: type.dateeffectif,
                             recouvre_by: type.recouvre_by,
                             positionne_by: type.positionne_by,
-                            montant: type.montant,
+                            montant: Number(type.montant),
                             point: pointObjet.prenom+" "+pointObjet.nom,
                             telephone: pointObjet.telephone,
                             adresse: JSON.parse(pointObjet.adresse).address+", "+JSON.parse(pointObjet.adresse).souszone+", "+JSON.parse(pointObjet.adresse).zone,

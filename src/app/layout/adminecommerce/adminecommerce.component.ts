@@ -121,12 +121,13 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
                                 zone:type.zone,
                                 souszone:type.souszone,
                                 qte:type.qte,
+                                supplied:Number(type.supplied),
                                 value:type.idarticle?type.idarticle:type.id,
                                 checked:false
                             });
                         });
                     })
-                    this.optionassignationsArticleARecuperer = this.articlesARecuperer;
+                    this.optionassignationsArticleARecuperer = this.articlesARecuperer.filter(opt => opt.supplied==0);
                 },
                 error => alert(error),
                 () => {
@@ -163,12 +164,13 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
                                 zone:type.zone,
                                 souszone:type.souszone,
                                 qte:type.qte,
+                                supplied:Number(type.supplied),
                                 value:type.idarticle?type.idarticle:type.id,
                                 checked:false
                             });
                         });
                     })
-                    this.optionassignationsArticleARecuperer = this.articlesARecuperer;
+                    this.optionassignationsArticleARecuperer = this.articlesARecuperer.filter(opt => opt.supplied==0);
                 },
                 error => alert(error),
                 () => {
@@ -190,6 +192,7 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
         this._apiCommandeService.getListCommandeARecupererByDate({origine: 'init', type: 'jour', infotype:this.selectionjourArticleARecuperer})
             .subscribe(
                 data => {
+                    console.log(data.message);
                     this.livreurs = data.message.livreurs;
                     data.message.commandes.forEach(opt =>{
                         JSON.parse(opt.orderedArticles).forEach(type =>{
@@ -207,12 +210,13 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
                                 zone:type.zone,
                                 souszone:type.souszone,
                                 qte:type.qte,
+                                supplied:Number(type.supplied),
                                 value:type.idarticle?type.idarticle:type.id,
                                 checked:false
                             });
                         });
                     })
-                    this.optionassignationsArticleARecuperer = this.articlesARecuperer;
+                    this.optionassignationsArticleARecuperer = this.articlesARecuperer.filter(opt => opt.supplied==0);
                 },
                 error => alert(error),
                 () => {

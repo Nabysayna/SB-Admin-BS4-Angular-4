@@ -14,6 +14,7 @@
                         <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="email">Login</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
@@ -28,20 +29,22 @@
                         <th colspan="8">
                             <div style="color: black; text-align: center;">
                                 <button type="button" (click)="getCategorie('Tous')" class="btn btn-dark btn-sm"> Tous </button>&nbsp;&nbsp;
-                                <button type="button" (click)="getCategorie('Pas de depot')" class="btn btn-info btn-sm" style="background-color: blue;"> Pas de depot </button>&nbsp;&nbsp;
-                                <button type="button" (click)="getCategorie('Faible')" class="btn btn-info btn-sm" style="background-color: red;"> Faible </button>&nbsp;&nbsp;
-                                <button type="button" (click)="getCategorie('Passable')" class="btn btn-info btn-sm" style="background-color: orange;"> Passable </button>&nbsp;&nbsp;
-                                <button type="button" (click)="getCategorie('Bien')" class="btn btn-info btn-sm" style="background-color: green;"> Bien </button>
+                                <button type="button" (click)="getCategorie('Pas de depot')" class="btn btn-info btn-sm" style="color: black; background-color: blue;"> Pas de depot </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Pas de depot Avec caution')" class="btn btn-info btn-sm" style="color: black; background-color: yellow;"> Pas de depot Avec caution </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Faible')" class="btn btn-info btn-sm" style="color: black; background-color: red;"> Faible </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Passable')" class="btn btn-info btn-sm" style="color: black; background-color: orange;"> Passable </button>&nbsp;&nbsp;
+                                <button type="button" (click)="getCategorie('Bien')" class="btn btn-info btn-sm" style="color: black; background-color: green;"> Bien </button>
                                 <br/>
                             </div>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': p.cautiondebase==0?'blue':((100*p.caution)/p.cautiondebase)<25?'red':((100*p.caution)/p.cautiondebase)>=25 && ((100*p.caution)/p.cautiondebase)<=50?'orange':'green'}">
+                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': (p.cautiondebase==0 && p.caution==0 )?'blue':(p.cautiondebase==0 && p.caution!=0 )?'yellow':((100*p.caution)/p.cautiondebase)<25?'red':((100*p.caution)/p.cautiondebase)>=25 && ((100*p.caution)/p.cautiondebase)<=50?'orange':'green'}">
                         <td>{{p.date_ajout}}</td>
                         <td>{{p.nom_point}}</td>
                         <td>{{p.gerant}}</td>
+                        <td>{{p.email}}</td>
                         <td>{{p.tel}}</td>
                         <td>{{p.adresse}}</td>
                         <td>{{p.cautiondebase}}</td>
