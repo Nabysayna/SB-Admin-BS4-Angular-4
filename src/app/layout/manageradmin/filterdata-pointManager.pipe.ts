@@ -8,6 +8,7 @@ import {Pipe, PipeTransform} from "@angular/core";
 })
 export class DataFilterPointManagerPipe implements PipeTransform {
 
+
     transform(array: any[], query: string): any {
         if (query) {
             return _.filter(array, row=>{

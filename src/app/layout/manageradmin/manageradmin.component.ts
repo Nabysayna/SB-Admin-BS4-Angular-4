@@ -274,10 +274,10 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
                             telephone_gerant:type.telephone,
                             caution:type.caution,
                             cautiondebase:type.cautiondebase,
-                            region_point: adresse_point.region,
-                            zone_point: adresse_point.zone,
-                            souszone_point: adresse_point.souszone,
-                            adresse_point: adresse_point.address,
+                            region_point: adresse_point.region?adresse_point.region:"",
+                            zone_point: adresse_point.zone?adresse_point.zone:"",
+                            souszone_point: adresse_point.souszone?adresse_point.souszone:"",
+                            adresse_point: adresse_point.address?adresse_point.address:"",
                         }
                     });
                 },
