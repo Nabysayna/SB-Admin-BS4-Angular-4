@@ -18,6 +18,9 @@ import {DataFilterAdminadministratifSuivipositionnementPipe} from "./filterdata-
 import {ModifPdvIncompletComponent} from "./modif-pdv-incomplet/modif-pdv-incomplet.component";
 import {CartoadministratifComponent} from "./cartoadministratif/cartoadministratif.component";
 import {DataFilterAdminadministratifPDVCRMINCOMPipe} from "./filterdata-adminadministratif-pdvcrmincom.pipe";
+import {RecouvrementDemandedepotComponent} from "../recouvrement-demandedepot/recouvrement-demandedepot.component";
+import {DataFilterSuiviDemandepositPipe} from "../recouvrement-demandedepot/filterdata-suividemandepot.pipe";
+import {DataFilterAdminadministratifSuivipositionnementHistoriquePipe} from "./filterdata-adminadministratif-getsuivipositionnementhistorique.pipe";
 
 
 
@@ -44,8 +47,11 @@ import {DataFilterAdminadministratifPDVCRMINCOMPipe} from "./filterdata-adminadm
         DataFilterAdminadministratifBilanPipe,
         DataFilterAdminadministratifEtatPipe,
         DataFilterAdminadministratifSuivipositionnementPipe,
+        DataFilterAdminadministratifSuivipositionnementHistoriquePipe,
+        DataFilterSuiviDemandepositPipe,
         CartoadministratifComponent,
-        DataFilterAdminadministratifPDVCRMINCOMPipe
+        DataFilterAdminadministratifPDVCRMINCOMPipe,
+        RecouvrementDemandedepotComponent
     ]
 })
 

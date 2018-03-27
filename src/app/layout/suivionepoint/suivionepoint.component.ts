@@ -4,26 +4,31 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {ApiPlatformService} from "../../services/apiplateform.service";
 import {BaseChartDirective} from 'ng2-charts/ng2-charts';
 import {Color} from "ng2-charts";
+import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 
 
 @Component({
     selector: 'app-suivionepoint',
     templateUrl: 'suivionepoint.component.html',
     styleUrls: ['suivionepoint.component.scss'],
-    providers:[UtilService, ApiPlatformService]
+    providers:[UtilService, ApiPlatformService, SuivipositionnementService]
 })
 export class SuivionepointComponent implements OnInit {
 
     public loading_data:boolean = true;
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false};
+    public killsetinterval:any;
 
-    constructor(private _apiPlatformService:ApiPlatformService, private modalService: NgbModal,){}
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
+
+    constructor(private _suivipositionnementService:SuivipositionnementService, private _apiPlatformService:ApiPlatformService, private modalService: NgbModal,){}
 
     ngOnInit() {
         this.getListPointsbysuperviseur();
     }
 
-    ngOnDestroy() {   }
+    ngOnDestroy() {
+        clearInterval(this.killsetinterval);
+    }
 
     tocurrency(number){
         return Number(number).toLocaleString();
@@ -40,12 +45,14 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead1 = true;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.getListPointsbysuperviseur();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
             this.lineChartData = [];
             this.lineChartLabels = [];
 
@@ -55,11 +62,25 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead1 = false;
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
+            this.menuHead.menuHead4 = false;
             this.datasetsPPV = [{
                 data: this.doughnutChartDataPPV,
                 backgroundColor: ["red", "yellow", "orange", "green"]
             }];
             this.estcheckPerformancePPV('journee');
+        }
+        if(option == 4){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = true;
+
+            this.loading_data = true
+            this.getListStatusDepositionCC();
+            this.killsetinterval = setInterval(() => {
+                this.getListStatusDepositionCC();
+                console.log('step init');
+            }, 30000);
         }
     }
 
@@ -99,12 +120,12 @@ export class SuivionepointComponent implements OnInit {
                                 caution: type.caution,
                                 cautiondebase: type.cautiondebase,
                                 id_point: type.id_point,
+                                user: type.user,
                                 categorie: (type.cautiondebase==0 && type.caution==0 )?'pas':(type.cautiondebase==0 && type.caution!=0 )?'pasdepot_aveccaution':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
                             }
                         });
                         this.gardeListepointsbycc = this.listepointsbycc;
                     }
-                    console.log(this.listepointsbycc);
                 },
                 error => alert(error),
                 () => console.log('')
@@ -112,7 +133,6 @@ export class SuivionepointComponent implements OnInit {
     }
 
     getCategorie(categorie: string){
-        console.log(categorie)
         if(categorie=='Tous'){
             this.categorie = 'Tous';
             this.listepointsbycc = this.gardeListepointsbycc;
@@ -191,7 +211,7 @@ export class SuivionepointComponent implements OnInit {
         this.menuHeadClick(2);
     }
 
-//*********** DEPOT SUIVI ONE POINT *****************
+    //*********** DEPOT SUIVI ONE POINT *****************
     @ViewChild("baseChart2")  chart2: BaseChartDirective;
     public suivionepointSelectionDepot(){
         this.touslesdepots = this.datapointrecup.infopoint.depots.map(function(type){
@@ -229,7 +249,7 @@ export class SuivionepointComponent implements OnInit {
 
         this. barChartData = [{data: tabjoursmontant, label: 'Dépots'}];
     }
-//************************DEPOT DIAGRAM*************************
+    //************************DEPOT DIAGRAM*************************
     public barChartOptions:any = { scaleShowVerticalLines: false, responsive: true };
     public barChartLabels:string[] = [];
     public barChartType:string = 'bar';
@@ -237,7 +257,7 @@ export class SuivionepointComponent implements OnInit {
     public barChartData:any[] = [];
 
 
-//*********** DETAIL SUIVI ONE POINT *****************
+    //*********** DETAIL SUIVI ONE POINT *****************
     @ViewChild("baseChart1")  chart1: BaseChartDirective;
     public suivionepointIntervalle(){
         this.touslescommissions = [];
@@ -336,7 +356,6 @@ export class SuivionepointComponent implements OnInit {
             this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='emoney'){ nbrebyjouremoneySom += Number(opt.montant); } }); nbrebyjouremoney.push( nbrebyjouremoneySom );
             this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tigocash'){ nbrebyjourtigocashSom += Number(opt.montant); } }); nbrebyjourtigocash.push( nbrebyjourtigocashSom );
         });
-
 
         this.lineChartData = [
             {data: nbrebyjourom, label: 'OM'},
@@ -578,6 +597,80 @@ export class SuivionepointComponent implements OnInit {
                 }
             );
         this.showModalPPV(content);
+    }
+
+
+
+    /////////// FAIRE UN DEPOT ///////////////
+    pointdemandedepot:any;
+    montantfairedepot:number;
+    public modalRef: NgbModalRef;
+    public closedModal(){
+        this.modalRef.close('Close click');
+    }
+
+    showModalFaireUnDepot(content, item) {
+        console.log(item);
+        this.montantfairedepot = undefined;
+        this.pointdemandedepot = item;
+        this.modalRef = this.modalService.open(content);
+    }
+
+    public valideFaireUnDepotByCC(){
+        if(confirm("Confirmer la validation demande dépot de "+this.tocurrency(this.montantfairedepot))){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.valideFaireUnDepotByCC({point:this.pointdemandedepot.user, montant:this.montantfairedepot})
+                .subscribe(
+                    data => {
+                        if(data.errorCode){
+                            this.closedModal();
+                            this.loading_data = false;
+                        }
+                    },
+                    error => alert(error),
+                    () => console.log("------------------------------------")
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
+    }
+
+
+    ////////////////////////ETAT DEPOT EN COURS///
+    public filterQueryStatusDepositionCC:any;
+    public listestatusdepositionCC:any[] = [];
+
+    public getListStatusDepositionCC(): void {
+        this._apiPlatformService.getListStatusDepositioncc()
+            .subscribe(
+                data => {
+                    this.listestatusdepositionCC = data.message.map(function (type) {
+                        let pointObjet = JSON.parse(type.point);
+                        let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
+                        return {
+                            id: type.id,
+                            datedemande: type.datedemande,
+                            montantdemande: Number(type.montant),
+                            point: pointObjet.prenom+" "+pointObjet.nom,
+                            telephone: pointObjet.telephone,
+                            adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                            recouvre_by: type.recouvre_by?type.recouvre_by:"attente",
+                            etatpositionnement:type.etatpositionnement,
+                            etatpayement:type.etatpayement,
+                            etatversement:type.etatversement
+                        }
+                    });
+                    if(this.listestatusdepositionCC.length==0){
+                        clearInterval(this.killsetinterval);
+                    }
+                },
+                error => alert(error),
+                () => {
+                    this.loading_data = false;
+                }
+            );
     }
 
 

@@ -11,10 +11,9 @@ export class SuivipositionnementService {
 
 
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
+    private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
-    private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
-    //private link = "https://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
+    //private link = "http://abonnement.bbstvnet.com/crmbbs/backend-SB-Admin-BS4-Angular-4/index.php";
 
     private headers = new Headers();
     private basetoken:any;
@@ -106,6 +105,38 @@ export class SuivipositionnementService {
 
     validerComForDepotCC(data){
         let url = this.link+"/apifromsentool/validercomfordepotcc";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    valideFaireUnDepotByCC(data){
+        let url = this.link+"/apifromsentool/validefaireundepotbycc";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    valideFaireUnDepot(data){
+        let url = this.link+"/apifromsentool/validefaireundepot";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    valideRecouvrementDepot(data){
+        let url = this.link+"/apifromsentool/validerecouvrementdepot";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    validePositionnementDepot(data){
+        let url = this.link+"/apifromsentool/validepositionnementdepot";
         let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})

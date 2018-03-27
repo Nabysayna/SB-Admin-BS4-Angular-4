@@ -12,6 +12,7 @@
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Etat Déposit</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Historique deposit</button>
         <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead8, 'btn-success': menuHead.menuHead8}" (click)="menuHeadClick(8)" style="margin-bottom: 1rem;">Etat positionnement</button>-->
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Etat positionnement</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/adminadministratif', 'cartoadministratif']">Cartographie</button>
     </div>
     <hr>
@@ -275,6 +276,7 @@
                         <th><mfDefaultSorter by="last_deposit">Dernier dépot</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="date_update">Date dépot</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="montantactuel">Déposit restant</mfDefaultSorter></th>
+                        <th>Option</th>
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryEtatDeposit"/></th>
@@ -301,6 +303,7 @@
                         <td style="text-align: right">{{tocurrency(item.last_deposit)}}</td>
                         <td>{{item.date_update}}</td>
                         <td style="text-align: right">{{tocurrency(item.montantactuel)}}</td>
+                        <td style="text-align: right"><button (click)="showModalFaireUnDepot(contentValiderFaireUnDepot,item)" class="btn btn-primary btn-sm">faire un depot</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -427,7 +430,35 @@
     </div>
 </div>
 
-<ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
+<div  class="container-fluid" *ngIf="menuHead.menuHead9" >
+    <recouvrement-demandedepot></recouvrement-demandedepot>
+</div>
+
+
+<ng-template #contentValiderFaireUnDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="pointdemandedepot">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Faire un depot pour {{pointdemandedepot.superviseur}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <input type="number" min="0" class="form-control" id="montantfairedepot" name="montantfairedepot" [(ngModel)]="montantfairedepot" placeholder="montant dépot"  required>
+                </div>
+                <div class="col-sm-2">
+                    {{tocurrency(montantfairedepot)}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantfairedepot<1 || montantfairedepot==undefined" (click)="valideFaireUnDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+<!--<ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title pull-left">Payement depot reçu</h4>
@@ -472,7 +503,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template>-->
 <ng-template #contentModifPoint let-c="close" let-d="dismiss" >
     <div class="modal-body">
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">

@@ -1,0 +1,201 @@
+<div class="row" *ngIf="loading_data" style="margin-top:3rem; position: fixed; z-index: 100; width: 100%; height: 100%; vertical-align:middle; background-color: white; opacity: 0.7">
+    <img src="assets/images/loading_1.gif" style="margin-left: 50%; margin-top: 19%; max-height: 10% !important;
+"/>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="row">
+            <table class="table table-hover table-responsive table-sm" [mfData]="listestatusdeposition | dataFilterSuiviDemandeposit: filterQueryStatusDeposition" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageStatusDeposition" [(mfSortBy)]="sortByStatusDeposition" [(mfSortOrder)]="sortOrderStatusDeposition">
+                <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="datedemande">Date demand</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="montantdemande">Montant demand</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="cc">CC en charge</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="recouvre_by">Recouvrement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatpositionnement">Positionnement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatpayement">Payement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatversement">Versement</mfDefaultSorter></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDeposition"/></th>
+                        <th><span style="margin-left: 2rem">Total : {{listestatusdeposition.length}}</span> <span style="margin-left: 15rem"><button (click)="showModalHistoriqueFaireUnDepot(contentHistoriqueFaireUnDepot)" class="btn btn-primary btn-sm">Voir historique</button></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                        <td>{{item.datedemande}}</td>
+                        <td style="text-align: right">{{tocurrency(item.montantdemande)}}</td>
+                        <td>{{item.point}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td>{{item.cc}}</td>
+                        <td style="text-align: right"><span *ngIf="item.recouvre_by!='attente'">{{item.recouvre_by}}</span><span *ngIf="item.recouvre_by=='attente'"><button (click)="showModalRecouvrementDepot(contentValideRecouvrementDepot, item)" class="btn btn-primary btn-sm">Affecter</button></span></td>
+                        <td style="text-align: right"><span *ngIf="item.etatpositionnement!=0">{{item.etatpositionnement}}</span><span *ngIf="item.etatpositionnement==0"><button (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
+                        <td style="text-align: right"><span *ngIf="item.etatpayement!=0">{{item.etatpayement}}</span><span *ngIf="item.etatpayement==0"><button (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: right"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #contentHistoriqueFaireUnDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Historique de recouvrement</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-responsive table-sm" [mfData]="listestatusdepositionHistorique | dataFilterSuiviDemandepositHistorique: filterQueryStatusDepositionHistorique" #mfBilanDepositHistorique="mfDataTable" [mfRowsOnPage]="rowsOnPageStatusDeposition" [(mfSortBy)]="sortByStatusDeposition" [(mfSortOrder)]="sortOrderStatusDeposition">
+                <thead>
+                <tr>
+                    <th><mfDefaultSorter by="datedemande">Date demand</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                    <th><mfDefaultSorter by="etatpositionnement">Positionnement</mfDefaultSorter></th>
+                </tr>
+                <tr>
+                    <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDepositionHistorique"/></th>
+                    <th><span style="margin-left: 2rem">Total : {{listestatusdepositionHistorique.length}}</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of mfBilanDepositHistorique.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': 'green'}">
+                    <td>{{item.datedemande}}</td>
+                    <td>{{item.point}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.adresse}}</td>
+                    <td style="text-align: right">{{item.etatpositionnement}}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr class="text-center center-block">
+                    <td colspan="8" class="text-center center-block"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValideRecouvrementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Mode de recouvrement</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="moderecouvrement">Mode de versement</label>
+                        <select class="form-control input-sm" id="moderecouvrement" name="moderecouvrement" [(ngModel)]="moderecouvrement" >
+                            <option>Direct</option>
+                            <option>Bureau BBS</option>
+                            <option>CPS</option>
+                            <option>CBAO</option>
+                            <option>WARI</option>
+                            <option>Orangemoney</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-7" *ngIf="moderecouvrement=='Direct'">
+                    <label for="recouvreur">Recouvré par</label>
+                    <input type="text" class="form-control" id="recouvreur" name="recouvreur" [(ngModel)]="recouvreur" placeholder="recouvreur" required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!moderecouvrement" (click)="valideRecouvrementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValidePositionnerDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Postionné depot</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7"><input type="number" min="0" class="form-control" id="montantpositionne" name="montantpositionne" [(ngModel)]="montantpositionnement" placeholder="montant positionné" required></div>
+                <div class="col-sm-5">{{tocurrency(montantpositionnement)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantpositionnement<1 || montantpositionnement==undefined" (click)="validePositionnementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Payement depot reçu</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7"><input type="number" min="0" class="form-control" id="montantpayement" name="montantpayement" [(ngModel)]="montantpayement" placeholder="somme payer" required></div>
+                <div class="col-sm-5">{{tocurrency(montantpayement)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantpayement<1 || montantpayement==undefined" (click)="validePayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValideVersementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Versement depot reçu</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="moderecouvrement">Mode de versement</label>
+                        <select class="form-control input-sm" id="modeversement" name="modeversement" [(ngModel)]="modeversement" >
+                            <option>Bureau BBS</option>
+                            <option>CPS</option>
+                            <option>CBAO</option>
+                            <option>WARI</option>
+                            <option>Orangemoney</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <label for="montantversement">Monatnt versé</label>
+                    <input type="number" min="0" class="form-control" id="montantversement" name="montantversement" [(ngModel)]="montantversement" placeholder="somme verser"  required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!modeversement || montantversement<1 || montantversement==undefined" (click)="valideVersementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>

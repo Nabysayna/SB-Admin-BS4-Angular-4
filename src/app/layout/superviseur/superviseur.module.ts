@@ -26,6 +26,7 @@ import {DataFilterSuivipdvetatdepositparsupPipe} from "./data-filter-suivipdveta
 import {DataFilterPointSentoolByCCPipe} from "./data-filter-point-sentool-cc.pipe";
 import {SuivionepointComponent} from "../suivionepoint/suivionepoint.component";
 import {DataFilterListesuivipointPipe} from "../suivionepoint/data-filter-list-suivipoint.pipe";
+import {DataFilterSuiviDemandepositccPipe} from "../suivionepoint/filterdata-suividemandepotcc.pipe";
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import {DataFilterListesuivipointPipe} from "../suivionepoint/data-filter-list-s
         DataFilterSuivipdvetatdepositparsupPipe,
         DataFilterPointSentoolByCCPipe,
         DataFilterListesuivipointPipe,
+        DataFilterSuiviDemandepositccPipe,
         SuivionepointComponent
 
     ]

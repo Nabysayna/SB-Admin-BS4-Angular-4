@@ -3,7 +3,7 @@
 "/>
 </div>
 <div  class="container-fluid" *ngIf="menuHead.menuHead1" >
-    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button>
+    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -20,6 +20,7 @@
                         <th><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
                         <th><mfDefaultSorter by="caution">Caution</mfDefaultSorter></th>
                         <th>Action</th>
+                        <th>Option</th>
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuerypointsbycc"/></th>
@@ -50,6 +51,7 @@
                         <td>{{p.cautiondebase}}</td>
                         <td>{{p.caution}}</td>
                         <td><button type="button" *ngIf="p.categorie!='pas'" class="btn btn-info btn-sm" (click)="suivrepoint(p)">SUIVRE</button></td>
+                        <td><button (click)="showModalFaireUnDepot(contentValiderFaireUnDepot,p)" class="btn btn-primary btn-sm" style="margin-right: 2px">faire un depot</button></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -186,7 +188,7 @@
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead3" >
-    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button>
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>
     <hr>
     <div class="row">
         <div class="col-sm-6">
@@ -258,7 +260,71 @@
     </div>
 </div>
 
+<div class="container-fluid" *ngIf="menuHead.menuHead4" >
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button>
+    <hr>
+    <div class="row">
+        <table class="table table-hover table-responsive table-sm">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Date demand</th>
+                <th>Point</th>
+                <th>Téléphone</th>
+                <th>Adresse</th>
+                <th>Montant demand</th>
+                <th>Recouvrement</th>
+                <th>Positionnement</th>
+                <th>Payement</th>
+                <th>Versement</th>
+            </tr>
+            <tr>
+                <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDepositionCC" /></th>
+                <th>{{listestatusdepositionCC.length}} Demandes en cours</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of listestatusdepositionCC | dataFilterSuiviDemandepositcc: filterQueryStatusDepositionCC; let i=index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                <td>{{i+1}}</td>
+                <td>{{item.datedemande}}</td>
+                <td>{{item.point}}</td>
+                <td>{{item.telephone}}</td>
+                <td>{{item.adresse}}</td>
+                <td style="text-align: right">{{tocurrency(item.montantdemande)}}</td>
+                <td style="text-align: right">{{item.recouvre_by}}</td>
+                <td style="text-align: right">{{item.etatpositionnement}}</td>
+                <td style="text-align: right">{{item.etatpayement}}</td>
+                <td style="text-align: right">{{tocurrency(item.etatversement)}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
+
+<ng-template #contentValiderFaireUnDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="pointdemandedepot">
+        <div class="modal-header">
+            <h5 class="modal-title pull-left">Faire un depot pour {{pointdemandedepot.gerant}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <input type="number" min="0" class="form-control" id="montantfairedepot" name="montantfairedepot" [(ngModel)]="montantfairedepot" placeholder="montant dépot" required>
+                </div>
+                <div class="col-sm-2">
+                    {{tocurrency(montantfairedepot)}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantfairedepot<1 || montantfairedepot==undefined" (click)="valideFaireUnDepotByCC()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
 
 <ng-template #contentVoirTousLesDepots let-c="close" let-d="dismiss" >
     <div class="modal-content">
@@ -366,4 +432,3 @@
         </div>
     </div>
 </ng-template>
-

@@ -16,19 +16,18 @@ import {SuivipositionnementService} from "../../services/suivipositionnement.ser
 export class AdminadministratifComponent implements OnInit, OnDestroy {
 
     public loading_data:boolean = true;
-    public menuHead = {menuHead1:false, menuHead2:true, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false};
-
+    public menuHead = {menuHead1:false, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false, menuHead6:false, menuHead7:false, menuHead8:false, menuHead9:true};
     public killsetinterval:any;
 
 
     constructor(private _suivipositionnementService:SuivipositionnementService, private modalService: NgbModal, public router: Router, private _utilService:UtilService,  private _apiPlatformService:ApiPlatformService, private _newclientService:NewclientService) { }
 
-    ngOnInit() {
+    ngOnInit(){
         this.loading_data = true;
         this.getNouveauxpoints();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(){
         clearInterval(this.killsetinterval);
     }
 
@@ -45,6 +44,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getEncienpoints();
         }
         if(option == 2){
@@ -56,6 +56,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getNouveauxpoints();
         }
         if(option == 3){
@@ -67,6 +68,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getPointssouscritBBS();
         }
         if(option == 4){
@@ -78,6 +80,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getPointsInfosIncomplets();
         }
         if(option == 5){
@@ -89,6 +92,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getReclamationsNonResolu();
         }
         if(option == 6){
@@ -100,6 +104,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = true;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.getEtatDeposit();
         }
         if(option == 7){
@@ -111,6 +116,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = true;
             this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = false;
             this.histDepositCautionInit();
         }
         if(option == 8){
@@ -122,6 +128,24 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead6 = false;
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = true;
+            this.menuHead.menuHead9 = false;
+            this.getListStatusDeposition();
+
+            this.killsetinterval = setInterval(() => {
+                this.getListStatusDeposition();
+                console.log('step');
+            }, 10000);
+        }
+        if(option == 9){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
+            this.menuHead.menuHead6 = false;
+            this.menuHead.menuHead7 = false;
+            this.menuHead.menuHead8 = false;
+            this.menuHead.menuHead9 = true;
             this.getListStatusDeposition();
 
             this.killsetinterval = setInterval(() => {
@@ -360,6 +384,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
+                    console.log(data.message[0]);
                     this.listeetatdeposit = data.message.map(function (type) {
                         return {
                             date_update:type.updater.date.split('.')[0],
@@ -368,6 +393,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                             superviseur:type.superviseur,
                             telephone:type.telephone,
                             point: type.infopoint?JSON.parse(type.infopoint).nometps:'-',
+                            pointFordemandeDepot:type.user
                         }
                     });
                     this.loading_data = false;
@@ -524,6 +550,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 data => {
                     this.listestatusdeposition = data.message.map(function (type) {
                         let pointObjet = JSON.parse(type.point);
+                        let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse)
                         return {
                             id: type.id,
                             dateeffectif: type.dateeffectif,
@@ -532,7 +559,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                             montant: Number(type.montant),
                             point: pointObjet.prenom+" "+pointObjet.nom,
                             telephone: pointObjet.telephone,
-                            adresse: JSON.parse(pointObjet.adresse).address+", "+JSON.parse(pointObjet.adresse).souszone+", "+JSON.parse(pointObjet.adresse).zone,
+                            adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
                             etatposit: type.etatpositionnement==0?'KO':'OK',
                             etatpayement: type.etatpayement==0?""+0:"".concat(type.etatpayement," par ", type.modepayement),
                             etatversement: type.etatversement,
@@ -670,6 +697,42 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.modalService.open(content, {size: 'lg'}).result.then( (result) => {
         }, (reason) => {} );
     }
+
+
+    //////////////////// FAIRE UN DEPOT ///////////////////
+
+    pointdemandedepot:any;
+    montantfairedepot:number;
+    showModalFaireUnDepot(content, item) {
+        console.log(item);
+        this.montantfairedepot = undefined;
+        this.pointdemandedepot = item;
+        this.modalRef = this.modalService.open(content);
+    }
+
+    public valideFaireUnDepot(){
+        if(confirm("Confirmer la validation demande dépot")){
+            clearInterval(this.killsetinterval);
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.valideFaireUnDepot({point:this.pointdemandedepot.pointFordemandeDepot, montant:this.montantfairedepot})
+                .subscribe(
+                    data => {
+                        console.log(data);
+                        if(data.errorCode){
+                            this.closedModal();
+                            this.loading_data = false;
+                        }
+                    },
+                    error => alert(error),
+                    () => console.log("------------------------------------")
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
+    }
+
 
 
 }
