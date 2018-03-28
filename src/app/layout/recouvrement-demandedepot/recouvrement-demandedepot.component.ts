@@ -117,7 +117,7 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
                         let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
                         return {
                             id: type.id,
-                            datedemande: type.datedemande,
+                            datedemande: type.datedemande.split(" ")[0],
                             montantdemande: Number(type.montant),
                             point: pointObjet.prenom+" "+pointObjet.nom,
                             telephone: pointObjet.telephone,
@@ -152,7 +152,6 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
             this._suivipositionnementService.valideRecouvrementDepot({id:this.statusdoneeposition.id, moderecouvrement:this.moderecouvrement, recouvreur:this.recouvreur})
                 .subscribe(
                     data => {
-                        console.log(data);
                         if(data.errorCode){
                             this.closedModal();
                             this.loading_data = false;
@@ -181,7 +180,6 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
             this._suivipositionnementService.validePositionnementDepot({id:this.statusdoneeposition.id, montantpositionnement:this.montantpositionnement})
                 .subscribe(
                     data => {
-                        console.log(data);
                         if(data.errorCode){
                             this.closedModal();
                             this.loading_data = false;
@@ -257,14 +255,37 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
         }
     }
 
+    public annulerDemandeDepot(id){
+        clearInterval(this.killsetinterval);
+        if(confirm("Confirmer annulation dépot")){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.annulerDemandeDepot({id:id})
+                .subscribe(
+                    data => {
+                        if(data.errorCode){
+                            this.closedModal();
+                            this.loading_data = false;
+                        }
+                    },
+                    error => alert(error),
+                    () => {
+                        this.getListStatusDeposition();
+                        this.killsetinterval = setInterval(() => {
+                            this.getListStatusDeposition();
+                            console.log('step');
+                        }, 60000);
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
+    }
 
 
     tocurrency(number){
         return Number(number).toLocaleString();
     }
-
-
-
-
 
 }

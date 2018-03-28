@@ -159,5 +159,13 @@ export class SuivipositionnementService {
             .map(res => res.json());
     }
 
+    annulerDemandeDepot(data){
+        let url = this.link+"/apifromsentool/annulerdemandedepot";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
 
 }

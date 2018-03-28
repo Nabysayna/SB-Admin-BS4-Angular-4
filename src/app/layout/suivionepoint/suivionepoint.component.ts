@@ -610,7 +610,6 @@ export class SuivionepointComponent implements OnInit {
     }
 
     showModalFaireUnDepot(content, item) {
-        console.log(item);
         this.montantfairedepot = undefined;
         this.pointdemandedepot = item;
         this.modalRef = this.modalService.open(content);
