@@ -204,7 +204,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this._utilService.getPointscrm()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listpointscrm = data.message.map(function (type) {
                         let adresse_point = JSON.parse(type.adresse_point);
                         let infsup = JSON.parse(type.infosup);
@@ -259,7 +258,6 @@ export class ManageradminComponent implements OnInit,OnDestroy  {
         this._utilService.getPointssentool()
             .subscribe(
                 data => {
-                    console.log(data);
                     this.listpointssentool = data.message.map(function (type) {
                         let adresse_point = JSON.parse(type.adresse);
                         let infsup = JSON.parse(type.infosup);

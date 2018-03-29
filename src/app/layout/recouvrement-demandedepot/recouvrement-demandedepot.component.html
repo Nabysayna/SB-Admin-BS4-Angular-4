@@ -30,7 +30,7 @@
                     <tr *ngFor="let item of mfBilanDeposit.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
                         <td width="2%">
                             <span *ngIf="(item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0)">
-                                <button class="btn btn-primary btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button (click)="annulerDemandeDepot(item.id)" class="btn btn-primary btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </span>
                         </td>
                         <td width="8%">{{item.datedemande}}</td>
@@ -40,9 +40,9 @@
                         <td>{{item.adresse}}</td>
                         <td>{{item.cc}}</td>
                         <td style="text-align: right"><span *ngIf="item.recouvre_by!='attente'">{{item.recouvre_by}}</span><span *ngIf="item.recouvre_by=='attente'"><button (click)="showModalRecouvrementDepot(contentValideRecouvrementDepot, item)" class="btn btn-primary btn-sm">Affecter</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpositionnement!=0">{{item.etatpositionnement}}</span><span *ngIf="item.etatpositionnement==0"><button (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpayement!=0">{{item.etatpayement}}</span><span *ngIf="item.etatpayement==0"><button (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatpositionnement!=0">{{item.etatpositionnement}}</span><span *ngIf="item.etatpositionnement==0"><button [disabled]="item.recouvre_by=='attente'" (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatpayement!=0">{{item.etatpayement}}</span><span *ngIf="item.etatpayement==0"><button [disabled]="item.etatpositionnement==0" (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button [disabled]="item.etatpayement==0" (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
                     </tr>
                 </tbody>
                 <tfoot>

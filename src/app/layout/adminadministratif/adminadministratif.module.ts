@@ -5,6 +5,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 import { DataTableModule } from "angular2-datatable";
 
+import { ChartsModule as Ng2Charts } from 'ng2-charts';
+
 import { AdminadministratifComponent } from './adminadministratif.component';
 import { AdminadministratifRoutingModule } from './adminadministratif-routing.module';
 import { PageHeaderModule } from './../../shared';
@@ -33,6 +35,7 @@ import {DataFilterAdminadministratifSuivipositionnementHistoriquePipe} from "./f
         PageHeaderModule,
         NgbModule.forRoot(),
         DataTableModule,
+        Ng2Charts,
         NgbModule.forRoot(),
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyC-2WxSYvBmnQ0HgUYU7fWxCyY_itypwn8'

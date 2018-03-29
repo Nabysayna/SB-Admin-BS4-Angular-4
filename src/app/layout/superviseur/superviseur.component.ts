@@ -883,13 +883,11 @@ export class SuperviseurComponent implements OnInit {
         if (this.checkPerformancePPV.tout) {
             type = "tout";
         }
-        //console.log(type+' '+lot);
         this.typedateperformancesadminpdv = type;
         this.lotperformancesadminpdv = lot;
         this._apiplatform.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
             .subscribe(
                 data => {
-                    //console.log(data)
                     if(data.errorCode){
                         this.performancesadminpdv = data.message;
                         this.loading_data = false;
@@ -1046,7 +1044,6 @@ export class SuperviseurComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode==0){
-                        console.log(data.message);
                         this.listereclamationsnonresolu = data.message.map(function (type) {
                             return {
                                 id_reclamation: type.id,
@@ -1123,7 +1120,6 @@ export class SuperviseurComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode==0){
-                        console.log(data.message);
                         this.listedeposits = data.message.map(function(type){
                             return {
                                 id_accepteur: -1,
@@ -1158,7 +1154,6 @@ export class SuperviseurComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode==0){
-                        console.log(data.message);
                         this.listedeposits = data.message.map(function(type){
                             return {
                                 id_accepteur: -1,
@@ -1284,7 +1279,6 @@ export class SuperviseurComponent implements OnInit {
         this._apiplatform.getListPointsbysuperviseur()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data.errorCode){
                         this.listepointsbycc = data.message.map(function(type){
                             return {

@@ -107,7 +107,6 @@ export class ProspectPdvComponent implements OnInit {
                                                 codepostalpoint:this.adresse_point.codepostalpoint?this.adresse_point.codepostalpoint:0,
                                                 geospatialpoint:this.adresse_point.geospatialpoint?this.adresse_point.geospatialpoint:{latitude:0, longitude:0}
                                             }
-                                            //console.log(this.adresse_point);
                                         },
                                         error => alert(error),
                                         () => {
@@ -257,11 +256,9 @@ export class ProspectPdvComponent implements OnInit {
         for(let i = 0 ; i<this.allServices.length ; i++){
             this.prospection.reponsesProspect.push( this.allServices[i].nom+"#"+this.reponsesProspect[i] ) ;
         }
-        //console.log(this.prospection);
         this._assignationsuiviService.modifPoint(this.prospection)
             .subscribe(
                 data => {
-                    //console.log(data);
                     this.isEnregistrerProspect = true;
                     this.router.navigate(['/dashboard']);
                 },
@@ -289,7 +286,6 @@ apiEndPoint = 'http://abonnement.bbstvnet.com/crmbbs/server-backend-upload/index
               .catch(error => Observable.throw(error))
               .subscribe(
                   data => {
-                      //console.log("Retour uploader "+data.generatedName) ;
                            let newData = data;
                            this.uploadFile = newData;
                            this.newImage = this.uploadFile.generatedName ;

@@ -99,12 +99,10 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
 
         this.selectionintervalledateinitArticleARecuperer = undefined;
         this.selectionintervalleddatefinalArticleARecuperer = undefined;
-        console.log(this.selectionjourArticleARecuperer);
         this._apiCommandeService.getListCommandeARecupererByDate({origine: 'actuel', type: 'jour', infotype:this.selectionjourArticleARecuperer})
             .subscribe(
                 data => {
                     console.log("-------------------------------");
-                    console.log(data.message);
                     data.message.forEach(opt =>{
                         JSON.parse(opt.orderedArticles).forEach(type =>{
                             if(!this.regions.includes(type.region)) this.regions.push(type.region);
@@ -147,7 +145,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     console.log("-------------------------------");
-                    console.log(data.message);
                     data.message.forEach(opt =>{
                         JSON.parse(opt.orderedArticles).forEach(type =>{
                             if(!this.regions.includes(type.region)) this.regions.push(type.region);
@@ -192,7 +189,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
         this._apiCommandeService.getListCommandeARecupererByDate({origine: 'init', type: 'jour', infotype:this.selectionjourArticleARecuperer})
             .subscribe(
                 data => {
-                    console.log(data.message);
                     this.livreurs = data.message.livreurs;
                     data.message.commandes.forEach(opt =>{
                         JSON.parse(opt.orderedArticles).forEach(type =>{
@@ -311,7 +307,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
             this._apiCommandeService.validerListCommandeAssigner({origine: 'recuperer', assignation:optionassignations})
                 .subscribe(
                     data => {
-                        console.log(data);
                         this.historiqueintervalleArticleARecuperer();
                     },
                     error => alert(error),
@@ -326,7 +321,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
     }
 
     public onchangeCheickallArticleARecuperer(){
-        console.log(this.cheickallArticleARecuperer);
         for (let i = 0; i < this.optionassignationsArticleARecuperer.length; i++) {
             this.optionassignationsArticleARecuperer[i].checked = this.cheickallArticleARecuperer;
         }
@@ -404,12 +398,10 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
 
         this.selectionintervalledateinitArticleALivrer = undefined;
         this.selectionintervalleddatefinalArticleALivrer = undefined;
-        console.log(this.selectionjourArticleALivrer);
         this._apiCommandeService.getListCommandeALivrerByDate({origine: 'actuel', type: 'jour', infotype:this.selectionjourArticleALivrer})
             .subscribe(
                 data => {
                     console.log("-------------------------------");
-                    console.log(data.message);
                     data.message.forEach(opt =>{
                         let pointrecup = JSON.parse(opt.pointderecuperation);
                         if(!this.regions.includes(pointrecup.region)) this.regions.push(pointrecup.region);
@@ -463,7 +455,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     console.log("-------------------------------");
-                    console.log(data.message);
                     data.message.forEach(opt =>{
                         let pointrecup = JSON.parse(opt.pointderecuperation);
                         if(!this.regions.includes(pointrecup.region)) this.regions.push(pointrecup.region);
@@ -498,7 +489,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
                         });
                     })
                     this.optionassignationsArticleALivrer = this.articlesALivrer;
-                    console.log(this.optionassignationsArticleALivrer);
                 },
                 error => alert(error),
                 () => {
@@ -644,7 +634,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
             this._apiCommandeService.validerListCommandeAssigner({origine: 'livrer', assignation:optionassignations})
                 .subscribe(
                     data => {
-                        console.log(data);
                         this.historiqueintervalleArticleALivrer();
                     },
                     error => alert(error),
@@ -659,7 +648,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
     }
 
     public onchangeCheickallArticleALivrer(){
-        console.log(this.cheickallArticleALivrer);
         for (let i = 0; i < this.optionassignationsArticleALivrer.length; i++) {
             this.optionassignationsArticleALivrer[i].checked = this.cheickallArticleALivrer;
         }
@@ -708,7 +696,6 @@ export class AdminecommerceComponent implements OnInit, OnDestroy {
 
     open(content, onecommandeAlivrer) {
         this.onecommandeAlivrer = onecommandeAlivrer;
-        console.log(this.onecommandeAlivrer)
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {

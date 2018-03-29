@@ -53,7 +53,6 @@ export class AdminsuiviComponent implements OnInit {
             .subscribe(
                 data => {
                     if(data.errorCode){
-                        console.log(data.message);
 
                         let dataobjectiffixe:number[] = data.message.map(function(type) {
                             return type.objectif;
@@ -78,12 +77,10 @@ export class AdminsuiviComponent implements OnInit {
                     this._assignationsuiviService.getSuperviseursForPerformancetest()
                         .subscribe(
                             data => {
-                                console.log(data.message);
                                 this.data = data.message;
                                 if(data.errorCode){
 
                                     let supervisorDataAll = this.data;
-                                    console.log(supervisorDataAll);
 
                                     let dataobjectiffixe:number[] = data.message.map(function(type) {
                                         return type.objectif;
@@ -130,7 +127,6 @@ export class AdminsuiviComponent implements OnInit {
             this._assignationsuiviService.getSuperviseursForPerformance()
                 .subscribe(
                     data => {
-                        console.log(data);
                         if(data.errorCode){
                             this.datasuperviseur = data.message.map(function(type) {
                                 return {
@@ -163,7 +159,6 @@ export class AdminsuiviComponent implements OnInit {
             this._assignationsuiviService.getCommerciauxForPerformance()
                 .subscribe(
                     data => {
-                        console.log(data)
                         if(data.errorCode){
                             this.datacommercial = data.message.map(function(type) {
                                 return {

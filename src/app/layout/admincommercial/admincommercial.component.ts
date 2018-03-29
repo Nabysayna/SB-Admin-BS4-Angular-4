@@ -546,7 +546,6 @@ export class AdmincommercialComponent implements OnInit, OnDestroy {
                                 if(data.errorCode){
 
                                     let supervisorDataAll = this.data;
-                                    console.log(supervisorDataAll);
 
                                     let dataobjectiffixe:number[] = data.message.map(function(type) {
                                         return type.objectif;

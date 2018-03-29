@@ -18,13 +18,12 @@ export class DepositComponent{
 	public err=false;
 	public resul=false;
 	constructor(private _utilService:UtilService){this.listDeposit();}
-	
+
 	listDeposit(){
-        
+
         this._utilService.getlistsDeposit()
             .subscribe(
                 data => {
-                    console.log(data);
                     if(data==''){
                      this.err=true;
                     }

@@ -79,7 +79,6 @@ export class MarketingcomComponent implements OnInit {
                                 adresse_point: adresse_point.address+", " + adresse_point.souszone + ", " + adresse_point.zone,
                             }
                         });
-                        console.log(this.listepointsdepoye);
                         this.getRegion();
                     }
                 },
@@ -105,7 +104,6 @@ export class MarketingcomComponent implements OnInit {
                                 message: type.message,
                             }
                         });
-                        console.log(this.listereclamationsnonresolu);
                     }
                 },
                 error => alert(error),
@@ -167,7 +165,6 @@ export class MarketingcomComponent implements OnInit {
     }
 
     validmodifyadressepoints(){
-        console.log(this.pointsdepoye);
         this._apiPlatformService.validModifyAdressePoint(this.pointsdepoye)
             .subscribe(
                 data => {

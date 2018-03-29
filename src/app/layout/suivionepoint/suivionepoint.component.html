@@ -3,7 +3,7 @@
 "/>
 </div>
 <div  class="container-fluid" *ngIf="menuHead.menuHead1" >
-    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>
+    <button  type="button" class="btn btn-primary btn-sm" (click)="pointcc=null;" [routerLink]="['/superviseur']">Retour à l'accueil</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(5)">New Réclamations</button>
     <hr>
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -11,16 +11,16 @@
                 <table class="table table-hover table-responsive table-sm" [mfData]="listepointsbycc  | dataFilterListesuivipoint: filterQuerypointsbycc" #mfCliTraiterPoint="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBypointsbycc" [(mfSortOrder)]="sortOrderpointsbycc">
                     <thead>
                     <tr>
-                        <th><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="email">Login</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="caution">Caution</mfDefaultSorter></th>
-                        <th>Action</th>
-                        <th>Option</th>
+                        <th width="10%"><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="email">Login</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
+                        <th width="16%"><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="caution">Caution</mfDefaultSorter></th>
+                        <th width="7%">Action</th>
+                        <th width="7%">Option</th>
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuerypointsbycc"/></th>
@@ -48,8 +48,8 @@
                         <td>{{p.email}}</td>
                         <td>{{p.tel}}</td>
                         <td>{{p.adresse}}</td>
-                        <td>{{p.cautiondebase}}</td>
-                        <td>{{p.caution}}</td>
+                        <td style="text-align: right">{{tocurrency(p.cautiondebase)}}</td>
+                        <td style="text-align: right">{{tocurrency(p.caution)}}</td>
                         <td><button type="button" *ngIf="p.categorie!='pas'" class="btn btn-info btn-sm" (click)="suivrepoint(p)">SUIVRE</button></td>
                         <td><button (click)="showModalFaireUnDepot(contentValiderFaireUnDepot,p)" class="btn btn-primary btn-sm" style="margin-right: 2px">faire un depot</button></td>
                     </tr>
@@ -188,7 +188,7 @@
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead3" >
-    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>  <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(5)">New Réclamations</button>
     <hr>
     <div class="row">
         <div class="col-sm-6">
@@ -261,7 +261,7 @@
 </div>
 
 <div class="container-fluid" *ngIf="menuHead.menuHead4" >
-    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button>
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(5)">New Réclamations</button>
     <hr>
     <div class="row">
         <table class="table table-hover table-responsive table-sm">
@@ -298,6 +298,53 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="menuHead.menuHead5" >
+    <button  type="button" class="btn btn-primary btn-sm" [routerLink]="['/superviseur']">Retour à l'accueil</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(1)">Retour à la liste des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(3)">Performances des points</button> <button type="button" class="btn btn-primary btn-sm" (click)="menuHeadClick(4)">Etat demande depot</button>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive" [mfData]="listereclamationsnonresolu" #mfreclamationsnonresolu="mfDataTable" [mfRowsOnPage]="rowsOnPageReclamationsnonresolu" [(mfSortBy)]="sortByReclamationsnonresolu" [(mfSortOrder)]="sortOrderReclamationsnonresolu">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="date_reclamation">Date réclamation</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nom_point">Nom Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="name_caissier">Gérant(e)</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="nomservice">Type service</mfDefaultSorter></th>
+                        <th colspan="2" style="text-align: center">Action</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryReclamationsnonresolu"/></th>
+                        <th>Total : {{listereclamationsnonresolu.length}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfreclamationsnonresolu.data; let i = index ">
+                        <td>{{item.date_reclamation}}</td>
+                        <td>{{item.nom_point}}</td>
+                        <td>{{item.name_caissier}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.nomservice}}</td>
+                        <td style="margin: 0 auto; text-align: center">
+                            <button type="button" class="btn btn-outline-warning btn-sm" ngbPopover="{{item.message}}" triggers="mouseenter:mouseleave" popoverTitle="Sujet: {{item.sujet}}">Voir réclamation</button>
+                        </td>
+                        <td><button class="btn btn-success btn-sm" (click)="validresolutionreclamation(item)">Résoudre</button></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

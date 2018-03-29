@@ -1,10 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {UtilService} from "../../services/util.service";
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
+import {NgbModalRef, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {BaseChartDirective} from 'ng2-charts/ng2-charts';
+import {Color} from "ng2-charts";
+
+import {UtilService} from "../../services/util.service";
+import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 import {NewclientService} from "../../services/newclient.service";
 import {ApiPlatformService} from "../../services/apiplateform.service";
-import {NgbModalRef, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {SuivipositionnementService} from "../../services/suivipositionnement.service";
 
 @Component({
   selector: 'app-adminadministratif',
@@ -45,7 +48,8 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
-            this.getEncienpoints();
+
+            this.histPositionnementInit();
         }
         if(option == 2){
             this.menuHead.menuHead1 = false;
@@ -160,91 +164,257 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
 
 
     /************************************************************************************
-     ********************   PARTIE ENCIEN   ****************************
+     ***********************   PARTIE BILAN POSITIONNEMENT   ****************************
      ***********************************************************************************/
 
-    public listencienpoints:any[] = [];
-    public getEncienpoints(): void {
+    public filterQueryBilanPositionnementAllDetail:any;
+    public listebilanPositionnement:any[] = [];
+    public listeBilanPositionnementCC:any[] = [];
+    public detailRecouvrement:any = {
+        promesses:{type:"promesses", nbre:0, montant:0, list:[]},
+        positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
+        payes:{type:"payes", nbre:0, montant:0, list:[]},
+        verses:{type:"verses", nbre:0,montant:0,list:[]}
+    };
+    public type:string = 'jour';
+
+    public selectionjourPositionnement:string;
+    public selectionintervalledateinitPositionnement:string;
+    public selectionintervalleddatefinalPositionnement:string;
+
+    public bilanPositionnementAllDetail:any;
+    showModalBilanBilanPositionnementAllDetail(content, item) {
+        this.bilanPositionnementAllDetail = item;
+        this.modalRef = this.modalService.open(content, {size: 'lg'});
+    }
+
+    @ViewChild("baseChart1")  chart1: BaseChartDirective;
+    public touslesjours:any[] = [];
+    public lineChartData:Array<any> = [];
+    public lineChartLabels:Array<any> = [];
+    public lineChartOptions:any = { responsive: true };
+    public lineChartType:string = 'line';
+    public lineChartLegend:boolean = true;
+
+    public suivionepointgraphe(){
+        this.lineChartLabels=[];
+        if(this.type=='jour'){
+            this.touslesjours = this.listebilanPositionnement.map( type => type.datedemande_heure);
+        }
+        else{
+            this.touslesjours = this.listebilanPositionnement.map( type => type.datedemande_jour);
+        }
+        this.touslesjours.sort();
+        let tabjours:string[] = [];
+        let jour:string = this.touslesjours[0];
+        tabjours.push(jour);
+        this.lineChartLabels.push(jour);
+        this.touslesjours.forEach(type => {
+            if(type!=jour){
+                tabjours.push(type);
+                this.lineChartLabels.push(type);
+                jour = type;
+            }
+        });
+
+        if(this.chart1 !== undefined){
+            this.chart1.chart.config.data.labels = this.lineChartLabels;
+        }
+
+        let nbrebyjourpromesses:number[] = [];
+        let nbrebyjourpositionnes:number[] = [];
+        let nbrebyjourpayes:number[] = [];
+        let nbrebyjourverses:number[] = [];
+        if(this.type=='jour'){
+            tabjours.forEach(type => {
+                let nbrebyjourpromessesSom:number = 0;
+                let nbrebyjourpositionnesSom:number = 0;
+                let nbrebyjourpayesSom:number = 0;
+                let nbrebyjourversesSom:number = 0;
+
+                this.detailRecouvrement.promesses.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpromessesSom += Number(opt.montant); } }); nbrebyjourpromesses.push( nbrebyjourpromessesSom );
+                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
+                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
+                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
+            });
+        }
+        else {
+            tabjours.forEach(type => {
+                let nbrebyjourpromessesSom:number = 0;
+                let nbrebyjourpositionnesSom:number = 0;
+                let nbrebyjourpayesSom:number = 0;
+                let nbrebyjourversesSom:number = 0;
+
+                this.detailRecouvrement.promesses.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpromessesSom += Number(opt.montant); } }); nbrebyjourpromesses.push( nbrebyjourpromessesSom );
+                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
+                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
+                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
+            });
+        }
+
+        this.lineChartData = [
+            {data: nbrebyjourpromesses, label: 'PROMESSES'},
+            {data: nbrebyjourpositionnes, label: 'POSITIONNES'},
+            {data: nbrebyjourpayes, label: 'PAYES'},
+            {data: nbrebyjourverses, label: 'VERSES'}
+        ];
+    }
+
+    initialisation(datas){
+        let detailRecouvrements = {
+            promesses:{type:"promesses", nbre:0, montant:0, list:[]},
+            positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
+            payes:{type:"payes", nbre:0, montant:0, list:[]},
+            verses:{type:"verses", nbre:0,montant:0,list:[]}
+        };
+        let listeBilanCC:any[] = [];
+        let bilanPositionnementCC:any[] = [];
+
+        detailRecouvrements.promesses.nbre = datas.length;
+        let listestatus = datas.map((type) => {
+            detailRecouvrements.promesses.montant += Number(type.montant);
+
+            if(Number(type.etatpositionnement)!=0){ detailRecouvrements.positionnes.nbre ++;    }
+            detailRecouvrements.positionnes.montant += Number(type.etatpositionnement);
+            if(Number(type.etatpayement)!=0){ detailRecouvrements.payes.nbre ++;  }
+            detailRecouvrements.payes.montant += Number(type.etatpayement);
+            if(Number(type.etatversement)!=0){ detailRecouvrements.verses.nbre ++; }
+            detailRecouvrements.verses.montant += Number(type.etatversement);
+
+            let pointObjet = JSON.parse(type.point);
+            let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
+            let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+
+            if(!listeBilanCC.includes(cc)) { listeBilanCC.push(cc); }
+
+            return {
+                id: type.id,
+                datedemande: type.datedemande,
+                datedemande_jour:type.datedemande.split(' ')[0],
+                datedemande_heure:type.datedemande.split(':')[0],
+                montant: Number(type.montant),
+                point: pointObjet.prenom+" "+pointObjet.nom,
+                telephone: pointObjet.telephone,
+                adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                cc: cc,
+                recouvre_by: type.recouvre_by?type.recouvre_by:"attente",
+                etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
+                positionne_at:type.positionne_at?type.positionne_at:"attente",
+                etatpayement: type.etatpayement?type.etatpayement:0,
+                validpaye_at:type.validpaye_at?type.validpaye_at:"attente",
+                etatversement: type.etatversement?type.etatversement:0,
+                validverse_at:type.validverse_at?type.validverse_at:"attente",
+                modepayement:type.modepayement?type.modepayement:"non defini",
+                modedemande:type.modedemande?type.modedemande:"non defini",
+                modeversement:type.modeversement?type.modeversement:"non defini",
+                dateeffectif: type.dateeffectif?type.dateeffectif:"attente",
+            }
+        });
+        this.listebilanPositionnement = listestatus;
+        detailRecouvrements.promesses.list = listestatus;
+        detailRecouvrements.positionnes.list = listestatus.filter( opt => Number(opt.etatpositionnement)!=0 );
+        detailRecouvrements.payes.list = listestatus.filter( opt => Number(opt.etatpayement)!=0 );
+        detailRecouvrements.verses.list = listestatus.filter( opt => Number(opt.etatversement)!=0 );
+
+        listeBilanCC.forEach(type => {
+            let liste = listestatus.filter( opt => opt.cc==type );
+            let promesses:number = 0;
+            let positionnes:number = 0;
+            let payes:number = 0;
+            let verses:number = 0;
+
+            let detailRecouvrementsCC = {
+                promesses:{type:"promesses", nbre:0, montant:0, list:[]},
+                positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
+                payes:{type:"payes", nbre:0, montant:0, list:[]},
+                verses:{type:"verses", nbre:0,montant:0,list:[]}
+            };
+            detailRecouvrementsCC.promesses.nbre = liste.length;
+
+            liste.forEach(optcc => {
+                detailRecouvrementsCC.promesses.montant += Number(optcc.montant);
+                if(Number(optcc.etatpositionnement)!=0){ detailRecouvrementsCC.positionnes.nbre ++;    }
+                detailRecouvrementsCC.positionnes.montant += Number(optcc.etatpositionnement);
+                if(Number(optcc.etatpayement)!=0){ detailRecouvrementsCC.payes.nbre ++;  }
+                detailRecouvrementsCC.payes.montant += Number(optcc.etatpayement);
+                if(Number(optcc.etatversement)!=0){ detailRecouvrementsCC.verses.nbre ++; }
+                detailRecouvrementsCC.verses.montant += Number(optcc.etatversement);
+            });
+            detailRecouvrementsCC.promesses.list = liste;
+            detailRecouvrementsCC.positionnes.list = liste.filter( opt => Number(opt.etatpositionnement)!=0 );
+            detailRecouvrementsCC.payes.list = liste.filter( opt => Number(opt.etatpayement)!=0 );
+            detailRecouvrementsCC.verses.list = liste.filter( opt => Number(opt.etatversement)!=0 );
+
+            bilanPositionnementCC.push({
+                cc:type,
+                type:type,
+                detail:detailRecouvrementsCC,
+            })
+        });
+        this.listeBilanPositionnementCC=bilanPositionnementCC;
+        this.detailRecouvrement = detailRecouvrements;
+
+        this.suivionepointgraphe();
+    }
+
+    historiquejourPositionnement(){
+        this.type = 'jour';
         this.loading_data = true;
-        this._utilService.getEncienpoints()
+        this.selectionintervalledateinitPositionnement = undefined;
+        this.selectionintervalleddatefinalPositionnement = undefined;
+        this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
-                    this.listencienpoints = data.message.map(function (type) {
-                        let adresse_point = JSON.parse(type.adresse_point);
-                        return {
-                            id:type.id,
-                            date_ajout:type.date_ajout,
-                            nom_point:type.nom_point,
-                            infosup:JSON.parse(type.infosup),
-                            fullname_gerant:type.prenom_gerant+" "+type.nom_gerant,
-                            telephone_gerant:type.telephone_gerant,
-                            adresse_point: adresse_point.adressepoint+", "+adresse_point.souszonepoint+", "+adresse_point.zonepoint
-                        }
-                    });
+                    this.initialisation(data.message)
+                },
+                error => alert(error),
+                () => {
                     this.loading_data = false;
-                },
-                error => alert(error),
-                () => console.log('getEncienpoints')
+                }
             );
     }
 
-    validresouscritsentool(point: any, type:string){
+    historiqueintervallePositionnement(){
         this.loading_data = true;
-        this._newclientService.validerSouscritSentool(point)
+        this.selectionjourPositionnement = undefined;
+        this.type = 'intervalle';
+        this._apiPlatformService.getListBilanPositionnementByDate({type: 'intervalle', infotype:this.selectionintervalledateinitPositionnement+" "+this.selectionintervalleddatefinalPositionnement})
             .subscribe(
                 data => {
-                    if(type == 'ancien'){
-                        this.getEncienpoints();
-                    }
-                    if(type == 'nouveau'){
-                        this.getNouveauxpoints();
-                    }
+                    this.initialisation(data.message)
                 },
                 error => alert(error),
-                () => console.log('validerSouscritSentool')
+                () => {
+                    this.loading_data = false;
+                }
             );
     }
 
-    validresouscritwafacash(point: any, type:string){
+    histPositionnementInit(){
+        this.type = 'jour';
         this.loading_data = true;
-        this._newclientService.validerSouscritWafacash(point)
+        this.selectionintervalledateinitPositionnement = undefined;
+        this.selectionintervalleddatefinalPositionnement = undefined;
+        let datenow = ((new Date()).toJSON()).split("T",2)[0];
+        this.selectionjourPositionnement = datenow;
+        this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
-                    if(type == 'ancien'){
-                        this.getEncienpoints();
-                    }
-                    if(type == 'nouveau'){
-                        this.getNouveauxpoints();
-                    }
+                    this.initialisation(data.message)
                 },
                 error => alert(error),
-                () => console.log('validerSouscritWafacash')
-            );
-    }
-
-    validresouscritsentoolandwafacash(point: any, type:string){
-        this.loading_data = true;
-        this._newclientService.validerSouscritSentoolAndWafacash(point)
-            .subscribe(
-                data => {
-                    if(type == 'ancien'){
-                        this.getEncienpoints();
-                    }
-                    if(type == 'nouveau'){
-                        this.getNouveauxpoints();
-                    }
-                },
-                error => alert(error),
-                () => console.log('validerSouscritWafacash')
+                () => {
+                    this.loading_data = false;
+                }
             );
     }
 
 
 
 
-    /************************************************************************************
-     **********************************   PARTIE NEW POINT   ****************************
-     ***********************************************************************************/
+    /***********************************************************************************
+    **********************************   PARTIE NEW POINT   ****************************
+    ***********************************************************************************/
 
     public rowsOnPageNewPoint = 10;
     public sortByNewPoint = "date_ajout";
@@ -280,8 +450,8 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
 
 
     /************************************************************************************
-     **********************   PARTIE POINT SOUSCRIT BBS ****************************
-     ***********************************************************************************/
+    ****************************  PARTIE POINT SOUSCRIT BBS  ****************************
+    ************************************************************************************/
 
     public rowsOnPagePointSouscription = 10;
     public sortByPointSouscription = "date_ajout";
@@ -384,7 +554,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this._apiPlatformService.getEtatDeposit()
             .subscribe(
                 data => {
-                    console.log(data.message[0]);
                     this.listeetatdeposit = data.message.map(function (type) {
                         return {
                             date_update:type.updater.date.split('.')[0],
@@ -405,10 +574,10 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
 
 
 
-    /************************************************************************************
-     **********************************   PARTIE HISTORIQUE DEPOSIT    COMPTABLE ****************************
-     ***********************************************************************************/
 
+    /************************************************************************************
+    ***********************   PARTIE HISTORIQUE DEPOSIT COMPTABLE ***********************
+    ************************************************************************************/
 
     tocurrency(number){
         return Number(number).toLocaleString();
@@ -704,7 +873,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     pointdemandedepot:any;
     montantfairedepot:number;
     showModalFaireUnDepot(content, item) {
-        console.log(item);
         this.montantfairedepot = undefined;
         this.pointdemandedepot = item;
         this.modalRef = this.modalService.open(content);
@@ -718,7 +886,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this._suivipositionnementService.valideFaireUnDepot({point:this.pointdemandedepot.pointFordemandeDepot, montant:this.montantfairedepot})
                 .subscribe(
                     data => {
-                        console.log(data);
                         if(data.errorCode){
                             this.closedModal();
                             this.loading_data = false;

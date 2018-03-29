@@ -18,7 +18,7 @@ export class SuivionepointComponent implements OnInit {
     public loading_data:boolean = true;
     public killsetinterval:any;
 
-    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false};
+    public menuHead = {menuHead1:true, menuHead2:false, menuHead3:false, menuHead4:false, menuHead5:false};
 
     constructor(private _suivipositionnementService:SuivipositionnementService, private _apiPlatformService:ApiPlatformService, private modalService: NgbModal,){}
 
@@ -46,6 +46,7 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
             this.getListPointsbysuperviseur();
         }
         if(option == 2){
@@ -53,6 +54,7 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead2 = true;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
             this.lineChartData = [];
             this.lineChartLabels = [];
 
@@ -63,6 +65,7 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = true;
             this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = false;
             this.datasetsPPV = [{
                 data: this.doughnutChartDataPPV,
                 backgroundColor: ["red", "yellow", "orange", "green"]
@@ -74,13 +77,22 @@ export class SuivionepointComponent implements OnInit {
             this.menuHead.menuHead2 = false;
             this.menuHead.menuHead3 = false;
             this.menuHead.menuHead4 = true;
+            this.menuHead.menuHead5 = false;
 
-            this.loading_data = true
             this.getListStatusDepositionCC();
             this.killsetinterval = setInterval(() => {
                 this.getListStatusDepositionCC();
                 console.log('step init');
             }, 30000);
+        }
+        if(option == 5){
+            this.menuHead.menuHead1 = false;
+            this.menuHead.menuHead2 = false;
+            this.menuHead.menuHead3 = false;
+            this.menuHead.menuHead4 = false;
+            this.menuHead.menuHead5 = true;
+
+            this.getReclamationsNonResolu();
         }
     }
 
@@ -106,7 +118,7 @@ export class SuivionepointComponent implements OnInit {
                     if(data.errorCode){
                         this.listepointsbycc = data.message.map(function(type){
                             return {
-                                date_ajout: type.dateCreation.date.split('.')[0],
+                                date_ajout: type.dateCreation.date.split('.')[0].split(" ")[0],
                                 date_last_depot: type.date_last_modif.date.split('.')[0],
                                 nom_point: JSON.parse(type.infosup).nometps,
                                 info_point: JSON.parse(type.infosup),
@@ -192,6 +204,7 @@ export class SuivionepointComponent implements OnInit {
                                 id_gerant: type.idUser,
                                 dateop: type.dateoperation.date.split('.')[0],
                                 dateop_jour: type.dateoperation.date.split('.')[0].split(' ')[0],
+                                dateop_heure: type.dateoperation.date.split('.')[0].split(':')[0],
                                 montant: Number(type.montant),
                                 commission: Number(type.commissionpdv),
                                 service: type.nomservice.toLowerCase(),
@@ -272,6 +285,7 @@ export class SuivionepointComponent implements OnInit {
                                 id_gerant: type.idUser,
                                 dateop: type.dateoperation.date.split('.')[0],
                                 dateop_jour: type.dateoperation.date.split('.')[0].split(' ')[0],
+                                dateop_heure: type.dateoperation.date.split('.')[0].split(':')[0],
                                 montant: Number(type.montant),
                                 commission: Number(type.commissionpdv),
                                 service: type.nomservice.toLowerCase(),
@@ -317,7 +331,16 @@ export class SuivionepointComponent implements OnInit {
     public lineChartLegend:boolean = true;
 
     public suivionepointgraphe(){
-        this.touslesjours = this.touslescommissions.map( type => type.dateop_jour);
+        let isjour = false;
+        if(this.suivionepointSelectionintervalledateinit==this.suivionepointSelectionintervalledatefinal){
+            isjour = true;
+        }
+        if(isjour){
+            this.touslesjours = this.touslescommissions.map( type => type.dateop_heure);
+        }
+        else{
+            this.touslesjours = this.touslescommissions.map( type => type.dateop_jour);
+        }
         this.touslesjours.sort();
         let tabjours:string[] = [];
         let jour:string = this.touslesjours[0];
@@ -341,21 +364,41 @@ export class SuivionepointComponent implements OnInit {
         let nbrebyjourwizall:number[] = [];
         let nbrebyjouremoney:number[] = [];
         let nbrebyjourtigocash:number[] = [];
-        tabjours.forEach(type => {
-            let nbrebyjouromSom:number = 0;
-            let nbrebyjourtntSom:number = 0;
-            let nbrebyjourpostSom:number = 0;
-            let nbrebyjourwizallSom:number = 0;
-            let nbrebyjouremoneySom:number = 0;
-            let nbrebyjourtigocashSom:number = 0;
 
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='orangemoney'){ nbrebyjouromSom += Number(opt.montant); } }); nbrebyjourom.push( nbrebyjouromSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tnt'){ nbrebyjourtntSom += Number(opt.montant); } }); nbrebyjourtnt.push( nbrebyjourtntSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='postcash'){ nbrebyjourpostSom += Number(opt.montant); } }); nbrebyjourpost.push( nbrebyjourpostSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='wizall'){ nbrebyjourwizallSom += Number(opt.montant); } }); nbrebyjourwizall.push( nbrebyjourwizallSom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='emoney'){ nbrebyjouremoneySom += Number(opt.montant); } }); nbrebyjouremoney.push( nbrebyjouremoneySom );
-            this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tigocash'){ nbrebyjourtigocashSom += Number(opt.montant); } }); nbrebyjourtigocash.push( nbrebyjourtigocashSom );
-        });
+        if(isjour){
+            tabjours.forEach(type => {
+                let nbrebyjouromSom:number = 0;
+                let nbrebyjourtntSom:number = 0;
+                let nbrebyjourpostSom:number = 0;
+                let nbrebyjourwizallSom:number = 0;
+                let nbrebyjouremoneySom:number = 0;
+                let nbrebyjourtigocashSom:number = 0;
+
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='orangemoney'){ nbrebyjouromSom += Number(opt.montant); } }); nbrebyjourom.push( nbrebyjouromSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='tnt'){ nbrebyjourtntSom += Number(opt.montant); } }); nbrebyjourtnt.push( nbrebyjourtntSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='postcash'){ nbrebyjourpostSom += Number(opt.montant); } }); nbrebyjourpost.push( nbrebyjourpostSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='wizall'){ nbrebyjourwizallSom += Number(opt.montant); } }); nbrebyjourwizall.push( nbrebyjourwizallSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='emoney'){ nbrebyjouremoneySom += Number(opt.montant); } }); nbrebyjouremoney.push( nbrebyjouremoneySom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_heure==type && opt.service=='tigocash'){ nbrebyjourtigocashSom += Number(opt.montant); } }); nbrebyjourtigocash.push( nbrebyjourtigocashSom );
+            });
+        }
+        else{
+            tabjours.forEach(type => {
+                let nbrebyjouromSom:number = 0;
+                let nbrebyjourtntSom:number = 0;
+                let nbrebyjourpostSom:number = 0;
+                let nbrebyjourwizallSom:number = 0;
+                let nbrebyjouremoneySom:number = 0;
+                let nbrebyjourtigocashSom:number = 0;
+
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='orangemoney'){ nbrebyjouromSom += Number(opt.montant); } }); nbrebyjourom.push( nbrebyjouromSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tnt'){ nbrebyjourtntSom += Number(opt.montant); } }); nbrebyjourtnt.push( nbrebyjourtntSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='postcash'){ nbrebyjourpostSom += Number(opt.montant); } }); nbrebyjourpost.push( nbrebyjourpostSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='wizall'){ nbrebyjourwizallSom += Number(opt.montant); } }); nbrebyjourwizall.push( nbrebyjourwizallSom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='emoney'){ nbrebyjouremoneySom += Number(opt.montant); } }); nbrebyjouremoney.push( nbrebyjouremoneySom );
+                this.touslescommissionsbyGerant.forEach( opt => { if(opt.dateop_jour==type && opt.service=='tigocash'){ nbrebyjourtigocashSom += Number(opt.montant); } }); nbrebyjourtigocash.push( nbrebyjourtigocashSom );
+            });
+        }
 
         this.lineChartData = [
             {data: nbrebyjourom, label: 'OM'},
@@ -552,13 +595,11 @@ export class SuivionepointComponent implements OnInit {
         if (this.checkPerformancePPV.tout) {
             type = "tout";
         }
-        //console.log(type+' '+lot);
         this.typedateperformancesadminpdv = type;
         this.lotperformancesadminpdv = lot;
         this._apiPlatformService.getperformancessupperviseurclasserbydatebylot({lot:lot, typedate:type})
             .subscribe(
                 data => {
-                    //console.log(data)
                     if(data.errorCode){
                         this.performancesadminpdv = data.message;
                         this.loading_data = false;
@@ -601,7 +642,9 @@ export class SuivionepointComponent implements OnInit {
 
 
 
-    /////////// FAIRE UN DEPOT ///////////////
+    /***************************************************************************************
+     **************************************   FAIRE UN DEPOT   *****************************
+     **************************************************************************************/
     pointdemandedepot:any;
     montantfairedepot:number;
     public modalRef: NgbModalRef;
@@ -637,7 +680,11 @@ export class SuivionepointComponent implements OnInit {
     }
 
 
-    ////////////////////////ETAT DEPOT EN COURS///
+
+
+    /***************************************************************************************
+     *********************************   ETAT DEPOT EN COURS   ****************************
+     **************************************************************************************/
     public filterQueryStatusDepositionCC:any;
     public listestatusdepositionCC:any[] = [];
 
@@ -671,6 +718,59 @@ export class SuivionepointComponent implements OnInit {
                 }
             );
     }
+
+
+
+    /***************************************************************************************
+     *********************************   PARTIE RECLAMATIONS NON RESOLUES   ****************************
+     **************************************************************************************/
+
+    public rowsOnPageReclamationsnonresolu = 10;
+    public sortByReclamationsnonresolu = "date_reclamation";
+    public sortOrderReclamationsnonresolu = "asc";
+    public filterQueryReclamationsnonresolu:any;
+    public listereclamationsnonresolu:any[] = [];
+
+    public getReclamationsNonResolu(): void {
+        this._apiPlatformService.getReclamationsNonResoluBySuperviseur()
+            .subscribe(
+                data => {
+                    if(data.errorCode==0){
+                        this.listereclamationsnonresolu = data.message.map(function (type) {
+                            return {
+                                id_reclamation: type.id,
+                                date_reclamation: type.dateajout.date.split('.')[0],
+                                nom_point: JSON.parse(type.infosup).nometps,
+                                name_caissier: type.name_caissier,
+                                telephone: type.telephone.split('221')[1],
+                                nomservice: type.nomservice,
+                                sujet: type.sujet,
+                                message: type.message,
+                            }
+                        });
+                        this.loading_data = false;
+                    }
+                },
+                error => alert(error),
+                () => console.log('getPointsdeploye')
+            );
+    }
+
+    validresolutionreclamation(reclamation){
+        this._apiPlatformService.validReclamationsNonResolu(reclamation)
+            .subscribe(
+                data => {
+                    console.log('');
+                },
+                error => alert(error),
+                () => console.log('validReclamationsNonResolu')
+            );
+        this.listereclamationsnonresolu = this.listereclamationsnonresolu.filter( opt => opt.id_reclamation!=reclamation.id_reclamation );
+    }
+
+
+
+
 
 
 

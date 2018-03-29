@@ -264,7 +264,6 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
                 .subscribe(
                     data => {
                         if(data.errorCode){
-                            this.closedModal();
                             this.loading_data = false;
                         }
                     },
