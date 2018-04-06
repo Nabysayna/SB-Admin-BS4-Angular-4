@@ -36,37 +36,24 @@
                 </div>
             </div>
             <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center">
-                <div class="col-sm-3" style="margin-bottom: 1rem;">
-                    <div class="card text-white bg-danger">
-                        <div class="card-body">
-                            <h4 class="card-title">{{tocurrency(detailRecouvrement.promesses.nbre)}} Promesses</h4>
-                            <p class="card-text">{{tocurrency(detailRecouvrement.promesses.montant)}}<i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
-                        </div>
-                    </div>
+                <div class="col-sm-1" style="margin-bottom: 1rem;">
+                    <button (click)="showModalDepotCompteBBS(contentDepotBBS)" class="btn bg-info btn-sm">Ajout Depot BBS</button>
                 </div>
-                <div class="col-sm-3" style="margin-bottom: 1rem;">
-                    <div class="card text-white bg-primary">
+            </div>
+            <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center" *ngIf="listedepotCompteBBS.length!=0">
+                <div class="col-sm-2" style="margin-bottom: 0.5rem;" *ngFor="let item of listedepotCompteBBS; let i = index ">
+                    <div [ngClass]="{'card': true, 'text-white': true, 'bg-danger': ((item.caution==0) || ((item.cautionconsomme/item.caution)<0.10)), 'bg-warning': (((item.cautionconsomme/item.caution)>=0.10) && ((item.cautionconsomme/item.caution)<0.35)), 'bg-info': (((item.cautionconsomme/item.caution)>=0.50) && ((item.cautionconsomme/item.caution)<0.75)), 'bg-success': (item.cautionconsomme/item.caution)>=0.75 }">
                         <div class="card-body">
-                            <h4 class="card-title">{{tocurrency(detailRecouvrement.positionnes.nbre)}} Positionnés</h4>
-                            <p class="card-text">{{tocurrency(detailRecouvrement.positionnes.montant)}}<i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.positionnes)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
+                            <h6 class="card-title">({{ ((item.cautionconsomme/item.caution) * 100) | number : '1.2'}}%) {{tocurrency(item.cautionconsomme)}}</h6>
+                            <p class="card-text">{{item.nomservice}} <i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-3" style="margin-bottom: 1rem;">
-                    <div class="card text-white bg-warning">
+                    <!--<div [ngClass]="{'card': true, 'text-white': true, 'bg-danger': ((item.caution==0) || ((item.cautionconsomme/item.caution)<0.10)), 'bg-warning': (((item.cautionconsomme/item.caution)>=0.10) && ((item.cautionconsomme/item.caution)<0.35)), 'bg-info': (((item.cautionconsomme/item.caution)>=0.50) && ((item.cautionconsomme/item.caution)<0.75)), 'bg-success': (item.cautionconsomme/item.caution)>=0.75 }">
                         <div class="card-body">
-                            <h4 class="card-title">{{tocurrency(detailRecouvrement.payes.nbre)}} Payés</h4>
-                            <p class="card-text">{{tocurrency(detailRecouvrement.payes.montant)}}<i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.payes)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
+                            <h6 class="card-title">({{ ((item.cautionconsomme/item.caution) * 100) }}%) {{tocurrency(item.cautionconsomme)}}</h6>
+                            <p class="card-text">{{item.nomservice}} <i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-3" style="margin-bottom: 1rem;">
-                    <div class="card text-white bg-success">
-                        <div class="card-body">
-                            <h4 class="card-title">{{tocurrency(detailRecouvrement.verses.nbre)}} Versés</h4>
-                            <p class="card-text">{{tocurrency(detailRecouvrement.verses.montant)}}<i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.verses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
-                        </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center">
@@ -81,7 +68,6 @@
                                     [chartType]="lineChartType" ></canvas>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-sm-6" style="margin-bottom: 1px;">
                     <h4 class="card-title" style="text-align: center">Performance CC</h4>
@@ -97,13 +83,69 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr [ngStyle]="{'color': 'black', 'background-color': 'blue'}">
+                            <td width="5%">*</td>
+                            <td width="25%" (click)="clickPositionnement(detailRecouvrement.promesses.list)" style="cursor: pointer">ALL</td>
+                            <td width="19%"  class="bg-danger" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)">
+                                    ({{tocurrency(detailRecouvrement.promesses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.promesses.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-info"  style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.positionnes)">
+                                    ({{tocurrency(detailRecouvrement.positionnes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.positionnes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-warning" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.payes)">
+                                    ({{tocurrency(detailRecouvrement.payes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.payes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-success"  style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.verses)">
+                                    ({{tocurrency(detailRecouvrement.verses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.verses.montant)}}
+                                </p>
+                            </td>
+                        </tr>
                         <tr *ngFor="let item of listeBilanPositionnementCC; let i = index; let first = first; let last = last" [ngStyle]="{'color': 'black', 'background-color': first?'green':last?'red':'orange'}">
                             <td width="5%">{{i+1}}</td>
-                            <td width="25%">{{item.cc}}</td>
-                            <td width="19%" style="text-align: right"><span style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.promesses)">({{tocurrency(item.detail.promesses.nbre)}})</span> {{tocurrency(item.detail.promesses.montant)}}</td>
-                            <td width="17%" style="text-align: right"><span style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.positionnes)">({{tocurrency(item.detail.positionnes.nbre)}})</span> {{tocurrency(item.detail.positionnes.montant)}}</td>
-                            <td width="17%" style="text-align: right"><span style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.payes)">({{tocurrency(item.detail.payes.nbre)}})</span> {{tocurrency(item.detail.payes.montant)}}</td>
-                            <td width="17%" style="text-align: right"><span style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.verses)">({{tocurrency(item.detail.verses.nbre)}})</span> {{tocurrency(item.detail.verses.montant)}}</td>
+                            <td width="25%" (click)="clickPositionnement(item.list)" style="cursor: pointer">{{item.cc}}</td>
+                            <td width="19%" class="bg-danger" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.promesses)">
+                                    ({{tocurrency(item.detail.promesses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.promesses.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-info" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.positionnes)">
+                                    ({{tocurrency(item.detail.positionnes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.positionnes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-warning" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.payes)">
+                                    ({{tocurrency(item.detail.payes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.payes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-success" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.verses)">
+                                    ({{tocurrency(item.detail.verses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.verses.montant)}}
+                                </p>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -357,8 +399,8 @@
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanDeposit"/></th>
-                        <th>Nombre Total : {{listebilandeposit.length}} Déposits</th>
-                        <th>Montant Total : {{totaldeposit}} FCFA.</th>
+                        <th>Nombre Total: {{listebilandeposit.length}} Déposits</th>
+                        <th>Montant Total: {{tocurrency(totaldeposit)}} FCFA.</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -388,6 +430,35 @@
 <div  class="container-fluid" *ngIf="menuHead.menuHead9" >
     <recouvrement-demandedepot></recouvrement-demandedepot>
 </div>
+
+<ng-template #contentDepotBBS let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Crediter compte BBS</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="typeservice">Type service</label>
+                        <select class="form-control input-sm" id="typeservice" name="typeservice" [(ngModel)]="typeservice" >
+                            <option *ngFor="let item of getListeServiceBBS">{{item.nomservice}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="montanttypeservice">Monatnt versé</label>
+                    <input type="number" min="0" class="form-control" id="montanttypeservice" name="montanttypeservice" [(ngModel)]="montanttypeservice" placeholder="somme verser"  required>
+                </div>
+                <div class="col-sm-3"><br><br>{{tocurrency(montanttypeservice)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!typeservice || montanttypeservice<1 || montanttypeservice==undefined" (click)="valideDepotCompteBBS()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
 
 <ng-template #contentRecouvrementAllDetail let-c="close" let-d="dismiss" >
     <div class="modal-content" *ngIf="bilanPositionnementAllDetail">
@@ -510,4 +581,3 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click'); getPointsInfosIncomplets();">Fermer</button>
     </div>
 </ng-template>
-

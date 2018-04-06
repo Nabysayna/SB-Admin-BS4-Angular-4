@@ -177,12 +177,16 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         verses:{type:"verses", nbre:0,montant:0,list:[]}
     };
     public type:string = 'jour';
+    public infotypeDepotCompteBBS:any;
 
     public selectionjourPositionnement:string;
     public selectionintervalledateinitPositionnement:string;
     public selectionintervalleddatefinalPositionnement:string;
 
     public bilanPositionnementAllDetail:any;
+    public getListeServiceBBS:any[]=[];
+    public listedepotCompteBBS:any[]=[];
+
     showModalBilanBilanPositionnementAllDetail(content, item) {
         this.bilanPositionnementAllDetail = item;
         this.modalRef = this.modalService.open(content, {size: 'lg'});
@@ -349,6 +353,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 cc:type,
                 type:type,
                 detail:detailRecouvrementsCC,
+                list:liste,
             })
         });
         this.listeBilanPositionnementCC=bilanPositionnementCC;
@@ -362,6 +367,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.loading_data = true;
         this.selectionintervalledateinitPositionnement = undefined;
         this.selectionintervalleddatefinalPositionnement = undefined;
+        this.infotypeDepotCompteBBS = this.selectionjourPositionnement;
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
@@ -369,6 +375,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 },
                 error => alert(error),
                 () => {
+                    this.getDepotCompteBBS();
                     this.loading_data = false;
                 }
             );
@@ -378,6 +385,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.loading_data = true;
         this.selectionjourPositionnement = undefined;
         this.type = 'intervalle';
+        this.infotypeDepotCompteBBS = this.selectionintervalledateinitPositionnement+" "+this.selectionintervalleddatefinalPositionnement;
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'intervalle', infotype:this.selectionintervalledateinitPositionnement+" "+this.selectionintervalleddatefinalPositionnement})
             .subscribe(
                 data => {
@@ -385,6 +393,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 },
                 error => alert(error),
                 () => {
+                    this.getDepotCompteBBS();
                     this.loading_data = false;
                 }
             );
@@ -397,9 +406,13 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.selectionintervalleddatefinalPositionnement = undefined;
         let datenow = ((new Date()).toJSON()).split("T",2)[0];
         this.selectionjourPositionnement = datenow;
+        this.infotypeDepotCompteBBS = datenow;
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
+                    console.log(data);
+                    this.getListeServiceBBS = data.datasbbs;
+                    this.listedepotCompteBBS = data.datasbbs;
                     this.initialisation(data.message)
                 },
                 error => alert(error),
@@ -409,8 +422,58 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             );
     }
 
+    clickPositionnement(datasGraphe){
+        this.listebilanPositionnement = datasGraphe;
+        this.suivionepointgraphe();
+    }
 
 
+    public typeservice:string;
+    public montanttypeservice:number;
+
+    showModalDepotCompteBBS(content) {
+        this.typeservice = undefined;
+        this.montanttypeservice = undefined;
+        this.modalRef = this.modalService.open(content);
+    }
+
+    getDepotCompteBBS(){
+        this._suivipositionnementService.getDepotCompteBBS({type:this.type, infotype:this.infotypeDepotCompteBBS})
+            .subscribe(
+                data => {
+                    console.log(data)
+                    this.listedepotCompteBBS = data.message;
+                },
+                error => alert(error),
+                () => {
+                    console.log("finish")
+                }
+            );
+    }
+
+    valideDepotCompteBBS(){
+        if(confirm("Confirmer le versement "+this.typeservice+" de "+this.tocurrency(this.montanttypeservice)+" FCFA")){
+            console.log("je confirme")
+            this.loading_data = true;
+            this._suivipositionnementService.valideDepotCompteBBS({type:this.typeservice, montant:this.montanttypeservice})
+                .subscribe(
+                    data => {
+                        console.log(data)
+                        if(data.errorCode){
+                            this.closedModal();
+                        }
+                    },
+                    error => alert(error),
+                    () => {
+                        this.getDepotCompteBBS();
+                        this.loading_data = false;
+                    }
+                );
+        }
+        else{
+            console.log("Je ne confirme pas")
+        }
+    }
 
     /***********************************************************************************
     **********************************   PARTIE NEW POINT   ****************************
@@ -595,6 +658,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public selectionintervalleddatefinal:string;
 
     historiquejourDepositCaution(){
+        this.totaldeposit = 0;
         this.loading_data = true;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
@@ -623,6 +687,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     historiqueintervalleDepositCaution(){
+        this.totaldeposit = 0;
         this.loading_data = true;
         this.selectionjour = undefined;
         this._apiPlatformService.getListBilanDepositByDate({type: 'intervalle', infotype:this.selectionintervalledateinit+" "+this.selectionintervalleddatefinal})
@@ -650,6 +715,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     }
 
     histDepositCautionInit(){
+        this.totaldeposit = 0;
         this.loading_data = true;
         this.selectionintervalledateinit = undefined;
         this.selectionintervalleddatefinal = undefined;
@@ -678,6 +744,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 }
             );
     }
+
 
 
 

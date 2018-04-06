@@ -8,8 +8,6 @@ import {Http, Response, Headers} from "@angular/http";
 @Injectable()
 export class SuivipositionnementService {
 
-
-
     //private link:string = "http://127.0.0.1/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://localhost/backup-sb-admin/backend-SB-Admin-BS4-Angular-4/index.php";
     //private link = "http://localhost/backend-SB-Admin-BS4-Angular-4/index.php";
@@ -66,6 +64,22 @@ export class SuivipositionnementService {
     getDemandeDepotEncoursForCom(){
         let url = this.link+"/apifromsentool/listedemndedepositencoursforcom";
         let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getDepotCompteBBS(data){
+        let url = this.link+"/apifromsentool/getdepotcomptebbs";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    valideDepotCompteBBS(data){
+        let url = this.link+"/apifromsentool/validerdepotcomptebbs";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
         let params = 'params='+datas;
         return this._http.post(url, params, {headers:this.headers})
             .map(res => res.json());
