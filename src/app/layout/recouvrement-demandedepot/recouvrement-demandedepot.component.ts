@@ -25,7 +25,7 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
     public loading_data:boolean = true;
     public killsetinterval:any;
 
-    constructor(private _apiPlatformService:ApiPlatformService, public router: Router, private http: Http, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private _suivipositionnementService:SuivipositionnementService) {}
+    constructor(private _apiPlatformService:ApiPlatformService, public router: Router, private modalService: NgbModal, private _utilService: UtilService, private _assignationsuiviService:AssignationSuiviService, private _suivipositionnementService:SuivipositionnementService) {}
 
     ngOnInit(): void {
         this.loading_data = true
@@ -43,7 +43,7 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
 
     public rowsOnPageStatusDeposition = 25;
     public sortByStatusDeposition = "datedemande";
-    public sortOrderStatusDeposition = "asc";
+    public sortOrderStatusDeposition = "desc";
     public filterQueryStatusDeposition:any;
     public listestatusdeposition:any[] = [];
     public statusdoneeposition:any;
@@ -53,9 +53,9 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
     public moderecouvrement:number;
     public modeversement:number;
     public recouvreur:any;
+    public phonerecouvreur:number;
     public recouvreurs:any[] = [];
 
-    public filterQueryStatusDepositionHistorique:any;
     public listestatusdepositionHistorique:any[] = [];
 
     public modalRef: NgbModalRef;
@@ -64,11 +64,9 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
         this.modalRef.close('Close click');
     }
 
-    showModalValideDemandeDepot(content) {
-        this.modalRef = this.modalService.open(content);
-    }
     showModalRecouvrementDepot(content, item) {
         this.moderecouvrement = undefined;
+        this.phonerecouvreur = undefined;
         this.recouvreur = undefined;
         this.statusdoneeposition = item;
         this.modalRef = this.modalService.open(content);
@@ -89,9 +87,6 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
         this.statusdoneeposition = item;
         this.modalRef = this.modalService.open(content);
     }
-    showModalHistoriqueFaireUnDepot(content) {
-        this.modalRef = this.modalService.open(content, {size: "lg"});
-    }
 
     public getPersonForRecouvrement(): void {
         this._utilService.getPersonForRecouvrement()
@@ -108,22 +103,27 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
             );
     }
 
+    public iam:number
     public getListStatusDeposition(): void {
         this._apiPlatformService.getListStatusDeposition()
             .subscribe(
                 data => {
+                    console.log(data)
+                    this.iam = data.iam.match("dev")?10:data.iam.match("khady")?9:data.iam.match("alioune")?8:0;
+                    console.log(this.iam);
                     let listestatus = data.message.map(function (type) {
                         let pointObjet = JSON.parse(type.point);
                         let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
                         return {
                             id: type.id,
-                            datedemande: type.datedemande.split(" ")[0],
+                            datedemande: type.datedemande,
                             montantdemande: Number(type.montant),
                             point: pointObjet.prenom+" "+pointObjet.nom,
                             telephone: pointObjet.telephone,
                             adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                            adresseonly: adressecomplet.address+", "+adressecomplet.souszone,
                             cc: type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune",
-                            recouvre_by: type.recouvre_by?type.recouvre_by:"attente",
+                            recouvre_by: type.recouvre_by?( (type.recouvre_by!='pas besoin')?type.recouvre_by:type.modepayement ):"attente",
                             etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
                             etatpayement: type.etatpayement?type.etatpayement:0,
                             etatversement: type.etatversement?type.etatversement:0,
@@ -149,7 +149,7 @@ export class RecouvrementDemandedepotComponent implements OnInit,OnDestroy {
             clearInterval(this.killsetinterval);
             console.log("je confirme")
             this.loading_data = true;
-            this._suivipositionnementService.valideRecouvrementDepot({id:this.statusdoneeposition.id, moderecouvrement:this.moderecouvrement, recouvreur:this.recouvreur})
+            this._suivipositionnementService.valideRecouvrementDepot({id:this.statusdoneeposition.id, moderecouvrement:this.moderecouvrement, recouvreur:this.recouvreur, phonerecouvreur:this.phonerecouvreur, montantrecouvrement:this.statusdoneeposition.montantdemande, adresserecouvrement:this.statusdoneeposition.adresseonly, pointrecouvrement:this.statusdoneeposition.point, pointphonerecouvrement:this.statusdoneeposition.telephone})
                 .subscribe(
                     data => {
                         if(data.errorCode){

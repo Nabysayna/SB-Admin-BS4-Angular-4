@@ -1,0 +1,329 @@
+<div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
+    <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
+        <button type="button" class="btn btn-dark btn-sm" (click)="goBack()" style="margin-bottom: 1rem;">Retour</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Etat Reliquat</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Bilan positionnement</button>
+
+    </div>
+    <hr>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead1" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="row">
+                <table class="table table-hover table-responsive table-sm" [mfData]="listesSuiviRelequat | dataFilterRestantRelequat: filterQuerySuiviRelequat" #mfBilanSuiviRelequat="mfDataTable" [mfRowsOnPage]="rowsOnPageSuiviRelequat" [(mfSortBy)]="sortBySuiviRelequat" [(mfSortOrder)]="sortOrderSuiviRelequat">
+                    <thead>
+                    <tr>
+                        <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatpositionnement">Positionnement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatpayement">Réglement</mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="etatrestant">Restant</mfDefaultSorter></th>
+                        <th>Détail</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQuerySuiviRelequat"/></th>
+                        <th colspan="2">Total : {{listesSuiviRelequat.length}}</th>
+                    </tr>
+                    <tr><br></tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of mfBilanSuiviRelequat.data; let i = index"  [ngStyle]="{'color': 'black'}">
+                        <td>{{item.point}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td>{{item.adresse}}</td>
+                        <td style="text-align: right">{{tocurrency(item.etatpositionnement)}}</td>
+                        <td style="text-align: right">{{tocurrency(item.etatpayement)}}</td>
+                        <td style="text-align: right">{{tocurrency(item.etatrestant)}}</td>
+                        <td style="text-align: left"><i (click)="showModalSuiviRelequatDetailPoint(contentRecouvrementDetailPoint, item)" class="fa fa-search-plus pull-right" aria-hidden="true"></i></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center center-block">
+                        <td colspan="8" class="text-center center-block">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class=" row" style="margin-bottom: 2rem; margin-left: 3rem; margin-right: 3rem">
+                <div class="col-sm-6">
+                    <label class="label-control" for="datejourPositionnement">Date par jour:</label>
+                    <div class="row">
+                        <input type="date" id="datejourPositionnement" name="datejour" [(ngModel)]="selectionjourPositionnement" style="margin-right: 1rem"/>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiquejourPositionnement()" [disabled]="selectionjourPositionnement==undefined" >Chercher</button>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="label-control">Date par intervalle:</label>
+                    <div class="row">
+                        <input type="date" name="intervalledateinitPositionnement" [(ngModel)]="selectionintervalledateinitPositionnement"  style="margin-right: 0.5rem"/> à <input type="date" name="intervalleddatefinalPositionnement" [(ngModel)]="selectionintervalleddatefinalPositionnement"  style="margin-left: 0.5rem; margin-right: 1rem" />
+                        <button type="button" class="btn btn-primary btn-sm" (click)="historiqueintervallePositionnement()" [disabled]="selectionintervalledateinitPositionnement>selectionintervalleddatefinalPositionnement || selectionintervalledateinitPositionnement==undefined || selectionintervalleddatefinalPositionnement==undefined " >Chercher</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center">
+                <div class="col-sm-1" style="margin-bottom: 1rem;">
+                    <button (click)="showModalDepotCompteBBS(contentDepotBBS)" class="btn bg-info btn-sm">Ajout Depot BBS</button>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center" *ngIf="listedepotCompteBBS.length!=0">
+                <div class="col-sm-2" style="margin-bottom: 0.5rem;" *ngFor="let item of listedepotCompteBBS; let i = index ">
+                    <div [ngClass]="{'card': true, 'text-white': true, 'bg-danger': ((item.caution==0) || ((item.cautionconsomme/item.caution)<0.10)), 'bg-warning': (((item.cautionconsomme/item.caution)>=0.10) && ((item.cautionconsomme/item.caution)<0.35)), 'bg-info': (((item.cautionconsomme/item.caution)>=0.50) && ((item.cautionconsomme/item.caution)<0.75)), 'bg-success': (item.cautionconsomme/item.caution)>=0.75 }">
+                        <div class="card-body">
+                            <h6 class="card-title">({{ ((item.cautionconsomme/item.caution) * 100) | number : '1.2'}}%) {{tocurrency(item.cautionconsomme)}}</h6>
+                            <p class="card-text">{{item.nomservice}}  <i (click)="showModaldepotCompteBBSDetail(contentdepotCompteBBS,item)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center">
+                <div class="col-sm-6">
+                    <div class="card-header" style="text-align: center">
+                        <div *ngIf="touslesjours.length!=0 && lineChartData.length!=0 && lineChartLabels.length!=0">
+                            <canvas baseChart height="100" #baseChart1="base-chart"
+                                    [datasets]="lineChartData"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType" ></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" style="margin-bottom: 1px;">
+                    <h4 class="card-title" style="text-align: center">Performance CC</h4>
+                    <table class="table table-hover table-sm">
+                        <thead>
+                        <tr style="text-align: center">
+                            <th width="5%">#</th>
+                            <th width="25%">CC</th>
+                            <th width="19%">Promises</th>
+                            <th width="17%">Positionnés</th>
+                            <th width="17%">Payés</th>
+                            <th width="17%">Versés</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr [ngStyle]="{'color': 'black', 'background-color': 'blue'}">
+                            <td width="5%">*</td>
+                            <td width="25%" (click)="clickPositionnement(detailRecouvrement.promesses.list)" style="cursor: pointer">ALL</td>
+                            <td width="19%"  class="bg-danger" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)">
+                                    ({{tocurrency(detailRecouvrement.promesses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.promesses.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-info"  style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.positionnes)">
+                                    ({{tocurrency(detailRecouvrement.positionnes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.positionnes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-warning" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.payes)">
+                                    ({{tocurrency(detailRecouvrement.payes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.payes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-success"  style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.verses)">
+                                    ({{tocurrency(detailRecouvrement.verses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(detailRecouvrement.verses.montant)}}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let item of listeBilanPositionnementCC; let i = index; let first = first; let last = last" [ngStyle]="{'color': 'black', 'background-color': first?'green':last?'red':'orange'}">
+                            <td width="5%">{{i+1}}</td>
+                            <td width="25%" (click)="clickPositionnement(item.list)" style="cursor: pointer">{{item.cc}}</td>
+                            <td width="19%" class="bg-danger" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.promesses)">
+                                    ({{tocurrency(item.detail.promesses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.promesses.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-info" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.positionnes)">
+                                    ({{tocurrency(item.detail.positionnes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.positionnes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-warning" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.payes)">
+                                    ({{tocurrency(item.detail.payes.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.payes.montant)}}
+                                </p>
+                            </td>
+                            <td width="17%" class="bg-success" style="text-align: right">
+                                <p style="cursor: pointer" (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,item.detail.verses)">
+                                    ({{tocurrency(item.detail.verses.nbre)}}) <i class="fa fa-search-plus pull-right" aria-hidden="true"></i>
+                                    <br>
+                                    {{tocurrency(item.detail.verses.montant)}}
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #contentDepotBBS let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Crediter compte BBS</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="typeservice">Type service</label>
+                        <select class="form-control input-sm" id="typeservice" name="typeservice" [(ngModel)]="typeservice" >
+                            <option *ngFor="let item of getListeServiceBBS">{{item.nomservice}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="montanttypeservice">Monatnt versé</label>
+                    <input type="number" min="0" class="form-control" id="montanttypeservice" name="montanttypeservice" [(ngModel)]="montanttypeservice" placeholder="somme verser"  required>
+                </div>
+                <div class="col-sm-3"><br><br>{{tocurrency(montanttypeservice)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!typeservice || montanttypeservice<1 || montanttypeservice==undefined" (click)="valideDepotCompteBBS()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentdepotCompteBBS let-c="close" let-d="dismiss" >
+    <div class="modal-content" >
+        <div class="modal-header">
+            <!--<h4 class="modal-title pull-left">Historique depotCompteBBS pour {{bilandepotCompteBBS.type | uppercase}}</h4>-->
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Date depot</th>
+                    <th>Montant</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentRecouvrementAllDetail let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="bilanPositionnementAllDetail">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Historique recouvrements pour {{bilanPositionnementAllDetail.type | uppercase}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">Date demande</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">Date positionnement</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='payes'">Date payement</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='verses'">Date versement</span>
+                    </th>
+                    <th>Point</th>
+                    <th>Téléphone</th>
+                    <th>Demandé</th>
+                    <th>Positionné</th>
+                    <th>Payé</th>
+                    <th>Versé</th>
+                    <th>Agent</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                    <td>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">{{item.datedemande}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">{{item.positionne_at}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='payes'">{{item.validpaye_at}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='verses'">{{item.validverse_at}}</span>
+                    </td>
+                    <td>{{item.point}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpositionnement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpayement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatversement)}}</td>
+                    <td style="text-align: right">{{item.recouvre_by}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentRecouvrementDetailPoint let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="bilanPositionnementDetailPoint.type.length!=0">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Historique recouvrements pour {{bilanPositionnementDetailPoint.type | uppercase}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Date demande</th>
+                    <th>Demandé</th>
+                    <th>CC</th>
+                    <th>Agent</th>
+                    <th>Positionné</th>
+                    <th>Payé</th>
+                    <th>Versé</th>
+                    <th>Reliquat</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                    <td>{{item.datedemande}}</td>
+                    <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                    <td style="text-align: right">{{item.cc}}</td>
+                    <td style="text-align: right">{{item.recouvre_by}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpositionnement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpayement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatversement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatrestant)}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</ng-template>

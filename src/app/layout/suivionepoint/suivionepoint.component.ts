@@ -124,16 +124,17 @@ export class SuivionepointComponent implements OnInit {
                                 info_point: JSON.parse(type.infosup),
                                 gerant: type.name_adminpdv,
                                 email: type.login,
-                                last_depot: type.last_depot,
+                                last_depot: Number(type.last_depot),
                                 tel: type.telephone,
                                 adressecomplet: JSON.parse(type.adresse),
                                 adresse: JSON.parse(type.adresse).zone+", "+JSON.parse(type.adresse).souszone+", "+JSON.parse(type.adresse).address,
                                 idcommercial: type.idcommercial,
-                                caution: type.caution,
-                                cautiondebase: type.cautiondebase,
+                                caution: Number(type.caution),
+                                cautiondebase: Number(type.cautiondebase),
                                 id_point: type.id_point,
                                 user: type.user,
-                                categorie: (type.cautiondebase==0 && type.caution==0 )?'pas':(type.cautiondebase==0 && type.caution!=0 )?'pasdepot_aveccaution':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
+                                categorie1: (type.cautiondebase==0 && type.caution==0 )?'pas':(type.cautiondebase==0 && type.caution!=0 )?'pasdepot_aveccaution':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
+                                categorie: ((Number(type.last_depot)==0) && (Number(type.caution)==0) )?'pas':((Number(type.last_depot)==0) && (Number(type.caution)!=0) )?'pasdepot_aveccaution':((100*Number(type.caution))/Number(type.last_depot))<25?'faible':((100*Number(type.caution))/Number(type.last_depot))>=25 && ((100*Number(type.caution))/Number(type.last_depot))<=50?'passable':'bien',
                             }
                         });
                         this.gardeListepointsbycc = this.listepointsbycc;

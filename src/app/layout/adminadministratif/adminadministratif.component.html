@@ -6,14 +6,11 @@
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Status points</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Points souscrits</button>
-        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Modify Point crm incomplet</button>-->
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead6, 'btn-success': menuHead.menuHead6}" (click)="menuHeadClick(6)" style="margin-bottom: 1rem;">Etat Déposit</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead7, 'btn-success': menuHead.menuHead7}" (click)="menuHeadClick(7)" style="margin-bottom: 1rem;">Historique deposit</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead9, 'btn-success': menuHead.menuHead9}" (click)="menuHeadClick(9)" style="margin-bottom: 1rem;">Etat positionnement</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Bilan positionnement</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': true}" style="margin-bottom: 1rem;" [routerLink]="['/adminadministratif', 'cartoadministratif']">Cartographie</button>
     </div>
-    <hr>
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead1" >
@@ -45,15 +42,9 @@
                     <div [ngClass]="{'card': true, 'text-white': true, 'bg-danger': ((item.caution==0) || ((item.cautionconsomme/item.caution)<0.10)), 'bg-warning': (((item.cautionconsomme/item.caution)>=0.10) && ((item.cautionconsomme/item.caution)<0.35)), 'bg-info': (((item.cautionconsomme/item.caution)>=0.50) && ((item.cautionconsomme/item.caution)<0.75)), 'bg-success': (item.cautionconsomme/item.caution)>=0.75 }">
                         <div class="card-body">
                             <h6 class="card-title">({{ ((item.cautionconsomme/item.caution) * 100) | number : '1.2'}}%) {{tocurrency(item.cautionconsomme)}}</h6>
-                            <p class="card-text">{{item.nomservice}} <i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
+                            <p class="card-text">{{item.nomservice}}  <i (click)="showModaldepotCompteBBSDetail(contentdepotCompteBBS,item)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
                         </div>
                     </div>
-                    <!--<div [ngClass]="{'card': true, 'text-white': true, 'bg-danger': ((item.caution==0) || ((item.cautionconsomme/item.caution)<0.10)), 'bg-warning': (((item.cautionconsomme/item.caution)>=0.10) && ((item.cautionconsomme/item.caution)<0.35)), 'bg-info': (((item.cautionconsomme/item.caution)>=0.50) && ((item.cautionconsomme/item.caution)<0.75)), 'bg-success': (item.cautionconsomme/item.caution)>=0.75 }">
-                        <div class="card-body">
-                            <h6 class="card-title">({{ ((item.cautionconsomme/item.caution) * 100) }}%) {{tocurrency(item.cautionconsomme)}}</h6>
-                            <p class="card-text">{{item.nomservice}} <i (click)="showModalBilanBilanPositionnementAllDetail(contentRecouvrementAllDetail,detailRecouvrement.promesses)" class="fa fa-search-plus pull-right" style="margin-right: 1rem; cursor: pointer" aria-hidden="true"></i></p>
-                        </div>
-                    </div>-->
                 </div>
             </div>
             <div class="row" style="margin-top: 1rem; margin-bottom: 1rem; text-align: center">
@@ -252,63 +243,6 @@
     </div>
 </div>
 
-<div  class="container-fluid" *ngIf="menuHead.menuHead4" >
-    <div class="row">
-        <div class="col-xs-12 col-sm-12">
-            <div class="row">
-                <table class="table table-hover table-responsive table-sm" [mfData]="points | dataFilterAdminadministratifPDVCRMINCOM: filterQueryPDVCRMINCOM" #mfPDVCRMINCOM="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
-                    <thead>
-                    <tr>
-                        <th><mfDefaultSorter by="date_ajout">Date ajout</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="libellepoint">Nom Point</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_proprietaire">Propriétaire</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="fullname_gerant">Gérant(e)</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="telephone_gerant">Téléphone</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="email_gerant">email</mfDefaultSorter></th>
-                        <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                        <th>Action</th>
-                    </tr>
-                    <tr>
-                        <th colspan="5">Recherche: <input class="form-control" [(ngModel)]="filterQueryPDVCRMINCOM"/></th>
-                        <th>Total : {{points.length}}</th>
-                    </tr>
-                    <tr>
-                        <th colspan="8">
-                            <div style="color: black; text-align: center;">
-                                <span style="background-color: blue;"> Pas encore </span>&nbsp;&nbsp;
-                                <span style="background-color: orange;"> Sentool </span>&nbsp;&nbsp;
-                                <span style="background-color: yellow;"> Wafacash </span>&nbsp;&nbsp;
-                                <span style="background-color: green;"> Sentool et Wafacash </span>
-                                <br/>
-                            </div>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let item of mfPDVCRMINCOM.data; let i = index " [ngStyle]="{'color': 'black', 'background-color': (item.infosup.service_sentool==1 && item.infosup.service_wafacash==1)?'green':(item.infosup.service_sentool==0 && item.infosup.service_wafacash==1)?'yellow':(item.infosup.service_sentool==1 && item.infosup.service_wafacash==0)?'green':'blue'}">
-                        <td>{{item.date_ajout}}</td>
-                        <td>{{item.libellepoint}}</td>
-                        <td>{{item.fullname_proprietaire}}</td>
-                        <td>{{item.fullname_gerant}}</td>
-                        <td>{{item.telephone_gerant}}</td>
-                        <td>{{item.email_gerant}}</td>
-                        <td>{{item.adresse}}, {{item.sous_zone}}, {{item.zone}}, {{item.region}}</td>
-                        <td><button type="button" class="btn btn-primary btn-sm" (click)="showModalModifPoint(contentModifPoint, item)">Modifier</button></td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr class="text-center center-block">
-                        <td colspan="8" class="text-center center-block">
-                            <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div  class="container-fluid" *ngIf="menuHead.menuHead6" >
     <div class="row">
         <div class="col-xs-12 col-sm-12">
@@ -460,6 +394,28 @@
     </div>
 </ng-template>
 
+<ng-template #contentdepotCompteBBS let-c="close" let-d="dismiss" >
+    <div class="modal-content" >
+        <div class="modal-header">
+            <!--<h4 class="modal-title pull-left">Historique depotCompteBBS pour {{bilandepotCompteBBS.type | uppercase}}</h4>-->
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Date depot</th>
+                    <th>Montant</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</ng-template>
+
 <ng-template #contentRecouvrementAllDetail let-c="close" let-d="dismiss" >
     <div class="modal-content" *ngIf="bilanPositionnementAllDetail">
         <div class="modal-header">
@@ -470,27 +426,76 @@
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th>Date demande</th>
+                    <th>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">Date demande</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">Date positionnement</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='payes'">Date payement</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='verses'">Date versement</span>
+                    </th>
                     <th>Point</th>
                     <th>Téléphone</th>
                     <th>Demandé</th>
                     <th>Positionné</th>
                     <th>Payé</th>
                     <th>Versé</th>
+                    <th>Agent</th>
                 </tr>
-                <!--<tr>
-                    <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryBilanPositionnementAllDetail"/></th>
-                </tr>-->
                 </thead>
                 <tbody>
                 <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
-                    <td>{{item.datedemande | date:"dd-MM-yyyy"}}</td>
+                    <td>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">{{item.datedemande}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">{{item.positionne_at}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='payes'">{{item.validpaye_at}}</span>
+                        <span *ngIf="bilanPositionnementAllDetail.type=='verses'">{{item.validverse_at}}</span>
+                    </td>
                     <td>{{item.point}}</td>
                     <td>{{item.telephone}}</td>
                     <td style="text-align: right">{{tocurrency(item.montant)}}</td>
                     <td style="text-align: right">{{tocurrency(item.etatpositionnement)}}</td>
                     <td style="text-align: right">{{tocurrency(item.etatpayement)}}</td>
                     <td style="text-align: right">{{tocurrency(item.etatversement)}}</td>
+                    <td style="text-align: right">{{item.recouvre_by}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentRecouvrementDetailPoint let-c="close" let-d="dismiss" >
+    <div class="modal-content" *ngIf="bilanPositionnementDetailPoint.type.length!=0">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Historique recouvrements pour {{bilanPositionnementDetailPoint.type | uppercase}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Date demande</th>
+                    <th>Demandé</th>
+                    <th>CC</th>
+                    <th>Agent</th>
+                    <th>Positionné</th>
+                    <th>Payé</th>
+                    <th>Versé</th>
+                    <th>Reliquat</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                    <td>{{item.datedemande}}</td>
+                    <td style="text-align: right">{{tocurrency(item.montant)}}</td>
+                    <td style="text-align: right">{{item.cc}}</td>
+                    <td style="text-align: right">{{item.recouvre_by}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpositionnement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatpayement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatversement)}}</td>
+                    <td style="text-align: right">{{tocurrency(item.etatrestant)}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -522,62 +527,5 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-success" [disabled]="montantfairedepot<1 || montantfairedepot==undefined" (click)="valideFaireUnDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
         </div>
-    </div>
-</ng-template>
-<!--<ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title pull-left">Payement depot reçu</h4>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-sm-7">
-                    <input type="number" min="0" class="form-control" id="montantpayement" name="montantpayement" [(ngModel)]="montantpayement" placeholder="somme payer"  required>
-                </div>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" id="modepayement" name="modepayement" [(ngModel)]="modepayement" placeholder="mode payement"  required>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="montantpayement<1 || montantpayement==undefined || !modepayement" (click)="validePayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
-        </div>
-    </div>
-</ng-template>
-<ng-template #contentValideVersementDepot let-c="close" let-d="dismiss" >
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title pull-left">Versement depot reçu</h4>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-sm-6">
-                    <input type="number" min="0" class="form-control" id="montantversement" name="montantversement" [(ngModel)]="montantversement" placeholder="somme verser"  required>
-                </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-success" [disabled]="montantversement<1 || montantversement==undefined" (click)="valideVersementDepot()">Valider</button>
-                </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>-->
-<ng-template #contentModifPoint let-c="close" let-d="dismiss" >
-    <div class="modal-body">
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <app-modif-pdv-incomplet [infoprospect]="point"></app-modif-pdv-incomplet>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click'); getPointsInfosIncomplets();">Fermer</button>
     </div>
 </ng-template>

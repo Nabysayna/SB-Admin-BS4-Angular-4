@@ -169,6 +169,24 @@ export class ApiPlatformService {
             .map(res => res.json());
     }
 
+    getListSuiviRelequat(){
+        console.log("--getListSuiviRelequat--")
+        let url = this.link+"/apifromsentool/getetatreliquat";
+        let datas = JSON.stringify({token:this.basetoken});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
+    getListSuiviRelequatDetailPoint(data:any){
+        console.log("--***getListSuiviRelequatDetailPoint***--")
+        let url = this.link+"/apifromsentool/getetatreliquatdetailpoint";
+        let datas = JSON.stringify({token:this.basetoken, data:data});
+        let params = 'params='+datas;
+        return this._http.post(url, params, {headers:this.headers})
+            .map(res => res.json());
+    }
+
     getListStatusDepositioncc(){
         let url = this.link+"/apifromsentool/getstatuspositionnementcc";
         let datas = JSON.stringify({token:this.basetoken});

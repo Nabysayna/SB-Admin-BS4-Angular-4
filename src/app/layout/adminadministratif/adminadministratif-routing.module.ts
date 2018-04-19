@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminadministratifComponent } from './adminadministratif.component';
-import {CartoadministratifComponent} from "./cartoadministratif/cartoadministratif.component";
 
 const routes: Routes = [
-    { path: '', component: AdminadministratifComponent },
-    { path: 'cartoadministratif', component: CartoadministratifComponent }
+    { path: '', component: AdminadministratifComponent }
 ];
 
 @NgModule({

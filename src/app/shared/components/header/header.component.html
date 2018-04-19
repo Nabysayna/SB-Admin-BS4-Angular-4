@@ -7,7 +7,8 @@
         <div class="collapse navbar-collapse">
 
             <ul class="navbar-nav ml-auto mt-2 mt-md-0">
-                <!--                                 <li class="nav-item dropdown" ngbDropdown>
+                <!--
+                <li class="nav-item dropdown" ngbDropdown>
                     <a class="nav-link" href="javascript:void(0)" ngbDropdownToggle>
                         <i class="fa fa-envelope"></i> <b class="caret"></b><span class="sr-only">(current)</span>
                     </a>
@@ -50,7 +51,7 @@
                         <a href="javascript:void(0)" class="dropdown-item">View All</a>
                     </ul>
                 </li>
-<li class="nav-item dropdown" ngbDropdown>
+                <li class="nav-item dropdown" ngbDropdown>
                     <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
                         <i class="fa fa-language"></i> {{ 'language' | translate }} <b class="caret"></b>
                     </a>
@@ -61,7 +62,18 @@
                         <a class="dropdown-item" href="javascript:void(0)" (click)="changeLang('es')">Spanish</a>
                     </div>
                 </li>
- -->                <li class="nav-item dropdown" ngbDropdown>
+-->
+                <li class="nav-item dropdown">
+                    <a [routerLink]="['/fullusing', 'cartographie']" class="nav-link">
+                        <i class="fa fa-ravelry"></i> Cartographie
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a [routerLink]="['/fullusing', 'reliquat']"  class="nav-link">
+                        <i class="fa fa-credit-card-alt"></i> Reliquat
+                    </a>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown>
                     <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
                         <i class="fa fa-user"></i> {{currentUsername}} <b class="caret"></b>
                     </a>

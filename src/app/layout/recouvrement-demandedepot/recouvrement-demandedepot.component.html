@@ -9,7 +9,7 @@
                 <thead>
                     <tr>
                         <th colspan="2" width="10%"><mfDefaultSorter by="datedemande"> Date demande</mfDefaultSorter></th>
-                        <th width="7%"><mfDefaultSorter by="montantdemande">Montant demand</mfDefaultSorter></th>
+                        <th width="7%"><mfDefaultSorter by="montantdemande">Promesse</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
                         <th width="17%"><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
@@ -21,8 +21,7 @@
                     </tr>
                     <tr>
                         <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDeposition"/></th>
-                        <th colspan="2">Total : {{listestatusdeposition.length}} demandes en cours</th>
-                        <th><button (click)="showModalHistoriqueFaireUnDepot(contentHistoriqueFaireUnDepot)" class="btn btn-primary btn-sm">Voir historique</button></th>
+                        <th colspan="6">Total : {{listestatusdeposition.length}} demandes en cours</th>
                     </tr>
                     <tr><br></tr>
                 </thead>
@@ -40,9 +39,9 @@
                         <td>{{item.adresse}}</td>
                         <td>{{item.cc}}</td>
                         <td style="text-align: right"><span *ngIf="item.recouvre_by!='attente'">{{item.recouvre_by}}</span><span *ngIf="item.recouvre_by=='attente'"><button (click)="showModalRecouvrementDepot(contentValideRecouvrementDepot, item)" class="btn btn-primary btn-sm">Affecter</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpositionnement!=0">{{item.etatpositionnement}}</span><span *ngIf="item.etatpositionnement==0"><button [disabled]="item.recouvre_by=='attente'" (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpayement!=0">{{item.etatpayement}}</span><span *ngIf="item.etatpayement==0"><button [disabled]="item.etatpositionnement==0" (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button [disabled]="item.etatpayement==0" (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatpositionnement!=0">{{tocurrency(item.etatpositionnement)}}</span><span *ngIf="item.etatpositionnement==0"><button [disabled]="item.recouvre_by=='attente' || iam!=10" (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatpayement!=0">{{tocurrency(item.etatpayement)}}</span><span *ngIf="item.etatpayement==0"><button [disabled]="item.etatpositionnement==0 || iam!=8" (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: center"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button [disabled]="item.etatpayement==0 || iam!=9" (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -58,57 +57,17 @@
 </div>
 
 
-<ng-template #contentHistoriqueFaireUnDepot let-c="close" let-d="dismiss" >
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title pull-left">Historique des recouvrements complets</h4>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-            <table class="table table-hover table-responsive table-sm" [mfData]="listestatusdepositionHistorique | dataFilterSuiviDemandepositHistorique: filterQueryStatusDepositionHistorique" #mfBilanDepositHistorique="mfDataTable" [mfRowsOnPage]="rowsOnPageStatusDeposition" [(mfSortBy)]="sortByStatusDeposition" [(mfSortOrder)]="sortOrderStatusDeposition">
-                <thead>
-                <tr>
-                    <th><mfDefaultSorter by="datedemande">Date demand</mfDefaultSorter></th>
-                    <th><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
-                    <th><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
-                    <th><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                    <th><mfDefaultSorter by="etatpositionnement">Positionnement</mfDefaultSorter></th>
-                </tr>
-                <tr>
-                    <th colspan="4"> Recherche: <input class="form-control" placeholder="Recherche" [(ngModel)]="filterQueryStatusDepositionHistorique"/></th>
-                    <th><span style="margin-left: 2rem">Total : {{listestatusdepositionHistorique.length}}</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let item of mfBilanDepositHistorique.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': 'green'}">
-                    <td>{{item.datedemande}}</td>
-                    <td>{{item.point}}</td>
-                    <td>{{item.telephone}}</td>
-                    <td>{{item.adresse}}</td>
-                    <td style="text-align: right">{{item.etatpositionnement}}</td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr class="text-center center-block">
-                    <td colspan="8" class="text-center center-block"><mfBootstrapPaginator [rowsOnPageSet]="[5,10,25,50,100]"></mfBootstrapPaginator></td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-</ng-template>
-
 <ng-template #contentValideRecouvrementDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Mode de recouvrement</h4>
+            <h4 class="modal-title pull-left">Recouvrement</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-12">
                     <div class="form-group">
                         <label for="moderecouvrement">Mode de versement</label>
                         <select class="form-control input-sm" id="moderecouvrement" name="moderecouvrement" [(ngModel)]="moderecouvrement" >
@@ -118,12 +77,19 @@
                             <option>CBAO</option>
                             <option>WARI</option>
                             <option>Orangemoney</option>
+                            <option>Compense</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-7" *ngIf="moderecouvrement=='Direct'">
+            </div>
+            <div class="row" *ngIf="moderecouvrement=='Direct'">
+                <div class="col-sm-6">
                     <label for="recouvreur">Recouvré par</label>
                     <input type="text" class="form-control" id="recouvreur" name="recouvreur" [(ngModel)]="recouvreur" placeholder="recouvreur" required>
+                </div>
+                <div class="col-sm-6">
+                    <label for="recouvreur">Téléphone recouvreur</label>
+                    <input type="number" class="form-control" id="phonerecouvreur" name="phonerecouvreur" [(ngModel)]="phonerecouvreur" placeholder="Téléphone recouvreur" required>
                 </div>
             </div>
         </div>

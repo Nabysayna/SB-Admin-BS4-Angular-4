@@ -34,7 +34,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         clearInterval(this.killsetinterval);
     }
 
-
     public menuHeadClick(option: number){
         this.loading_data = true;
         clearInterval(this.killsetinterval);
@@ -85,7 +84,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
-            this.getPointsInfosIncomplets();
+            this.getListSuiviRelequat();
         }
         if(option == 5){
             this.menuHead.menuHead1 = false;
@@ -162,7 +161,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
 
 
 
-
     /************************************************************************************
      ***********************   PARTIE BILAN POSITIONNEMENT   ****************************
      ***********************************************************************************/
@@ -174,7 +172,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         promesses:{type:"promesses", nbre:0, montant:0, list:[]},
         positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
         payes:{type:"payes", nbre:0, montant:0, list:[]},
-        verses:{type:"verses", nbre:0,montant:0,list:[]}
+        verses:{type:"verses", nbre:0,montant:0,list:[]},
     };
     public type:string = 'jour';
     public infotypeDepotCompteBBS:any;
@@ -182,6 +180,9 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public selectionjourPositionnement:string;
     public selectionintervalledateinitPositionnement:string;
     public selectionintervalleddatefinalPositionnement:string;
+
+    public datedebut:string;
+    public datefin:string;
 
     public bilanPositionnementAllDetail:any;
     public getListeServiceBBS:any[]=[];
@@ -200,14 +201,21 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
     public lineChartType:string = 'line';
     public lineChartLegend:boolean = true;
 
-    public suivionepointgraphe(){
+    public suivionepointgraphe(datedebut, datefin){
         this.lineChartLabels=[];
         if(this.type=='jour'){
             this.touslesjours = this.listebilanPositionnement.map( type => type.datedemande_heure);
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.positionne_at_heure));
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.validpaye_at));
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.validverse_at));
         }
         else{
             this.touslesjours = this.listebilanPositionnement.map( type => type.datedemande_jour);
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.positionne_at_jour));
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.validpaye_at_jour));
+            this.touslesjours = this.touslesjours.concat(this.listebilanPositionnement.map( type => type.validverse_at_jour));
         }
+        this.touslesjours = this.touslesjours.filter( opt => (opt>=datedebut) && (opt<=datefin) )
         this.touslesjours.sort();
         let tabjours:string[] = [];
         let jour:string = this.touslesjours[0];
@@ -237,9 +245,9 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 let nbrebyjourversesSom:number = 0;
 
                 this.detailRecouvrement.promesses.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpromessesSom += Number(opt.montant); } }); nbrebyjourpromesses.push( nbrebyjourpromessesSom );
-                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
-                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
-                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.datedemande_heure==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
+                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.positionne_at_heure==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
+                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.validpaye_at_heure==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
+                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.validverse_at_heure==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
             });
         }
         else {
@@ -250,9 +258,9 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 let nbrebyjourversesSom:number = 0;
 
                 this.detailRecouvrement.promesses.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpromessesSom += Number(opt.montant); } }); nbrebyjourpromesses.push( nbrebyjourpromessesSom );
-                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
-                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
-                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.datedemande_jour==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
+                this.detailRecouvrement.positionnes.list.forEach( opt => { if(opt.positionne_at_jour==type){ nbrebyjourpositionnesSom += Number(opt.etatpositionnement); } }); nbrebyjourpositionnes.push( nbrebyjourpositionnesSom );
+                this.detailRecouvrement.payes.list.forEach( opt => { if(opt.validpaye_at_jour==type){ nbrebyjourpayesSom += Number(opt.etatpayement); } }); nbrebyjourpayes.push( nbrebyjourpayesSom );
+                this.detailRecouvrement.verses.list.forEach( opt => { if(opt.validverse_at_jour==type){ nbrebyjourversesSom += Number(opt.etatversement); } }); nbrebyjourverses.push( nbrebyjourversesSom );
             });
         }
 
@@ -264,114 +272,18 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         ];
     }
 
-    initialisation(datas){
-        let detailRecouvrements = {
-            promesses:{type:"promesses", nbre:0, montant:0, list:[]},
-            positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
-            payes:{type:"payes", nbre:0, montant:0, list:[]},
-            verses:{type:"verses", nbre:0,montant:0,list:[]}
-        };
-        let listeBilanCC:any[] = [];
-        let bilanPositionnementCC:any[] = [];
-
-        detailRecouvrements.promesses.nbre = datas.length;
-        let listestatus = datas.map((type) => {
-            detailRecouvrements.promesses.montant += Number(type.montant);
-
-            if(Number(type.etatpositionnement)!=0){ detailRecouvrements.positionnes.nbre ++;    }
-            detailRecouvrements.positionnes.montant += Number(type.etatpositionnement);
-            if(Number(type.etatpayement)!=0){ detailRecouvrements.payes.nbre ++;  }
-            detailRecouvrements.payes.montant += Number(type.etatpayement);
-            if(Number(type.etatversement)!=0){ detailRecouvrements.verses.nbre ++; }
-            detailRecouvrements.verses.montant += Number(type.etatversement);
-
-            let pointObjet = JSON.parse(type.point);
-            let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
-            let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
-
-            if(!listeBilanCC.includes(cc)) { listeBilanCC.push(cc); }
-
-            return {
-                id: type.id,
-                datedemande: type.datedemande,
-                datedemande_jour:type.datedemande.split(' ')[0],
-                datedemande_heure:type.datedemande.split(':')[0],
-                montant: Number(type.montant),
-                point: pointObjet.prenom+" "+pointObjet.nom,
-                telephone: pointObjet.telephone,
-                adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
-                cc: cc,
-                recouvre_by: type.recouvre_by?type.recouvre_by:"attente",
-                etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
-                positionne_at:type.positionne_at?type.positionne_at:"attente",
-                etatpayement: type.etatpayement?type.etatpayement:0,
-                validpaye_at:type.validpaye_at?type.validpaye_at:"attente",
-                etatversement: type.etatversement?type.etatversement:0,
-                validverse_at:type.validverse_at?type.validverse_at:"attente",
-                modepayement:type.modepayement?type.modepayement:"non defini",
-                modedemande:type.modedemande?type.modedemande:"non defini",
-                modeversement:type.modeversement?type.modeversement:"non defini",
-                dateeffectif: type.dateeffectif?type.dateeffectif:"attente",
-            }
-        });
-        this.listebilanPositionnement = listestatus;
-        detailRecouvrements.promesses.list = listestatus;
-        detailRecouvrements.positionnes.list = listestatus.filter( opt => Number(opt.etatpositionnement)!=0 );
-        detailRecouvrements.payes.list = listestatus.filter( opt => Number(opt.etatpayement)!=0 );
-        detailRecouvrements.verses.list = listestatus.filter( opt => Number(opt.etatversement)!=0 );
-
-        listeBilanCC.forEach(type => {
-            let liste = listestatus.filter( opt => opt.cc==type );
-            let promesses:number = 0;
-            let positionnes:number = 0;
-            let payes:number = 0;
-            let verses:number = 0;
-
-            let detailRecouvrementsCC = {
-                promesses:{type:"promesses", nbre:0, montant:0, list:[]},
-                positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
-                payes:{type:"payes", nbre:0, montant:0, list:[]},
-                verses:{type:"verses", nbre:0,montant:0,list:[]}
-            };
-            detailRecouvrementsCC.promesses.nbre = liste.length;
-
-            liste.forEach(optcc => {
-                detailRecouvrementsCC.promesses.montant += Number(optcc.montant);
-                if(Number(optcc.etatpositionnement)!=0){ detailRecouvrementsCC.positionnes.nbre ++;    }
-                detailRecouvrementsCC.positionnes.montant += Number(optcc.etatpositionnement);
-                if(Number(optcc.etatpayement)!=0){ detailRecouvrementsCC.payes.nbre ++;  }
-                detailRecouvrementsCC.payes.montant += Number(optcc.etatpayement);
-                if(Number(optcc.etatversement)!=0){ detailRecouvrementsCC.verses.nbre ++; }
-                detailRecouvrementsCC.verses.montant += Number(optcc.etatversement);
-            });
-            detailRecouvrementsCC.promesses.list = liste;
-            detailRecouvrementsCC.positionnes.list = liste.filter( opt => Number(opt.etatpositionnement)!=0 );
-            detailRecouvrementsCC.payes.list = liste.filter( opt => Number(opt.etatpayement)!=0 );
-            detailRecouvrementsCC.verses.list = liste.filter( opt => Number(opt.etatversement)!=0 );
-
-            bilanPositionnementCC.push({
-                cc:type,
-                type:type,
-                detail:detailRecouvrementsCC,
-                list:liste,
-            })
-        });
-        this.listeBilanPositionnementCC=bilanPositionnementCC;
-        this.detailRecouvrement = detailRecouvrements;
-
-        this.suivionepointgraphe();
-    }
-
     historiquejourPositionnement(){
         this.type = 'jour';
         this.loading_data = true;
         this.selectionintervalledateinitPositionnement = undefined;
         this.selectionintervalleddatefinalPositionnement = undefined;
         this.infotypeDepotCompteBBS = this.selectionjourPositionnement;
+        this.datedebut = this.selectionjourPositionnement;
+        this.datefin = this.selectionjourPositionnement+" 23:59";
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
-                    this.initialisation(data.message)
+                    this.initialisation(data.message, this.selectionjourPositionnement, this.selectionjourPositionnement+" 23:59")
                 },
                 error => alert(error),
                 () => {
@@ -385,11 +297,15 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.loading_data = true;
         this.selectionjourPositionnement = undefined;
         this.type = 'intervalle';
+
+        this.datedebut = this.selectionintervalledateinitPositionnement;
+        this.datefin = this.selectionintervalleddatefinalPositionnement+" 23:59";
+
         this.infotypeDepotCompteBBS = this.selectionintervalledateinitPositionnement+" "+this.selectionintervalleddatefinalPositionnement;
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'intervalle', infotype:this.selectionintervalledateinitPositionnement+" "+this.selectionintervalleddatefinalPositionnement})
             .subscribe(
                 data => {
-                    this.initialisation(data.message)
+                    this.initialisation(data.message, this.selectionintervalledateinitPositionnement, this.selectionintervalleddatefinalPositionnement+" 23:59")
                 },
                 error => alert(error),
                 () => {
@@ -407,13 +323,15 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         let datenow = ((new Date()).toJSON()).split("T",2)[0];
         this.selectionjourPositionnement = datenow;
         this.infotypeDepotCompteBBS = datenow;
+
+        this.datedebut = this.selectionjourPositionnement;
+        this.datefin = this.selectionjourPositionnement+" 23:59";
         this._apiPlatformService.getListBilanPositionnementByDate({type: 'jour', infotype:this.selectionjourPositionnement})
             .subscribe(
                 data => {
-                    console.log(data);
                     this.getListeServiceBBS = data.datasbbs;
                     this.listedepotCompteBBS = data.datasbbs;
-                    this.initialisation(data.message)
+                    this.initialisation(data.message, this.selectionjourPositionnement, this.selectionjourPositionnement+" 23:59")
                 },
                 error => alert(error),
                 () => {
@@ -422,9 +340,113 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             );
     }
 
+    initialisation(datas:any[], datedebut, datefin){
+        let detailRecouvrements = {
+            promesses:{type:"promesses", nbre:0, montant:0, list:[]},
+            positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
+            payes:{type:"payes", nbre:0, montant:0, list:[]},
+            verses:{type:"verses", nbre:0,montant:0,list:[]},
+        };
+        let listeBilanCC:any[] = [];
+        let bilanPositionnementCC:any[] = [];
+
+        detailRecouvrements.promesses.nbre = datas.filter( opt => (opt.datedemande>=datedebut) && (opt.datedemande<=datefin) ).length;
+        let listestatus = datas.map((type) => {
+            detailRecouvrements.promesses.montant += ((type.datedemande>=datedebut) && (type.datedemande<=datefin))?Number(type.montant):0;
+
+            if( (type.positionne_at>=datedebut) && (type.positionne_at<=datefin) ){ detailRecouvrements.positionnes.nbre ++;    }
+            detailRecouvrements.positionnes.montant += ( (type.positionne_at>=datedebut) && (type.positionne_at<=datefin) )?Number(type.etatpositionnement):0;
+            if((type.validpaye_at>=datedebut) && (type.validpaye_at<=datefin)){ detailRecouvrements.payes.nbre ++;  }
+            detailRecouvrements.payes.montant += ((type.validpaye_at>=datedebut) && (type.validpaye_at<=datefin))?Number(type.etatpayement):0;
+            if(((type.validverse_at>=datedebut) && (type.validverse_at<=datefin))){ detailRecouvrements.verses.nbre ++; }
+            detailRecouvrements.verses.montant += ((type.validverse_at>=datedebut) && (type.validverse_at<=datefin))?Number(type.etatversement):0;
+
+            let pointObjet = JSON.parse(type.point);
+            let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
+            let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+
+            if(!listeBilanCC.includes(cc)) { listeBilanCC.push(cc); }
+
+            return {
+                id: type.id,
+                datedemande: type.datedemande,
+                datedemande_jour:type.datedemande.split(' ')[0],
+                datedemande_heure:type.datedemande.split(':')[0],
+                positionne_at_jour:type.positionne_at?type.positionne_at.split(' ')[0]:null,
+                positionne_at_heure:type.positionne_at?type.positionne_at.split(':')[0]:null,
+                validpaye_at_jour:type.validpaye_at?type.validpaye_at.split(' ')[0]:null,
+                validpaye_at_heure:type.validpaye_at?type.validpaye_at.split(':')[0]:null,
+                validverse_at_jour:type.validverse_at?type.validverse_at.split(' ')[0]:null,
+                validverse_at_heure:type.validverse_at?type.validverse_at.split(':')[0]:null,
+                montant: Number(type.montant),
+                point: pointObjet.prenom+" "+pointObjet.nom,
+                telephone: pointObjet.telephone,
+                adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                cc: cc,
+                recouvre_by: type.recouvre_by?( (type.recouvre_by!='pas besoin')?type.recouvre_by:type.modepayement ):"attente",
+                etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
+                positionne_at:type.positionne_at?type.positionne_at:"attente",
+                etatpayement: type.etatpayement?type.etatpayement:0,
+                validpaye_at:type.validpaye_at?type.validpaye_at:"attente",
+                etatversement: type.etatversement?type.etatversement:0,
+                validverse_at:type.validverse_at?type.validverse_at:"attente",
+                modepayement:type.modepayement?"par "+type.modepayement:"",
+                modedemande:type.modedemande?type.modedemande:"non defini",
+                modeversement:type.modeversement?"par "+type.modeversement:"",
+                dateeffectif: type.dateeffectif?type.dateeffectif:"attente"
+            }
+        });
+        this.listebilanPositionnement = listestatus;
+        detailRecouvrements.promesses.list = listestatus.filter( opt => (opt.datedemande>=datedebut) && (opt.datedemande<=datefin) );
+        detailRecouvrements.positionnes.list = listestatus.filter( opt => (opt.positionne_at>=datedebut) && (opt.positionne_at<=datefin) );
+        detailRecouvrements.payes.list = listestatus.filter( opt => (opt.validpaye_at>=datedebut) && (opt.validpaye_at<=datefin) );
+        detailRecouvrements.verses.list = listestatus.filter( opt => (opt.validverse_at>=datedebut) && (opt.validverse_at<=datefin) );
+
+        listeBilanCC.forEach(type => {
+            let liste = listestatus.filter( opt => opt.cc==type );
+            let promesses:number = 0;
+            let positionnes:number = 0;
+            let payes:number = 0;
+            let verses:number = 0;
+
+            let detailRecouvrementsCC = {
+                promesses:{type:"promesses", nbre:0, montant:0, list:[]},
+                positionnes:{type:"positionnes", nbre:0, montant:0, list:[]},
+                payes:{type:"payes", nbre:0, montant:0, list:[]},
+                verses:{type:"verses", nbre:0,montant:0,list:[]},
+            };
+            detailRecouvrementsCC.promesses.nbre = liste.filter( opt => (opt.datedemande>=datedebut) && (opt.datedemande<=datefin) ).length;
+
+            liste.forEach(optcc => {
+                detailRecouvrementsCC.promesses.montant += ((optcc.datedemande>=datedebut) && (optcc.datedemande<=datefin))?Number(optcc.montant):0;
+                if((optcc.positionne_at>=datedebut) && (optcc.positionne_at<=datefin)){ detailRecouvrementsCC.positionnes.nbre ++;    }
+                detailRecouvrementsCC.positionnes.montant += ((optcc.positionne_at>=datedebut) && (optcc.positionne_at<=datefin))?Number(optcc.etatpositionnement):0;
+                if((optcc.validpaye_at>=datedebut) && (optcc.validpaye_at<=datefin)){ detailRecouvrementsCC.payes.nbre ++;  }
+                detailRecouvrementsCC.payes.montant += ((optcc.validpaye_at>=datedebut) && (optcc.validpaye_at<=datefin))?Number(optcc.etatpayement):0;
+                if((optcc.validverse_at>=datedebut) && (optcc.validverse_at<=datefin)){ detailRecouvrementsCC.verses.nbre ++; }
+                detailRecouvrementsCC.verses.montant += ((optcc.validverse_at>=datedebut) && (optcc.validverse_at<=datefin))?Number(optcc.etatversement):0;
+            });
+            detailRecouvrementsCC.promesses.list = liste.filter( opt => (opt.datedemande>=datedebut) && (opt.datedemande<=datefin) );
+            detailRecouvrementsCC.positionnes.list = liste.filter( opt => (opt.positionne_at>=datedebut) && (opt.positionne_at<=datefin));
+            detailRecouvrementsCC.payes.list = liste.filter( opt => (opt.validpaye_at>=datedebut) && (opt.validpaye_at<=datefin) );
+            detailRecouvrementsCC.verses.list = liste.filter( opt => (opt.validverse_at>=datedebut) && (opt.validverse_at<=datefin) );
+
+            bilanPositionnementCC.push({
+                cc:type,
+                type:type,
+                detail:detailRecouvrementsCC,
+                list:liste,
+            })
+        });
+        this.listeBilanPositionnementCC=bilanPositionnementCC;
+        this.detailRecouvrement = detailRecouvrements;
+
+        this.suivionepointgraphe(datedebut, datefin);
+    }
+
     clickPositionnement(datasGraphe){
         this.listebilanPositionnement = datasGraphe;
-        this.suivionepointgraphe();
+        this.suivionepointgraphe(this.datedebut, this.datefin);
     }
 
 
@@ -437,11 +459,15 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
         this.modalRef = this.modalService.open(content);
     }
 
+    showModaldepotCompteBBSDetail(content, item) {
+        console.log(item);
+        //this.modalRef = this.modalService.open(content);
+    }
+
     getDepotCompteBBS(){
         this._suivipositionnementService.getDepotCompteBBS({type:this.type, infotype:this.infotypeDepotCompteBBS})
             .subscribe(
                 data => {
-                    console.log(data)
                     this.listedepotCompteBBS = data.message;
                 },
                 error => alert(error),
@@ -458,7 +484,6 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this._suivipositionnementService.valideDepotCompteBBS({type:this.typeservice, montant:this.montanttypeservice})
                 .subscribe(
                     data => {
-                        console.log(data)
                         if(data.errorCode){
                             this.closedModal();
                         }
@@ -474,6 +499,8 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             console.log("Je ne confirme pas")
         }
     }
+
+
 
     /***********************************************************************************
     **********************************   PARTIE NEW POINT   ****************************
@@ -753,31 +780,12 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
      ***********************************************************************************/
 
 
-    public rowsOnPageStatusDeposition = 25;
-    public sortByStatusDeposition = "dateeffectif";
-    public sortOrderStatusDeposition = "desc";
-    public filterQueryStatusDeposition:any;
     public listestatusdeposition:any[] = [];
-    public statusdoneeposition:any;
-    montantpayement:number;
-    modepayement:number;
-    montantversement:number;
 
     public modalRef: NgbModalRef;
 
     public closedModal(){
         this.modalRef.close('Close click');
-    }
-    showModalPayementDepot(content, item) {
-        this.modepayement = undefined;
-        this.montantpayement = undefined;
-        this.statusdoneeposition = item;
-        this.modalRef = this.modalService.open(content);
-    }
-    showModalVersementDepot(content, item) {
-        this.montantversement = undefined;
-        this.statusdoneeposition = item;
-        this.modalRef = this.modalService.open(content);
     }
 
     public getListStatusDeposition(): void {
@@ -808,130 +816,81 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             );
     }
 
-    public validePayementDepot(){
-        clearInterval(this.killsetinterval);
-        if(confirm("Confirmer la validation du payement dépot")){
-            console.log("je confirme")
-            this.loading_data = true;
-            this._suivipositionnementService.validePayementDepot({id:this.statusdoneeposition.id, montantpayement:this.montantpayement, modepayement:this.modepayement})
-                .subscribe(
-                    data => {
-                        if(data.errorCode){
-                            this.closedModal();
-                            this.loading_data = false;
-                        }
-                    },
-                    error => alert(error),
-                    () => {
-                        this.getListStatusDeposition();
-                        this.killsetinterval = setInterval(() => {
-                            this.getListStatusDeposition();
-                            console.log('step');
-                        }, 10000);
-                    }
-                );
-        }
-        else{
-            console.log("Je ne confirme pas")
-        }
-    }
-
-    public valideVersementDepot(){
-        clearInterval(this.killsetinterval);
-        if(confirm("Confirmer la validation du versement dépot")){
-            console.log("je confirme")
-            this.loading_data = true;
-            this._suivipositionnementService.valideVersementDepot({id:this.statusdoneeposition.id, montantversement:this.montantversement})
-                .subscribe(
-                    data => {
-                        if(data.errorCode){
-                            this.closedModal();
-                            this.loading_data = false;
-                        }
-                    },
-                    error => alert(error),
-                    () => {
-                        this.getListStatusDeposition();
-                        this.killsetinterval = setInterval(() => {
-                            this.getListStatusDeposition();
-                            console.log('step');
-                        }, 10000);
-                    }
-                );
-        }
-        else{
-            console.log("Je ne confirme pas")
-        }
-    }
-
-
     /***************************************************************************************
      ********************   PARTIE Modify Point crm incomplet   ****************************
      **************************************************************************************/
 
-    public filterQueryPDVCRMINCOM:any;
-    public rowsOnPage = 10;
-    public sortBy = "date_ajout";
-    public sortOrder = "desc";
-    public sortByWordLength = (a: any) => { return a.adresse.length; }
+    public rowsOnPageSuiviRelequat = 25;
+    public sortBySuiviRelequat = "point";
+    public sortOrderSuiviRelequat = "asc";
+    public filterQuerySuiviRelequat:any;
+    public listesSuiviRelequat:any[] = [];
 
-    public points:any[] = [];
-    public point:any;
-
-    getPointsInfosIncomplets(){
-        this._utilService.getPointsInfosIncomplets()
+    public getListSuiviRelequat(): void {
+        this.filterQuerySuiviRelequat = undefined;
+        this._apiPlatformService.getListSuiviRelequat()
             .subscribe(
                 data => {
-
-                    this.points = data.message.filter(opt => !JSON.parse(opt.adresse_point).regionpoint || opt.adresse_point.match('--Choix') || opt.adresse_point.match('autre') || opt.adresse_point.match('Autre')).map(function(type) {
-                        let adresse = JSON.parse(type.adresse_point);
+                    let listestatus = data.message.map(function (type) {
+                        let pointObjet = JSON.parse(type.point);
+                        let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+                        let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
                         return {
-                            id: type.id,
-                            infosup: JSON.parse(type.infosup),
-                            libellepoint: type.nom_point.trim()?type.nom_point.trim():'__',
-                            fullname_gerant: type.prenom_gerant +' '+ type.nom_gerant,
-                            fullname_proprietaire: type.prenom_proprietaire +' '+ type.nom_proprietaire,
-
-                            region:adresse.regionpoint?adresse.regionpoint:'__',
-                            zone:adresse.zonepoint?adresse.zonepoint:'__',
-                            sous_zone:adresse.souszonepoint?adresse.souszonepoint:'__',
-                            adresse: adresse.adressepoint?adresse.adressepoint:'__',
-
-                            activites: JSON.parse(type.activites),
-                            services: JSON.parse(type.services),
-                            fichiers: JSON.parse(type.fichiers),
-                            note: type.avis,
-
-                            prenom_gerant: type.prenom_gerant,
-                            nom_gerant: type.nom_gerant,
-                            telephone_gerant: type.telephone_gerant,
-                            email_gerant: type.email_gerant?type.email_gerant:'__',
-
-                            prenom_proprietaire: type.prenom_proprietaire,
-                            nom_proprietaire: type.prenom_proprietaire,
-                            telephone_proprietaire:type.telephone_gerant,
-
-                            id_gerant_point:type.id_gerant_point,
-                            id_proprietaire_point:type.id_proprietaire_point,
-                            id_commercial:type.id_commercial,
-
-                            date_ajout:type.date_ajout,
-                        };
+                            pointbrut: type.point,
+                            point: pointObjet.prenom+" "+pointObjet.nom,
+                            telephone: pointObjet.telephone,
+                            adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                            cc: cc,
+                            etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
+                            etatpayement: type.etatpayement?type.etatpayement:0,
+                            etatrestant: (type.etatpositionnement && type.etatpayement)?(type.etatpositionnement - type.etatpayement):type.etatpositionnement?type.etatpositionnement:0,
+                        }
                     });
+                    this.listesSuiviRelequat = listestatus.filter( opt => opt.etatrestant!=0 );
+                    this.loading_data = false;
                 },
                 error => alert(error),
-                () => {
-                    this.loading_data = false;
-                }
+                () => {}
             );
     }
 
-    public toInt(num: string) { return +num; }
+    public bilanPositionnementDetailPoint:any = {type:"", list:[]};
+    showModalSuiviRelequatDetailPoint(content, item){
+        this.bilanPositionnementDetailPoint = {type:"", list:[]};
+        this._apiPlatformService.getListSuiviRelequatDetailPoint({point:item.pointbrut})
+            .subscribe(
+                data => {
+                    this.bilanPositionnementDetailPoint.type = item.point;
+                    let listestatus = data.message.map(function (type) {
+                        let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+                        return {
+                            datedemande:type.datedemande,
+                            montant: Number(type.montant),
+                            modedemande:type.modedemande?type.modedemande:"non defini",
+                            cc: cc,
+                            recouvre_by: (type.recouvre_by!="pas besoin")?type.recouvre_by:type.modepayement,
 
-    showModalModifPoint(content, point) {
-        this.point = point;
-        this.modalService.open(content, {size: 'lg'}).result.then( (result) => {
-        }, (reason) => {} );
+                            etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
+                            positionne_at:type.positionne_at?type.positionne_at:"attente",
+
+                            etatpayement: type.etatpayement?type.etatpayement:0,
+                            validpaye_at:type.validpaye_at?type.validpaye_at:"attente",
+
+                            etatversement: type.etatversement?type.etatversement:0,
+                            validverse_at:type.validverse_at?type.validverse_at:"attente",
+
+                            etatrestant: (type.etatpositionnement && type.etatpayement)?(type.etatpositionnement - type.etatpayement):type.etatpositionnement?type.etatpositionnement:0,
+                            etatrestantpoint: (type.etatpositionnement && type.etatpayement)?(type.etatpositionnement - type.etatpayement):type.etatpositionnement?type.etatpositionnement:0,
+                            etatrestantagent: (type.etatpayement && type.etatversement)?(type.etatpayement - type.etatversement):type.etatpayement?type.etatpayement:0,
+                        }
+                    });
+                    this.bilanPositionnementDetailPoint.list = listestatus;
+                    this.modalRef = this.modalService.open(content, {size: 'lg'});
+                },
+                error => alert(error),
+                () => {}
+            );
+
     }
 
 

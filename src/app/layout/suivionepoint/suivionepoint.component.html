@@ -41,7 +41,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': (p.cautiondebase==0 && p.caution==0 )?'blue':(p.cautiondebase==0 && p.caution!=0 )?'yellow':((100*p.caution)/p.cautiondebase)<25?'red':((100*p.caution)/p.cautiondebase)>=25 && ((100*p.caution)/p.cautiondebase)<=50?'orange':'green'}">
+                    <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': (p.categorie=='pas')?'blue':(p.categorie=='pasdepot_aveccaution' )?'yellow':(p.categorie=='faible')?'red':(p.categorie=='passable')?'orange':'green'}">
                         <td>{{p.date_ajout}}</td>
                         <td>{{p.nom_point}}</td>
                         <td>{{p.gerant}}</td>
@@ -272,7 +272,7 @@
                 <th>Point</th>
                 <th>Téléphone</th>
                 <th>Adresse</th>
-                <th>Montant demand</th>
+                <th>Promesse</th>
                 <th>Recouvrement</th>
                 <th>Positionnement</th>
                 <th>Payement</th>
