@@ -2,7 +2,7 @@
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" class="btn btn-dark btn-sm" (click)="goBack()" style="margin-bottom: 1rem;">Retour</button>
         <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Etat Reliquat</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Bilan positionnement</button>
+        <!--<button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Bilan positionnement</button>-->
 
     </div>
     <hr>
@@ -30,6 +30,13 @@
                     <tr><br></tr>
                     </thead>
                     <tbody>
+                    <tr>
+                        <td  style="text-align: right" colspan="3">TOTAL</td>
+                        <td style="text-align: right">{{tocurrency(totalpositionnement)}}</td>
+                        <td style="text-align: right">{{tocurrency(totalpayement)}}</td>
+                        <td style="text-align: right">{{tocurrency(totalrestant)}}</td>
+                        <td>-</td>
+                    </tr>
                     <tr *ngFor="let item of mfBilanSuiviRelequat.data; let i = index"  [ngStyle]="{'color': 'black'}">
                         <td>{{item.point}}</td>
                         <td>{{item.telephone}}</td>
@@ -264,7 +271,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0 || item.etatpositionnement>item.etatpayement || item.etatpayement>item.etatversement)?'yellow':'green'}">
                     <td>
                         <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">{{item.datedemande}}</span>
                         <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">{{item.positionne_at}}</span>
@@ -309,7 +316,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0 || item.etatpositionnement>item.etatpayement || item.etatpayement>item.etatversement)?'yellow':'green'}">
                     <td>{{item.datedemande}}</td>
                     <td style="text-align: right">{{tocurrency(item.montant)}}</td>
                     <td style="text-align: right">{{item.cc}}</td>

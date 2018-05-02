@@ -108,6 +108,8 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             this.menuHead.menuHead7 = false;
             this.menuHead.menuHead8 = false;
             this.menuHead.menuHead9 = false;
+
+            this.filterQueryEtatDeposit = undefined;
             this.getEtatDeposit();
         }
         if(option == 7){
@@ -364,6 +366,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
             let pointObjet = JSON.parse(type.point);
             let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
             let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+            let recouvre_by = type.recouvre_by?( (type.recouvre_by!='pas besoin')?(type.recouvre_by.match('{')?(JSON.parse(type.recouvre_by).prenom+" "+JSON.parse(type.recouvre_by).nom):type.recouvre_by):type.modepayement ):"attente";
 
             if(!listeBilanCC.includes(cc)) { listeBilanCC.push(cc); }
 
@@ -383,7 +386,7 @@ export class AdminadministratifComponent implements OnInit, OnDestroy {
                 telephone: pointObjet.telephone,
                 adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
                 cc: cc,
-                recouvre_by: type.recouvre_by?( (type.recouvre_by!='pas besoin')?type.recouvre_by:type.modepayement ):"attente",
+                recouvre_by: recouvre_by,
                 etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
                 positionne_at:type.positionne_at?type.positionne_at:"attente",
                 etatpayement: type.etatpayement?type.etatpayement:0,

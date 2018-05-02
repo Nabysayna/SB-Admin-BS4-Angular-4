@@ -18,9 +18,9 @@ export class DataFilterSuiviDemandepositPipe implements PipeTransform {
                 row.cc.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                 row.telephone.toLowerCase().indexOf(query.toLowerCase())>-1 ||
                 row.montantdemande.toLocaleString().indexOf(query.toLowerCase())>-1 ||
-                row.etatpositionnement.toLowerCase().indexOf(query.toLowerCase())>-1 ||
-                row.etatpayement.toLowerCase().indexOf(query.toLowerCase())>-1 ||
-                row.etatversement.toLowerCase().indexOf(query.toLowerCase())>-1
+                row.etatpositionnement.toLocaleString().indexOf(query.toLowerCase())>-1 ||
+                row.etatpayement.toLocaleString().indexOf(query.toLowerCase())>-1 ||
+                row.etatversement.toLocaleString().indexOf(query.toLowerCase())>-1
             ) });
         }
         return array;

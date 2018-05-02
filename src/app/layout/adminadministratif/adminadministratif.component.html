@@ -442,7 +442,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                <tr *ngFor="let item of bilanPositionnementAllDetail.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0 || item.etatpositionnement>item.etatpayement || item.etatpayement>item.etatversement)?'yellow':'green'}">
                     <td>
                         <span *ngIf="bilanPositionnementAllDetail.type=='promesses'">{{item.datedemande}}</span>
                         <span *ngIf="bilanPositionnementAllDetail.type=='positionnes'">{{item.positionne_at}}</span>
@@ -487,7 +487,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
+                <tr *ngFor="let item of bilanPositionnementDetailPoint.list; let i = index" [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0 || item.etatpositionnement>item.etatpayement || item.etatpayement>item.etatversement)?'yellow':'green'}">
                     <td>{{item.datedemande}}</td>
                     <td style="text-align: right">{{tocurrency(item.montant)}}</td>
                     <td style="text-align: right">{{item.cc}}</td>

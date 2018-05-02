@@ -5,22 +5,33 @@
 <div class="row" style="padding-bottom: 1rem;padding-top: 1rem">
     <div class="page-header col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 text-center center-block">
         <button type="button" class="btn btn-dark btn-sm" (click)="goBack()" style="margin-bottom: 1rem;">Précedent</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">Points crm</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead2, 'btn-success': menuHead.menuHead2}" (click)="menuHeadClick(2)" style="margin-bottom: 1rem;">Points sentool</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead3, 'btn-success': menuHead.menuHead3}" (click)="menuHeadClick(3)" style="margin-bottom: 1rem;">Points avec dépot</button>
-        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead4, 'btn-success': menuHead.menuHead4}" (click)="menuHeadClick(4)" style="margin-bottom: 1rem;">Gérant point sentool</button>
+        <button type="button" [ngClass]="{'btn': true, 'btn-sm': true, 'btn-primary': !menuHead.menuHead1, 'btn-success': menuHead.menuHead1}" (click)="menuHeadClick(1)" style="margin-bottom: 1rem;">{{listegeolocalises.length}} Points sentool</button>
     </div>
     <hr>
 </div>
 
 <div  class="container-fluid" *ngIf="menuHead.menuHead1" style="background-color: white">
     <agm-map [latitude]="centercartelat" [longitude]="centercartelng" [zoom]="centercartezoom" [fullscreenControl]="true" [mapTypeControl]="true">
-        <agm-marker [latitude]="centercartelat" [longitude]="centercartelng" [title]="title" [label]="title" >
-            <agm-info-window><strong>InfoWindow content</strong></agm-info-window>
+        <agm-marker  [latitude]="bbslat" [longitude]="bbslng" iconUrl="assets/icon/flag.png">
+            <agm-info-window>
+                <strong>BBS INVEST</strong><br>
+                Au meilleur du partenariat
+            </agm-info-window>
         </agm-marker>
-    </agm-map>
-</div>
 
-<div  class="container-fluid" *ngIf="menuHead.menuHead2" >
-    Hi
+        <agm-marker
+            *ngFor="let item of listegeolocalises; let i = index"
+            [latitude]="item.geoposition.latitude"
+            [longitude]="item.geoposition.longitude"
+            iconUrl="assets/icon/{{item.categorie}}.png"
+        >
+            <agm-info-window>
+                Point: <strong>{{item.nom_point}}</strong>, <br>
+                Superviseur: <strong>{{item.prenom_admin}} {{item.nom_admin}} {{item.tel_admin}}</strong><br>
+                Gerant: <strong>{{item.fullname_gerant}} {{item.telephone_gerant}}</strong><br>
+                Adresse: <strong>{{item.adresse_point}}</strong>
+            </agm-info-window>
+        </agm-marker>
+
+    </agm-map>
 </div>

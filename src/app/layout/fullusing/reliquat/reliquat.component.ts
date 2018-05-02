@@ -17,8 +17,6 @@ import {BaseChartDirective} from "ng2-charts";
 })
 export class ReliquatComponent implements OnInit, OnDestroy {
 
-    title: string = '12';
-    test:number = 100000;
     public loading_data:boolean = true;
     public menuHead = {menuHead1:true, menuHead2:false};
     public killsetinterval:any;
@@ -267,9 +265,9 @@ export class ReliquatComponent implements OnInit, OnDestroy {
             let pointObjet = JSON.parse(type.point);
             let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
             let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+            let recouvre_by = type.recouvre_by?( (type.recouvre_by!='pas besoin')?(JSON.parse(type.recouvre_by).prenom+" "+JSON.parse(type.recouvre_by).nom):type.recouvre_by):"attente";
 
             if(!listeBilanCC.includes(cc)) { listeBilanCC.push(cc); }
-
             return {
                 id: type.id,
                 datedemande: type.datedemande,
@@ -286,7 +284,7 @@ export class ReliquatComponent implements OnInit, OnDestroy {
                 telephone: pointObjet.telephone,
                 adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
                 cc: cc,
-                recouvre_by: type.recouvre_by?( (type.recouvre_by!='pas besoin')?type.recouvre_by:type.modepayement ):"attente",
+                recouvre_by: recouvre_by,
                 etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
                 positionne_at:type.positionne_at?type.positionne_at:"attente",
                 etatpayement: type.etatpayement?type.etatpayement:0,
@@ -415,13 +413,23 @@ export class ReliquatComponent implements OnInit, OnDestroy {
     public sortOrderSuiviRelequat = "asc";
     public filterQuerySuiviRelequat:any;
     public listesSuiviRelequat:any[] = [];
+    public totalpositionnement:Number = 0;
+    public totalpayement:Number = 0;
+    public totalrestant:Number = 0
 
     public getListSuiviRelequat(): void {
         this.filterQuerySuiviRelequat = undefined;
         this._apiPlatformService.getListSuiviRelequat()
             .subscribe(
                 data => {
+                    let totalpo = 0
+                    let totalpay = 0
+                    let totalrest = 0
                     let listestatus = data.message.map(function (type) {
+                        totalpo += type.etatpositionnement?Number(type.etatpositionnement):0;
+                        totalpay += type.etatpayement?Number(type.etatpayement):0
+                        totalrest += type.etatpayement?(Number(type.etatpositionnement) - Number(type.etatpayement)):0
+
                         let pointObjet = JSON.parse(type.point);
                         let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
                         let adressecomplet = (typeof pointObjet.adresse === 'object')?pointObjet.adresse:JSON.parse(pointObjet.adresse);
@@ -429,14 +437,17 @@ export class ReliquatComponent implements OnInit, OnDestroy {
                             pointbrut: type.point,
                             point: pointObjet.prenom+" "+pointObjet.nom,
                             telephone: pointObjet.telephone,
-                            adresse: adressecomplet.address+", "+adressecomplet.souszone+", "+adressecomplet.zone,
+                            adresse: adressecomplet.address+", "+adressecomplet.souszone,
                             cc: cc,
                             etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
                             etatpayement: type.etatpayement?type.etatpayement:0,
-                            etatrestant: (type.etatpositionnement && type.etatpayement)?(type.etatpositionnement - type.etatpayement):type.etatpositionnement?type.etatpositionnement:0,
+                            etatrestant: type.etatrestant,
                         }
                     });
                     this.listesSuiviRelequat = listestatus.filter( opt => opt.etatrestant!=0 );
+                    this.totalpositionnement = totalpo;
+                    this.totalpayement = totalpay;
+                    this.totalrestant = totalrest
                     this.loading_data = false;
                 },
                 error => alert(error),
@@ -453,12 +464,14 @@ export class ReliquatComponent implements OnInit, OnDestroy {
                     this.bilanPositionnementDetailPoint.type = item.point;
                     let listestatus = data.message.map(function (type) {
                         let cc = type.cc?JSON.parse(type.cc).prenom+" "+JSON.parse(type.cc).nom:"alioune";
+                        let recouvre_by = (type.recouvre_by!="pas besoin")?(type.recouvre_by.match('{')?(JSON.parse(type.recouvre_by).prenom+" "+JSON.parse(type.recouvre_by).nom):type.recouvre_by):type.modepayement;
+
                         return {
                             datedemande:type.datedemande,
                             montant: Number(type.montant),
                             modedemande:type.modedemande?type.modedemande:"non defini",
                             cc: cc,
-                            recouvre_by: (type.recouvre_by!="pas besoin")?type.recouvre_by:type.modepayement,
+                            recouvre_by: recouvre_by,
 
                             etatpositionnement:type.etatpositionnement?type.etatpositionnement:0,
                             positionne_at:type.positionne_at?type.positionne_at:"attente",

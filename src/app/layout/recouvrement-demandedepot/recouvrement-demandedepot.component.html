@@ -8,7 +8,7 @@
             <table class="table table-hover table-responsive table-sm" [mfData]="listestatusdeposition | dataFilterSuiviDemandeposit: filterQueryStatusDeposition" #mfBilanDeposit="mfDataTable" [mfRowsOnPage]="rowsOnPageStatusDeposition" [(mfSortBy)]="sortByStatusDeposition" [(mfSortOrder)]="sortOrderStatusDeposition">
                 <thead>
                     <tr>
-                        <th colspan="2" width="10%"><mfDefaultSorter by="datedemande"> Date demande</mfDefaultSorter></th>
+                        <th colspan="3" width="10%"><mfDefaultSorter by="datedemande"> Date demande</mfDefaultSorter></th>
                         <th width="7%"><mfDefaultSorter by="montantdemande">Promesse</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="point">Point</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="telephone">Téléphone</mfDefaultSorter></th>
@@ -16,7 +16,7 @@
                         <th width="10%"><mfDefaultSorter by="cc">CC en charge</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="recouvre_by">Recouvrement</mfDefaultSorter></th>
                         <th width="7%"><mfDefaultSorter by="etatpositionnement">Positionnement</mfDefaultSorter></th>
-                        <th width="7%"><mfDefaultSorter by="etatpayement">Payement</mfDefaultSorter></th>
+                        <th colspan="2" width="7%"><mfDefaultSorter by="etatpayement">Payement</mfDefaultSorter></th>
                         <th width="7%"><mfDefaultSorter by="etatversement">Versement</mfDefaultSorter></th>
                     </tr>
                     <tr>
@@ -26,22 +26,38 @@
                     <tr><br></tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0)?'yellow':'green'}">
-                        <td width="2%">
-                            <span *ngIf="(item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0)">
+                    <tr *ngFor="let item of mfBilanDeposit.data; let i = index"  [ngStyle]="{'color': 'black', 'background-color': (item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'red':(item.recouvre_by!='attente' && item.etatpositionnement==0 && item.etatpayement==0 && item.etatversement==0)?'orange':(item.etatpositionnement==0 || item.etatpayement==0 || item.etatversement==0 || item.etatpositionnement>item.etatpayement || item.etatpayement>item.etatversement)?'yellow':'green'}">
+                        <td>
+                            <span *ngIf="(item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && iam>=7)">
                                 <button (click)="annulerDemandeDepot(item.id)" class="btn btn-primary btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </span>
                         </td>
-                        <td width="8%">{{item.datedemande}}</td>
+                        <td>
+                            <span *ngIf="(item.recouvre_by=='attente' && item.etatpositionnement==0 && item.etatpayement==0 && (iam==7 || iam==10) && item.autoriserpositionnement==-1)">
+                                <button (click)="autoriserPositionnement(item.id)" class="btn btn-primary btn-sm"><i class="fa fa-unlock-alt" aria-hidden="true"></i></button>
+                            </span>
+                        </td>
+                        <td>{{item.datedemande}}</td>
                         <td style="text-align: right">{{tocurrency(item.montantdemande)}}</td>
                         <td>{{item.point}}</td>
                         <td>{{item.telephone}}</td>
                         <td>{{item.adresse}}</td>
                         <td>{{item.cc}}</td>
-                        <td style="text-align: right"><span *ngIf="item.recouvre_by!='attente'">{{item.recouvre_by}}</span><span *ngIf="item.recouvre_by=='attente'"><button (click)="showModalRecouvrementDepot(contentValideRecouvrementDepot, item)" class="btn btn-primary btn-sm">Affecter</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpositionnement!=0">{{tocurrency(item.etatpositionnement)}}</span><span *ngIf="item.etatpositionnement==0"><button [disabled]="item.recouvre_by=='attente' || iam!=10" (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatpayement!=0">{{tocurrency(item.etatpayement)}}</span><span *ngIf="item.etatpayement==0"><button [disabled]="item.etatpositionnement==0 || iam!=8" (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
-                        <td style="text-align: center"><span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span><span *ngIf="item.etatversement==0"><button [disabled]="item.etatpayement==0 || iam!=9" (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span></td>
+                        <td style="text-align: right"><span *ngIf="item.recouvre_by!='attente'">{{item.recouvre_by}}</span><span *ngIf="item.recouvre_by=='attente'"><button [disabled]="iam!=8 || item.autoriserpositionnement==-1" (click)="showModalRecouvrementDepot(contentValideRecouvrementDepot, item)" class="btn btn-primary btn-sm">Affecter</button></span></td>
+                        <td style="text-align: center">
+                            <span *ngIf="item.etatpositionnement!=0">{{tocurrency(item.etatpositionnement)}}</span>
+                            <span *ngIf="item.etatpositionnement==0"><button [disabled]="item.recouvre_by=='attente' || iam!=10" (click)="showModalPositionnementDepot(contentValidePositionnerDepot, item)" class="btn btn-primary btn-sm">Effectuer</button></span>
+                        </td>
+                        <td colspan="2" style="text-align: center">
+                            <span *ngIf="item.etatpayement!=0">{{tocurrency(item.etatpayement)}}</span>
+                            <span *ngIf="item.etatpayement==0"><button [disabled]="item.etatpositionnement==0 || iam!=8" (click)="showModalPayementDepot(contentValidePayementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span>
+                            <span style="margin-left: 0.3rem" *ngIf="(item.etatpayement!=0) && (item.etatpositionnement>item.etatpayement)"><button [disabled]="item.recouvre_by=='attente' || iam!=8" (click)="showModalCompleterPayementDepot(contentValideCompleterPayementDepot, item)" class="btn btn-primary btn-sm">Completer</button></span>
+                        </td>
+                        <td style="text-align: center">
+                            <span *ngIf="item.etatversement!=0">{{tocurrency(item.etatversement)}}</span>
+                            <span *ngIf="item.etatversement==0"><button [disabled]="item.etatpayement==0 || iam!=9" (click)="showModalVersementDepot(contentValideVersementDepot, item)" class="btn btn-primary btn-sm">Valider</button></span>
+                            <span style="margin-left: 0.3rem" *ngIf="(item.etatversement!=0) && (item.etatpayement>item.etatversement)"><button [disabled]="item.etatpayement==0 || iam!=9" (click)="showModalCompleterVersementDepot(contentValideCompleterVersementDepot, item)" class="btn btn-primary btn-sm">Completer</button></span>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -60,7 +76,7 @@
 <ng-template #contentValideRecouvrementDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Recouvrement</h4>
+            <h4 class="modal-title pull-left">Recouvrement {{statusdoneeposition.point}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -84,17 +100,25 @@
             </div>
             <div class="row" *ngIf="moderecouvrement=='Direct'">
                 <div class="col-sm-6">
-                    <label for="recouvreur">Recouvré par</label>
-                    <input type="text" class="form-control" id="recouvreur" name="recouvreur" [(ngModel)]="recouvreur" placeholder="recouvreur" required>
+                    <label for="singleSelectrecouvreur">Recouvré par</label>
+                    <select name="singleSelectrecouvreur"  id="singleSelectrecouvreur" class="form-control input-sm" [(ngModel)]="choixrecouvreur" (change)="onchangeChoixrecouvreur()">
+                        <option  *ngFor="let recouvreur of recouvreurs" [attr.value]="recouvreur.id">{{recouvreur.fullname}}</option>
+                    </select>
                 </div>
-                <div class="col-sm-6">
-                    <label for="recouvreur">Téléphone recouvreur</label>
+                <div class="col-sm-6" *ngIf="choixrecouvreur">
+                    <label for="phonerecouvreur">Téléphone recouvreur</label>
                     <input type="number" class="form-control" id="phonerecouvreur" name="phonerecouvreur" [(ngModel)]="phonerecouvreur" placeholder="Téléphone recouvreur" required>
+                </div>
+            </div>
+            <div class="row" *ngIf="moderecouvrement" style="margin-top: 0.5rem">
+                <div class="col-sm-12">
+                    <label for="inforecouvrement">Info recouvrement</label>
+                    <textarea class="form-control" id="inforecouvrement" name="inforecouvrement" [(ngModel)]="inforecouvrement" placeholder="Info recouvrement" required rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="!moderecouvrement" (click)="valideRecouvrementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+            <button type="button" class="btn btn-success" [disabled]="!moderecouvrement || inforecouvrement==undefined || !inforecouvrement || (moderecouvrement=='Direct' && !choixrecouvreur)" (click)="d('valideRecouvrementDepot')">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
         </div>
     </div>
 </ng-template>
@@ -102,7 +126,7 @@
 <ng-template #contentValidePositionnerDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Postionné depot</h4>
+            <h4 class="modal-title pull-left">Postionné depot  {{statusdoneeposition.point}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -114,7 +138,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="montantpositionnement<1 || montantpositionnement==undefined" (click)="validePositionnementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+            <button type="button" class="btn btn-success" [disabled]="montantpositionnement<1 || montantpositionnement==undefined || statusdoneeposition.montantdemande<montantpositionnement" (click)="validePositionnementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
         </div>
     </div>
 </ng-template>
@@ -122,7 +146,7 @@
 <ng-template #contentValidePayementDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Payement depot reçu</h4>
+            <h4 class="modal-title pull-left">Payement depot reçu  {{statusdoneeposition.point}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -134,7 +158,47 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="montantpayement<1 || montantpayement==undefined" (click)="validePayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+            <button type="button" class="btn btn-success" [disabled]="montantpayement<1 || montantpayement==undefined || statusdoneeposition.etatpositionnement<montantpayement" (click)="validePayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValideCompleterPayementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Compléter payement depot  {{statusdoneeposition.point}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7"><input type="number" min="0" class="form-control" id="montantcompleterpayement" name="montantcompleterpayement" [(ngModel)]="montantcompleterpayement" placeholder="somme completer" required></div>
+                <div class="col-sm-5">{{tocurrency(montantcompleterpayement)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantcompleterpayement<1 || montantcompleterpayement<1 || montantcompleterpayement==undefined || statusdoneeposition.etatpositionnement<(statusdoneeposition.etatpayement+montantcompleterpayement)" (click)="valideCompleterPayementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentValideCompleterVersementDepot let-c="close" let-d="dismiss" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Compléter versement depot  {{statusdoneeposition.point}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-7"><input type="number" min="0" class="form-control" id="montantcompleterversement" name="montantcompleterversement" [(ngModel)]="montantcompleterversement" placeholder="somme completer" required></div>
+                <div class="col-sm-5">{{tocurrency(montantcompleterversement)}}</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="montantcompleterversement<1 || montantcompleterversement==undefined || statusdoneeposition.etatpayement<(statusdoneeposition.etatversement+montantcompleterversement)" (click)="valideCompleterVersementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
         </div>
     </div>
 </ng-template>
@@ -142,7 +206,7 @@
 <ng-template #contentValideVersementDepot let-c="close" let-d="dismiss" >
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title pull-left">Versement depot reçu</h4>
+            <h4 class="modal-title pull-left">Versement depot reçu  {{statusdoneeposition.point}}</h4>
             <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -169,7 +233,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" [disabled]="!modeversement || montantversement<1 || montantversement==undefined" (click)="valideVersementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
+            <button type="button" class="btn btn-success" [disabled]="!modeversement || montantversement<1 || montantversement==undefined || statusdoneeposition.etatpayement<montantversement" (click)="valideVersementDepot()">Valider</button><button type="button" class="btn btn-secondary" (click)="c('Close click')">Annuler</button>
         </div>
     </div>
 </ng-template>

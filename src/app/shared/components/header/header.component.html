@@ -68,7 +68,7 @@
                         <i class="fa fa-ravelry"></i> Cartographie
                     </a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" *ngIf="currentAccessLevel==1 || currentAccessLevel==4 || currentAccessLevel==2">
                     <a [routerLink]="['/fullusing', 'reliquat']"  class="nav-link">
                         <i class="fa fa-credit-card-alt"></i> Reliquat
                     </a>

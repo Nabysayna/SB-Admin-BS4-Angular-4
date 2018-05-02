@@ -119,22 +119,22 @@ export class SuivionepointComponent implements OnInit {
                         this.listepointsbycc = data.message.map(function(type){
                             return {
                                 date_ajout: type.dateCreation.date.split('.')[0].split(" ")[0],
-                                date_last_depot: type.date_last_modif.date.split('.')[0],
+                                date_last_depot: type.date_last_modif.date.split('.')[0].split(" ")[0],
                                 nom_point: JSON.parse(type.infosup).nometps,
                                 info_point: JSON.parse(type.infosup),
                                 gerant: type.name_adminpdv,
                                 email: type.login,
-                                last_depot: Number(type.last_depot),
+                                last_depot: Number(type.last_depot)!=0?Number(type.last_depot):Number(type.cautiondebase),
                                 tel: type.telephone,
                                 adressecomplet: JSON.parse(type.adresse),
-                                adresse: JSON.parse(type.adresse).zone+", "+JSON.parse(type.adresse).souszone+", "+JSON.parse(type.adresse).address,
+                                adresse: JSON.parse(type.adresse).souszone+", "+JSON.parse(type.adresse).address,
                                 idcommercial: type.idcommercial,
                                 caution: Number(type.caution),
                                 cautiondebase: Number(type.cautiondebase),
                                 id_point: type.id_point,
                                 user: type.user,
                                 categorie1: (type.cautiondebase==0 && type.caution==0 )?'pas':(type.cautiondebase==0 && type.caution!=0 )?'pasdepot_aveccaution':((100*type.caution)/type.cautiondebase)<25?'faible':((100*type.caution)/type.cautiondebase)>=25 && ((100*type.caution)/type.cautiondebase)<=50?'passable':'bien',
-                                categorie: ((Number(type.last_depot)==0) && (Number(type.caution)==0) )?'pas':((Number(type.last_depot)==0) && (Number(type.caution)!=0) )?'pasdepot_aveccaution':((100*Number(type.caution))/Number(type.last_depot))<25?'faible':((100*Number(type.caution))/Number(type.last_depot))>=25 && ((100*Number(type.caution))/Number(type.last_depot))<=50?'passable':'bien',
+                                categorie: ((Number(type.cautiondebase)==0) && (Number(type.caution)==0) )?'pas':((Number(type.cautiondebase)==0) && (Number(type.caution)!=0) )?'pasdepot_aveccaution':((100*Number(type.caution))/Number(type.last_depot))<25?'faible':((100*Number(type.caution))/Number(type.last_depot))>=25 && ((100*Number(type.caution))/Number(type.last_depot))<=50?'passable':'bien',
                             }
                         });
                         this.gardeListepointsbycc = this.listepointsbycc;

@@ -11,13 +11,13 @@
                 <table class="table table-hover table-responsive table-sm" [mfData]="listepointsbycc  | dataFilterListesuivipoint: filterQuerypointsbycc" #mfCliTraiterPoint="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBypointsbycc" [(mfSortOrder)]="sortOrderpointsbycc">
                     <thead>
                     <tr>
-                        <th width="10%"><mfDefaultSorter by="date_ajout">Date</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="date_last_depot">Date</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="nom_point">Point</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="gerant">Client</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="email">Login</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="tel">Téléphone</mfDefaultSorter></th>
                         <th width="16%"><mfDefaultSorter by="adresse">Adresse</mfDefaultSorter></th>
-                        <th width="10%"><mfDefaultSorter by="cautiondebase">Dernier dépot</mfDefaultSorter></th>
+                        <th width="10%"><mfDefaultSorter by="last_depot">Dernier dépot</mfDefaultSorter></th>
                         <th width="10%"><mfDefaultSorter by="caution">Caution</mfDefaultSorter></th>
                         <th width="7%">Action</th>
                         <th width="7%">Option</th>
@@ -42,13 +42,13 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let p of mfCliTraiterPoint.data; let i = index" [ngStyle]="{'color': 'black', 'background-color': (p.categorie=='pas')?'blue':(p.categorie=='pasdepot_aveccaution' )?'yellow':(p.categorie=='faible')?'red':(p.categorie=='passable')?'orange':'green'}">
-                        <td>{{p.date_ajout}}</td>
+                        <td>{{p.date_last_depot}}</td>
                         <td>{{p.nom_point}}</td>
                         <td>{{p.gerant}}</td>
                         <td>{{p.email}}</td>
                         <td>{{p.tel}}</td>
                         <td>{{p.adresse}}</td>
-                        <td style="text-align: right">{{tocurrency(p.cautiondebase)}}</td>
+                        <td style="text-align: right">{{tocurrency(p.last_depot)}}</td>
                         <td style="text-align: right">{{tocurrency(p.caution)}}</td>
                         <td><button type="button" *ngIf="p.categorie!='pas'" class="btn btn-info btn-sm" (click)="suivrepoint(p)">SUIVRE</button></td>
                         <td><button (click)="showModalFaireUnDepot(contentValiderFaireUnDepot,p)" class="btn btn-primary btn-sm" style="margin-right: 2px">faire un depot</button></td>

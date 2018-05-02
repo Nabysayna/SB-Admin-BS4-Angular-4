@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
 
     currentUsername:any;
+    currentAccessLevel:number;
 
     constructor(private translate: TranslateService, public router: Router) {
         this.router.events.subscribe((val) => {
@@ -20,8 +21,10 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.currentAccessLevel = Number(JSON.parse(sessionStorage.getItem('currentUser')).accesslevel)
         this.currentUsername = JSON.parse(sessionStorage.getItem('currentUser')).username;
-        console.log(this.currentUsername);
+        //console.log(JSON.parse(sessionStorage.getItem('currentUser')));
+        //console.log(this.currentAccessLevel);
     }
 
     toggleSidebar() {
